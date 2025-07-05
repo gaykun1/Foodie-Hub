@@ -3,7 +3,7 @@ import Restaurant, { Category } from "../models/Restaurant";
 import User from "../models/User";
 import { AuthRequest } from "../middleware/authMiddleware";
 import Dish from "../models/Dish";
-import Review from "../models/Review";
+import Review, { ReviewType } from "../models/Review";
 
 
 
@@ -250,22 +250,33 @@ export const deleteDish = async (req: Request, res: Response): Promise<void> => 
     }
 }
 
+// route for creating review and recalculating rating of Restaurant
 
 export const createReview = async (req: Request, res: Response) => {
     const { id, text, rating } = req.body;
+    console.log(id, text, rating);
     try {
-
-
         const newReview = new Review({
             sender: (req as AuthRequest).userId,
             text: text,
             rating: rating,
             restaurantId: id,
         });
-
         await newReview.save();
-        res.status(201).json(Review);
+        const restaurant = await Restaurant.findByIdAndUpdate(id, {
+            $push: { reviews: newReview._id }
+        }, { new: true }
+        ).populate<{ reviews: ReviewType[] }>({ path: "reviews" });
+        if (restaurant) {
+            const sum = restaurant?.reviews.reduce((acc, cur) => acc + cur.rating, 0);
+            restaurant.rating = sum / (restaurant.reviews.length);
+            await restaurant.save();
+            res.status(201).json(newReview);
+            return;
+        }
+        res.status(404).json("Not found!");
         return;
+
 
     } catch (err) {
         res.status(500).json({
@@ -281,9 +292,16 @@ export const getReviews = async (req: Request, res: Response) => {
     try {
 
 
-        const reviews = await Restaurant.findById(id).populate({ path: "reviews" }).select("reviews");
+        const reviews = await Restaurant.findById(id).select("reviews").populate({
+            path: "reviews",
+            populate: {
+                path: "sender",
+                select: "username"
+            },
+        });
+
         if (reviews) {
-            res.status(201).json(reviews);
+            res.status(201).json(reviews.reviews);
             return;
         }
         else {

@@ -7,12 +7,17 @@ export enum Category {
   Healthy = "Healthy",
   Desserts = "Desserts",
 }
-
-const ReviewSchema = new Schema({
-  sender: { type: mongoose.Types.ObjectId, required: true ,ref:"User"},
+export type ReviewType = {
+  sender: mongoose.Types.ObjectId,
+  text: string,
+  rating: number,
+  restaurantId: mongoose.Types.ObjectId,
+}
+const ReviewSchema = new Schema<ReviewType>({
+  sender: { type:Schema.Types.ObjectId, required: true, ref: "User" },
   text: { type: String, required: true },
   rating: { type: Number, required: true },
-  restaurantId:{type:mongoose.Types.ObjectId,required:true,ref:"Restaurant"}
+  restaurantId: { type: Schema.Types.ObjectId, required: true, ref: "Restaurant" }
 });
 
 export default mongoose.model('Review', ReviewSchema);
