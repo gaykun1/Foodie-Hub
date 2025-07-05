@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 7, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/User/Desktop/pet%20projects/FoodieHub/client/src/app/%28main%29/dashboard/layout.tsx"],"sourcesContent":["\nimport \"@/styles/globals.css\";\nimport Header from \"@/components/Header\";\nimport { cookies } from \"next/headers\";\nimport { redirect } from \"next/navigation\";\nimport AuthClientUpload from \"@/components/AuthClientUpload\";\nimport { useAppSelector } from \"@/hooks/reduxHooks\";\nimport Providers from \"@/app/providers/Providers\";\n\n\n\n\nexport default async function RootLayout({\n  children,\n}: Readonly<{\n  children: React.ReactNode;\n}>) {\n  \n  return (\n    <html lang=\"en\">\n      <body>\n        <Providers>\n          <AuthClientUpload />\n          <Header />\n\n          <div className=\"_container\">\n\n            {children}\n          </div>\n        </Providers>\n      </body>\n    </html>\n  );\n}\n"],"names":[],"mappings":";;;;AAEA;AAGA;AAEA;;;;;;AAKe,eAAe,WAAW,EACvC,QAAQ,EAGR;IAEA,qBACE,8OAAC;QAAK,MAAK;kBACT,cAAA,8OAAC;sBACC,cAAA,8OAAC,qIAAA,CAAA,UAAS;;kCACR,8OAAC,sIAAA,CAAA,UAAgB;;;;;kCACjB,8OAAC,4HAAA,CAAA,UAAM;;;;;kCAEP,8OAAC;wBAAI,WAAU;kCAEZ;;;;;;;;;;;;;;;;;;;;;;AAMb","debugId":null}}]
+}

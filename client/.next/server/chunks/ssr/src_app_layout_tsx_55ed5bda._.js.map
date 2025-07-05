@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 7, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/User/Desktop/pet%20projects/FoodieHub/client/src/app/layout.tsx"],"sourcesContent":["import type { Metadata } from \"next\";\nimport \"@/styles/globals.css\";\nimport { cookies } from \"next/headers\";\nimport { redirect } from \"next/navigation\";\nexport const metadata: Metadata = {\n  title: \"Foodie Hub\",\n  description: \"Food delivery website\",\n  icons: {\n    icon: '/logo.ico'\n  },\n};\n\nexport default async function RootLayout({\n  children,\n}: Readonly<{\n  children: React.ReactNode;\n}>) {\n\n  const token = (await cookies()).get(\"token\")?.value;\n  if(!token)redirect(\"/auth/login\");\n  return (\n    <html lang=\"en\">\n      <body\n\n      >\n        {children}\n      </body>\n    </html>\n  );\n}\n"],"names":[],"mappings":";;;;;AAEA;AACA;AAAA;;;;;AACO,MAAM,WAAqB;IAChC,OAAO;IACP,aAAa;IACb,OAAO;QACL,MAAM;IACR;AACF;AAEe,eAAe,WAAW,EACvC,QAAQ,EAGR;IAEA,MAAM,QAAQ,CAAC,MAAM,CAAA,GAAA,+HAAA,CAAA,UAAO,AAAD,GAAG,EAAE,GAAG,CAAC,UAAU;IAC9C,IAAG,CAAC,OAAM,CAAA,GAAA,qLAAA,CAAA,WAAQ,AAAD,EAAE;IACnB,qBACE,8OAAC;QAAK,MAAK;kBACT,cAAA,8OAAC;sBAGE;;;;;;;;;;;AAIT","debugId":null}}]
+}

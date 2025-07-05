@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 7, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/User/Desktop/pet%20projects/FoodieHub/client/src/app/%28main%29/layout.tsx"],"sourcesContent":["import type { Metadata } from \"next\";\n\nimport \"@/styles/globals.css\";\n\n\n\nexport default function RootLayout({\n  children,\n}: Readonly<{\n  children: React.ReactNode;\n}>) {\n  return (\n    <html lang=\"en\">\n      <body>\n        \n        <div className=\"_container\">\n\n          {children}\n        </div>\n      </body>\n    </html>\n  );\n}\n"],"names":[],"mappings":";;;;;;AAMe,SAAS,WAAW,EACjC,QAAQ,EAGR;IACA,qBACE,8OAAC;QAAK,MAAK;kBACT,cAAA,8OAAC;sBAEC,cAAA,8OAAC;gBAAI,WAAU;0BAEZ;;;;;;;;;;;;;;;;AAKX","debugId":null}}]
+}

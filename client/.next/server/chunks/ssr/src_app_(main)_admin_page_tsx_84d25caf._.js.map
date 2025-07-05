@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 7, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/User/Desktop/pet%20projects/FoodieHub/client/src/app/%28main%29/admin/page.tsx"],"sourcesContent":["\"use client\"\n\nimport axios from 'axios'\nimport React, { useEffect } from 'react'\n\nconst page = () => {\n  useEffect(() => {\n    const niger = async () => {\n      try {\n        const res = await axios.get('http://localhost:5200/api/auth/check-admin', { withCredentials: true });\n        console.log(res.data.role);\n      } catch (err) {\n        console.log(err);\n      }\n    }\n    niger();\n  }, [])\n  return (\n    <div>page</div>\n  )\n}\n\nexport default page"],"names":[],"mappings":";;;;AAEA;AACA;AAHA;;;;AAKA,MAAM,OAAO;IACX,CAAA,GAAA,qMAAA,CAAA,YAAS,AAAD,EAAE;QACR,MAAM,QAAQ;YACZ,IAAI;gBACF,MAAM,MAAM,MAAM,qIAAA,CAAA,UAAK,CAAC,GAAG,CAAC,8CAA8C;oBAAE,iBAAiB;gBAAK;gBAClG,QAAQ,GAAG,CAAC,IAAI,IAAI,CAAC,IAAI;YAC3B,EAAE,OAAO,KAAK;gBACZ,QAAQ,GAAG,CAAC;YACd;QACF;QACA;IACF,GAAG,EAAE;IACL,qBACE,8OAAC;kBAAI;;;;;;AAET;uCAEe","debugId":null}}]
+}

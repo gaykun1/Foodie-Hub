@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 7, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/User/Desktop/pet%20projects/FoodieHub/client/src/app/%28main%29/admin-panel/page.tsx"],"sourcesContent":["\"use client\"\nimport axios from 'axios';\nimport { useEffect } from 'react';\n\n\n\nexport default function AdminPanel() {\n\n  useEffect(() => {\n    async function getNiger() {\n      try {\n        const res = await axios.get('http://localhost:5200/api/auth/check-admin');\n        console.log(res.data);\n\n\n      } catch (err) {\n        console.error(err);\n      }\n    }\n    getNiger();\n  }, [])\n\n\n\n\n\n\n  return (\n    <div>\n      <h1>Адмін Панель</h1>\n      <p>Тільки для адміністраторів.</p>\n    </div>\n  );\n} \n"],"names":[],"mappings":";;;;AACA;AACA;AAFA;;;;AAMe,SAAS;IAEtB,CAAA,GAAA,qMAAA,CAAA,YAAS,AAAD,EAAE;QACR,eAAe;YACb,IAAI;gBACF,MAAM,MAAM,MAAM,qIAAA,CAAA,UAAK,CAAC,GAAG,CAAC;gBAC5B,QAAQ,GAAG,CAAC,IAAI,IAAI;YAGtB,EAAE,OAAO,KAAK;gBACZ,QAAQ,KAAK,CAAC;YAChB;QACF;QACA;IACF,GAAG,EAAE;IAOL,qBACE,8OAAC;;0BACC,8OAAC;0BAAG;;;;;;0BACJ,8OAAC;0BAAE;;;;;;;;;;;;AAGT","debugId":null}}]
+}
