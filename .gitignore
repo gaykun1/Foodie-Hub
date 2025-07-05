@@ -1,11 +1,11 @@
 
 # backend
-/back/node_modules
-/back/.env
+/server/node_modules
+/server/.env
 
 # frontend
-/front/node_modules
-/front/.env
+/client/node_modules
+/client/.env
 
 # general
 .DS_Store
