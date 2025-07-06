@@ -317,3 +317,21 @@ export const getReviews = async (req: Request, res: Response) => {
         return;
     }
 };
+
+
+export const getFavouriteRestaurants = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const user = await User.findById((req as AuthRequest).userId).populate({ path: "favourites" });
+        if (user?.favourites) {
+            res.status(200).json(user.favourites);
+            return;
+        }
+        res.status(400);
+        return;
+    } catch (err) {
+        res.status(500).json({
+            error: "Server error",
+        });
+        return;
+    }
+}

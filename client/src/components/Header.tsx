@@ -3,10 +3,10 @@
 import { LogOut } from '@/api/auth'
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks'
 import { logout } from '@/redux/authSlice'
-import { getCart, updateAmount } from '@/redux/cartSlice'
-import { Restaurant, User } from '@/redux/reduxTypes'
+import { updateAmount } from '@/redux/cartSlice'
+import { Cart, Restaurant, User } from '@/redux/reduxTypes'
 import axios from 'axios'
-import { ArrowLeft, ArrowRight, Minus, Plus, Search, ShoppingCart, UserRound, X } from 'lucide-react'
+import { Minus, Plus, Search, ShoppingCart, UserRound, X } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
@@ -46,6 +46,8 @@ const Header = () => {
       console.error(err);
     }
   }
+
+
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
@@ -63,6 +65,16 @@ const Header = () => {
       document.removeEventListener("click", handleClickOutside);
     };
   }, [activePanel]);
+
+  const createOrder = async () => {
+    try {
+      const res = await axios.post("http://localhost:5200/api/order/create-order", { cart },{withCredentials:true});
+      if(res.data)
+      return res.data;
+    } catch (err) {
+      console.error(err);
+    }
+  }
   return (
     <header className=" shadow-borderShadow border-b-[1px] border-borderColor z-100 relative">
       <div className='py-2 flex items-center justify-between  _container'>
@@ -122,29 +134,35 @@ const Header = () => {
           {activePanel === "cart" &&
             <div className="absolute flex flex-col gap-3 text-left border-borderColor panel border-[2px] rounded-lg p-3 top-[150%] right-0 bg-primary  min-w-[300px]">
               <h2 className='text-lg font-bold pb-1 border-borderColor border-b-[1px] '>Cart</h2>
-              {cart
-                ? cart.items.map((item, idx) => {
-                  return (
-                    <div className='rounded-lg p-2 border-borderColor border-[1px]' key={idx}>
-                      <div className="flex  justify-between ">
-                        <div className="flex gap-1 ">
-                          <img src={item.dishId.imageUrl} alt="dish image" className='object-fit max-w-[100px] rounded-lg p-1' />
-                          <h3 className='text-lg font-semibold'>{item.dishId.title} x{item.amount}</h3>
-                        </div>
-                        <div className="flex flex-col gap-1">
+              <div className="flex flex-col gap-2 overflow-y-auto mr-2">
+                {cart
+                  ? cart.items.map((item, idx) => {
+                    return (
+                      <div className='rounded-lg p-2 border-borderColor border-[1px]' key={idx}>
+                        <div className="flex  justify-between ">
+                          <div className="flex gap-1  ">
+                            <img src={item.dishId.imageUrl} alt="dish image" className='object-fit max-w-[100px] rounded-lg p-1' />
+                            <h3 className='text-lg font-semibold'>{item.dishId.title} x{item.amount}</h3>
+                          </div>
+                          <div className="flex flex-col gap-1">
 
-                          <button onClick={async () => updateCount(item.amount + 1, item.dishId._id)} className='btn p-1 border-[1px] border-borderColor'><Plus /></button>
+                            <button onClick={async () => updateCount(item.amount + 1, item.dishId._id)} className='btn p-1 border-[1px] border-borderColor'><Plus /></button>
 
-                          <button onClick={async () => updateCount(item.amount - 1, item.dishId._id)} className='btn p-1 border-[1px] border-borderColor'><Minus /></button>
+                            <button onClick={async () => updateCount(item.amount - 1, item.dishId._id)} className='btn p-1 border-[1px] border-borderColor'><Minus /></button>
 
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  )
-                })
-                : <span>Loading cart...</span>}
+                    )
+                  })
+                  : <span>Loading cart...</span>}
 
-              {/* cart elems */}
+
+              </div>
+              <button onClick={async () => {
+                const id = await createOrder();
+                redirect(`/orders/order/${id}`)
+              }} className='btn border-borderColor border-[1px]! font-medium text-lg p-3 '>Place an order</button>
             </div>
           }
           <button onClick={() => setActivePanel(activePanel === "cart" ? null : "cart")} className="relative cursor-pointer transition-colors hover:text-primary">

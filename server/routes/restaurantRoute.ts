@@ -1,7 +1,7 @@
 
 
 import express from "express";
-import { createDish, createItem, createReview, deleteDish, getAbout, getDishes, getRestaurantById, getRestaurantsFiltered, getReviews, handleAbout, searchRestaurants, toggleToFavourite } from "../controllers/restaurantController";
+import { createDish, createItem, createReview, deleteDish, getAbout, getDishes, getFavouriteRestaurants, getRestaurantById, getRestaurantsFiltered, getReviews, handleAbout, searchRestaurants, toggleToFavourite } from "../controllers/restaurantController";
 import { authMiddleware } from "../middleware/authMiddleware";
 
 const restaurantRoute = express.Router();
@@ -18,6 +18,7 @@ restaurantRoute.post("/about", handleAbout);
 restaurantRoute.get("/about/:id", getAbout);
 restaurantRoute.get("/review/:id", getReviews);
 restaurantRoute.post("/review", authMiddleware,createReview);
+restaurantRoute.get("/favourites", authMiddleware,getFavouriteRestaurants);
 
 
 export default restaurantRoute;

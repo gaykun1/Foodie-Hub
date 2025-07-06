@@ -48,8 +48,8 @@ export default function Home() {
       <div className="border-b-[1px] border-gray  mb-6 h-10 pb-4 flex justify-between items-center">
         <h1 className="section-title">{currentTitle}</h1>
         <button onClick={() => setIsActiveFilterMenu(!isActiveFilterMenu)} className={`text-xl relative  flex items-center gap-2 cursor-pointer group ${isActiveFilterMenu ? "text-primary" : ""}`}>
-          <span className="group-hover:text-primary font-medium transition-colors ">Filter</span>
-          <SlidersHorizontal className="group-hover:text-primary transition-colors" size={18} />
+          <span className="group-hover:text-primary font-semibold transition-colors ">Filter</span>
+          <SlidersHorizontal className="group-hover:text-primary group-hover:rotate-90  transition-all" size={18} />
           {isActiveFilterMenu && (
             <div className="absolute w-[200px] p-3 bg-primary mt-3 rounded-md border-gray items-start font-medium text-white border-[1px] text-base flex flex-col gap-1 top-full right-0">
               {Object.entries(links).map(([key, value], index) => {

@@ -7,6 +7,7 @@ import mongoose from "mongoose";
 import authRoute from "./routes/authRoutes";
 import restaurantRoute from "./routes/restaurantRoute";
 import cartRoute from "./routes/cartRoute";
+import orderRoute from "./routes/orderRoutes";
 dotenv.config();
 const app = express();
 
@@ -25,6 +26,7 @@ app.use(cors({
 app.use("/api/auth", authRoute);
 app.use("/api/restaurant", restaurantRoute);
 app.use("/api/cart", cartRoute);
+app.use("/api/order", orderRoute);
 
 mongoose.connect(process.env.MONGO_URI!).then(() => console.log("MongoDB connected"))
     .catch(err => {

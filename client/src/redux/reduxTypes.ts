@@ -19,7 +19,7 @@ export interface AuthType {
 export type Dish = {
     title: string,
     description: string,
-    price: string,
+    price: number,
     imageUrl: string,
     _id: string,
     typeOfFood: string,

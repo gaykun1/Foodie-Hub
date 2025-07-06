@@ -273,7 +273,7 @@ function Home() {
                         className: `text-xl relative  flex items-center gap-2 cursor-pointer group ${isActiveFilterMenu ? "text-primary" : ""}`,
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                className: "group-hover:text-primary font-medium transition-colors ",
+                                className: "group-hover:text-primary font-semibold transition-colors ",
                                 children: "Filter"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(main)/restaurants/category/[category]/page.tsx",
@@ -281,7 +281,7 @@ function Home() {
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$sliders$2d$horizontal$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__SlidersHorizontal$3e$__["SlidersHorizontal"], {
-                                className: "group-hover:text-primary transition-colors",
+                                className: "group-hover:text-primary group-hover:rotate-90  transition-all",
                                 size: 18
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(main)/restaurants/category/[category]/page.tsx",
