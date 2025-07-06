@@ -1,3 +1,5 @@
+import { useAppDispatch } from '@/hooks/reduxHooks'
+import { getCart } from '@/redux/cartSlice'
 import { Dish } from '@/redux/reduxTypes'
 import axios from 'axios'
 import { ShoppingCart, X } from 'lucide-react'
@@ -5,12 +7,25 @@ import React from 'react'
 
 const DishCard = ({ dish, toCart, onDeleted }: { dish: Dish, toCart: boolean, onDeleted?: () => void }) => {
 
+    const dispatch = useAppDispatch();
 
     const deleteDish = async () => {
         try {
             const res = await axios.delete(`http://localhost:5200/api/restaurant/dishes/${dish._id}`);
 
             if (onDeleted) onDeleted();
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+
+    const addToCart = async () => {
+        try {
+            const res = await axios.post("http://localhost:5200/api/cart/add-to-cart", { id: dish._id }, { withCredentials: true });
+            if (res.data) {
+                dispatch(getCart(res.data));
+            }
         } catch (err) {
             console.error(err);
         }
@@ -27,7 +42,9 @@ const DishCard = ({ dish, toCart, onDeleted }: { dish: Dish, toCart: boolean, on
                 <div className="text-[#E8618CFF] font-bold text-xl leading-7 mb-3">
                     ${dish.price}
                 </div>
-                {toCart ? (<button className='text-base! leading-[26px]! py-2 w-full gap-2 flex items-center btn'>
+                {toCart ? (<button onClick={async () => {
+                    await addToCart();
+                }} className='text-base! leading-[26px]! py-2 w-full gap-2 flex items-center btn'>
 
                     <ShoppingCart size={16} /><span>Add to Cart</span>
                 </button>) : (

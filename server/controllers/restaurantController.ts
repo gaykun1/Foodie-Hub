@@ -269,7 +269,7 @@ export const createReview = async (req: Request, res: Response) => {
         ).populate<{ reviews: ReviewType[] }>({ path: "reviews" });
         if (restaurant) {
             const sum = restaurant?.reviews.reduce((acc, cur) => acc + cur.rating, 0);
-            restaurant.rating = sum / (restaurant.reviews.length);
+            restaurant.rating = parseFloat((sum / (restaurant.reviews.length)).toFixed(1));
             await restaurant.save();
             res.status(201).json(newReview);
             return;

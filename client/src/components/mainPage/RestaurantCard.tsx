@@ -17,7 +17,7 @@ const RestaurantCard = ({restaurant}:{restaurant:Restaurant}) => {
                                                 <p className='text-sm leading-5 text-gray'>{restaurant.description}</p>
                                             </div>
                                             <div className="flex justify-between items-center mb-1">
-                                                <div className="flex items-center gap-1 text-amber-400">
+                                                <div className="flex items-center gap-1 text-primary">
                                                     <Star size={14} />
                                                     <span>{restaurant.rating}</span>
                                                 </div>

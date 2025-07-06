@@ -34,6 +34,14 @@ export type Review = {
 
 
 }
+export interface Cart {
+    items: {
+        dishId: Dish,
+        amount: number,
+    }[]
+
+}
+
 export interface Restaurant {
     title: string,
     rating: number,
@@ -49,7 +57,7 @@ export interface Restaurant {
     endDay: string,
     startHour: string,
     endHour: string,
-    reviews:string[],
+    reviews: string[],
 }
 
 export enum Category {

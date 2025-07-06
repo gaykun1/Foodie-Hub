@@ -1,12 +1,6 @@
 import mongoose, { mongo, Schema } from "mongoose";
 
-export enum Category {
-  All = "All Restaurants",
-  FastFood = "Fast Food",
-  FineDining = "Fine Dining",
-  Healthy = "Healthy",
-  Desserts = "Desserts",
-}
+
 
 const DishSchema = new Schema({
   title: { type: String, required: true },
