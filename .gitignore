@@ -5,7 +5,7 @@
 
 # frontend
 /client/node_modules
-/client/.env
+/client/.env.local
 
 # general
 .DS_Store

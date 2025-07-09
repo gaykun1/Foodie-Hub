@@ -39,8 +39,22 @@ export interface Cart {
         dishId: Dish,
         amount: number,
     }[]
-
+    _id: string,
 }
+
+export interface Order {
+    userId: string,
+    items: {
+        title: string,
+        price: number,
+        amount: number,
+        imageUrl: string,
+    }[],
+    totalPrice: number,
+    createdAt: Date,
+}
+
+
 
 export interface Restaurant {
     title: string,

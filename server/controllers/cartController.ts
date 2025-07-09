@@ -1,15 +1,16 @@
 import { Request, Response } from "express";
 import Cart from "../models/Cart";
 import { AuthRequest } from "../middleware/authMiddleware";
+import Order from "../models/Order";
 
 export const getCart = async (req: Request, res: Response): Promise<void> => {
     try {
-        let cart = await Cart.findOne({ userId: (req as AuthRequest).userId }).populate({ path: "items.dishId" }).select("items -_id");
+        let cart = await Cart.findOne({ userId: (req as AuthRequest).userId }).populate({ path: "items.dishId" })
         if (!cart) {
             cart = await Cart.create({ userId: (req as AuthRequest).userId, items: [] });
             cart = await Cart.findOne({ userId: (req as AuthRequest).userId })
                 .populate({ path: "items.dishId" })
-                .select("items -_id");
+
             res.status(200).json(cart);
             return;
         }
@@ -26,10 +27,22 @@ export const getCart = async (req: Request, res: Response): Promise<void> => {
 }
 
 export const updateCartAmount = async (req: Request, res: Response): Promise<void> => {
-    const { dishId, amount } = req.body;
+    const { dishId, amount, title } = req.body;
     try {
         const cart = await Cart.findOneAndUpdate({ userId: (req as AuthRequest).userId, "items.dishId": dishId }, { $set: { "items.$.amount": amount } }, { new: true });
+        const order = await Order.findOne({ userId: (req as AuthRequest).userId, status: "Processing" });
+        if (order) {
+            const item = order.items.find(item => item.title == title);
+
+            if (item)
+                item.amount = amount;
+
+            const sum = order.items.reduce((acc, cur) => acc + (cur.amount * cur.price), 0);
+            order.totalPrice = sum;
+            await order.save();
+        }
         res.status(200);
+
         return;
     } catch (err) {
         res.status(500).json("Server error!");
@@ -59,7 +72,7 @@ export const addToCart = async (req: Request, res: Response): Promise<void> => {
 
             const updatedCart = await Cart.findOne({ userId: (req as AuthRequest).userId })
                 .populate("items.dishId")
-                .select("items -_id");
+
 
             res.status(201).json(updatedCart);
             return;
@@ -77,3 +90,4 @@ export const addToCart = async (req: Request, res: Response): Promise<void> => {
 
 
 }
+

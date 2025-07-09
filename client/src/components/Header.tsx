@@ -38,10 +38,13 @@ const Header = () => {
     }
   }
 
-  const updateCount = async (amount: number, id: string) => {
+  const updateCount = async (amount: number, id: string, title: string) => {
     try {
+      if (amount <= 0) {
+        return;
+      }
       dispatch(updateAmount({ amount: amount, dishId: id }));
-      const res = await axios.post("http://localhost:5200/api/cart/amount", { amount: amount, dishId: id }, { withCredentials: true });
+      const res = await axios.post("http://localhost:5200/api/cart/amount", { amount: amount, dishId: id, title: title }, { withCredentials: true });
     } catch (err) {
       console.error(err);
     }
@@ -68,9 +71,9 @@ const Header = () => {
 
   const createOrder = async () => {
     try {
-      const res = await axios.post("http://localhost:5200/api/order/create-order", { cart },{withCredentials:true});
-      if(res.data)
-      return res.data;
+      const res = await axios.post("http://localhost:5200/api/order/create-order", { cart }, { withCredentials: true });
+      if (res.data)
+        return res.data;
     } catch (err) {
       console.error(err);
     }
@@ -88,7 +91,7 @@ const Header = () => {
           <nav className='basis-[180px] flex gap-[18px] items-center'>
             {user?.role !== "admin" ? (<><Link className='hover:text-primary font-bold' href={"/"}>Home</Link>
               <Link className='hover:text-primary font-bold' href={"/restaurants/category/all-restaurants"}>Restaurants</Link>
-              <Link className='hover:text-primary font-bold' href={"#"}>Orders</Link></>
+              <Link className='hover:text-primary font-bold' href={"/orders"}>Orders</Link></>
 
             ) : (<Link className='hover:text-primary font-bold' href={"/dashboard"}>Dashboard</Link>)}
           </nav>
@@ -133,22 +136,27 @@ const Header = () => {
 
           {activePanel === "cart" &&
             <div className="absolute flex flex-col gap-3 text-left border-borderColor panel border-[2px] rounded-lg p-3 top-[150%] right-0 bg-primary  min-w-[300px]">
-              <h2 className='text-lg font-bold pb-1 border-borderColor border-b-[1px] '>Cart</h2>
-              <div className="flex flex-col gap-2 overflow-y-auto mr-2">
+              <h2 className='text-lg font-bold pb-1 border-borderColor text-white border-b-[1px] '>Cart</h2>
+              {cart?.items.length  ? (<> <div className="flex flex-col gap-2 overflow-y-auto mr-2">
                 {cart
                   ? cart.items.map((item, idx) => {
+
+
                     return (
                       <div className='rounded-lg p-2 border-borderColor border-[1px]' key={idx}>
                         <div className="flex  justify-between ">
-                          <div className="flex gap-1  ">
-                            <img src={item.dishId.imageUrl} alt="dish image" className='object-fit max-w-[100px] rounded-lg p-1' />
-                            <h3 className='text-lg font-semibold'>{item.dishId.title} x{item.amount}</h3>
+                          <div className="flex gap-4 items-center ">
+                            <img className="size-16 object-cover rounded-lg border-[1px] border-borderColor" src={item.dishId.imageUrl} alt="" />
+                            <div className="text-white">
+                              <h3 className="font-medium ">{item.dishId.title}</h3>
+                              <p className="text-sm leading-5  ">Quantity: {item.amount}</p>
+                            </div>
                           </div>
                           <div className="flex flex-col gap-1">
 
-                            <button onClick={async () => updateCount(item.amount + 1, item.dishId._id)} className='btn p-1 border-[1px] border-borderColor'><Plus /></button>
+                            <button onClick={async () => updateCount(item.amount + 1, item.dishId._id, item.dishId.title)} className='btn p-1 border-[1px] border-borderColor'><Plus /></button>
 
-                            <button onClick={async () => updateCount(item.amount - 1, item.dishId._id)} className='btn p-1 border-[1px] border-borderColor'><Minus /></button>
+                            <button disabled={(item.amount - 1) <= 0} onClick={async () => updateCount(item.amount - 1, item.dishId._id, item.dishId.title)} className={`btn p-1 border-[1px] border-borderColor disabled:bg-gray! `}><Minus /></button>
 
                           </div>
                         </div>
@@ -162,12 +170,13 @@ const Header = () => {
               <button onClick={async () => {
                 const id = await createOrder();
                 redirect(`/orders/order/${id}`)
-              }} className='btn border-borderColor border-[1px]! font-medium text-lg p-3 '>Place an order</button>
+              }} className='btn border-borderColor border-[1px]! font-medium text-lg p-3 '>Place order</button> </>):(<span>Cart is clear</span>) }
+             
             </div>
           }
           <button onClick={() => setActivePanel(activePanel === "cart" ? null : "cart")} className="relative cursor-pointer transition-colors hover:text-primary">
             <ShoppingCart size={30} />
-            <span className='rounded-full p-1 bg-primary absolute top-[55%] -left-[15%] text-secondary font-semibold px-2 text-sm'>{cart?.items.length}</span>
+            <span className='rounded-full p-1 bg-primary absolute top-[55%] -left-[15%] text-white  font-semibold px-2 text-sm'>{cart?.items.length}</span>
 
           </button>
           <div className="rounded-full relative p-3 border-borderColor border-[2px] ">
