@@ -24,6 +24,7 @@ export type Dish = {
     _id: string,
     typeOfFood: string,
 }
+
 export type Review = {
     sender: {
         username: string,
@@ -35,6 +36,10 @@ export type Review = {
 
 }
 export interface Cart {
+    restaurantId: {
+        title: string;
+        imageUrl: string,
+    }
     items: {
         dishId: Dish,
         amount: number,
@@ -42,8 +47,10 @@ export interface Cart {
     _id: string,
 }
 
-export interface Order {
-    userId: string,
+export type Order = {
+    restaurantTitle: string,
+    restaurantImage: string,
+    _id: string,
     items: {
         title: string,
         price: number,
@@ -52,6 +59,17 @@ export interface Order {
     }[],
     totalPrice: number,
     createdAt: Date,
+
+    status: "Delivering" | "Delivered" | "Processing" | "Preparing",
+    approxTime: number,
+    fullName: string,
+    adress: {
+        city: string,
+        countryOrRegion: string,
+        houseNumber: number,
+        street: string,
+        apartmentNumbr?: number;
+    }
 }
 
 

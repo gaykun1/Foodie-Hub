@@ -2,15 +2,15 @@ import { Request, Response } from "express";
 import Cart from "../models/Cart";
 import { AuthRequest } from "../middleware/authMiddleware";
 import Order from "../models/Order";
+import Dish from "../models/Dish";
 
 export const getCart = async (req: Request, res: Response): Promise<void> => {
     try {
-        let cart = await Cart.findOne({ userId: (req as AuthRequest).userId }).populate({ path: "items.dishId" })
+        let cart = await Cart.findOne({ userId: (req as AuthRequest).userId }).populate({ path: "items.dishId" }).populate({ path: "restaurantId", select: "title imageUrl" });
         if (!cart) {
-            cart = await Cart.create({ userId: (req as AuthRequest).userId, items: [] });
+            cart = await Cart.create({ userId: (req as AuthRequest).userId, items: [], restaurantId: null });
             cart = await Cart.findOne({ userId: (req as AuthRequest).userId })
-                .populate({ path: "items.dishId" })
-
+                .populate({ path: "items.dishId" }).populate({ path: "restaurantId", select: "title imageUrl" });
             res.status(200).json(cart);
             return;
         }
@@ -19,7 +19,7 @@ export const getCart = async (req: Request, res: Response): Promise<void> => {
     } catch (err) {
 
 
-        res.status(404).json("Not found!");
+        res.status(500).json("Server error!");
         return;
 
     }
@@ -57,11 +57,24 @@ export const addToCart = async (req: Request, res: Response): Promise<void> => {
         const cart = await Cart.findOne({ userId: (req as AuthRequest).userId });
         if (cart) {
 
+            const dish = await Dish.findById(id);
+            if (!dish) {
+                res.status(404).json("Dish not found");
+                return;
+            }
+            if (!cart.restaurantId?.equals( dish.restaurantId) && cart.restaurantId != null) {
+                res.status(400).json("Not allowed other restaurants!");
+                return;
+            }
+            console.log("dsadsa");
+
+            cart.restaurantId = dish.restaurantId;
 
             const item = cart.items.find(item => item.dishId.equals(id));
 
             if (item) {
                 item.amount += 1;
+
             } else {
 
 
@@ -71,7 +84,7 @@ export const addToCart = async (req: Request, res: Response): Promise<void> => {
             await cart.save();
 
             const updatedCart = await Cart.findOne({ userId: (req as AuthRequest).userId })
-                .populate("items.dishId")
+                .populate("items.dishId").populate({ path: "restaurantId", select: "title imageUrl" });
 
 
             res.status(201).json(updatedCart);
@@ -83,7 +96,7 @@ export const addToCart = async (req: Request, res: Response): Promise<void> => {
     } catch (err) {
 
 
-        res.status(404).json("Not found!");
+        res.status(500).json("Server error!");
         return;
 
     }

@@ -113,6 +113,7 @@ export const getAbout = async (req: Request, res: Response) => {
 
 export const createDish = async (req: Request, res: Response) => {
     const { dish, id } = req.body;
+    console.log(dish, id);
     try {
 
 

@@ -39,6 +39,7 @@ const page = () => {
     const { register, handleSubmit, reset, formState: { errors } } = useForm<formFields>();
     const [loading, setLoading] = useState<boolean>(false);
     const createDish: SubmitHandler<formFields> = async (data) => {
+        console.log("hello");
         try {
             setLoading(true);
             const imageUrl = await uploadImageToCloudinary(data.image[0]);
@@ -48,7 +49,9 @@ const page = () => {
                 price: data.price,
                 imageUrl: imageUrl,
                 typeOfFood: data.typeOfFood,
+
             }
+
             const res = await axios.post("http://localhost:5200/api/restaurant/dishes", { dish, id });
             reset();
             setMenu([...menu, res.data]);
@@ -118,11 +121,11 @@ const page = () => {
                         </div>
                     </div>
 
-
+                    <button type="submit" className="btn ml-auto p-3 text-lg w-[100px] " disabled={loading}>
+                        {loading ? "Creating..." : "Create"}
+                    </button>
                 </form>
-                <button type="submit" className="btn ml-auto p-3 text-lg w-[100px]" disabled={loading}>
-                    {loading ? "Creating..." : "Create"}
-                </button>
+
             </div>
             <div className="flex flex-col gap-3 ">
                 <h1 className="section-title">Menu</h1>

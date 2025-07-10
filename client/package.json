@@ -15,12 +15,15 @@
     "@stripe/stripe-js": "^7.4.0",
     "axios": "^1.10.0",
     "cookies-next": "^6.0.0",
+    "leaflet": "^1.9.4",
     "lucide-react": "^0.525.0",
     "next": "15.3.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.59.0",
-    "react-redux": "^9.2.0"
+    "react-leaflet": "^5.0.0",
+    "react-redux": "^9.2.0",
+    "socket.io-client": "^4.8.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

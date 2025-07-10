@@ -45,7 +45,7 @@ const CheckoutForm = ({ order }: { order: Order }) => {
 
                 if (order) {
 
-                    const res = await axios.post("http://localhost:5200/api/payment/payment-intent", { amount: convertToSubcurrency(shipping + order.totalPrice) });
+                    const res = await axios.post("http://localhost:5200/api/payment/payment-intent", { amount: convertToSubcurrency((shipping + order.totalPrice)) });
                     setClientSecret(res.data.clientSecret);
                 }
             } catch (err) {
@@ -89,7 +89,7 @@ const CheckoutForm = ({ order }: { order: Order }) => {
     }
     return (
         <section className='flex gap-8 mt-10 items-start mb-12'>
-            <div className="basis-[886px] flex flex-col gap-8">
+            <div className="basis-[886px] grow-0 flex flex-col gap-8">
                 <div className="shadow-xs border-borderColor border-[1px] rounded-xl py-7 px-6 flex flex-col gap-3">
                     <h2 className="text-2xl leading-8 font-bold text-secondary">Your Details</h2>
                     <p className="text-gray text-base! leading-7 ">{user?.email ? user.email : user?.username}</p>
@@ -219,7 +219,7 @@ const CheckoutForm = ({ order }: { order: Order }) => {
 
 
 
-            <div className=" shadow-xs  border-borderColor border-[1px] rounded-xl grow-1 py-[52px] pr-[42px] pl-[57px]">
+            <div className=" shadow-xs  border-borderColor border-[1px] rounded-xl  py-[52px] pr-[42px] pl-[57px]">
                 <h2 className="text-2xl leading-8 font-bold text-secondary mb-[21px]">Order Summary</h2>
                 <div className="flex flex-col gap-8 pb-6 border-b-[1px] mb-6 border-borderColor">
                     {order?.items.map((item, idx) => {
@@ -250,7 +250,7 @@ const CheckoutForm = ({ order }: { order: Order }) => {
                 </div>
                 <div className="mt-[18px] mb-[30px] text-lg leading-7 font-bold flex items-center justify-between">
                     <span>Total</span>
-                    <span>${shipping + order.totalPrice}</span>
+                    <span>${(shipping + order.totalPrice).toFixed(2)}</span>
                 </div>
                 <div className="w-full text-center flex flex-col gap-4">
                     <button onClick={placeOrder} type="submit" className="btn py-3   mt-6      px-2 max-w-[328px] w-full">{loading ? (<span>Processing...</span>) : (<span>Place Order</span>)}</button>

@@ -17,6 +17,7 @@ const Header = () => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector(state => state.auth);
   const { cart } = useAppSelector(state => state.cart);
+
   const [activePanel, setActivePanel] = useState<null | "cart" | "menu" | "search">(null);
   const [word, setWord] = useState<string>("");
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
@@ -37,6 +38,7 @@ const Header = () => {
       }
     }
   }
+        console.log();
 
   const updateCount = async (amount: number, id: string, title: string) => {
     try {
@@ -137,7 +139,7 @@ const Header = () => {
           {activePanel === "cart" &&
             <div className="absolute flex flex-col gap-3 text-left border-borderColor panel border-[2px] rounded-lg p-3 top-[150%] right-0 bg-primary  min-w-[300px]">
               <h2 className='text-lg font-bold pb-1 border-borderColor text-white border-b-[1px] '>Cart</h2>
-              {cart?.items.length  ? (<> <div className="flex flex-col gap-2 overflow-y-auto mr-2">
+              {cart?.items.length  ? (<> <div className="flex flex-col gap-2 ">
                 {cart
                   ? cart.items.map((item, idx) => {
 
@@ -189,7 +191,7 @@ const Header = () => {
             }}>{activePanel === "menu" ? (<X />) : (<UserRound />)} </button>
 
             {/* menu */}
-            {activePanel === "menu" ? (<div className="min-w-[200px] flex flex-col top-full panel  right-0 absolute border-borderColor mt-1  bg-primary  p-3 border-[1px] rounded-[6px]">
+            {activePanel === "menu" ? (<div className="min-w-[200px] flex flex-col top-full panel  right-0 absolute  border-borderColor mt-1  bg-primary  p-3 border-[1px] rounded-[6px]">
               <span className='text-white text-base font-bold border-b-[1px] border-borderColor pb-1 mb-2'>Welcome back {user?.username}!</span>
               <div className="flex flex-col gap-2 items-start">
                 <Link href="/profile" className=" text-sm font-semibold text-white transition-all hover:opacity-65">Profile</Link>

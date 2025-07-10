@@ -36,6 +36,8 @@ const Page = ()=>{
             getOrders();
         }
     }["Page.useEffect"], []);
+    const currentOrders = orders?.filter((order)=>order.status == "Delivering" || "Processing");
+    const pastOrders = orders?.filter((order)=>order.status == "Delivered");
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "pt-8",
         children: [
@@ -44,83 +46,106 @@ const Page = ()=>{
                 children: "Your Orders"
             }, void 0, false, {
                 fileName: "[project]/src/app/(main)/orders/page.tsx",
-                lineNumber: 22,
+                lineNumber: 24,
                 columnNumber: 7
             }, this),
             orders ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "flex justify-between",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "basis-[874px]  ",
+                        className: "basis-[874px]  pt-1",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "",
-                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                                    className: "text-2xl leading-8 font-bold ",
-                                    children: [
-                                        "Current Orders ( ",
-                                        orders.filter((order)=>order),
-                                        " )"
-                                    ]
-                                }, void 0, true, {
-                                    fileName: "[project]/src/app/(main)/orders/page.tsx",
-                                    lineNumber: 28,
-                                    columnNumber: 13
-                                }, this)
-                            }, void 0, false, {
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                                        className: "text-2xl leading-8 font-bold mb-4.5 ",
+                                        children: [
+                                            "Current Orders ( ",
+                                            currentOrders?.length,
+                                            " )"
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/src/app/(main)/orders/page.tsx",
+                                        lineNumber: 30,
+                                        columnNumber: 15
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "gap-4 grid grid-cols-2",
+                                        children: currentOrders?.map((order, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "",
+                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(OrderCarв, {
+                                                    order: order
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/app/(main)/orders/page.tsx",
+                                                    lineNumber: 34,
+                                                    columnNumber: 21
+                                                }, this)
+                                            }, idx, false, {
+                                                fileName: "[project]/src/app/(main)/orders/page.tsx",
+                                                lineNumber: 33,
+                                                columnNumber: 19
+                                            }, this))
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/app/(main)/orders/page.tsx",
+                                        lineNumber: 31,
+                                        columnNumber: 15
+                                    }, this)
+                                ]
+                            }, void 0, true, {
                                 fileName: "[project]/src/app/(main)/orders/page.tsx",
-                                lineNumber: 27,
-                                columnNumber: 11
+                                lineNumber: 29,
+                                columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "",
                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                                    className: "text-2xl leading-8 font-bold ",
+                                    className: "text-2xl leading-8 font-bold mb-4.5",
                                     children: [
-                                        "Past Orders ( ",
-                                        orders.filter((order)=>order),
+                                        "Past Orders (  ",
+                                        pastOrders?.length,
                                         " )"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/(main)/orders/page.tsx",
-                                    lineNumber: 34,
-                                    columnNumber: 13
+                                    lineNumber: 43,
+                                    columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(main)/orders/page.tsx",
-                                lineNumber: 33,
+                                lineNumber: 42,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/(main)/orders/page.tsx",
-                        lineNumber: 25,
-                        columnNumber: 9
+                        lineNumber: 27,
+                        columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "grow-1 shadow-xs border-[1px] border-borderColor rounded-lg"
                     }, void 0, false, {
                         fileName: "[project]/src/app/(main)/orders/page.tsx",
-                        lineNumber: 38,
-                        columnNumber: 9
+                        lineNumber: 47,
+                        columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/(main)/orders/page.tsx",
-                lineNumber: 24,
-                columnNumber: 8
+                lineNumber: 26,
+                columnNumber: 9
             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                 className: "text-2xl leading-8 font-bold",
                 children: "No orders yet!"
             }, void 0, false, {
                 fileName: "[project]/src/app/(main)/orders/page.tsx",
-                lineNumber: 42,
-                columnNumber: 10
+                lineNumber: 51,
+                columnNumber: 12
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/(main)/orders/page.tsx",
-        lineNumber: 21,
+        lineNumber: 23,
         columnNumber: 5
     }, this);
 };

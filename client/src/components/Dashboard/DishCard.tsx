@@ -33,14 +33,17 @@ const DishCard = ({ dish, toCart, onDeleted }: { dish: Dish, toCart: boolean, on
 
     const isInCart = (cart?.items.find(item => item.dishId.title === dish.title)) ? true : false;
     return (
-        <div className='rounded-lg shadow-xs border-[1px] flex flex-col gap-5 border-borderColor overflow-hidden'>
+        <div className='rounded-lg shadow-xs border-[1px] flex flex-col gap-5 border-borderColor h-full  overflow-hidden'>
             <div className=" max-w-[324px]  w-full">
                 <img className=' h-40 w-full' src={dish.imageUrl} alt="dish image" />
             </div>
-            <div className="px-4 pb-4">
-                <h2 className='text-lg leading-7 font-semibold '>{dish.title}</h2>
-                <p className='text-gray mb-2.5 mt-[5px]'>{dish.description}</p>
-                <div className="text-[#E8618CFF] font-bold text-xl leading-7 mb-3">
+            <div className="px-4 pb-4 flex flex-col justify-between h-full">
+                <div className="">
+                    <h2 className='text-lg leading-7 font-semibold '>{dish.title}</h2>
+                    <p className='text-gray mb-2.5 mt-[5px]'>{dish.description}</p>
+                </div>
+        <div className="">
+                  <div className="text-[#E8618CFF] font-bold text-xl leading-7 mb-3">
                     ${dish.price}
                 </div>
                 {toCart ? (<button disabled={isInCart} onClick={async () => {
@@ -54,6 +57,9 @@ const DishCard = ({ dish, toCart, onDeleted }: { dish: Dish, toCart: boolean, on
                         <X size={16} />
                     </button>
                 )}
+        </div>
+
+          
 
             </div>
         </div>

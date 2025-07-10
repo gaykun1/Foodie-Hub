@@ -30,7 +30,7 @@ __turbopack_context__.s({
     "convertToSubcurrency": (()=>convertToSubcurrency)
 });
 const convertToSubcurrency = (num)=>{
-    return Math.round(num * 100);
+    return Math.round(parseInt(num.toFixed(2)) * 100);
 };
 }}),
 "[project]/src/components/order/PaymentCard.tsx [app-ssr] (ecmascript)": ((__turbopack_context__) => {
@@ -198,7 +198,7 @@ const CheckoutForm = ({ order })=>{
         className: "flex gap-8 mt-10 items-start mb-12",
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "basis-[886px] flex flex-col gap-8",
+                className: "basis-[886px] grow-0 flex flex-col gap-8",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "shadow-xs border-borderColor border-[1px] rounded-xl py-7 px-6 flex flex-col gap-3",
@@ -772,7 +772,7 @@ const CheckoutForm = ({ order })=>{
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: " shadow-xs  border-borderColor border-[1px] rounded-xl grow-1 py-[52px] pr-[42px] pl-[57px]",
+                className: " shadow-xs  border-borderColor border-[1px] rounded-xl  py-[52px] pr-[42px] pl-[57px]",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
                         className: "text-2xl leading-8 font-bold text-secondary mb-[21px]",
@@ -935,7 +935,7 @@ const CheckoutForm = ({ order })=>{
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                 children: [
                                     "$",
-                                    shipping + order.totalPrice
+                                    (shipping + order.totalPrice).toFixed(2)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/order/CheckoutForm.tsx",

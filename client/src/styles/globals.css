@@ -1,13 +1,15 @@
 @import url(https://fonts.googleapis.com/css?family=Inter:100,200,300,regular,500,600,700,800,900,100italic,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic);
+@import url(https://fonts.googleapis.com/css?family=Archivo:100,200,300,regular,500,600,700,800,900,100italic,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic);
 @import "tailwindcss";
 
-:root {
+ :root {
   --background: #fff;
   --color-primary: #636ae8ff;
   --color-secondary: #242524ff;
-  --color-gray: #8C8D8BFF;
+  --color-gray: #8c8d8bff;
   --font-sans: "Inter", sans-serif;
-   --custom-shadow-light: 0px 0px 1px #171a1f12, 0px 0px 2px #171a1f1F;
+  --font-archivo: "Archivo", sans-serif;
+  --custom-shadow-light: 0px 0px 1px #171a1f12, 0px 0px 2px #171a1f1f;
 }
 
 @theme inline {
@@ -16,13 +18,14 @@
   --color-gray: var(--color-gray);
   --color-secondary: var(--color-secondary);
   --font-sans: var(--font-sans);
-  --color-borderColor:#EBEBEAFF;
-  --shadow-borderShadow:var(--custom-shadow-light);
+    --font-archivo:var(  --font-archivo);
+  --color-borderColor: #ebebeaff;
+  --shadow-borderShadow: var(--custom-shadow-light);
 }
-.section-title{
-  @apply text-[30px] leading-9 font-bold ;
+.section-title {
+  @apply text-[30px] leading-9 font-bold;
 }
-.default-link{
+.default-link {
   @apply text-primary transition-colors hover:text-secondary   font-bold leading-7 group-hover:text-secondary;
 }
 html,
@@ -37,16 +40,14 @@ body {
   @apply px-3 inline-flex items-center justify-center  text-primary text-sm leading-[22px] font-medium bg-transparent outline-none rounded-[6px] border-[1px] border-borderColor cursor-pointer  transition-colors hover:text-secondary;
 }
 
-
-._container{
+._container {
   @apply max-w-[1400px] px-[13px] mx-auto w-full;
 }
 
-
 .custom-gradient {
-  background: linear-gradient(0deg, #000000CC 0%, #00000000 100%); 
+  background: linear-gradient(0deg, #000000cc 0%, #00000000 100%);
 }
 
-.input{
-  @apply  w-full   rounded-[6px] border-[1px] border-borderColor outline-0;
+.input {
+  @apply w-full   rounded-[6px] border-[1px] border-borderColor outline-0;
 }

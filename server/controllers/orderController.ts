@@ -17,20 +17,25 @@ interface CartItem {
 }
 
 interface Cart {
+    restaurantId: {
+        title: string,
+        imageUrl: string,
+        _id: string,
+    }
     items: CartItem[];
 }
 
 export const createOrder = async (req: Request, res: Response): Promise<void> => {
-    const { cart } = req.body;
+    const { cart }: { cart: Cart } = req.body;
     try {
-        const order = await Order.findOne({ userId: (req as AuthRequest).userId });
+        const order = await Order.findOne({ userId: (req as AuthRequest).userId, status: "Processing" });
         if (order) {
             res.status(200).json(order._id);
             return;
         } else {
+            console.log(cart);
 
-
-            const order = await Order.create({ userId: (req as AuthRequest).userId, items: [], totalPrice: 0, status: "Processing" });
+            const order = await Order.create({ userId: (req as AuthRequest).userId, items: [], totalPrice: 0, approxTime: 0, status: "Processing", restaurantTitle: cart.restaurantId.title, restaurantImage: cart?.restaurantId.imageUrl });
             let sum = 0;
             (cart as Cart).items.forEach(item => {
                 order.items.push({ title: item.dishId.title, price: item.dishId.price, amount: item.amount, imageUrl: item.dishId.imageUrl });
@@ -79,6 +84,29 @@ export const getOrder = async (req: Request, res: Response): Promise<void> => {
     }
 }
 
+export const getOrders = async (req: Request, res: Response): Promise<void> => {
+    const id = req.params.id;
+    try {
+        const orders = await Order.find({ userId: (req as AuthRequest).userId });
+        if (!orders) {
+            res.status(404).json("Not found!");
+            return;
+        }
+        res.status(200).json(orders);
+        return
+    }
+    catch (err) {
+
+
+        res.status(500).json("Server error!");
+        return;
+
+
+
+
+    }
+}
+
 export const updateOrder = async (req: Request, res: Response): Promise<void> => {
     const { formData, shipping, cartId } = req.body;
 
@@ -86,11 +114,11 @@ export const updateOrder = async (req: Request, res: Response): Promise<void> =>
     try {
         if (formData.city && formData.countryOrRegion && formData.houseNumber && formData.street) {
 
-
+            console.log(shipping);
             const order = await Order.findOneAndUpdate({ status: "Processing", userId: (req as AuthRequest).userId }, {
                 $set: {
-                    status: "Preparing",
-                    aproxTime: shipping,
+                    status: "Delivering",
+                    approxTime: shipping == 2.2 ? 50 : shipping == 3.2 ? 30 : 15,
                     fullName: (formData.name + " " + formData.surname),
                     "adress.city": formData.city,
                     "adress.countryOrRegion": formData.countryOrRegion,
