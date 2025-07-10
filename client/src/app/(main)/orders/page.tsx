@@ -43,7 +43,7 @@ const Page = () => {
   const currentOrders = orders?.filter(order => order.status == "Delivering" || order.status == "Processing");
   const pastOrders = orders?.filter(order => order.status == "Delivered");
   return (
-    <div className='pt-8'>
+    <div className='py-8 '>
       <h1 className='text-[36px] font-extrabold leading-10 mb-9'>Your Orders</h1>
       {orders ? (
         <div className="flex gap-8">

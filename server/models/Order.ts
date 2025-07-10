@@ -3,6 +3,7 @@ import { createDecipheriv } from "node:crypto";
 
 export type Order = {
   userId: mongoose.Types.ObjectId,
+  courierId: mongoose.Types.ObjectId,
   restaurantTitle: string,
   restaurantImage: string,
   approxTime: number,
@@ -31,8 +32,8 @@ const OrderSchema = new Schema<Order>({
   userId: { type: Schema.Types.ObjectId, required: true, ref: "User" },
   restaurantTitle: { type: String, required: true },
   restaurantImage: { type: String, required: true },
-    approxTime: { type: Number ,required: true},
-
+  approxTime: { type: Number, required: true },
+  courierId: { type: Schema.Types.ObjectId, default: null, ref: "User" },
   items: [{
     title: { type: String, required: true },
     imageUrl: { type: String, required: true },
@@ -41,7 +42,7 @@ const OrderSchema = new Schema<Order>({
   }],
   totalPrice: { type: Number, required: true },
   createdAt: { type: Date, required: true, default: Date.now() },
-  status: { type: String, enum: ["Delivering", "Delivered", "Processing", "Preparing"] },
+  status: { type: String, enum: ["Delivering", "Delivered", "Preparing"], default: null },
   fullName: { type: String },
   adress: {
     city: { type: String },

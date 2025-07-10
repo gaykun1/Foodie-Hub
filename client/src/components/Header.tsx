@@ -83,17 +83,19 @@ const Header = () => {
   return (
     <header className=" shadow-borderShadow border-b-[1px] border-borderColor z-100 relative">
       <div className='py-2 flex items-center justify-between  _container'>
-        <div className="basis-[480px] flex justify-between">
-          <div>
-            <Link className='basis-[150px] flex gap-2 items-center group font-bold' href={"/"}>
+        <div className="basis-[650px] flex justify-between">
+          <div className='basis-[250px] '>
+            <Link className='  flex gap-2 items-center group font-bold' href={"/"}>
               <Image className='transition-transform group-hover:rotate-90' width={40} height={40} src={"logo.svg"} alt='logo' />
               <span className='default-link group:hover text-xl'>Foodie Hub</span>
             </Link>
           </div>
-          <nav className='basis-[180px] flex gap-[18px] items-center'>
+          <nav className='basis-[250px] grow-1  flex gap-[18px] items-center'>
             {user?.role !== "admin" ? (<><Link className='hover:text-primary font-bold' href={"/"}>Home</Link>
               <Link className='hover:text-primary font-bold' href={"/restaurants/category/all-restaurants"}>Restaurants</Link>
-              <Link className='hover:text-primary font-bold' href={"/orders"}>Orders</Link></>
+              <Link className='hover:text-primary font-bold' href={"/orders"}>Orders</Link>
+              <Link className='hover:text-primary font-bold' href={"/job"}>Get a job</Link>
+              </>
 
             ) : (<Link className='hover:text-primary font-bold' href={"/dashboard"}>Dashboard</Link>)}
           </nav>

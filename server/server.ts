@@ -9,6 +9,7 @@ import restaurantRoute from "./routes/restaurantRoute";
 import cartRoute from "./routes/cartRoute";
 import orderRoute from "./routes/orderRoutes";
 import payRoute from "./routes/payRoutes";
+import courierRoute from "./routes/courierRoutes";
 dotenv.config();
 const app = express();
 
@@ -29,6 +30,7 @@ app.use("/api/restaurant", restaurantRoute);
 app.use("/api/cart", cartRoute);
 app.use("/api/order", orderRoute);
 app.use("/api/payment", payRoute);
+app.use("/api/courier", courierRoute);
 
 mongoose.connect(process.env.MONGO_URI!).then(() => console.log("MongoDB connected"))
     .catch(err => {
