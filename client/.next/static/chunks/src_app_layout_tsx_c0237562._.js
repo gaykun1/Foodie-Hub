@@ -3,7 +3,7 @@
     chunks: [
   "static/chunks/src_styles_globals_92af3bb9.css",
   "static/chunks/node_modules_f30d1c52._.js",
-  "static/chunks/src_a5e0fc8d._.js"
+  "static/chunks/src_856d6bae._.js"
 ],
     source: "dynamic"
 });

@@ -106,30 +106,15 @@ const cartSlice = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modul
 const { getCart, updateAmount } = cartSlice.actions;
 const __TURBOPACK__default__export__ = cartSlice.reducer;
 }}),
-"[project]/src/redux/store.ts [app-ssr] (ecmascript)": ((__turbopack_context__) => {
-"use strict";
+"[project]/src/redux/store.ts [app-ssr] (ecmascript)": (function(__turbopack_context__) {
 
-var { g: global, __dirname } = __turbopack_context__;
+var { g: global, __dirname, m: module, e: exports } = __turbopack_context__;
 {
-__turbopack_context__.s({
-    "store": (()=>store)
-});
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$reduxjs$2f$toolkit$2f$dist$2f$redux$2d$toolkit$2e$modern$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/node_modules/@reduxjs/toolkit/dist/redux-toolkit.modern.mjs [app-ssr] (ecmascript) <locals>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$redux$2f$authSlice$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/redux/authSlice.ts [app-ssr] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$redux$2f$restaurantSlice$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/redux/restaurantSlice.ts [app-ssr] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$redux$2f$cartSlice$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/redux/cartSlice.ts [app-ssr] (ecmascript)");
-;
-;
-;
-;
-const store = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$reduxjs$2f$toolkit$2f$dist$2f$redux$2d$toolkit$2e$modern$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["configureStore"])({
-    reducer: {
-        auth: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$redux$2f$authSlice$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"],
-        cart: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$redux$2f$cartSlice$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"],
-        restaurants: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$redux$2f$restaurantSlice$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"]
-    }
-});
-}}),
+const e = new Error(`Could not parse module '[project]/src/redux/store.ts'
+
+Expected ',', got 'restaurants'`);
+e.code = 'MODULE_UNPARSEABLE';
+throw e;}}),
 "[project]/src/app/providers/Providers.tsx [app-ssr] (ecmascript)": ((__turbopack_context__) => {
 "use strict";
 

@@ -1,11 +1,14 @@
 "use client"
 
 import { Order } from "@/redux/reduxTypes"
-import { ChevronsRight, ClipboardList, Clock, DollarSign } from "lucide-react";
+import axios from "axios";
+import { Check, ChevronsRight, ClipboardList, Clock, DollarSign } from "lucide-react";
 import Link from "next/link";
 
-const OrderCard = ({ order, setViewDetails }: { order: Order, setViewDetails: React.Dispatch<React.SetStateAction<Order|null>>; }) => {
+const OrderCard = ({ order, setViewDetails }: { order: Order, setViewDetails: React.Dispatch<React.SetStateAction<Order | null>>; }) => {
     const date = new Date((order.createdAt)).toDateString();
+
+
     return (
         <div className={`rounded-lg shadow-xs border-[1px]  ${order.status == "Delivering" ? "border-[#636AE8FF]" : "border-borderColor"}`}>
             {/* header */}
@@ -29,7 +32,7 @@ const OrderCard = ({ order, setViewDetails }: { order: Order, setViewDetails: Re
                             <ClipboardList size={16} />
                             <span >Items: {order.items.length}</span>
                         </span>
-                        <span className="font-bold text-2xl laeding-8 flex text-primary items-center font-archivo"><DollarSign size={24}/><span>{order.totalPrice.toFixed(2)}</span></span>
+                        <span className="font-bold text-2xl laeding-8 flex text-primary items-center font-archivo"><DollarSign size={24} /><span>{order.totalPrice.toFixed(2)}</span></span>
                         <span className="leading-5 text-sm flex items-center text-gray  gap-2">
                             <Clock size={16} />
                             <span >Aprox.Time: {order.
@@ -48,12 +51,12 @@ const OrderCard = ({ order, setViewDetails }: { order: Order, setViewDetails: Re
                                 <ChevronsRight />
                             </button>
                         </div>
-                    ) : order.status === "Delivered" ? (<button onClick={() => setViewDetails(order)} className="border-[1px] flex items-center gap-1 border-borderColor rounded-md py-1.5  hover:text-white cursor-pointer px-2 hover:bg-gray transition-colors">
+                    ) : (<button onClick={() => setViewDetails(order)} className="border-[1px] flex items-center gap-1 border-borderColor rounded-md py-1.5  hover:text-white cursor-pointer px-2 hover:bg-gray transition-colors">
                         <span>View Details</span>
                         <ChevronsRight />
-                    </button>) : (<Link href={`/orders/order/${order._id}`} className="border-[1px] flex items-center gap-1 border-borderColor rounded-md py-1.5  hover:text-white  px-2 hover:bg-gray transition-colors">
-                        <span>Go to place order</span>
-                    </Link>)}
+                    </button>)}
+
+
                 </div>
             </div>
 

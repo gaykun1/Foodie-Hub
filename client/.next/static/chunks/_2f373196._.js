@@ -20,9 +20,8 @@ var _s = __turbopack_context__.k.signature();
 ;
 const ApplicationForm = ()=>{
     _s();
-    const { register, handleSubmit, formState: { errors } } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hook$2d$form$2f$dist$2f$index$2e$esm$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useForm"])();
+    const { register, handleSubmit, reset, formState: { errors } } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hook$2d$form$2f$dist$2f$index$2e$esm$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useForm"])();
     const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
-    // const [error, setError] = useState<string | null>(null);
     const [alreadySent, setAlreadySent] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const onSubmit = async (data)=>{
         try {
@@ -32,6 +31,8 @@ const ApplicationForm = ()=>{
             }, {
                 withCredentials: true
             });
+            setAlreadySent(res.data.status);
+            reset();
         } catch (err) {
             console.error(err);
         } finally{
@@ -46,9 +47,7 @@ const ApplicationForm = ()=>{
                         const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get("http://localhost:5200/api/courier/check-if-sent", {
                             withCredentials: true
                         });
-                        if (res.data.status === true) {
-                            setAlreadySent(true);
-                        }
+                        setAlreadySent(res.data.status);
                     } catch (err) {
                         console.error(err);
                     }
@@ -74,7 +73,7 @@ const ApplicationForm = ()=>{
                                         children: "Name"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/job/ApplicationForm.tsx",
-                                        lineNumber: 55,
+                                        lineNumber: 57,
                                         columnNumber: 25
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -84,7 +83,7 @@ const ApplicationForm = ()=>{
                                         className: "input p-1"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/job/ApplicationForm.tsx",
-                                        lineNumber: 58,
+                                        lineNumber: 60,
                                         columnNumber: 25
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -92,13 +91,13 @@ const ApplicationForm = ()=>{
                                         children: errors.name?.message
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/job/ApplicationForm.tsx",
-                                        lineNumber: 59,
+                                        lineNumber: 61,
                                         columnNumber: 25
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/job/ApplicationForm.tsx",
-                                lineNumber: 54,
+                                lineNumber: 56,
                                 columnNumber: 21
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -109,7 +108,7 @@ const ApplicationForm = ()=>{
                                         children: "Surname"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/job/ApplicationForm.tsx",
-                                        lineNumber: 62,
+                                        lineNumber: 64,
                                         columnNumber: 25
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -119,7 +118,7 @@ const ApplicationForm = ()=>{
                                         className: "input p-1"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/job/ApplicationForm.tsx",
-                                        lineNumber: 65,
+                                        lineNumber: 67,
                                         columnNumber: 25
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -127,13 +126,13 @@ const ApplicationForm = ()=>{
                                         children: errors.surname?.message
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/job/ApplicationForm.tsx",
-                                        lineNumber: 66,
+                                        lineNumber: 68,
                                         columnNumber: 25
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/job/ApplicationForm.tsx",
-                                lineNumber: 61,
+                                lineNumber: 63,
                                 columnNumber: 21
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -144,7 +143,7 @@ const ApplicationForm = ()=>{
                                         children: "Age"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/job/ApplicationForm.tsx",
-                                        lineNumber: 71,
+                                        lineNumber: 73,
                                         columnNumber: 25
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -160,7 +159,7 @@ const ApplicationForm = ()=>{
                                         className: "input p-1"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/job/ApplicationForm.tsx",
-                                        lineNumber: 74,
+                                        lineNumber: 76,
                                         columnNumber: 25
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -168,19 +167,73 @@ const ApplicationForm = ()=>{
                                         children: errors.age?.message
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/job/ApplicationForm.tsx",
-                                        lineNumber: 85,
+                                        lineNumber: 87,
                                         columnNumber: 25
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/job/ApplicationForm.tsx",
-                                lineNumber: 70,
+                                lineNumber: 72,
+                                columnNumber: 21
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "flex flex-col gap-2",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                                        className: "text-lg font-medium",
+                                        children: "City"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/job/ApplicationForm.tsx",
+                                        lineNumber: 91,
+                                        columnNumber: 25
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
+                                        defaultValue: "Lviv",
+                                        ...register("city", {
+                                            required: true
+                                        }),
+                                        className: "input py-2 px-3 ",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                                value: "Lviv",
+                                                children: "Lviv"
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/components/job/ApplicationForm.tsx",
+                                                lineNumber: 95,
+                                                columnNumber: 29
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                                value: "Warsaw",
+                                                children: "Warsaw"
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/components/job/ApplicationForm.tsx",
+                                                lineNumber: 96,
+                                                columnNumber: 29
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                                value: "Berlin",
+                                                children: "Berlin"
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/components/job/ApplicationForm.tsx",
+                                                lineNumber: 97,
+                                                columnNumber: 29
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/src/components/job/ApplicationForm.tsx",
+                                        lineNumber: 94,
+                                        columnNumber: 25
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/components/job/ApplicationForm.tsx",
+                                lineNumber: 90,
                                 columnNumber: 21
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/job/ApplicationForm.tsx",
-                        lineNumber: 53,
+                        lineNumber: 55,
                         columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -194,7 +247,7 @@ const ApplicationForm = ()=>{
                                         children: "Email"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/job/ApplicationForm.tsx",
-                                        lineNumber: 94,
+                                        lineNumber: 106,
                                         columnNumber: 25
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -207,7 +260,7 @@ const ApplicationForm = ()=>{
                                         className: "input p-1"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/job/ApplicationForm.tsx",
-                                        lineNumber: 97,
+                                        lineNumber: 109,
                                         columnNumber: 25
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -215,13 +268,13 @@ const ApplicationForm = ()=>{
                                         children: errors.email?.message
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/job/ApplicationForm.tsx",
-                                        lineNumber: 104,
+                                        lineNumber: 116,
                                         columnNumber: 25
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/job/ApplicationForm.tsx",
-                                lineNumber: 93,
+                                lineNumber: 105,
                                 columnNumber: 21
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -232,7 +285,7 @@ const ApplicationForm = ()=>{
                                         children: "Phone Number"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/job/ApplicationForm.tsx",
-                                        lineNumber: 108,
+                                        lineNumber: 120,
                                         columnNumber: 25
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -243,7 +296,7 @@ const ApplicationForm = ()=>{
                                         className: "input p-1"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/job/ApplicationForm.tsx",
-                                        lineNumber: 111,
+                                        lineNumber: 123,
                                         columnNumber: 25
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -251,13 +304,13 @@ const ApplicationForm = ()=>{
                                         children: errors.phoneNumber?.message
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/job/ApplicationForm.tsx",
-                                        lineNumber: 112,
+                                        lineNumber: 124,
                                         columnNumber: 25
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/job/ApplicationForm.tsx",
-                                lineNumber: 107,
+                                lineNumber: 119,
                                 columnNumber: 21
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -268,64 +321,54 @@ const ApplicationForm = ()=>{
                                         children: "Transport"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/job/ApplicationForm.tsx",
-                                        lineNumber: 116,
+                                        lineNumber: 128,
                                         columnNumber: 25
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                                        ...register("transport", {
-                                            required: "Transport is required"
-                                        }),
+                                        ...register("transport"),
                                         type: "text",
                                         className: "input p-1"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/job/ApplicationForm.tsx",
-                                        lineNumber: 119,
-                                        columnNumber: 25
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                        className: "text-red-500",
-                                        children: errors.transport?.message
-                                    }, void 0, false, {
-                                        fileName: "[project]/src/components/job/ApplicationForm.tsx",
-                                        lineNumber: 120,
+                                        lineNumber: 131,
                                         columnNumber: 25
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/job/ApplicationForm.tsx",
-                                lineNumber: 115,
+                                lineNumber: 127,
                                 columnNumber: 21
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/job/ApplicationForm.tsx",
-                        lineNumber: 91,
+                        lineNumber: 103,
                         columnNumber: 17
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/job/ApplicationForm.tsx",
-                lineNumber: 52,
+                lineNumber: 54,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                 type: "submit",
-                className: "btn ml-2 p-3 text-lg w-[100px] disabled:bg-gray!",
+                className: "btn ml-2 p-3 text-lg w-[100px] disabled:!bg-gray disabled:!cursor-auto ",
                 disabled: loading || alreadySent,
                 children: alreadySent ? "Sent" : loading ? "Sending..." : "Send"
             }, void 0, false, {
                 fileName: "[project]/src/components/job/ApplicationForm.tsx",
-                lineNumber: 129,
+                lineNumber: 140,
                 columnNumber: 13
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/job/ApplicationForm.tsx",
-        lineNumber: 51,
+        lineNumber: 53,
         columnNumber: 9
     }, this);
 };
-_s(ApplicationForm, "gRQxaGbLBrGXw+78How3zdiRm0g=", false, function() {
+_s(ApplicationForm, "/scxEv3pCbQ6IRcCjmDQQUMY7MQ=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hook$2d$form$2f$dist$2f$index$2e$esm$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useForm"]
     ];

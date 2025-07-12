@@ -241,7 +241,7 @@ const CheckoutForm = ({ order }: { order: Order }) => {
                 <div className="flex flex-col gap-2">
                     <div className="flex items-center justify-between text-sm leading-5 ">
                         <span className="text-gray">Subtotal</span>
-                        <span className="text-black">${order?.totalPrice}</span>
+                        <span className="text-black">${order?.totalPrice.toFixed(2)}</span>
                     </div>
                     <div className="flex items-center justify-between text-sm leading-5 ">
                         <span className="text-gray">Shipping</span>

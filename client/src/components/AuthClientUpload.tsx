@@ -2,6 +2,7 @@
 import { useAppDispatch } from '@/hooks/reduxHooks';
 import { login } from '@/redux/authSlice';
 import { getCart } from '@/redux/cartSlice';
+import { getInfo } from '@/redux/courierSlice';
 import { Cart } from '@/redux/reduxTypes';
 import axios from 'axios';
 import { useEffect } from 'react';
@@ -18,11 +19,17 @@ const AuthClientUpload = () => {
                     withCredentials: true,
                 });
                 dispatch(login(res.data.user));
-
+                if (res.data.user.role === "courier") {
+                    const res = await axios.get("http://localhost:5200/api/courier/get-courier-profile", { withCredentials: true });
+                    if (res) {
+                        dispatch(getInfo(res.data));
+                    }
+                }
                 const cartRes = await axios.get("http://localhost:5200/api/cart/get-cart", {
                     withCredentials: true,
                 });
                 dispatch(getCart(cartRes.data));
+
             } catch (err) {
                 console.error(err);
             }

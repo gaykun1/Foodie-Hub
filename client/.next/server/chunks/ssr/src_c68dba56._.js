@@ -875,7 +875,7 @@ const CheckoutForm = ({ order })=>{
                                         className: "text-black",
                                         children: [
                                             "$",
-                                            order?.totalPrice
+                                            order?.totalPrice.toFixed(2)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/order/CheckoutForm.tsx",

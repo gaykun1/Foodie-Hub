@@ -38,7 +38,7 @@ const Header = () => {
       }
     }
   }
-        console.log();
+  console.log();
 
   const updateCount = async (amount: number, id: string, title: string) => {
     try {
@@ -94,8 +94,10 @@ const Header = () => {
             {user?.role !== "admin" ? (<><Link className='hover:text-primary font-bold' href={"/"}>Home</Link>
               <Link className='hover:text-primary font-bold' href={"/restaurants/category/all-restaurants"}>Restaurants</Link>
               <Link className='hover:text-primary font-bold' href={"/orders"}>Orders</Link>
-              <Link className='hover:text-primary font-bold' href={"/job"}>Get a job</Link>
-              </>
+              {user?.role === "courier" ? (<Link className='hover:text-primary font-bold' href={"/courier"}>Courier page</Link>
+              ) : (<Link className='hover:text-primary font-bold' href={"/job"}>Get a job</Link>
+              )}
+            </>
 
             ) : (<Link className='hover:text-primary font-bold' href={"/dashboard"}>Dashboard</Link>)}
           </nav>
@@ -141,7 +143,7 @@ const Header = () => {
           {activePanel === "cart" &&
             <div className="absolute flex flex-col gap-3 text-left border-borderColor panel border-[2px] rounded-lg p-3 top-[150%] right-0 bg-primary  min-w-[300px]">
               <h2 className='text-lg font-bold pb-1 border-borderColor text-white border-b-[1px] '>Cart</h2>
-              {cart?.items.length  ? (<> <div className="flex flex-col gap-2 ">
+              {cart?.items.length ? (<> <div className="flex flex-col gap-2 ">
                 {cart
                   ? cart.items.map((item, idx) => {
 
@@ -171,11 +173,11 @@ const Header = () => {
 
 
               </div>
-              <button onClick={async () => {
-                const id = await createOrder();
-                redirect(`/orders/order/${id}`)
-              }} className='btn border-borderColor border-[1px]! font-medium text-lg p-3 '>Place order</button> </>):(<span>Cart is clear</span>) }
-             
+                <button onClick={async () => {
+                  const id = await createOrder();
+                  redirect(`/orders/order/${id}`)
+                }} className='btn border-borderColor border-[1px]! font-medium text-lg p-3 '>Place order</button> </>) : (<span>Cart is clear</span>)}
+
             </div>
           }
           <button onClick={() => setActivePanel(activePanel === "cart" ? null : "cart")} className="relative cursor-pointer transition-colors hover:text-primary">
@@ -210,7 +212,7 @@ const Header = () => {
         </div>
       </div>
 
-    </header>
+    </header >
   )
 
 }

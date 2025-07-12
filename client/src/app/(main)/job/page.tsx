@@ -6,7 +6,7 @@ import React from 'react'
 
 const page = () => {
     return (
-        <>
+        <div className='pb-10'>
             <JobBanner />
             <section className="p-4  border-[2px] rounded-lg text-primary shadow-xs my-6">
                 <h2 className='section-title mb-4'>Advantages</h2>
@@ -42,7 +42,7 @@ const page = () => {
 
                 <ApplicationForm />
             </section>
-        </>
+        </div>
 
 
     )

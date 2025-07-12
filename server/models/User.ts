@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema<IUser>({
     favourites: [{ type: mongoose.Schema.Types.ObjectId, ref: "Restaurant" }],
     phoneNumber: { type: String, unique: true },
     email: { type: String, unique: true },
-    role: { type: String, enum: ["user", "admin", "Preparing"], default: "user" },
+    role: { type: String, enum: ["user", "admin", "courier"], default: "user" },
     cart: { type: Schema.Types.ObjectId, ref: "Cart" },
 })
 

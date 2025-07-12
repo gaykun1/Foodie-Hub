@@ -11,19 +11,21 @@ type formFields = {
     email: string,
     age: string,
     transport: string,
-
+    city: string,
 }
 
 const ApplicationForm = () => {
-    const { register, handleSubmit, formState: { errors } } = useForm<formFields>();
+    const { register, handleSubmit, reset, formState: { errors } } = useForm<formFields>();
     const [loading, setLoading] = useState<boolean>(false);
-    // const [error, setError] = useState<string | null>(null);
     const [alreadySent, setAlreadySent] = useState<boolean>(false);
     const onSubmit: SubmitHandler<formFields> = async (data: formFields) => {
 
         try {
             setLoading(true);
             const res = await axios.post("http://localhost:5200/api/courier/create-application", { data }, { withCredentials: true });
+            setAlreadySent(res.data.status);
+
+            reset();
 
         } catch (err) {
             console.error(err);
@@ -38,9 +40,9 @@ const ApplicationForm = () => {
 
 
                 const res = await axios.get("http://localhost:5200/api/courier/check-if-sent", { withCredentials: true })
-                if (res.data.status === true) {
-                    setAlreadySent(true);
-                }
+
+                setAlreadySent(res.data.status);
+
             } catch (err) {
                 console.error(err);
             }
@@ -48,7 +50,7 @@ const ApplicationForm = () => {
         checkIfSent()
     }, [])
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form  onSubmit={handleSubmit(onSubmit)}>
             <div className="grid grid-cols-2 mb-4">
                 <div className="p-2 flex flex-col gap-3">
                     <div className="flex flex-col gap-2">
@@ -85,7 +87,17 @@ const ApplicationForm = () => {
                         <span className="text-red-500">{errors.age?.message}</span>
 
                     </div>
+                    <div className="flex flex-col gap-2">
+                        <label className="text-lg font-medium">
+                            City
+                        </label>
+                        <select defaultValue={"Lviv"} {...register("city", { required: true })} className="input py-2 px-3 ">
+                            <option value="Lviv">Lviv</option>
+                            <option value="Warsaw">Warsaw</option>
+                            <option value="Berlin">Berlin</option>
+                        </select>
 
+                    </div>
                 </div>
 
                 <div className="p-2 flex flex-col gap-3">
@@ -116,8 +128,7 @@ const ApplicationForm = () => {
                         <label className="text-lg font-medium">
                             Transport
                         </label>
-                        <input {...register("transport", { required: "Transport is required" })} type="text" className="input p-1" />
-                        <span className="text-red-500">{errors.transport?.message}</span>
+                        <input {...register("transport")} type="text" className="input p-1" />
 
                     </div>
 
@@ -126,7 +137,7 @@ const ApplicationForm = () => {
                 </div>
             </div>
 
-            <button type="submit" className="btn ml-2 p-3 text-lg w-[100px] disabled:bg-gray!" disabled={loading || alreadySent}>
+            <button type="submit" className="btn ml-2 p-3 text-lg w-[100px] disabled:!bg-gray disabled:!cursor-auto " disabled={loading || alreadySent}>
                 {alreadySent ? "Sent" : loading ? "Sending..." : "Send"}
             </button>
         </form>

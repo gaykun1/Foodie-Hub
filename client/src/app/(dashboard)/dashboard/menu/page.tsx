@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react'
 
 const page = () => {
     const [word, setWord] = useState<string>("");
-    const [items, setItems] = useState<Pick<Restaurant, "imageUrl" | "title"| "_id">[] | null>(null);
+    const [items, setItems] = useState<Pick<Restaurant, "imageUrl" | "title" | "_id">[] | null>(null);
     useEffect(() => {
         const searchRestaurants = async () => {
             try {
@@ -48,7 +48,7 @@ const page = () => {
 
                                         <div className="flex ">
                                             <Link href={`menu/${item._id}`} className="btn p-3 mr-5">
-                                                <Pen/>
+                                                <Pen />
                                             </Link>
                                         </div>
                                     </div>
@@ -67,3 +67,20 @@ const page = () => {
 }
 
 export default page
+
+
+    // <div div key = { idx } className = "flex items-center justify-between border-b-[1px] border-borderColor py-2" >
+    //                   <div className="flex items-center gap-4">
+    //                     <div className=" border-[1px] size-20 relative  border-borderColor rounded-md overflow-hidden">
+    //                       <img className="object-cover absolute top-0 left-0 w-full h-full" src={item.imageUrl} alt="dish image" />
+                       
+    //                     </div>
+    //                        <div className="">
+    //                         <h3 className='text-base leading-6 font-semibold'>
+    //                           {item.title}
+    //                         </h3>
+    //                         <span className='text-sm leading-5 text-gray'>Quantity: {item.amount}</span>
+    //                       </div>
+    //                   </div>
+    //                   <div className="font-bold ">${item.price.toFixed(2)}</div>
+    //                 </div >

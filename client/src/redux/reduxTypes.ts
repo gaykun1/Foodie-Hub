@@ -16,6 +16,18 @@ export interface AuthType {
 
 }
 
+export interface ICourier {
+    _id: string,
+    fullname: string,
+    phoneNumber: string,
+    email: string,
+    transport: string,
+    age: number,
+    status: "Working" | "Processing",
+    city: string,
+
+}
+
 export type Dish = {
     title: string,
     description: string,

@@ -4,12 +4,14 @@ import cors from "cors"
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
+// api routes
 import authRoute from "./routes/authRoutes";
 import restaurantRoute from "./routes/restaurantRoute";
 import cartRoute from "./routes/cartRoute";
 import orderRoute from "./routes/orderRoutes";
 import payRoute from "./routes/payRoutes";
 import courierRoute from "./routes/courierRoutes";
+import { Server } from "socket.io";
 dotenv.config();
 const app = express();
 
@@ -17,6 +19,24 @@ const server = http.createServer(app);
 
 app.use(cookieParser())
 app.use(express.json());
+
+const io = new Server(server, {
+    cors: {
+        origin: "http://localhost:3000",
+        credentials: true
+    }
+})
+
+io.on("connection", (socket) => {
+
+    socket.on("updateLocation", ({ orderId, lat, lng }) => {
+        io.to(orderId).emit("locationUpdate", { lat, lng });
+    })
+
+    socket.on("joinOrder", (orderId) => {
+        socket.join(orderId);
+    })
+})
 
 
 app.use(cors({
