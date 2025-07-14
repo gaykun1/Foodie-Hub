@@ -1,4 +1,4 @@
-import express from "express"
+import express, { Request, Response } from "express"
 import http from "http"
 import cors from "cors"
 import cookieParser from "cookie-parser";
@@ -42,8 +42,18 @@ io.on("connection", (socket) => {
 app.use(cors({
     origin: "http://localhost:3000",
     credentials: true,
-}))
+}));
 
+// api for geocoding
+app.get("/api/geocode", async (req: Request, res: Response) => {
+    const q = (req.query.q ?? '') as string;
+
+    const response = await fetch(
+        `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json`
+    );
+    const data = await response.json();
+    res.json(data);
+})
 
 app.use("/api/auth", authRoute);
 app.use("/api/restaurant", restaurantRoute);

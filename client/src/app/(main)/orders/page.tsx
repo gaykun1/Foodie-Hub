@@ -1,15 +1,46 @@
 "use client"
+import MapTracker from '@/components/order/MapTracker';
 import OrderCard from '@/components/order/OrderCard';
 import { Order } from '@/redux/reduxTypes'
 import axios from 'axios';
-import { Calendar, ClipboardList, DollarSign, MapPin, User } from 'lucide-react';
+import { Calendar, ClipboardList, DollarSign, Map, MapPin, User } from 'lucide-react';
 import { useEffect, useState } from 'react'
+import { io, Socket } from 'socket.io-client';
 
 const Page = () => {
   const [orders, setOrders] = useState<Order[] | null>();
   const [loading, setLoading] = useState<boolean>(false);
-
+  const [socket, setSocket] = useState<Socket | null>(null);
   const [viewDetails, setViewDetails] = useState<Order | null>(null);
+  const [courierLocation, setCourierLocation] = useState<[number, number] | null>(null);
+
+  // creating a socket connection
+  useEffect(() => {
+
+    const sock = io("http://localhost:5200");
+    setSocket(sock);
+
+
+    return () => { sock.disconnect(); }
+
+
+  }, []);
+
+  useEffect(() => {
+    if (!socket) return;
+    const handleLocationUpdate = ({ lat, lng }: { lat: number; lng: number }) => {
+      setCourierLocation([lat, lng]);
+      console.log("locationUpdate:", lat, lng);
+    };
+
+    socket.on("locationUpdate", handleLocationUpdate);
+
+    return () => {
+      socket.off("locationUpdate", handleLocationUpdate);
+    };
+
+
+  }, [socket])
 
   useEffect(() => {
     const getOrders = async () => {
@@ -34,7 +65,7 @@ const Page = () => {
   useEffect(() => {
     if (orders) {
 
-      const item = orders?.find(order => order.status === "Preparing") || null
+      const item = orders?.find(order => order.status === "Preparing") || orders[0];
       setViewDetails(item);
 
     }
@@ -74,8 +105,21 @@ const Page = () => {
               </div>
             </div>
           </div>
-          <div className=" grow-1 ">
-            <div className="shadow-xs border-[1px] border-borderColor rounded-lg"></div>
+          <div className=" grow-1 flex flex-col gap-8">
+            <div className="shadow-xs border-[1px] border-borderColor rounded-lg p-[25px]">
+              <div className="flex flex-col mb-8 gap-1.5">
+                <div className="flex items-center gap-2">
+                  <Map className='text-primary' size={20} />
+                  <h2 className='text-xl leading-7 font-bold'>Live Tracking</h2>
+                </div>
+
+                <p className='text-sm leading-5 text-gray'>Your order is on its way to {viewDetails?.adress.houseNumber} {viewDetails?.adress.street}</p>
+              </div>
+              <div className="overflow-hidden  rounded-lg h-[250px] w-[420px]">
+                <MapTracker Width='420px' Height='250px'  courierLocation={courierLocation} socket={socket} isWorking={viewDetails} />
+
+              </div>
+            </div>
             <div className="shadow-xs border-[1px] border-borderColor rounded-lg p-[25px]">
               {viewDetails ?
                 (

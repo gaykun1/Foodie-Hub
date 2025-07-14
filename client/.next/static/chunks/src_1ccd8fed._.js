@@ -34,7 +34,7 @@ const takeOrder = async (id, courierId)=>{
         console.error(err);
     }
 };
-const CourierOrderCard = ({ order, setViewDetails })=>{
+const CourierOrderCard = ({ order, checkIfHasOrder, setViewDetails })=>{
     _s();
     const { courier } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$hooks$2f$reduxHooks$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAppSelector"])({
         "CourierOrderCard.useAppSelector": (state)=>state.courier
@@ -56,7 +56,7 @@ const CourierOrderCard = ({ order, setViewDetails })=>{
                                     children: order.restaurantTitle
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/CourierOrderCard.tsx",
-                                    lineNumber: 27,
+                                    lineNumber: 28,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -64,13 +64,13 @@ const CourierOrderCard = ({ order, setViewDetails })=>{
                                     children: date
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/CourierOrderCard.tsx",
-                                    lineNumber: 29,
+                                    lineNumber: 30,
                                     columnNumber: 25
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/CourierOrderCard.tsx",
-                            lineNumber: 26,
+                            lineNumber: 27,
                             columnNumber: 21
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -81,18 +81,18 @@ const CourierOrderCard = ({ order, setViewDetails })=>{
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/CourierOrderCard.tsx",
-                            lineNumber: 31,
+                            lineNumber: 32,
                             columnNumber: 21
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/CourierOrderCard.tsx",
-                    lineNumber: 25,
+                    lineNumber: 26,
                     columnNumber: 17
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/CourierOrderCard.tsx",
-                lineNumber: 24,
+                lineNumber: 25,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -109,12 +109,12 @@ const CourierOrderCard = ({ order, setViewDetails })=>{
                                     alt: "restaurant image"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/CourierOrderCard.tsx",
-                                    lineNumber: 37,
+                                    lineNumber: 38,
                                     columnNumber: 25
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/components/CourierOrderCard.tsx",
-                                lineNumber: 36,
+                                lineNumber: 37,
                                 columnNumber: 21
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -127,7 +127,7 @@ const CourierOrderCard = ({ order, setViewDetails })=>{
                                                 size: 16
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/CourierOrderCard.tsx",
-                                                lineNumber: 41,
+                                                lineNumber: 42,
                                                 columnNumber: 29
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -137,13 +137,13 @@ const CourierOrderCard = ({ order, setViewDetails })=>{
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/CourierOrderCard.tsx",
-                                                lineNumber: 42,
+                                                lineNumber: 43,
                                                 columnNumber: 29
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/CourierOrderCard.tsx",
-                                        lineNumber: 40,
+                                        lineNumber: 41,
                                         columnNumber: 25
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -153,20 +153,20 @@ const CourierOrderCard = ({ order, setViewDetails })=>{
                                                 size: 24
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/CourierOrderCard.tsx",
-                                                lineNumber: 44,
+                                                lineNumber: 45,
                                                 columnNumber: 116
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                 children: order.totalPrice.toFixed(2)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/CourierOrderCard.tsx",
-                                                lineNumber: 44,
+                                                lineNumber: 45,
                                                 columnNumber: 140
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/CourierOrderCard.tsx",
-                                        lineNumber: 44,
+                                        lineNumber: 45,
                                         columnNumber: 25
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -176,7 +176,7 @@ const CourierOrderCard = ({ order, setViewDetails })=>{
                                                 size: 16
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/CourierOrderCard.tsx",
-                                                lineNumber: 46,
+                                                lineNumber: 47,
                                                 columnNumber: 29
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -187,25 +187,25 @@ const CourierOrderCard = ({ order, setViewDetails })=>{
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/CourierOrderCard.tsx",
-                                                lineNumber: 47,
+                                                lineNumber: 48,
                                                 columnNumber: 29
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/CourierOrderCard.tsx",
-                                        lineNumber: 45,
+                                        lineNumber: 46,
                                         columnNumber: 25
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/CourierOrderCard.tsx",
-                                lineNumber: 39,
+                                lineNumber: 40,
                                 columnNumber: 21
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/CourierOrderCard.tsx",
-                        lineNumber: 35,
+                        lineNumber: 36,
                         columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -216,7 +216,7 @@ const CourierOrderCard = ({ order, setViewDetails })=>{
                                 children: order.status
                             }, void 0, false, {
                                 fileName: "[project]/src/components/CourierOrderCard.tsx",
-                                lineNumber: 53,
+                                lineNumber: 54,
                                 columnNumber: 21
                             }, this),
                             order.status === "Delivering" ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -227,7 +227,7 @@ const CourierOrderCard = ({ order, setViewDetails })=>{
                                         children: "Track order"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/CourierOrderCard.tsx",
-                                        lineNumber: 56,
+                                        lineNumber: 57,
                                         columnNumber: 29
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -238,24 +238,24 @@ const CourierOrderCard = ({ order, setViewDetails })=>{
                                                 children: "View Details"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/CourierOrderCard.tsx",
-                                                lineNumber: 59,
+                                                lineNumber: 60,
                                                 columnNumber: 33
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevrons$2d$right$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronsRight$3e$__["ChevronsRight"], {}, void 0, false, {
                                                 fileName: "[project]/src/components/CourierOrderCard.tsx",
-                                                lineNumber: 60,
+                                                lineNumber: 61,
                                                 columnNumber: 33
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/CourierOrderCard.tsx",
-                                        lineNumber: 58,
+                                        lineNumber: 59,
                                         columnNumber: 29
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/CourierOrderCard.tsx",
-                                lineNumber: 55,
+                                lineNumber: 56,
                                 columnNumber: 25
                             }, this) : order.status === "Delivered" ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                 onClick: ()=>setViewDetails(order),
@@ -265,57 +265,61 @@ const CourierOrderCard = ({ order, setViewDetails })=>{
                                         children: "View Details"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/CourierOrderCard.tsx",
-                                        lineNumber: 64,
+                                        lineNumber: 65,
                                         columnNumber: 25
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevrons$2d$right$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronsRight$3e$__["ChevronsRight"], {}, void 0, false, {
                                         fileName: "[project]/src/components/CourierOrderCard.tsx",
-                                        lineNumber: 65,
+                                        lineNumber: 66,
                                         columnNumber: 25
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/CourierOrderCard.tsx",
-                                lineNumber: 63,
+                                lineNumber: 64,
                                 columnNumber: 57
                             }, this) : courier && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                onClick: async ()=>await takeOrder(order._id, courier._id),
+                                onClick: async ()=>{
+                                    await takeOrder(order._id, courier._id);
+                                    setViewDetails(order);
+                                    await checkIfHasOrder();
+                                },
                                 className: "border-[1px] flex items-center gap-1  rounded-md py-1.5 text-[#37db70] bg-[#DCFCE7FF] border-[#37db70] hover:text-[#37db70de] cursor-pointer px-2 hover:bg-[#c6f8d7] transition-colors",
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                         children: "Take order"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/CourierOrderCard.tsx",
-                                        lineNumber: 68,
+                                        lineNumber: 69,
                                         columnNumber: 29
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$check$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Check$3e$__["Check"], {}, void 0, false, {
                                         fileName: "[project]/src/components/CourierOrderCard.tsx",
-                                        lineNumber: 69,
+                                        lineNumber: 70,
                                         columnNumber: 29
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/CourierOrderCard.tsx",
-                                lineNumber: 67,
+                                lineNumber: 68,
                                 columnNumber: 25
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/CourierOrderCard.tsx",
-                        lineNumber: 52,
+                        lineNumber: 53,
                         columnNumber: 17
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/CourierOrderCard.tsx",
-                lineNumber: 34,
+                lineNumber: 35,
                 columnNumber: 13
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/CourierOrderCard.tsx",
-        lineNumber: 22,
+        lineNumber: 23,
         columnNumber: 9
     }, this);
 };
@@ -636,14 +640,9 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$package$2d$check$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__PackageCheck$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/package-check.js [app-client] (ecmascript) <export default as PackageCheck>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$user$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__User$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/user.js [app-client] (ecmascript) <export default as User>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$socket$2e$io$2d$client$2f$build$2f$esm$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$module__evaluation$3e$__ = __turbopack_context__.i("[project]/node_modules/socket.io-client/build/esm/index.js [app-client] (ecmascript) <module evaluation>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$socket$2e$io$2d$client$2f$build$2f$esm$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/node_modules/socket.io-client/build/esm/index.js [app-client] (ecmascript) <locals>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$leaflet$2f$lib$2f$MapContainer$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/react-leaflet/lib/MapContainer.js [app-client] (ecmascript)");
 ;
 var _s = __turbopack_context__.k.signature();
 "use client";
-;
-;
 ;
 ;
 ;
@@ -656,16 +655,13 @@ const Page = ()=>{
     const [freeOrders, setFreeOrders] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
     const [courierOrders, setCourierOrders] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
     const [isWorking, setIsWorking] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
-    const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])();
+    const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(true);
     const [viewDetails, setViewDetails] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
     const { courier } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$hooks$2f$reduxHooks$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAppSelector"])({
         "Page.useAppSelector": (state)=>state.courier
     }["Page.useAppSelector"]);
-    const [location, setLocation] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([
-        49.8397,
-        24.0297
-    ]);
-    const socket = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$socket$2e$io$2d$client$2f$build$2f$esm$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["io"])("http://localhost:5200");
+    const [status, setStatus] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("");
+    // requests for getting orders (free,past-delivered)
     const getFreeOrders = async ()=>{
         try {
             if (courier) {
@@ -679,9 +675,7 @@ const Page = ()=>{
     const getYourOrders = async ()=>{
         try {
             if (courier) {
-                const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get(`http://localhost:5200/api/order/get-orders-courier`, {
-                    withCredentials: true
-                });
+                const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get(`http://localhost:5200/api/order/get-orders-courier/${courier._id}`);
                 if (res.data) {
                     setCourierOrders(res.data);
                 }
@@ -690,33 +684,82 @@ const Page = ()=>{
             console.log(err);
         }
     };
+    // request for checking courier`s status (whether he`s taking an order)
     const checkIfHasOrder = async ()=>{
         try {
             if (courier) {
                 const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get(`http://localhost:5200/api/courier/check-if-has-order/${courier._id}`);
                 setIsWorking(res.data);
                 setViewDetails(res.data);
+                return res.data;
             }
         } catch (err) {
             console.error(err);
         }
     };
+    //changing status of the order
+    const toggleOrderStatus = async (status, id)=>{
+        try {
+            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].patch("http://localhost:5200/api/courier/change-order-status", {
+                status: status,
+                id: id
+            }, {
+                withCredentials: true
+            });
+            if (res) {
+                setStatus(res.data);
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    };
+    // loading content on the page - [courier]
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "Page.useEffect": ()=>{
-            setLoading(true);
-            checkIfHasOrder();
-            if (!isWorking) {
-                getFreeOrders();
-            }
-            getYourOrders();
-            setLoading(false);
+            const load = {
+                "Page.useEffect.load": async ()=>{
+                    setLoading(true);
+                    const order = await checkIfHasOrder();
+                    if (!order) {
+                        await getFreeOrders();
+                    } else {
+                        setStatus(order.status);
+                    }
+                    await getYourOrders();
+                    setLoading(false);
+                }
+            }["Page.useEffect.load"];
+            load();
         }
     }["Page.useEffect"], [
         courier
     ]);
+    // connecting to socket room, geocoding receiver adress
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "Page.useEffect": ()=>{
-            socket.emit("joinOrder", isWorking?._id);
+            if (socket && isWorking) {
+                socket.emit("joinOrder", isWorking._id);
+                const geoCode = {
+                    "Page.useEffect.geoCode": async ()=>{
+                        try {
+                            await getRestaurentLocation();
+                            await getReceiverLocation();
+                        } catch (err) {
+                            console.error(err);
+                        }
+                    }
+                }["Page.useEffect.geoCode"];
+                geoCode();
+            }
+        }
+    }["Page.useEffect"], [
+        socket,
+        isWorking
+    ]);
+    // socket using for dynamic tracking courier every 5sec(interval)
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "Page.useEffect": ()=>{
+            if (!socket && !isWorking) return;
             const interval = setInterval({
                 "Page.useEffect.interval": ()=>{
                     navigator.geolocation.getCurrentPosition({
@@ -726,7 +769,9 @@ const Page = ()=>{
                                 latitude,
                                 longitude
                             ]);
-                            socket.emit("updateLocation", isWorking?._id, {
+                            const courierId = isWorking?._id;
+                            socket?.emit("updateLocation", {
+                                courierId,
                                 latitude,
                                 longitude
                             });
@@ -741,9 +786,9 @@ const Page = ()=>{
             return ({
                 "Page.useEffect": ()=>clearInterval(interval)
             })["Page.useEffect"];
-        //що це взагалі
         }
     }["Page.useEffect"], [
+        socket,
         isWorking
     ]);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -753,7 +798,7 @@ const Page = ()=>{
             children: [
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: "basis-[874px]  pt-1",
-                    children: !isWorking ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
+                    children: !loading ? !isWorking ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "shadow-xs border-[1px] border-borderColor rounded-lg p-[25px]",
@@ -767,7 +812,7 @@ const Page = ()=>{
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                        lineNumber: 100,
+                                        lineNumber: 157,
                                         columnNumber: 29
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -775,27 +820,28 @@ const Page = ()=>{
                                         children: freeOrders?.map((order, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                 className: "",
                                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$CourierOrderCard$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                                                    checkIfHasOrder: checkIfHasOrder,
                                                     setViewDetails: setViewDetails,
                                                     order: order
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                                    lineNumber: 105,
+                                                    lineNumber: 162,
                                                     columnNumber: 41
                                                 }, this)
                                             }, idx, false, {
                                                 fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                                lineNumber: 104,
+                                                lineNumber: 161,
                                                 columnNumber: 37
                                             }, this))
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                        lineNumber: 102,
+                                        lineNumber: 159,
                                         columnNumber: 29
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                lineNumber: 98,
+                                lineNumber: 155,
                                 columnNumber: 25
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -810,58 +856,75 @@ const Page = ()=>{
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                        lineNumber: 121,
+                                        lineNumber: 178,
                                         columnNumber: 29
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "gap-4 grid grid-cols-2",
-                                        children: courierOrders && courierOrders.length < 0 ? courierOrders?.filter((item)=>item.status == "Delivered").map((order, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        children: courierOrders && courierOrders.length > 0 ? courierOrders?.filter((item)=>item.status == "Delivered").map((order, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                 className: "",
                                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$order$2f$OrderCard$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                                                     setViewDetails: setViewDetails,
                                                     order: order
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                                    lineNumber: 125,
+                                                    lineNumber: 182,
                                                     columnNumber: 41
                                                 }, this)
                                             }, idx, false, {
                                                 fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                                lineNumber: 124,
+                                                lineNumber: 181,
                                                 columnNumber: 37
                                             }, this)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                             className: "text-lg leading-7 font-semibold",
                                             children: "No taken orders yet!"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                            lineNumber: 128,
+                                            lineNumber: 185,
                                             columnNumber: 39
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                        lineNumber: 122,
+                                        lineNumber: 179,
                                         columnNumber: 29
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                lineNumber: 120,
+                                lineNumber: 177,
                                 columnNumber: 25
                             }, this)
                         ]
                     }, void 0, true) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "flex flex-col gap-6",
+                        className: "flex flex-col gap-6  mb-4.5",
                         children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                                className: "text-2xl leading-8 font-bold mb-4.5 ",
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "flex items-center gap-4",
                                 children: [
-                                    'Taking Order ID: "',
-                                    isWorking._id,
-                                    '" '
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                                        className: "text-2xl leading-8 font-bold  ",
+                                        children: [
+                                            'Taking Order ID: "',
+                                            isWorking._id,
+                                            '" '
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/src/app/(main)/courier/page.tsx",
+                                        lineNumber: 193,
+                                        columnNumber: 29
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: `border-[1px] py-2 px-4 ${status === "Delivering" ? "text-primary border-primary bg-[#636AE833]" : status == "Delivered" ? "text-[#37db70] border-[#37db70] bg-[#DCFCE7FF]" : "text-primary border-primary bg-[#4d55ed33]"}  rounded-4xl  text-xs leading-5 font-medium `,
+                                        children: status ? status : isWorking.status
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/app/(main)/courier/page.tsx",
+                                        lineNumber: 194,
+                                        columnNumber: 29
+                                    }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                lineNumber: 135,
+                                lineNumber: 192,
                                 columnNumber: 25
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -872,77 +935,80 @@ const Page = ()=>{
                                         children: "Change order status"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                        lineNumber: 137,
+                                        lineNumber: 198,
                                         columnNumber: 29
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "",
-                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$leaflet$2f$lib$2f$MapContainer$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["MapContainer"], {
-                                            center: location
-                                        }, void 0, false, {
-                                            fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                            lineNumber: 141,
-                                            columnNumber: 33
-                                        }, this)
+                                        className: ""
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                        lineNumber: 140,
+                                        lineNumber: 201,
                                         columnNumber: 29
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "flex items-center gap-7",
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                disabled: status === "Delivered" || status === "Delivering",
+                                                onClick: async ()=>await toggleOrderStatus("Delivering", isWorking._id),
                                                 className: "btn flex items-center p-3 gap-3 text-lg!",
                                                 children: [
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$bike$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Bike$3e$__["Bike"], {}, void 0, false, {
                                                         fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                                        lineNumber: 145,
-                                                        columnNumber: 94
+                                                        lineNumber: 206,
+                                                        columnNumber: 230
                                                     }, this),
                                                     "Delivering"
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                                lineNumber: 145,
+                                                lineNumber: 206,
                                                 columnNumber: 33
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                disabled: status === "Delivered",
+                                                onClick: async ()=>await toggleOrderStatus("Delivered", isWorking._id),
                                                 className: "btn flex items-center p-3 gap-3 text-lg!",
                                                 children: [
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$package$2d$check$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__PackageCheck$3e$__["PackageCheck"], {}, void 0, false, {
                                                         fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                                        lineNumber: 146,
-                                                        columnNumber: 94
+                                                        lineNumber: 207,
+                                                        columnNumber: 202
                                                     }, this),
                                                     "Delivered"
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                                lineNumber: 146,
+                                                lineNumber: 207,
                                                 columnNumber: 33
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                        lineNumber: 144,
+                                        lineNumber: 205,
                                         columnNumber: 29
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                lineNumber: 136,
+                                lineNumber: 197,
                                 columnNumber: 25
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/(main)/courier/page.tsx",
-                        lineNumber: 134,
-                        columnNumber: 28
+                        lineNumber: 191,
+                        columnNumber: 29
+                    }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid mx-auto"
+                    }, void 0, false, {
+                        fileName: "[project]/src/app/(main)/courier/page.tsx",
+                        lineNumber: 211,
+                        columnNumber: 26
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/app/(main)/courier/page.tsx",
-                    lineNumber: 96,
+                    lineNumber: 153,
                     columnNumber: 17
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -952,7 +1018,7 @@ const Page = ()=>{
                             className: "shadow-xs border-[1px] border-borderColor rounded-lg"
                         }, void 0, false, {
                             fileName: "[project]/src/app/(main)/courier/page.tsx",
-                            lineNumber: 156,
+                            lineNumber: 218,
                             columnNumber: 21
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -968,7 +1034,7 @@ const Page = ()=>{
                                                 children: "Order Details"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                                lineNumber: 161,
+                                                lineNumber: 223,
                                                 columnNumber: 33
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -979,13 +1045,13 @@ const Page = ()=>{
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                                lineNumber: 162,
+                                                lineNumber: 224,
                                                 columnNumber: 33
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                        lineNumber: 160,
+                                        lineNumber: 222,
                                         columnNumber: 33
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -998,7 +1064,7 @@ const Page = ()=>{
                                                         size: 20
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                                        lineNumber: 166,
+                                                        lineNumber: 228,
                                                         columnNumber: 41
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1008,7 +1074,7 @@ const Page = ()=>{
                                                                 children: "Date:"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                                                lineNumber: 168,
+                                                                lineNumber: 230,
                                                                 columnNumber: 45
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1016,19 +1082,19 @@ const Page = ()=>{
                                                                 children: new Date(viewDetails.createdAt).toDateString()
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                                                lineNumber: 169,
+                                                                lineNumber: 231,
                                                                 columnNumber: 45
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                                        lineNumber: 167,
+                                                        lineNumber: 229,
                                                         columnNumber: 41
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                                lineNumber: 165,
+                                                lineNumber: 227,
                                                 columnNumber: 37
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1038,7 +1104,7 @@ const Page = ()=>{
                                                         size: 20
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                                        lineNumber: 173,
+                                                        lineNumber: 235,
                                                         columnNumber: 41
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1048,7 +1114,7 @@ const Page = ()=>{
                                                                 children: "Customer:"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                                                lineNumber: 175,
+                                                                lineNumber: 237,
                                                                 columnNumber: 45
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1056,19 +1122,19 @@ const Page = ()=>{
                                                                 children: viewDetails.fullName
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                                                lineNumber: 176,
+                                                                lineNumber: 238,
                                                                 columnNumber: 45
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                                        lineNumber: 174,
+                                                        lineNumber: 236,
                                                         columnNumber: 41
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                                lineNumber: 172,
+                                                lineNumber: 234,
                                                 columnNumber: 37
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1078,7 +1144,7 @@ const Page = ()=>{
                                                         size: 20
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                                        lineNumber: 181,
+                                                        lineNumber: 243,
                                                         columnNumber: 41
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1088,7 +1154,7 @@ const Page = ()=>{
                                                                 children: "Delivery To:"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                                                lineNumber: 183,
+                                                                lineNumber: 245,
                                                                 columnNumber: 45
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1107,25 +1173,25 @@ const Page = ()=>{
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                                                lineNumber: 184,
+                                                                lineNumber: 246,
                                                                 columnNumber: 45
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                                        lineNumber: 182,
+                                                        lineNumber: 244,
                                                         columnNumber: 41
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                                lineNumber: 180,
+                                                lineNumber: 242,
                                                 columnNumber: 37
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                        lineNumber: 164,
+                                        lineNumber: 226,
                                         columnNumber: 33
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1140,7 +1206,7 @@ const Page = ()=>{
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                                lineNumber: 189,
+                                                lineNumber: 251,
                                                 columnNumber: 37
                                             }, this),
                                             viewDetails.items.map((item, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1157,12 +1223,12 @@ const Page = ()=>{
                                                                         alt: "dish image"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                                                        lineNumber: 194,
+                                                                        lineNumber: 256,
                                                                         columnNumber: 53
                                                                     }, this)
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                                                    lineNumber: 193,
+                                                                    lineNumber: 255,
                                                                     columnNumber: 49
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1173,7 +1239,7 @@ const Page = ()=>{
                                                                             children: item.title
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                                                            lineNumber: 198,
+                                                                            lineNumber: 260,
                                                                             columnNumber: 53
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1184,19 +1250,19 @@ const Page = ()=>{
                                                                             ]
                                                                         }, void 0, true, {
                                                                             fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                                                            lineNumber: 201,
+                                                                            lineNumber: 263,
                                                                             columnNumber: 53
                                                                         }, this)
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                                                    lineNumber: 197,
+                                                                    lineNumber: 259,
                                                                     columnNumber: 49
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                                            lineNumber: 192,
+                                                            lineNumber: 254,
                                                             columnNumber: 45
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1207,13 +1273,13 @@ const Page = ()=>{
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                                            lineNumber: 204,
+                                                            lineNumber: 266,
                                                             columnNumber: 45
                                                         }, this)
                                                     ]
                                                 }, idx, true, {
                                                     fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                                    lineNumber: 191,
+                                                    lineNumber: 253,
                                                     columnNumber: 41
                                                 }, this)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1223,7 +1289,7 @@ const Page = ()=>{
                                                         children: "Total:"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                                        lineNumber: 208,
+                                                        lineNumber: 270,
                                                         columnNumber: 41
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1233,26 +1299,26 @@ const Page = ()=>{
                                                                 size: 20
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                                                lineNumber: 209,
+                                                                lineNumber: 271,
                                                                 columnNumber: 78
                                                             }, this),
                                                             viewDetails.totalPrice.toFixed(2)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                                        lineNumber: 209,
+                                                        lineNumber: 271,
                                                         columnNumber: 41
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                                lineNumber: 207,
+                                                lineNumber: 269,
                                                 columnNumber: 37
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                        lineNumber: 188,
+                                        lineNumber: 250,
                                         columnNumber: 33
                                     }, this)
                                 ]
@@ -1261,33 +1327,33 @@ const Page = ()=>{
                                 children: "Order Details"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(main)/courier/page.tsx",
-                                lineNumber: 211,
+                                lineNumber: 273,
                                 columnNumber: 46
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(main)/courier/page.tsx",
-                            lineNumber: 157,
+                            lineNumber: 219,
                             columnNumber: 21
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/(main)/courier/page.tsx",
-                    lineNumber: 155,
+                    lineNumber: 217,
                     columnNumber: 17
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/app/(main)/courier/page.tsx",
-            lineNumber: 95,
+            lineNumber: 152,
             columnNumber: 13
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/app/(main)/courier/page.tsx",
-        lineNumber: 93,
+        lineNumber: 150,
         columnNumber: 9
     }, this);
 };
-_s(Page, "SpbGMjHFU9eofuQ13nbnQS2S/jA=", false, function() {
+_s(Page, "gheHSl62NEoBb3I/lxkjFPQNr10=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$hooks$2f$reduxHooks$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAppSelector"]
     ];

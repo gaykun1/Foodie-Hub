@@ -1,15 +1,16 @@
 
 
 import express from "express";
-import { createDish, createItem, createReview, deleteDish, getAbout, getDishes, getFavouriteRestaurants, getRestaurantById, getRestaurantsFiltered, getReviews, handleAbout, searchRestaurants, toggleToFavourite } from "../controllers/restaurantController";
+import { createDish, createItem, createReview, deleteDish, getAbout, getDishes, getFavouriteRestaurants, getRestaurantAddress, getRestaurantById, getRestaurantsFiltered, getReviews, handleAbout, searchRestaurants, toggleToFavourite } from "../controllers/restaurantController";
 import { authMiddleware } from "../middleware/authMiddleware";
 
 const restaurantRoute = express.Router();
 
 restaurantRoute.post("/create-restaurant", createItem);
 restaurantRoute.get("/get-restaurant-by-id/:id", getRestaurantById);
+restaurantRoute.get("/get-restaurant-adress/:title", getRestaurantAddress);
 restaurantRoute.post("/get-restaurants-filtered", getRestaurantsFiltered);
-restaurantRoute.post("/search-restaurants", searchRestaurants);
+restaurantRoute.post("/search-restaurants", searchRestaurants); 
 restaurantRoute.post("/add-to-favourite", authMiddleware, toggleToFavourite);
 restaurantRoute.get("/dishes/:id", getDishes);
 restaurantRoute.delete("/dishes/:id", deleteDish);

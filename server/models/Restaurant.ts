@@ -11,7 +11,11 @@ export enum Category {
 const RestaurantSchema = new Schema({
   title: { type: String, required: true },
   description: String,
-  adress: { type: String, required: true },
+  adress: {
+    city: { type: String, required: true },
+    street: { type: String, required: true },
+    houseNumber: { type: String, required: true },
+  },
   phone: { type: String, required: true },
   websiteUrl: String,
   imageUrl: String,
@@ -23,7 +27,7 @@ const RestaurantSchema = new Schema({
   endHour: { type: String, required: true },
   dishes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Dish" }],
   reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: "Review" }],
-  about:String,
+  about: String,
 });
 
 export default mongoose.model('Restaurant', RestaurantSchema);

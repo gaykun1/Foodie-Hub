@@ -75,7 +75,28 @@ export const checkIfSentApplication = async (req: Request, res: Response): Promi
     }
 }
 
+export const changeOrderStatus = async (req: Request, res: Response): Promise<void> => {
+    const { id, status } = req.body;
+    console.log(req.body);
+    try {
 
+
+        const order = await Order.findByIdAndUpdate(id, { $set: { status: status } });
+        if (!order) {
+            res.status(404).json("Not found!");
+            return;
+        }
+
+        res.status(200).json(status);
+        return;
+
+
+
+    } catch (err) {
+        res.status(500).json("Server error!");
+        return;
+    }
+}
 
 export const toggleApplication = async (req: Request, res: Response): Promise<void> => {
 
@@ -141,7 +162,7 @@ export const takeOrder = async (req: Request, res: Response): Promise<void> => {
 export const checkIfHasOrder = async (req: Request, res: Response): Promise<void> => {
     const id = req.params.id;
     try {
-        const order = await Order.findOne({ courierId: id });
+        const order = await Order.findOne({ courierId: id, status:{ $in: ["Delivering", "Preparing"]} });
         res.status(200).json(order);
         return;
     } catch {

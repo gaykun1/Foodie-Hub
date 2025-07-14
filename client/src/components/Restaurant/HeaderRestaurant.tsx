@@ -80,7 +80,7 @@ export default function HeaderRestaurant() {
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2 text-lg leading-7  ">
               <MapPin size={20} />
-              <span>{currentRestaurant?.adress}</span>
+              <span>{currentRestaurant?.adress.street} {currentRestaurant?.adress.houseNumber}, {currentRestaurant?.adress.city}</span>
             </div>
             <div className="flex items-center gap-2 text-lg leading-7  ">
               <Clock size={20} />

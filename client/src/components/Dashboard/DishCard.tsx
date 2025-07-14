@@ -9,6 +9,7 @@ const DishCard = ({ dish, toCart, onDeleted }: { dish: Dish, toCart: boolean, on
 
     const dispatch = useAppDispatch();
     const { cart } = useAppSelector(state => state.cart);
+    
     const deleteDish = async () => {
         try {
             const res = await axios.delete(`http://localhost:5200/api/restaurant/dishes/${dish._id}`);

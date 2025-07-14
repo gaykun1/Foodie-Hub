@@ -5,6 +5,7 @@ import { Order } from "@/redux/reduxTypes"
 import axios from "axios";
 import { Check, ChevronsRight, ClipboardList, Clock, DollarSign } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
 
 const takeOrder = async (id: string, courierId: string) => {
     try {
@@ -15,7 +16,7 @@ const takeOrder = async (id: string, courierId: string) => {
 
 }
 
-const CourierOrderCard = ({ order, setViewDetails, }: { order: Order, setViewDetails: React.Dispatch<React.SetStateAction<Order | null>>, }) => {
+const CourierOrderCard = ({ order, checkIfHasOrder, setViewDetails }: { order: Order, checkIfHasOrder: () => void, setViewDetails: React.Dispatch<React.SetStateAction<Order | null>>, }) => {
     const { courier } = useAppSelector(state => state.courier);
     const date = new Date((order.createdAt)).toDateString();
     return (
@@ -64,7 +65,7 @@ const CourierOrderCard = ({ order, setViewDetails, }: { order: Order, setViewDet
                         <span>View Details</span>
                         <ChevronsRight />
                     </button>) : courier && (
-                        <button onClick={async () => await takeOrder(order._id, courier._id)} className="border-[1px] flex items-center gap-1  rounded-md py-1.5 text-[#37db70] bg-[#DCFCE7FF] border-[#37db70] hover:text-[#37db70de] cursor-pointer px-2 hover:bg-[#c6f8d7] transition-colors">
+                        <button onClick={async () => { await takeOrder(order._id, courier._id); setViewDetails(order); await checkIfHasOrder() }} className="border-[1px] flex items-center gap-1  rounded-md py-1.5 text-[#37db70] bg-[#DCFCE7FF] border-[#37db70] hover:text-[#37db70de] cursor-pointer px-2 hover:bg-[#c6f8d7] transition-colors">
                             <span>Take order</span>
                             <Check />
                         </button>

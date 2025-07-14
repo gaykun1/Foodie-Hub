@@ -56,12 +56,12 @@ const DishCard = ({ dish, toCart, onDeleted })=>{
                     alt: "dish image"
                 }, void 0, false, {
                     fileName: "[project]/src/components/Dashboard/DishCard.tsx",
-                    lineNumber: 38,
+                    lineNumber: 39,
                     columnNumber: 17
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/Dashboard/DishCard.tsx",
-                lineNumber: 37,
+                lineNumber: 38,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -75,7 +75,7 @@ const DishCard = ({ dish, toCart, onDeleted })=>{
                                 children: dish.title
                             }, void 0, false, {
                                 fileName: "[project]/src/components/Dashboard/DishCard.tsx",
-                                lineNumber: 42,
+                                lineNumber: 43,
                                 columnNumber: 21
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -83,13 +83,13 @@ const DishCard = ({ dish, toCart, onDeleted })=>{
                                 children: dish.description
                             }, void 0, false, {
                                 fileName: "[project]/src/components/Dashboard/DishCard.tsx",
-                                lineNumber: 43,
+                                lineNumber: 44,
                                 columnNumber: 21
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/Dashboard/DishCard.tsx",
-                        lineNumber: 41,
+                        lineNumber: 42,
                         columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -103,7 +103,7 @@ const DishCard = ({ dish, toCart, onDeleted })=>{
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/Dashboard/DishCard.tsx",
-                                lineNumber: 46,
+                                lineNumber: 47,
                                 columnNumber: 19
                             }, this),
                             toCart ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -118,14 +118,14 @@ const DishCard = ({ dish, toCart, onDeleted })=>{
                                             size: 16
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/Dashboard/DishCard.tsx",
-                                            lineNumber: 53,
+                                            lineNumber: 54,
                                             columnNumber: 37
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                             children: "Add to Cart"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/Dashboard/DishCard.tsx",
-                                            lineNumber: 53,
+                                            lineNumber: 54,
                                             columnNumber: 63
                                         }, this)
                                     ]
@@ -133,12 +133,12 @@ const DishCard = ({ dish, toCart, onDeleted })=>{
                                     children: "In Cart"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/Dashboard/DishCard.tsx",
-                                    lineNumber: 53,
+                                    lineNumber: 54,
                                     columnNumber: 95
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/components/Dashboard/DishCard.tsx",
-                                lineNumber: 49,
+                                lineNumber: 50,
                                 columnNumber: 28
                             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                 onClick: deleteDish,
@@ -147,30 +147,30 @@ const DishCard = ({ dish, toCart, onDeleted })=>{
                                     size: 16
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/Dashboard/DishCard.tsx",
-                                    lineNumber: 57,
+                                    lineNumber: 58,
                                     columnNumber: 25
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/components/Dashboard/DishCard.tsx",
-                                lineNumber: 55,
+                                lineNumber: 56,
                                 columnNumber: 21
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/Dashboard/DishCard.tsx",
-                        lineNumber: 45,
+                        lineNumber: 46,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/Dashboard/DishCard.tsx",
-                lineNumber: 40,
+                lineNumber: 41,
                 columnNumber: 13
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/Dashboard/DishCard.tsx",
-        lineNumber: 36,
+        lineNumber: 37,
         columnNumber: 9
     }, this);
 };

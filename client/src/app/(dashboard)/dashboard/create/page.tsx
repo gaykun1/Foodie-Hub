@@ -7,7 +7,9 @@ import { SubmitHandler, useForm } from "react-hook-form";
 type formFields = {
   title: string;
   description: string;
-  adress: string;
+  city: string;
+  street: string;
+  houseNumber: string;
   phone: string;
   websiteUrl: string;
   image: FileList;
@@ -55,7 +57,9 @@ const Page = () => {
       const restaurantData = {
         title: data.title,
         description: data.description,
-        address: data.adress,
+        city: data.city,
+        houseNumber: data.houseNumber,
+        street: data.street,
         phone: data.phone,
         websiteUrl: data.websiteUrl,
         imageUrl: imageUrl,
@@ -89,8 +93,8 @@ const Page = () => {
   };
 
   return (
-   
-       <>
+
+    <>
       <div className="mb-2">
         <h1 className="text-2xl font-semibold border-b-[1px] pb-1 border-borderColor inline-block">
           Add a new restaurant
@@ -119,10 +123,14 @@ const Page = () => {
               <textarea {...register("description")} className="input p-1 h-[100px] resize-none" />
             </div>
             <div className="flex flex-col gap-2">
-              <label htmlFor="adress" className="text-lg font-medium">
-                Address
-              </label>
-              <input {...register("adress", { required: true })} className="input p-1" />
+
+              <label htmlFor="adress" className="text-lg font-medium">Street</label>
+              <input {...register("street", { required: true })} className="input p-1" />
+              <label htmlFor="adress" className="text-lg font-medium">House Number</label>
+              <input {...register("houseNumber", { required: true })} className="input p-1" />
+              <label htmlFor="adress" className="text-lg font-medium">City</label>
+              <input {...register("city", { required: true })} className="input p-1" />
+
             </div>
             <div className="flex flex-col gap-3">
               <label htmlFor="mySelect">First working day of the week:</label>
@@ -178,17 +186,17 @@ const Page = () => {
 
           <div className="p-2 flex flex-col gap-3">
             <div className="flex flex-col gap-2">
-             <div className="">
-              <label htmlFor="phone" className="text-lg font-medium">
-                Phone
-              </label>
-              <input {...register("phone", { required: true })} type="tel" className="input p-1" />
+              <div className="">
+                <label htmlFor="phone" className="text-lg font-medium">
+                  Phone
+                </label>
+                <input {...register("phone", { required: true })} type="tel" className="input p-1" />
               </div>
-                  <div className="">
-              <label htmlFor="websiteUrl" className="text-lg font-medium">
-                Website Link
-              </label>
-              <input {...register("websiteUrl", { required: true })} type="url" className="input p-1" />
+              <div className="">
+                <label htmlFor="websiteUrl" className="text-lg font-medium">
+                  Website Link
+                </label>
+                <input {...register("websiteUrl", { required: true })} type="url" className="input p-1" />
               </div>
             </div>
             <div className="flex flex-col gap-2">
@@ -223,8 +231,8 @@ const Page = () => {
           {loading ? "Creating..." : "Create"}
         </button>
       </form>
-      </>
-   
+    </>
+
   );
 };
 

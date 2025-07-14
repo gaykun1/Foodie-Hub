@@ -37,7 +37,11 @@ export const createItem = async (req: Request, res: Response) => {
         const newRestaurant = new Restaurant({
             title: restaurantData.title,
             description: restaurantData.description,
-            adress: restaurantData.address,
+            adress: {
+                city: restaurantData.city,
+                street: restaurantData.street,
+                houseNumber: restaurantData.houseNumber,
+            },
             phone: restaurantData.phone,
             websiteUrl: restaurantData.websiteUrl,
             imageUrl: restaurantData.imageUrl,
@@ -169,6 +173,25 @@ export const getRestaurantById = async (req: Request, res: Response): Promise<vo
 }
 
 
+export const getRestaurantAddress = async (req: Request, res: Response): Promise<void> => {
+    const title = req.params.title;
+    try {
+        const restaurant = await Restaurant.findOne({ title: title }).select("adress");
+        if (!restaurant) {
+            res.status(404).json({
+                message: "Not found!",
+            });
+            return;
+        }
+        res.status(200).json(restaurant);
+        return;
+    } catch {
+        res.status(500).json({
+            error: "Server error",
+        });
+        return;
+    }
+}
 export const toggleToFavourite = async (req: Request, res: Response): Promise<void> => {
     const { restaurantId } = req.body;
     try {

@@ -94,7 +94,11 @@ export interface Restaurant {
     imageUrl: string,
     websiteUrl: string,
     phone: string,
-    adress: string,
+    adress: {
+        city: string,
+        street: string,
+        houseNumber: string,
+    },
     description: string,
     _id: string,
     startDay: string,

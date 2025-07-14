@@ -28,7 +28,7 @@ interface Cart {
 export const createOrder = async (req: Request, res: Response): Promise<void> => {
     const { cart }: { cart: Cart } = req.body;
     try {
-        const order = await Order.findOne({ userId: (req as AuthRequest).userId, });
+        const order = await Order.findOne({ userId: (req as AuthRequest).userId, status: null });
         if (order) {
             res.status(200).json(order._id);
             return;
@@ -107,9 +107,37 @@ export const getOrders = async (req: Request, res: Response): Promise<void> => {
 }
 
 
-export const getOrdersCourier = async (req: Request, res: Response): Promise<void> => {
+export const getNumbers = async (req: Request, res: Response): Promise<void> => {
     try {
-        const orders = await Order.find({ courierId: (req as AuthRequest).userId });
+        const orders = await Order.find({  });
+        if (!orders) {
+            res.status(404).json("Not found!");
+            return;
+        }
+        const numOfOrders = orders.length;
+        const totalRevenue = orders.reduce((acc, cur) => acc + cur.totalPrice, 0);
+        const averageOrderValue = totalRevenue / numOfOrders;
+        res.status(200).json({ numOfOrders, totalRevenue, averageOrderValue });
+        return
+    }
+    catch (err) {
+
+
+        res.status(500).json("Server error!");
+        return;
+
+
+
+
+    }
+}
+
+
+export const getOrdersCourier = async (req: Request, res: Response): Promise<void> => {
+    const id = req.params.id;
+    try {
+        const orders = await Order.find({ courierId: id });
+        console.log(orders);
         if (!orders) {
             res.status(404).json("Not found!");
             return;
@@ -174,7 +202,7 @@ export const updateOrder = async (req: Request, res: Response): Promise<void> =>
 export const getFreeOrders = async (req: Request, res: Response): Promise<void> => {
     const city = req.params.city;
     try {
-        const orders = await Order.find({ status: "Preparing", "adress.city": city,courierId:null });
+        const orders = await Order.find({ status: "Preparing", "adress.city": city, courierId: null });
         if (!orders) {
             res.status(404).json("Not found!");
             return;
@@ -189,16 +217,3 @@ export const getFreeOrders = async (req: Request, res: Response): Promise<void> 
 
 
 
-export const changeOrderStatus = async (req: Request, res: Response): Promise<void> => {
-    const { id, status } = req.body;
-
-    try {
-        const order = await Order.findOneAndUpdate({ _id: id, courierId: (req as AuthRequest).userId }, { $set: { status: status } });
-
-        res.status(200).json("Order status has been changed!");
-        return;
-    } catch (err) {
-        res.status(500).json("Server error!");
-        return;
-    }
-}
