@@ -3,6 +3,7 @@ import Order from "../models/Order";
 import { AuthRequest } from "../middleware/courierMiddleware";
 import Courier from "../models/Courier";
 import User from "../models/User";
+import { activeAdmins, io } from "../server";
 
 
 
@@ -28,7 +29,6 @@ export const getApplications = async (req: Request, res: Response): Promise<void
 
 export const createApplication = async (req: Request, res: Response): Promise<void> => {
     const { data } = req.body;
-    console.log(data);
     try {
 
         // створення стартового темплейта для кур'єра 
@@ -77,7 +77,6 @@ export const checkIfSentApplication = async (req: Request, res: Response): Promi
 
 export const changeOrderStatus = async (req: Request, res: Response): Promise<void> => {
     const { id, status } = req.body;
-    console.log(req.body);
     try {
 
 
@@ -86,7 +85,10 @@ export const changeOrderStatus = async (req: Request, res: Response): Promise<vo
             res.status(404).json("Not found!");
             return;
         }
-
+        const orders = await Order.find().sort({ updatedAt: -1 }).limit(7);
+        activeAdmins.forEach(adminId => {
+            io.to(adminId).emit("updateOrders", orders);
+        });
         res.status(200).json(status);
         return;
 
@@ -162,7 +164,7 @@ export const takeOrder = async (req: Request, res: Response): Promise<void> => {
 export const checkIfHasOrder = async (req: Request, res: Response): Promise<void> => {
     const id = req.params.id;
     try {
-        const order = await Order.findOne({ courierId: id, status:{ $in: ["Delivering", "Preparing"]} });
+        const order = await Order.findOne({ courierId: id, status: { $in: ["Delivering", "Preparing"] } });
         res.status(200).json(order);
         return;
     } catch {

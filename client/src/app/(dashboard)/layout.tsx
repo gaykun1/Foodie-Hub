@@ -37,7 +37,7 @@ export default async function RootLayout({
               <div className="_container flex">
                 <SideBar />
         <div className="p-8 grow-1">
-           <div className="border-borderColor border-[1px] rounded-lg p-6 flex flex-col overflow-hidden overflow-y-auto max-h-[900px]">
+           <div className="border-borderColor border-[1px] rounded-lg p-6 flex flex-col overflow-hidden ">
                 {children}
                 </div>
                 </div>

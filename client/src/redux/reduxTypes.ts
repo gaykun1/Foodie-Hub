@@ -6,6 +6,7 @@ export interface User {
     role: string,
     email: string,
     phoneNumber: string,
+    _id: string,
 }
 
 
@@ -35,6 +36,7 @@ export type Dish = {
     imageUrl: string,
     _id: string,
     typeOfFood: string,
+    sold: number,
 }
 
 export type Review = {
@@ -44,7 +46,8 @@ export type Review = {
     text: string,
     rating: number,
     restaurantId?: string,
-
+    _id: string,
+    createdAt: Date,
 
 }
 export interface Cart {

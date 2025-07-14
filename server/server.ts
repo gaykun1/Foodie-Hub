@@ -11,7 +11,13 @@ import cartRoute from "./routes/cartRoute";
 import orderRoute from "./routes/orderRoutes";
 import payRoute from "./routes/payRoutes";
 import courierRoute from "./routes/courierRoutes";
-import { Server } from "socket.io";
+import { Server, Socket } from "socket.io";
+import { authMiddleware, AuthRequest } from "./middleware/authMiddleware";
+import User from "./models/User";
+import Promocode from "./models/Promocode";
+import { adminMiddleware } from "./middleware/adminMiddleware";
+import nodeCron from "node-cron";
+import promocodeRoute from "./routes/promocodeRoutes";
 dotenv.config();
 const app = express();
 
@@ -20,12 +26,17 @@ const server = http.createServer(app);
 app.use(cookieParser())
 app.use(express.json());
 
-const io = new Server(server, {
+export const io = new Server(server, {
     cors: {
         origin: "http://localhost:3000",
         credentials: true
     }
 })
+// Map for sockets
+let socketsMap = new Map<string, Socket>();
+
+// Set for active admins
+export const activeAdmins = new Set<string>();
 
 io.on("connection", (socket) => {
 
@@ -33,8 +44,26 @@ io.on("connection", (socket) => {
         io.to(orderId).emit("locationUpdate", { lat, lng });
     })
 
-    socket.on("joinOrder", (orderId) => {
+    socket.on("joinOrder", (orderId, userId) => {
         socket.join(orderId);
+        socketsMap.set(userId, socket);
+
+    })
+    socket.on("joinDashboard", (adminId) => {
+        socket.join(adminId);
+        socketsMap.set(adminId, socket);
+        activeAdmins.add(adminId);
+
+
+
+    })
+    socket.on("disconnect", () => {
+        socketsMap.forEach((value, key) => {
+            if (value === socket) {
+                socketsMap.delete(key);
+                activeAdmins.delete(key);
+            }
+        })
     })
 })
 
@@ -55,12 +84,19 @@ app.get("/api/geocode", async (req: Request, res: Response) => {
     res.json(data);
 })
 
+// apis
 app.use("/api/auth", authRoute);
 app.use("/api/restaurant", restaurantRoute);
 app.use("/api/cart", cartRoute);
 app.use("/api/order", orderRoute);
 app.use("/api/payment", payRoute);
 app.use("/api/courier", courierRoute);
+app.use("/api/promocode", promocodeRoute);
+
+// cron for deleting all caching promocodes in users every month
+nodeCron.schedule("0 0 * * 1", async () => {
+    await User.updateMany({}, { $set: { promocodes: null } });
+})
 
 mongoose.connect(process.env.MONGO_URI!).then(() => console.log("MongoDB connected"))
     .catch(err => {

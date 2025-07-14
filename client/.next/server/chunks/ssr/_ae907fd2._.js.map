@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 6, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"","debugId":null}},
+    {"offset": {"line": 24, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/User/Desktop/pet%20projects/FoodieHub/client/src/app/%28main%29/promocode/page.tsx"],"sourcesContent":["import { ArrowRight } from 'lucide-react'\r\nimport Link from 'next/link'\r\nimport React from 'react'\r\n\r\nconst Page = () => {\r\n    return (<div className=\"flex items-center justify-center pt-[150px]\">\r\n        <div className='flex flex-col gap-6 items-center py-4 px-3 border-borderColor rounded-lg  border-[1px] max-w-[500px] h-[300px] justify-center '>\r\n            <h1 className='section-title '>Thank you for your order!</h1>\r\n            <Link className='btn flex items-center gap-2 text-xl! px-2 py-3 group ' href={\"/orders\"}>\r\n                <span>Go to your orders</span>\r\n                <ArrowRight className='group-hover:translate-y-[2px] ' />\r\n            </Link>\r\n        </div>\r\n    </div>\r\n    )\r\n}\r\n\r\nexport default Page"],"names":[],"mappings":";;;;AAAA;AACA;;;;AAGA,MAAM,OAAO;IACT,qBAAQ,8OAAC;QAAI,WAAU;kBACnB,cAAA,8OAAC;YAAI,WAAU;;8BACX,8OAAC;oBAAG,WAAU;8BAAiB;;;;;;8BAC/B,8OAAC,4JAAA,CAAA,UAAI;oBAAC,WAAU;oBAAwD,MAAM;;sCAC1E,8OAAC;sCAAK;;;;;;sCACN,8OAAC,kNAAA,CAAA,aAAU;4BAAC,WAAU;;;;;;;;;;;;;;;;;;;;;;;AAKtC;uCAEe","debugId":null}}]
+}

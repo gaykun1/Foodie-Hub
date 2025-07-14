@@ -28,22 +28,41 @@ export const getCart = async (req: Request, res: Response): Promise<void> => {
 
 export const updateCartAmount = async (req: Request, res: Response): Promise<void> => {
     const { dishId, amount, title } = req.body;
+    console.log(amount, title);
     try {
-        const cart = await Cart.findOneAndUpdate({ userId: (req as AuthRequest).userId, "items.dishId": dishId }, { $set: { "items.$.amount": amount } }, { new: true });
-        const order = await Order.findOne({ userId: (req as AuthRequest).userId, status: "Processing" });
-        if (order) {
-            const item = order.items.find(item => item.title == title);
+        const order = await Order.findOne({ userId: (req as AuthRequest).userId, status: null });
+        if (amount === 0) {
+            const cart = await Cart.findOneAndUpdate({ userId: (req as AuthRequest).userId }, { $pull: { items: { dishId: dishId } } },);
+            if (order) {
+                order.items = order.items.filter((item) => item.title !== title);
+                if (order.items.length == 0) {
+                    await Order.findByIdAndDelete(order._id);
+                }
+                await order.save();
+            }
+            res.status(200);
 
-            if (item)
-                item.amount = amount;
+            return;
+        } else {
 
-            const sum = order.items.reduce((acc, cur) => acc + (cur.amount * cur.price), 0);
-            order.totalPrice = sum;
-            await order.save();
+            const cart = await Cart.findOneAndUpdate({ userId: (req as AuthRequest).userId, "items.dishId": dishId }, { $set: { "items.$.amount": amount } });
+
+            if (order) {
+                const item = order.items.find(item => item.title == title);
+
+                if (item)
+                    item.amount = amount;
+
+                const sum = order.items.reduce((acc, cur) => acc + (cur.amount * cur.price), 0);
+                order.totalPrice = sum;
+                await order.save();
+            }
+            res.status(200);
+
+            return;
         }
-        res.status(200);
 
-        return;
+
     } catch (err) {
         res.status(500).json("Server error!");
         return;
@@ -62,11 +81,10 @@ export const addToCart = async (req: Request, res: Response): Promise<void> => {
                 res.status(404).json("Dish not found");
                 return;
             }
-            if (!cart.restaurantId?.equals( dish.restaurantId) && cart.restaurantId != null) {
+            if (!cart.restaurantId?.equals(dish.restaurantId) && cart.restaurantId != null) {
                 res.status(400).json("Not allowed other restaurants!");
                 return;
             }
-            console.log("dsadsa");
 
             cart.restaurantId = dish.restaurantId;
 

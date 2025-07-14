@@ -1,1 +1,20 @@
-{}
+{
+  "/(dashboard)/dashboard/applications/page": "app/(dashboard)/dashboard/applications/page.js",
+  "/(dashboard)/dashboard/create/page": "app/(dashboard)/dashboard/create/page.js",
+  "/(dashboard)/dashboard/menu/page": "app/(dashboard)/dashboard/menu/page.js",
+  "/(dashboard)/dashboard/page": "app/(dashboard)/dashboard/page.js",
+  "/(dashboard)/dashboard/promocode/page": "app/(dashboard)/dashboard/promocode/page.js",
+  "/(main)/courier/page": "app/(main)/courier/page.js",
+  "/(main)/orders/order/[id]/page": "app/(main)/orders/order/[id]/page.js",
+  "/(main)/orders/order/sucess/[id]/page": "app/(main)/orders/order/sucess/[id]/page.js",
+  "/(main)/orders/page": "app/(main)/orders/page.js",
+  "/(main)/page": "app/(main)/page.js",
+  "/(main)/promocode/page": "app/(main)/promocode/page.js",
+  "/(main)/restaurants/category/[category]/page": "app/(main)/restaurants/category/[category]/page.js",
+  "/(profile)/profile/favourites/page": "app/(profile)/profile/favourites/page.js",
+  "/(profile)/profile/page": "app/(profile)/profile/page.js",
+  "/(restaurant)/restaurant/menu/[id]/page": "app/(restaurant)/restaurant/menu/[id]/page.js",
+  "/(restaurant)/restaurant/reviews/[id]/page": "app/(restaurant)/restaurant/reviews/[id]/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/auth/login/page": "app/auth/login/page.js"
+}

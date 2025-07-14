@@ -1,14 +1,14 @@
 
 "use client"
 
-import { BarChart, FileUser, Home, Plus, Settings, ShoppingCart, Utensils } from "lucide-react"
+import { BarChart, FileUser, Home, Percent, Plus, Settings, ShoppingCart, Utensils } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation";
 
 const links = [
     { href: '/dashboard', label: 'Dashboard Overview', icon: <Home size={18} /> },
     { href: '/dashboard/create', label: 'Add a Restaurant', icon: <Plus size={18} /> },
-    { href: '/dashboard/orders', label: 'Orders Management', icon: <ShoppingCart size={18} /> },
+    { href: '/dashboard/promocode', label: 'Procomode Management', icon: <Percent size={18} />},
     { href: '/dashboard/menu', label: 'Menu Management', icon: <Utensils size={18} /> },
     { href: '/dashboard/applications', label: 'Applications', icon: <FileUser size={18} /> },
 ];

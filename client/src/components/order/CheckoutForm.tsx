@@ -5,7 +5,7 @@ import { useAppSelector } from "@/hooks/reduxHooks"
 import { Elements, useElements, useStripe } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
-import { Lock } from "lucide-react";
+import { Lock, Send } from "lucide-react";
 import { useParams } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 import { convertToSubcurrency } from "@/utils/payment";
@@ -252,7 +252,12 @@ const CheckoutForm = ({ order }: { order: Order }) => {
                     <span>Total</span>
                     <span>${(shipping + order.totalPrice).toFixed(2)}</span>
                 </div>
-                <div className="w-full text-center flex flex-col gap-4">
+                 <div className="flex items-center gap-2 relative overflow-hidden pr-14">
+                    <label>Promocode: </label>
+                    <input className="input px-2 py-1 uppercase" type="text" />
+                    <button className="btn absolute right-0 px-2 py-1"><Send/></button>
+                </div>
+                <div className="w-full items-center flex flex-col gap-4">
                     <button onClick={placeOrder} type="submit" className="btn py-3   mt-6      px-2 max-w-[328px] w-full">{loading ? (<span>Processing...</span>) : (<span>Place Order</span>)}</button>
 
                     <p className="text-xs  leading-4 text-gray flex items-center justify-center gap-1" ><Lock size={12} /> All transactions are secure and encrypted.</p>

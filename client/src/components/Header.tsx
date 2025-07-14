@@ -3,7 +3,7 @@
 import { LogOut } from '@/api/auth'
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks'
 import { logout } from '@/redux/authSlice'
-import { updateAmount } from '@/redux/cartSlice'
+import { deleteItem, updateAmount } from '@/redux/cartSlice'
 import { Cart, Restaurant, User } from '@/redux/reduxTypes'
 import axios from 'axios'
 import { Minus, Plus, Search, ShoppingCart, UserRound, X } from 'lucide-react'
@@ -42,8 +42,8 @@ const Header = () => {
 
   const updateCount = async (amount: number, id: string, title: string) => {
     try {
-      if (amount <= 0) {
-        return;
+      if (amount === 0) {
+        dispatch(deleteItem(title));
       }
       dispatch(updateAmount({ amount: amount, dishId: id }));
       const res = await axios.post("http://localhost:5200/api/cart/amount", { amount: amount, dishId: id, title: title }, { withCredentials: true });
@@ -86,7 +86,7 @@ const Header = () => {
         <div className="basis-[650px] flex justify-between">
           <div className='basis-[250px] '>
             <Link className='  flex gap-2 items-center group font-bold' href={"/"}>
-              <Image className='transition-transform group-hover:rotate-90' width={40} height={40} src={"logo.svg"} alt='logo' />
+              <Image className='transition-transform group-hover:rotate-90' width={40} height={40} src={"/logo.svg"} alt='logo' />
               <span className='default-link group:hover text-xl'>Foodie Hub</span>
             </Link>
           </div>
@@ -162,7 +162,7 @@ const Header = () => {
 
                             <button onClick={async () => updateCount(item.amount + 1, item.dishId._id, item.dishId.title)} className='btn p-1 border-[1px] border-borderColor'><Plus /></button>
 
-                            <button disabled={(item.amount - 1) <= 0} onClick={async () => updateCount(item.amount - 1, item.dishId._id, item.dishId.title)} className={`btn p-1 border-[1px] border-borderColor disabled:bg-gray! `}><Minus /></button>
+                            <button onClick={async () => updateCount(item.amount - 1, item.dishId._id, item.dishId.title)} className={`btn p-1 border-[1px] border-borderColor disabled:bg-gray! `}><Minus /></button>
 
                           </div>
                         </div>

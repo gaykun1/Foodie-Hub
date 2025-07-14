@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import { AuthRequest } from "../middleware/authMiddleware";
 import Order from "../models/Order";
 import Cart from "../models/Cart";
+import { activeAdmins, io } from "../server";
+import Dish from "../models/Dish";
 
 interface CartItem {
     dishId: {
@@ -33,7 +35,6 @@ export const createOrder = async (req: Request, res: Response): Promise<void> =>
             res.status(200).json(order._id);
             return;
         } else {
-            console.log(cart);
 
             const order = await Order.create({ userId: (req as AuthRequest).userId, items: [], totalPrice: 0, approxTime: 0, restaurantTitle: cart.restaurantId.title, restaurantImage: cart?.restaurantId.imageUrl });
             let sum = 0;
@@ -105,19 +106,14 @@ export const getOrders = async (req: Request, res: Response): Promise<void> => {
 
     }
 }
-
-
-export const getNumbers = async (req: Request, res: Response): Promise<void> => {
+export const getLastSevenOrders = async (req: Request, res: Response): Promise<void> => {
     try {
-        const orders = await Order.find({  });
+        const orders = await Order.find().sort({ updatedAt: -1 }).limit(7);
         if (!orders) {
             res.status(404).json("Not found!");
             return;
         }
-        const numOfOrders = orders.length;
-        const totalRevenue = orders.reduce((acc, cur) => acc + cur.totalPrice, 0);
-        const averageOrderValue = totalRevenue / numOfOrders;
-        res.status(200).json({ numOfOrders, totalRevenue, averageOrderValue });
+        res.status(200).json(orders);
         return
     }
     catch (err) {
@@ -133,11 +129,79 @@ export const getNumbers = async (req: Request, res: Response): Promise<void> => 
 }
 
 
+export const getNumbers = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const orders = await Order.find({});
+        if (!orders.length) {
+            res.status(404).json({ message: "No orders found!" });
+            return;
+        }
+
+        const now = new Date();
+
+        const numOfOrders = orders.length;
+        const totalRevenue = orders.reduce((acc, cur) => acc + cur.totalPrice, 0);
+        const averageOrderValue = +(totalRevenue / numOfOrders).toFixed(2);
+
+        const startOfThisWeek = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        const endOfThisWeek = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 7);
+        const startOfLastWeek = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7);
+        const endOfLastWeek = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+        const [ordersThisWeek, ordersLastWeek] = await Promise.all([
+            Order.find({ createdAt: { $gte: startOfThisWeek, $lte: endOfThisWeek } }),
+            Order.find({ createdAt: { $gte: startOfLastWeek, $lte: endOfLastWeek } })
+        ]);
+
+        const totalOrdersThisWeek = ordersThisWeek.length;
+        const totalOrdersLastWeek = ordersLastWeek.length;
+        const revenueThisWeek = ordersThisWeek.reduce((acc, cur) => acc + cur.totalPrice, 0);
+        const revenueLastWeek = ordersLastWeek.reduce((acc, cur) => acc + cur.totalPrice, 0);
+
+        const avgOrderValueThisWeek = totalOrdersThisWeek > 0 ? +(revenueThisWeek / totalOrdersThisWeek).toFixed(2) : 0;
+        const avgOrderValueLastWeek = totalOrdersLastWeek > 0 ? +(revenueLastWeek / totalOrdersLastWeek).toFixed(2) : 0;
+
+        const percentNumOfOrders =
+            totalOrdersLastWeek > 0
+                ? +((totalOrdersThisWeek - totalOrdersLastWeek) / totalOrdersLastWeek * 100).toFixed(2)
+                : 0;
+
+        const percentTotalRevenue =
+            revenueLastWeek > 0
+                ? +((revenueThisWeek - revenueLastWeek) / revenueLastWeek * 100).toFixed(2)
+                : 0;
+
+        const percentAvgOrderValue =
+            avgOrderValueLastWeek > 0
+                ? +((avgOrderValueThisWeek - avgOrderValueLastWeek) / avgOrderValueLastWeek * 100).toFixed(2)
+                : 0;
+
+        res.status(200).json({
+            numOfOrders: {
+                number: +numOfOrders.toFixed(2),
+                percent: percentNumOfOrders
+            },
+            totalRevenue: {
+                number: +totalRevenue.toFixed(2),
+                percent: percentTotalRevenue
+            },
+            averageOrderValue: {
+                number: +averageOrderValue.toFixed(2),
+                percent: percentAvgOrderValue
+            }
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Server error!" });
+    }
+};
+
+
+
 export const getOrdersCourier = async (req: Request, res: Response): Promise<void> => {
     const id = req.params.id;
     try {
         const orders = await Order.find({ courierId: id });
-        console.log(orders);
         if (!orders) {
             res.status(404).json("Not found!");
             return;
@@ -163,7 +227,6 @@ export const updateOrder = async (req: Request, res: Response): Promise<void> =>
     try {
         if (formData.city && formData.countryOrRegion && formData.houseNumber && formData.street) {
 
-            console.log(shipping);
             const order = await Order.findOneAndUpdate({ status: null, userId: (req as AuthRequest).userId }, {
                 $set: {
                     status: "Preparing",
@@ -175,9 +238,20 @@ export const updateOrder = async (req: Request, res: Response): Promise<void> =>
                     "adress.apartmentNumbr": formData.apartmentNumbr,
                     "adress.street": formData.street,
                 }
-            },);
+            }, { new: true });
             const cart = await Cart.findOneAndDelete({ userId: (req as AuthRequest).userId, _id: cartId });
+            if (order) {
+                for (const item of order.items) {
+                    const dish = await Dish.findOneAndUpdate({ title: item.title }, {
+                        $inc: { sold: item.amount }
+                    })
+                }
+            }
 
+            const orders = await Order.find().sort({ updatedAt: -1 }).limit(7);
+            activeAdmins.forEach(adminId => {
+                io.to(adminId).emit("updateOrders", orders);
+            });
             res.status(200).json("Created!");
             return
         }

@@ -22,6 +22,7 @@ export const signup = async (req: Request, res: Response): Promise<void> => {
             user: {
                 username: user.username,
                 favourites: user.favourites,
+                _id: user._id,
             }
         });
         return;
@@ -63,6 +64,8 @@ export const login = async (req: Request, res: Response): Promise<void> => {
             user: {
                 username: user.username,
                 favourites: user.favourites,
+                _id: user._id,
+
             }
         });
         return;
@@ -128,7 +131,7 @@ export const updateProfile = async (req: Request, res: Response): Promise<void> 
                 const hashedPassword = await bcrypt.hash(payload.newPassword, 10);
                 user.password = hashedPassword;
             }
-            
+
             await user?.save();
             res.status(200).json(user);
             return;

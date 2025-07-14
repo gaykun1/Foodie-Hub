@@ -9,6 +9,10 @@ interface IUser {
     role: string,
     email: string,
     cart: mongoose.Types.ObjectId,
+    promocodes: {
+        code: mongoose.Types.ObjectId| null,
+        isUsed: boolean,
+    }[],
 }
 
 
@@ -20,6 +24,12 @@ const userSchema = new mongoose.Schema<IUser>({
     email: { type: String, unique: true },
     role: { type: String, enum: ["user", "admin", "courier"], default: "user" },
     cart: { type: Schema.Types.ObjectId, ref: "Cart" },
+    promocodes: [
+        {
+            code: { type: Schema.Types.ObjectId, default: null, ref: "Promocode" },
+            isUsed: { type: Boolean, default: false },
+        }],
+
 })
 
 export default mongoose.model<IUser>("User", userSchema);

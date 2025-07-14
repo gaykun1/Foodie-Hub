@@ -1,5 +1,5 @@
 "use client"
-import { useParams } from "next/navigation";
+import { redirect, useParams } from "next/navigation";
 import { Order } from "@/redux/reduxTypes";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -22,8 +22,13 @@ const Page = () => {
     const getOrder = async () => {
         try {
             const res = await axios.get(`http://localhost:5200/api/order/get-order/${id}`, { withCredentials: true });
-            setOrder(res.data);
+            if (res.data) {
+                setOrder(res.data);
+
+            } 
         } catch (err) {
+            redirect("/orders");
+
             console.error(err);
         }
     }
@@ -45,7 +50,7 @@ const Page = () => {
                     amount: convertToSubcurrency(shipping + order.totalPrice)
                 }} stripe={getStripe()}>
 
-              <CheckoutForm order={order}/>
+                    <CheckoutForm order={order} />
                 </Elements>)}
 
         </>

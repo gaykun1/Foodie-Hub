@@ -172,8 +172,8 @@ const Header = ()=>{
     console.log();
     const updateCount = async (amount, id, title)=>{
         try {
-            if (amount <= 0) {
-                return;
+            if (amount === 0) {
+                dispatch((0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$redux$2f$cartSlice$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["deleteItem"])(title));
             }
             dispatch((0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$redux$2f$cartSlice$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["updateAmount"])({
                 amount: amount,
@@ -242,7 +242,7 @@ const Header = ()=>{
                                         className: "transition-transform group-hover:rotate-90",
                                         width: 40,
                                         height: 40,
-                                        src: "logo.svg",
+                                        src: "/logo.svg",
                                         alt: "logo"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/Header.tsx",
@@ -518,13 +518,12 @@ const Header = ()=>{
                                                                         columnNumber: 29
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                                                        disabled: item.amount - 1 <= 0,
                                                                         onClick: async ()=>updateCount(item.amount - 1, item.dishId._id, item.dishId.title),
                                                                         className: `btn p-1 border-[1px] border-borderColor disabled:bg-gray! `,
                                                                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$minus$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Minus$3e$__["Minus"], {}, void 0, false, {
                                                                             fileName: "[project]/src/components/Header.tsx",
                                                                             lineNumber: 165,
-                                                                            columnNumber: 231
+                                                                            columnNumber: 197
                                                                         }, this)
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/Header.tsx",
@@ -813,14 +812,14 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$star$2d$half$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__StarHalf$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/star-half.js [app-client] (ecmascript) <export default as StarHalf>");
 ;
 ;
-const calculateStars = (rating)=>{
+const calculateStars = (rating, size)=>{
     const stars = [];
     for(let i = 0; i < 5; i++){
         if (i + 1 <= rating) {
             // повна зірка
             stars.push(/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$star$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Star$3e$__["Star"], {
                 className: "text-[#636AE8FF]  fill-[#636AE8FF]",
-                size: 20
+                size: size ?? 20
             }, i, false, {
                 fileName: "[project]/src/utils/rating.tsx",
                 lineNumber: 10,
@@ -829,7 +828,7 @@ const calculateStars = (rating)=>{
         } else if (i < rating) {
             stars.push(/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$star$2d$half$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__StarHalf$3e$__["StarHalf"], {
                 className: "text-[#636AE8FF]  fill-[#636AE8FF]",
-                size: 20
+                size: size ?? 20
             }, i, false, {
                 fileName: "[project]/src/utils/rating.tsx",
                 lineNumber: 13,
@@ -838,7 +837,7 @@ const calculateStars = (rating)=>{
         } else {
             stars.push(/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$star$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Star$3e$__["Star"], {
                 className: "text-[#636AE8FF]  ",
-                size: 20
+                size: size ?? 20
             }, i, false, {
                 fileName: "[project]/src/utils/rating.tsx",
                 lineNumber: 15,

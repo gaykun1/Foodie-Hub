@@ -41,7 +41,6 @@ const OrderSchema = new Schema<Order>({
     amount: { type: Number, required: true },
   }],
   totalPrice: { type: Number, required: true },
-  createdAt: { type: Date, required: true, default: Date.now() },
   status: { type: String, enum: ["Delivering", "Delivered", "Preparing"], default: null },
   fullName: { type: String },
   adress: {
@@ -53,6 +52,6 @@ const OrderSchema = new Schema<Order>({
 
   }
 
-});
+},{ timestamps: true });
 
 export default mongoose.model('Order', OrderSchema);

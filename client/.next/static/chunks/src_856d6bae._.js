@@ -107,6 +107,7 @@ var { g: global, __dirname, k: __turbopack_refresh__, m: module } = __turbopack_
 {
 __turbopack_context__.s({
     "default": (()=>__TURBOPACK__default__export__),
+    "deleteItem": (()=>deleteItem),
     "getCart": (()=>getCart),
     "updateAmount": (()=>updateAmount)
 });
@@ -128,10 +129,14 @@ const cartSlice = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modul
             if (item) {
                 item.amount = action.payload.amount;
             }
+        },
+        deleteItem: (state, action)=>{
+            if (!state.cart) return;
+            state.cart.items = state.cart.items.filter((item)=>item.dishId.title !== action.payload);
         }
     }
 });
-const { getCart, updateAmount } = cartSlice.actions;
+const { getCart, updateAmount, deleteItem } = cartSlice.actions;
 const __TURBOPACK__default__export__ = cartSlice.reducer;
 if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
     __turbopack_context__.k.registerExports(module, globalThis.$RefreshHelpers$);

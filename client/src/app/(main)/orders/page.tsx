@@ -76,7 +76,7 @@ const Page = () => {
   return (
     <div className='py-8 '>
       <h1 className='text-[36px] font-extrabold leading-10 mb-9'>Your Orders</h1>
-      {orders ? (
+      {orders && orders.length > 0 ? (
         <div className="flex gap-8">
           <div className="basis-[874px]  pt-1">
             {/* current orders */}
@@ -105,6 +105,7 @@ const Page = () => {
               </div>
             </div>
           </div>
+
           <div className=" grow-1 flex flex-col gap-8">
             <div className="shadow-xs border-[1px] border-borderColor rounded-lg p-[25px]">
               <div className="flex flex-col mb-8 gap-1.5">
@@ -116,7 +117,7 @@ const Page = () => {
                 <p className='text-sm leading-5 text-gray'>Your order is on its way to {viewDetails?.adress.houseNumber} {viewDetails?.adress.street}</p>
               </div>
               <div className="overflow-hidden  rounded-lg h-[250px] w-[420px]">
-                <MapTracker Width='420px' Height='250px'  courierLocation={courierLocation} socket={socket} isWorking={viewDetails} />
+                <MapTracker Width='420px' Height='250px' courierLocation={courierLocation} socket={socket} isWorking={viewDetails} />
 
               </div>
             </div>

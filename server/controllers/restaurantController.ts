@@ -4,6 +4,7 @@ import User from "../models/User";
 import { AuthRequest } from "../middleware/authMiddleware";
 import Dish from "../models/Dish";
 import Review, { ReviewType } from "../models/Review";
+import { activeAdmins, io } from "../server";
 
 
 
@@ -30,7 +31,6 @@ export const getRestaurantsFiltered = async (req: Request, res: Response): Promi
 
 export const createItem = async (req: Request, res: Response) => {
     const restaurantData = req.body;
-    console.log(req.body);
     try {
 
 
@@ -65,7 +65,6 @@ export const createItem = async (req: Request, res: Response) => {
 };
 export const handleAbout = async (req: Request, res: Response) => {
     const { id, info } = req.body;
-    console.log(req.body);
     try {
 
         const restaurant = await Restaurant.findById(id);
@@ -89,7 +88,6 @@ export const handleAbout = async (req: Request, res: Response) => {
 
 export const getAbout = async (req: Request, res: Response) => {
     const id = req.params.id;
-    console.log(req.body);
     try {
 
         const restaurant = await Restaurant.findById(id);
@@ -111,13 +109,53 @@ export const getAbout = async (req: Request, res: Response) => {
     }
 };
 
+export const getLastSevenReviews = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const reviews = await Review.find().populate({ path: "sender", select: "username" }).sort({ updatedAt: -1 }).limit(7);
+        if (!reviews) {
+            res.status(404).json("Not found!");
+            return;
+        }
+        res.status(200).json(reviews);
+        return
+    }
+    catch (err) {
 
+
+        res.status(500).json("Server error!");
+        return;
+
+
+
+
+    }
+}
+export const getTopSevenDishes = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const topDishes = await Dish.find().sort({ sold: -1 }).limit(7);
+        if (!topDishes) {
+            res.status(404).json("Not found!");
+            return;
+        }
+        res.status(200).json(topDishes);
+        return
+    }
+    catch (err) {
+
+
+        res.status(500).json("Server error!");
+        return;
+
+
+
+
+    }
+}
 
 
 
 export const createDish = async (req: Request, res: Response) => {
     const { dish, id } = req.body;
-    console.log(dish, id);
     try {
 
 
@@ -252,7 +290,6 @@ export const deleteDish = async (req: Request, res: Response): Promise<void> => 
     const id = req.params.id;
     try {
         const dish = await Dish.findByIdAndDelete(id);
-        console.log(dish);
         if (!dish) {
             res.status(404).json({ error: "Dish not found" });
             return;
@@ -278,7 +315,6 @@ export const deleteDish = async (req: Request, res: Response): Promise<void> => 
 
 export const createReview = async (req: Request, res: Response) => {
     const { id, text, rating } = req.body;
-    console.log(id, text, rating);
     try {
         const newReview = new Review({
             sender: (req as AuthRequest).userId,
@@ -295,6 +331,10 @@ export const createReview = async (req: Request, res: Response) => {
             const sum = restaurant?.reviews.reduce((acc, cur) => acc + cur.rating, 0);
             restaurant.rating = parseFloat((sum / (restaurant.reviews.length)).toFixed(1));
             await restaurant.save();
+            const reviews = await Review.find().populate({ path: "sender", select: "username" }).sort({ updatedAt: -1 }).limit(7);
+            activeAdmins.forEach(adminId => {
+                io.to(adminId).emit("updateReviews", reviews);
+            });
             res.status(201).json(newReview);
             return;
         }

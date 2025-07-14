@@ -1,7 +1,8 @@
 import express from "express"
 import { authMiddleware } from "../middleware/authMiddleware";
-import { createOrder, getFreeOrders, getNumbers, getOrder, getOrders, getOrdersCourier, updateOrder } from "../controllers/orderController";
+import { createOrder, getFreeOrders,  getLastSevenOrders, getNumbers, getOrder, getOrders, getOrdersCourier, updateOrder } from "../controllers/orderController";
 import { courierMiddleware } from "../middleware/courierMiddleware";
+import { adminMiddleware } from "../middleware/adminMiddleware";
 
 const orderRoute = express.Router();
 
@@ -9,8 +10,9 @@ orderRoute.post("/create-order", authMiddleware, createOrder);
 orderRoute.patch("/update-order", authMiddleware, updateOrder);
 orderRoute.get("/get-order/:id", authMiddleware, getOrder);
 orderRoute.get("/get-orders", authMiddleware, getOrders);
+orderRoute.get("/get-last-seven", adminMiddleware, getLastSevenOrders);
 orderRoute.get("/get-orders-courier/:id", getOrdersCourier);
-orderRoute.get("/order-values", getNumbers);
+orderRoute.get("/order-values", adminMiddleware, getNumbers);
 
 orderRoute.get("/free-orders/:city", getFreeOrders);
 
