@@ -84,56 +84,59 @@ const page = ()=>{
                         children: [
                             items.map((item, index)=>{
                                 return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "flex justify-between overflow-hidden rounded-md items-center border-[1px]",
+                                    className: "flex  gap-4 border-[1px] p-4 rounded-lg border-borderColor ",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "flex gap-3 basis-[350px]",
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
-                                                    src: item.imageUrl,
-                                                    className: "max-w-[100px] w-full h-[70px] border-r-[1px]",
-                                                    alt: ""
-                                                }, void 0, false, {
-                                                    fileName: "[project]/src/app/(dashboard)/dashboard/menu/page.tsx",
-                                                    lineNumber: 44,
-                                                    columnNumber: 45
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
-                                                    className: "text-2xl font-medium ",
-                                                    children: [
-                                                        'Restaurant "',
-                                                        item.title,
-                                                        '" '
-                                                    ]
-                                                }, void 0, true, {
-                                                    fileName: "[project]/src/app/(dashboard)/dashboard/menu/page.tsx",
-                                                    lineNumber: 45,
-                                                    columnNumber: 45
-                                                }, this)
-                                            ]
-                                        }, void 0, true, {
+                                            className: " border-[1px] size-20 relative  border-borderColor rounded-md overflow-hidden",
+                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
+                                                className: "object-cover absolute top-0 left-0 w-full h-full",
+                                                src: item.imageUrl,
+                                                alt: "dish image"
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/app/(dashboard)/dashboard/menu/page.tsx",
+                                                lineNumber: 44,
+                                                columnNumber: 45
+                                            }, this)
+                                        }, void 0, false, {
                                             fileName: "[project]/src/app/(dashboard)/dashboard/menu/page.tsx",
                                             lineNumber: 43,
                                             columnNumber: 41
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "flex ",
-                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
-                                                href: `menu/${item._id}`,
-                                                className: "btn p-3 mr-5",
-                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$pen$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Pen$3e$__["Pen"], {}, void 0, false, {
+                                            className: "flex flex-col justify-between",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                                    className: "text-xl leading-6 font-semibold",
+                                                    children: item.title
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/app/(dashboard)/dashboard/menu/page.tsx",
+                                                    lineNumber: 48,
+                                                    columnNumber: 45
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "flex ",
+                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
+                                                        href: `menu/${item._id}`,
+                                                        className: "btn p-3 mr-5",
+                                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$pen$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Pen$3e$__["Pen"], {}, void 0, false, {
+                                                            fileName: "[project]/src/app/(dashboard)/dashboard/menu/page.tsx",
+                                                            lineNumber: 53,
+                                                            columnNumber: 53
+                                                        }, this)
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/app/(dashboard)/dashboard/menu/page.tsx",
+                                                        lineNumber: 52,
+                                                        columnNumber: 49
+                                                    }, this)
+                                                }, void 0, false, {
                                                     fileName: "[project]/src/app/(dashboard)/dashboard/menu/page.tsx",
                                                     lineNumber: 51,
-                                                    columnNumber: 49
+                                                    columnNumber: 45
                                                 }, this)
-                                            }, void 0, false, {
-                                                fileName: "[project]/src/app/(dashboard)/dashboard/menu/page.tsx",
-                                                lineNumber: 50,
-                                                columnNumber: 45
-                                            }, this)
-                                        }, void 0, false, {
+                                            ]
+                                        }, void 0, true, {
                                             fileName: "[project]/src/app/(dashboard)/dashboard/menu/page.tsx",
-                                            lineNumber: 49,
+                                            lineNumber: 47,
                                             columnNumber: 41
                                         }, this)
                                     ]
@@ -153,7 +156,7 @@ const page = ()=>{
                         children: "Not found!"
                     }, void 0, false, {
                         fileName: "[project]/src/app/(dashboard)/dashboard/menu/page.tsx",
-                        lineNumber: 61,
+                        lineNumber: 64,
                         columnNumber: 29
                     }, this)
                 }, void 0, false, {

@@ -121,7 +121,7 @@ const page = () => {
                         </div>
                     </div>
 
-                    <button type="submit" className="btn ml-auto p-3 text-lg w-[100px] " disabled={loading}>
+                    <button type="submit" className="btn  p-3 text-lg w-[100px] " disabled={loading}>
                         {loading ? "Creating..." : "Create"}
                     </button>
                 </form>

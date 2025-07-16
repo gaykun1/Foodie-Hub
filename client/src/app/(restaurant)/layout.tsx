@@ -8,6 +8,7 @@ import AuthClientUpload from "@/components/AuthClientUpload";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import SideBar from "@/components/Dashboard/SideBar";
 import HeaderRestaurant from "@/components/Restaurant/HeaderRestaurant";
+import Footer from "@/components/Footer";
 
 
 
@@ -30,6 +31,7 @@ export default async function RootLayout({
 
         {children}
       </div>
+      <Footer/>
     </Providers>
 
   );

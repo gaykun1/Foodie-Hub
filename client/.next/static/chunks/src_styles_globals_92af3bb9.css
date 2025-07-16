@@ -496,10 +496,6 @@
     margin-left: calc(var(--spacing) * 2);
   }
 
-  .ml-auto {
-    margin-left: auto;
-  }
-
   .flex {
     display: flex;
   }
@@ -545,10 +541,6 @@
     height: calc(var(--spacing) * 4);
   }
 
-  .h-9 {
-    height: calc(var(--spacing) * 9);
-  }
-
   .h-10 {
     height: calc(var(--spacing) * 10);
   }
@@ -571,10 +563,6 @@
 
   .h-\[44px\] {
     height: 44px;
-  }
-
-  .h-\[70px\] {
-    height: 70px;
   }
 
   .h-\[100px\] {
@@ -617,10 +605,6 @@
     width: calc(var(--spacing) * 4);
   }
 
-  .w-10 {
-    width: calc(var(--spacing) * 10);
-  }
-
   .w-12 {
     width: calc(var(--spacing) * 12);
   }
@@ -651,10 +635,6 @@
 
   .w-full {
     width: 100%;
-  }
-
-  .max-w-\[100px\] {
-    max-width: 100px;
   }
 
   .max-w-\[135px\] {
@@ -735,10 +715,6 @@
 
   .basis-\[342px\] {
     flex-basis: 342px;
-  }
-
-  .basis-\[350px\] {
-    flex-basis: 350px;
   }
 
   .basis-\[550px\] {
@@ -913,10 +889,6 @@
     row-gap: calc(var(--spacing) * 3.5);
   }
 
-  .place-self-start {
-    place-self: start;
-  }
-
   .overflow-hidden {
     overflow: hidden;
   }
@@ -1051,10 +1023,6 @@
 
   .bg-\[\#F7F7F7FF\], .bg-\[\#f7f7f7FF\] {
     background-color: #f7f7f7;
-  }
-
-  .bg-black {
-    background-color: var(--color-black);
   }
 
   .bg-borderColor\! {
@@ -1647,6 +1615,12 @@
   }
 
   @media (hover: hover) {
+    .group-hover\:\!text-primary:is(:where(.group):hover *) {
+      color: var(--color-primary) !important;
+    }
+  }
+
+  @media (hover: hover) {
     .group-hover\:text-black:is(:where(.group):hover *) {
       color: var(--color-black);
     }
@@ -1655,12 +1629,6 @@
   @media (hover: hover) {
     .group-hover\:text-primary:is(:where(.group):hover *) {
       color: var(--color-primary);
-    }
-  }
-
-  @media (hover: hover) {
-    .hover\:bg-\[\#4850E4FF\]:hover {
-      background-color: #4850e4;
     }
   }
 
@@ -1780,7 +1748,6 @@
   line-height: calc(var(--spacing) * 7);
   --tw-font-weight: var(--font-weight-bold);
   font-weight: var(--font-weight-bold);
-  color: var(--color-primary);
   transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to;
   transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
   transition-duration: var(--tw-duration, var(--default-transition-duration));
@@ -1794,7 +1761,7 @@
 
 @media (hover: hover) {
   .default-link:hover {
-    color: var(--color-secondary);
+    color: var(--color-primary);
   }
 }
 

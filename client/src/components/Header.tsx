@@ -85,21 +85,21 @@ const Header = () => {
       <div className='py-2 flex items-center justify-between  _container'>
         <div className="basis-[650px] flex justify-between">
           <div className='basis-[250px] '>
-            <Link className='  flex gap-2 items-center group font-bold' href={"/"}>
+            <Link className='  flex gap-2 items-center group font-bold w-fit' href={"/"}>
               <Image className='transition-transform group-hover:rotate-90' width={40} height={40} src={"/logo.svg"} alt='logo' />
-              <span className='default-link group:hover text-xl'>Foodie Hub</span>
+              <span className='default-link group-hover:!text-primary text-xl'>Foodie Hub</span>
             </Link>
           </div>
           <nav className='basis-[250px] grow-1  flex gap-[18px] items-center'>
-            {user?.role !== "admin" ? (<><Link className='hover:text-primary font-bold' href={"/"}>Home</Link>
-              <Link className='hover:text-primary font-bold' href={"/restaurants/category/all-restaurants"}>Restaurants</Link>
-              <Link className='hover:text-primary font-bold' href={"/orders"}>Orders</Link>
-              {user?.role === "courier" ? (<Link className='hover:text-primary font-bold' href={"/courier"}>Courier page</Link>
-              ) : (<Link className='hover:text-primary font-bold' href={"/job"}>Get a job</Link>
+            {user?.role !== "admin" ? (<><Link className='default-link font-bold' href={"/"}>Home</Link>
+              <Link className='default-link font-bold' href={"/restaurants/category/all-restaurants"}>Restaurants</Link>
+              <Link className='default-link font-bold' href={"/orders"}>Orders</Link>
+              {user?.role === "courier" ? (<Link className='default-link font-bold' href={"/courier"}>Courier page</Link>
+              ) : (<Link className='default-link font-bold' href={"/job"}>Get a job</Link>
               )}
             </>
 
-            ) : (<Link className='hover:text-primary font-bold' href={"/dashboard"}>Dashboard</Link>)}
+            ) : (<Link className='default-link font-bold' href={"/dashboard"}>Dashboard</Link>)}
           </nav>
         </div>
         <div className="flex gap-5 items-center relative">

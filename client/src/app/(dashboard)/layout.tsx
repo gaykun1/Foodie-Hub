@@ -5,9 +5,9 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import Providers from "../providers/Providers";
 import AuthClientUpload from "@/components/AuthClientUpload";
-import { useAppSelector } from "@/hooks/reduxHooks";
 import axios from "axios";
 import SideBar from "@/components/Dashboard/SideBar";
+import Footer from "@/components/Footer";
 
 
 
@@ -42,6 +42,7 @@ export default async function RootLayout({
                 </div>
                 </div>
               </div>
+              <Footer/>
             </Providers>
          
       );

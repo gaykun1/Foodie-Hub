@@ -6,6 +6,7 @@ import AuthClientUpload from "@/components/AuthClientUpload";
 import SideBarProfile from "@/components/Profile/SideBar";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import Footer from "@/components/Footer";
 
 
 
@@ -27,6 +28,7 @@ export default async function RootLayout({
           {children}
         </div>
       </div>
+      <Footer />
     </Providers>
 
   );

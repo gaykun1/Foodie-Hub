@@ -39,17 +39,20 @@ const page = () => {
                         <div className='flex flex-col gap-4'>{
                             items.map((item, index) => {
                                 return (
-                                    <div key={index} className="flex justify-between overflow-hidden rounded-md items-center border-[1px]">
-                                        <div className="flex gap-3 basis-[350px]">
-                                            <img src={item.imageUrl} className='max-w-[100px] w-full h-[70px] border-r-[1px]' alt="" />
-                                            <h1 className='text-2xl font-medium '>Restaurant "{item.title}" </h1>
+                                    <div key={index} className="flex  gap-4 border-[1px] p-4 rounded-lg border-borderColor ">
+                                        <div className=" border-[1px] size-20 relative  border-borderColor rounded-md overflow-hidden">
+                                            <img className="object-cover absolute top-0 left-0 w-full h-full" src={item.imageUrl} alt="dish image" />
 
                                         </div>
-
-                                        <div className="flex ">
-                                            <Link href={`menu/${item._id}`} className="btn p-3 mr-5">
-                                                <Pen />
-                                            </Link>
+                                        <div className="flex flex-col justify-between">
+                                            <h3 className='text-xl leading-6 font-semibold'>
+                                                {item.title}
+                                            </h3>
+                                            <div className="flex ">
+                                                <Link href={`menu/${item._id}`} className="btn p-3 mr-5">
+                                                    <Pen />
+                                                </Link>
+                                            </div>
                                         </div>
                                     </div>
                                 )

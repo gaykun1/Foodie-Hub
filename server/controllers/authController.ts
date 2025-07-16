@@ -10,10 +10,10 @@ import { AuthRequest } from "../middleware/authMiddleware";
 // Signing with bcrypt for hashing password
 export const signup = async (req: Request, res: Response): Promise<void> => {
     const { username, password } = req.body;
+    console.log(req.body);
     try {
-
         const hashedPasword = await bcrypt.hash(password, 10);
-        const user = await User.create({ username: username, password: hashedPasword, favourites: [], phoneNumber: "", email: "" });
+        const user = await User.create({ username: username, password: hashedPasword });
         // creating token
         const token = jwt.sign({ userId: user._id, role: user.role }, process.env.JWT_SECRET!, { expiresIn: "1h" });
         // adding token to cookie field with name "token"

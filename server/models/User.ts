@@ -6,25 +6,24 @@ interface IUser {
     password: string,
     phoneNumber: string,
     favourites: string[];
-    role: string,
+    role: "user"| "admin"| "courier"| "restaurant",
     email: string,
     cart: mongoose.Types.ObjectId,
     promocodes: mongoose.Types.ObjectId[] | null,
     usualPromocode: mongoose.Types.ObjectId | null,
     address: {
         street: string,
-        houseNumber: string,
+        houseNumber: number,
         city: string,
-    }
-
-
+    };
+    restaurantId: mongoose.Types.ObjectId,
 }
 
 
 const userSchema = new mongoose.Schema<IUser>({
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true, },
-    favourites: [{ type: mongoose.Schema.Types.ObjectId, ref: "Restaurant" }],
+    favourites: [{ type: Schema.Types.ObjectId, ref: "Restaurant", default: [] }],
     phoneNumber: { type: String, unique: true },
     email: { type: String, unique: true },
     address: {
@@ -32,12 +31,11 @@ const userSchema = new mongoose.Schema<IUser>({
         city: { type: String },
         houseNumber: { type: Number },
     },
-
-    role: { type: String, enum: ["user", "admin", "courier"], default: "user" },
+    role: { type: String, enum: ["user", "admin", "courier", "restaurant"], default: "user" },
     cart: { type: Schema.Types.ObjectId, ref: "Cart" },
     promocodes: [{ type: Schema.Types.ObjectId, default: null, ref: "Promocode" }],
     usualPromocode: { type: Schema.Types.ObjectId, default: null, ref: "Promocode" },
-
+    restaurantId: { type: Schema.Types.ObjectId, ref: "Restaurant" },
 
 
 
