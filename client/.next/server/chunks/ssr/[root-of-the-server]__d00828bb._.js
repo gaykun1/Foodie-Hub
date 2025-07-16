@@ -754,7 +754,7 @@ const MapTracker = ({ isWorking, Width, Height, socket, courierLocation })=>{
             children: "Access denied"
         }, void 0, false, {
             fileName: "[project]/src/components/order/MapTracker.tsx",
-            lineNumber: 77,
+            lineNumber: 78,
             columnNumber: 13
         }, this);
     }
@@ -763,7 +763,7 @@ const MapTracker = ({ isWorking, Width, Height, socket, courierLocation })=>{
             className: "animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid mx-auto"
         }, void 0, false, {
             fileName: "[project]/src/components/order/MapTracker.tsx",
-            lineNumber: 83,
+            lineNumber: 84,
             columnNumber: 32
         }, this) : courierLocation != null && receiverLocation != null && restaurantLocation != null && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$leaflet$2f$lib$2f$MapContainer$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["MapContainer"], {
             zoom: 15,
@@ -773,12 +773,17 @@ const MapTracker = ({ isWorking, Width, Height, socket, courierLocation })=>{
             },
             center: receiverLocation,
             children: [
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(InvalidateMapSize, {}, void 0, false, {
+                    fileName: "[project]/src/components/order/MapTracker.tsx",
+                    lineNumber: 87,
+                    columnNumber: 21
+                }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$leaflet$2f$lib$2f$TileLayer$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TileLayer"], {
                     attribution: "copy& Copyright openStreetMap ",
                     url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 }, void 0, false, {
                     fileName: "[project]/src/components/order/MapTracker.tsx",
-                    lineNumber: 87,
+                    lineNumber: 88,
                     columnNumber: 21
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$leaflet$2f$lib$2f$Marker$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Marker"], {
@@ -786,7 +791,7 @@ const MapTracker = ({ isWorking, Width, Height, socket, courierLocation })=>{
                     icon: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$iconMapObjects$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["receiverIcon"]
                 }, void 0, false, {
                     fileName: "[project]/src/components/order/MapTracker.tsx",
-                    lineNumber: 88,
+                    lineNumber: 89,
                     columnNumber: 21
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$leaflet$2f$lib$2f$Marker$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Marker"], {
@@ -794,7 +799,7 @@ const MapTracker = ({ isWorking, Width, Height, socket, courierLocation })=>{
                     icon: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$iconMapObjects$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["restaurantIcon"]
                 }, void 0, false, {
                     fileName: "[project]/src/components/order/MapTracker.tsx",
-                    lineNumber: 89,
+                    lineNumber: 90,
                     columnNumber: 21
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$leaflet$2f$lib$2f$Marker$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Marker"], {
@@ -802,13 +807,13 @@ const MapTracker = ({ isWorking, Width, Height, socket, courierLocation })=>{
                     icon: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$iconMapObjects$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["courierIcon"]
                 }, void 0, false, {
                     fileName: "[project]/src/components/order/MapTracker.tsx",
-                    lineNumber: 90,
+                    lineNumber: 91,
                     columnNumber: 21
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/order/MapTracker.tsx",
-            lineNumber: 85,
+            lineNumber: 86,
             columnNumber: 17
         }, this)
     }, void 0, false);

@@ -8,7 +8,30 @@ export enum Category {
   Desserts = "Desserts",
 }
 
-const RestaurantSchema = new Schema({
+
+export interface IRestaurant  {
+  title: string,
+  description: String,
+  adress: {
+    city: string,
+    street: string,
+    houseNumber: string,
+  },
+  phone: string,
+  websiteUrl: String,
+  imageUrl: String,
+  categories: Category[],
+  rating: number,
+  startDay: string,
+  endDay: string,
+  startHour: string,
+  endHour: string,
+  dishes: mongoose.Types.ObjectId[],
+  reviews: mongoose.Types.ObjectId[],
+  about: string,
+}
+
+const RestaurantSchema = new Schema<IRestaurant>({
   title: { type: String, required: true },
   description: String,
   adress: {
@@ -25,8 +48,8 @@ const RestaurantSchema = new Schema({
   endDay: { type: String, required: true },
   startHour: { type: String, required: true },
   endHour: { type: String, required: true },
-  dishes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Dish" }],
-  reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: "Review" }],
+  dishes: [{ type:Schema.Types.ObjectId, ref: "Dish" }],
+  reviews: [{ type: Schema.Types.ObjectId, ref: "Review" }],
   about: String,
 });
 

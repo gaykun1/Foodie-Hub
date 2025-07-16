@@ -4,10 +4,11 @@ import { AuthRequest } from "../middleware/authMiddleware";
 import Order from "../models/Order";
 import Dish from "../models/Dish";
 
+// get cart func
 export const getCart = async (req: Request, res: Response): Promise<void> => {
     try {
         let cart = await Cart.findOne({ userId: (req as AuthRequest).userId }).populate({ path: "items.dishId" }).populate({ path: "restaurantId", select: "title imageUrl" });
-        if (!cart) {
+        if (!cart) {//not having cart we create a new one
             cart = await Cart.create({ userId: (req as AuthRequest).userId, items: [], restaurantId: null });
             cart = await Cart.findOne({ userId: (req as AuthRequest).userId })
                 .populate({ path: "items.dishId" }).populate({ path: "restaurantId", select: "title imageUrl" });
@@ -25,7 +26,7 @@ export const getCart = async (req: Request, res: Response): Promise<void> => {
     }
 
 }
-
+// updating cart items amount
 export const updateCartAmount = async (req: Request, res: Response): Promise<void> => {
     const { dishId, amount, title } = req.body;
     console.log(amount, title);
@@ -34,7 +35,7 @@ export const updateCartAmount = async (req: Request, res: Response): Promise<voi
         if (amount === 0) {
             const cart = await Cart.findOneAndUpdate({ userId: (req as AuthRequest).userId }, { $pull: { items: { dishId: dishId } } },);
             if (order) {
-                order.items = order.items.filter((item) => item.title !== title);
+                order.items = order.items.filter((item) => item.title !== title); //deleting items out of the cart if amount equals 0
                 if (order.items.length == 0) {
                     await Order.findByIdAndDelete(order._id);
                 }
@@ -69,7 +70,7 @@ export const updateCartAmount = async (req: Request, res: Response): Promise<voi
     }
 
 }
-
+// add to cart func with validation "if in cart already"
 export const addToCart = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.body;
     try {
@@ -81,12 +82,14 @@ export const addToCart = async (req: Request, res: Response): Promise<void> => {
                 res.status(404).json("Dish not found");
                 return;
             }
+            //validation for checking if dish from other restaurant 
             if (!cart.restaurantId?.equals(dish.restaurantId) && cart.restaurantId != null) {
                 res.status(400).json("Not allowed other restaurants!");
                 return;
             }
+            if (dish.restaurantId)
+                cart.restaurantId = dish.restaurantId;
 
-            cart.restaurantId = dish.restaurantId;
 
             const item = cart.items.find(item => item.dishId.equals(id));
 

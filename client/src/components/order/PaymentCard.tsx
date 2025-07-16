@@ -1,11 +1,5 @@
 "use client"
-import { useForm } from "react-hook-form";
 import {
-    CardNumberElement,
-    CardExpiryElement,
-    CardCvcElement,
-    useStripe,
-    useElements,
     PaymentElement,
 } from "@stripe/react-stripe-js";
 import { User } from "lucide-react";

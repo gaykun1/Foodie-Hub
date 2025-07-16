@@ -93,9 +93,10 @@ app.use("/api/payment", payRoute);
 app.use("/api/courier", courierRoute);
 app.use("/api/promocode", promocodeRoute);
 
-// cron for deleting all caching promocodes in users every month
+// cron for deleting all caching promocodes in users every week
 nodeCron.schedule("0 0 * * 1", async () => {
-    await User.updateMany({}, { $set: { promocodes: null } });
+    await User.updateOne({}, { $set: { promocodes: null, usualPromocode: null } });
+    await Promocode.deleteMany({});
 })
 
 mongoose.connect(process.env.MONGO_URI!).then(() => console.log("MongoDB connected"))

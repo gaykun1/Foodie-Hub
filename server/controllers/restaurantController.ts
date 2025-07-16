@@ -2,8 +2,8 @@ import { Request, Response } from "express";
 import Restaurant, { Category } from "../models/Restaurant";
 import User from "../models/User";
 import { AuthRequest } from "../middleware/authMiddleware";
-import Dish from "../models/Dish";
-import Review, { ReviewType } from "../models/Review";
+import Dish, { IDish } from "../models/Dish";
+import Review, { IReview } from "../models/Review";
 import { activeAdmins, io } from "../server";
 
 
@@ -151,7 +151,22 @@ export const getTopSevenDishes = async (req: Request, res: Response): Promise<vo
 
     }
 }
-
+export const getDishesNearYou = async (req: Request, res: Response): Promise<void> => {
+    const city = req.query.city;
+    try {
+        const restaurants = await Restaurant.find({ "adress.city": city }).populate<{ dishes: IDish[] }>("dishes");
+        let dishes: IDish[] = [];
+        restaurants.forEach((item) => {
+            dishes.push(...item.dishes);
+        })
+        const newDishes = dishes.sort((a, b) => b.sold - a.sold).slice(0, 5);
+        res.status(200).json(newDishes);
+        return;
+    } catch (err) {
+        res.status(500).json("Server error!");
+        return;
+    }
+}
 
 
 export const createDish = async (req: Request, res: Response) => {
@@ -326,7 +341,7 @@ export const createReview = async (req: Request, res: Response) => {
         const restaurant = await Restaurant.findByIdAndUpdate(id, {
             $push: { reviews: newReview._id }
         }, { new: true }
-        ).populate<{ reviews: ReviewType[] }>({ path: "reviews" });
+        ).populate<{ reviews: IReview[] }>({ path: "reviews" });
         if (restaurant) {
             const sum = restaurant?.reviews.reduce((acc, cur) => acc + cur.rating, 0);
             restaurant.rating = parseFloat((sum / (restaurant.reviews.length)).toFixed(1));

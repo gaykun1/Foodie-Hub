@@ -46,7 +46,7 @@ var _s = __turbopack_context__.k.signature();
 const DishesNearYou = ()=>{
     _s();
     const [isActive, setIsActive] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$redux$2f$reduxTypes$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Category"].All);
-    const [restaurants, setRestaurants] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
+    const [dishes, setRestaurants] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "DishesNearYou.useEffect": ()=>{
             const fetchRestaurants = {
@@ -204,7 +204,7 @@ const DishesNearYou = ()=>{
         columnNumber: 9
     }, this);
 };
-_s(DishesNearYou, "l9wX/Qe3+5T4gwyPsZ1b7QmMDs0=");
+_s(DishesNearYou, "yxndrMK1tDbQSjZK9TaxUemulsg=");
 _c = DishesNearYou;
 const __TURBOPACK__default__export__ = DishesNearYou;
 var _c;

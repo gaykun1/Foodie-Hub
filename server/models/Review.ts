@@ -1,13 +1,13 @@
 import mongoose, { mongo, Schema } from "mongoose";
 
 
-export type ReviewType = {
+export interface IReview  {
   sender: mongoose.Types.ObjectId,
   text: string,
   rating: number,
   restaurantId: mongoose.Types.ObjectId,
 }
-const ReviewSchema = new Schema<ReviewType>({
+const ReviewSchema = new Schema<IReview>({
   sender: { type: Schema.Types.ObjectId, required: true, ref: "User" },
   text: { type: String, required: true },
   rating: { type: Number, required: true },

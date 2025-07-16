@@ -36,7 +36,7 @@ export const createOrder = async (req: Request, res: Response): Promise<void> =>
             return;
         } else {
 
-            const order = await Order.create({ userId: (req as AuthRequest).userId, items: [], totalPrice: 0, approxTime: 0, restaurantTitle: cart.restaurantId.title, restaurantImage: cart?.restaurantId.imageUrl });
+            const order = await Order.create({ userId: (req as AuthRequest).userId, items: [], shippingPrice: null, totalPrice: 0, approxTime: 0, restaurantTitle: cart.restaurantId.title, restaurantImage: cart?.restaurantId.imageUrl });
             let sum = 0;
             (cart as Cart).items.forEach(item => {
                 order.items.push({ title: item.dishId.title, price: item.dishId.price, amount: item.amount, imageUrl: item.dishId.imageUrl });
@@ -50,14 +50,8 @@ export const createOrder = async (req: Request, res: Response): Promise<void> =>
             return;
         }
     } catch (err) {
-
-
         res.status(500).json("Server error!");
         return;
-
-
-
-
     }
 }
 
@@ -108,7 +102,7 @@ export const getOrders = async (req: Request, res: Response): Promise<void> => {
 }
 export const getLastSevenOrders = async (req: Request, res: Response): Promise<void> => {
     try {
-        const orders = await Order.find().sort({ updatedAt: -1 }).limit(7);
+        const orders = await Order.find({ status: { $ne: null } }).sort({ updatedAt: -1 }).limit(7);
         if (!orders) {
             res.status(404).json("Not found!");
             return;
@@ -221,8 +215,9 @@ export const getOrdersCourier = async (req: Request, res: Response): Promise<voi
     }
 }
 export const updateOrder = async (req: Request, res: Response): Promise<void> => {
-    const { formData, shipping, cartId } = req.body;
+    const { formData, shipping, cartId, totalPrice, percent } = req.body;
 
+    console.log(req.body);
 
     try {
         if (formData.city && formData.countryOrRegion && formData.houseNumber && formData.street) {
@@ -231,12 +226,15 @@ export const updateOrder = async (req: Request, res: Response): Promise<void> =>
                 $set: {
                     status: "Preparing",
                     approxTime: shipping == 2.2 ? 50 : shipping == 3.2 ? 30 : 15,
+                    shippingPrice: shipping,
+                    discountPercent: percent,
                     fullName: (formData.name + " " + formData.surname),
                     "adress.city": formData.city,
                     "adress.countryOrRegion": formData.countryOrRegion,
                     "adress.houseNumber": formData.houseNumber,
                     "adress.apartmentNumbr": formData.apartmentNumbr,
                     "adress.street": formData.street,
+                    totalPrice: totalPrice,
                 }
             }, { new: true });
             const cart = await Cart.findOneAndDelete({ userId: (req as AuthRequest).userId, _id: cartId });
@@ -248,7 +246,7 @@ export const updateOrder = async (req: Request, res: Response): Promise<void> =>
                 }
             }
 
-            const orders = await Order.find().sort({ updatedAt: -1 }).limit(7);
+            const orders = await Order.find({ status: { $ne: null } }).sort({ updatedAt: -1 }).limit(7);
             activeAdmins.forEach(adminId => {
                 io.to(adminId).emit("updateOrders", orders);
             });

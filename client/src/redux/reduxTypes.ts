@@ -7,6 +7,15 @@ export interface User {
     email: string,
     phoneNumber: string,
     _id: string,
+    address: {
+        street: string,
+        houseNumber: number,
+        city: string
+    }
+    usualPromocode: {
+        discountPercent: number,
+    }
+
 }
 
 
@@ -66,6 +75,8 @@ export type Order = {
     restaurantTitle: string,
     restaurantImage: string,
     _id: string,
+    shippingPrice: number,
+    discountPercent: number,
     items: {
         title: string,
         price: number,
@@ -74,7 +85,7 @@ export type Order = {
     }[],
     totalPrice: number,
     createdAt: Date,
-
+    courierId: string,
     status: "Delivering" | "Delivered" | "Processing" | "Preparing",
     approxTime: number,
     fullName: string,

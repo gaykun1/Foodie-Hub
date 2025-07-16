@@ -1,7 +1,7 @@
 import mongoose, { mongo, Schema } from "mongoose";
 import { createDecipheriv } from "node:crypto";
 
-export type Order = {
+export interface IOrder {
   userId: mongoose.Types.ObjectId,
   courierId: mongoose.Types.ObjectId,
   restaurantTitle: string,
@@ -15,9 +15,9 @@ export type Order = {
   }[],
   totalPrice: number,
   createdAt: Date,
-
+  shippingPrice: number,
   status: "Delivering" | "Delivered" | "Processing" | "Preparing",
-
+  discountPercent: number,
   fullName: string,
   adress: {
     city: string,
@@ -28,7 +28,7 @@ export type Order = {
   }
 }
 
-const OrderSchema = new Schema<Order>({
+const OrderSchema = new Schema<IOrder>({
   userId: { type: Schema.Types.ObjectId, required: true, ref: "User" },
   restaurantTitle: { type: String, required: true },
   restaurantImage: { type: String, required: true },
@@ -41,6 +41,8 @@ const OrderSchema = new Schema<Order>({
     amount: { type: Number, required: true },
   }],
   totalPrice: { type: Number, required: true },
+  discountPercent: { type: Number, def: 0},
+  shippingPrice: { type: Number },
   status: { type: String, enum: ["Delivering", "Delivered", "Preparing"], default: null },
   fullName: { type: String },
   adress: {
@@ -52,6 +54,6 @@ const OrderSchema = new Schema<Order>({
 
   }
 
-},{ timestamps: true });
+}, { timestamps: true });
 
 export default mongoose.model('Order', OrderSchema);

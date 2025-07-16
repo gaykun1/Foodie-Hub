@@ -13,6 +13,9 @@ type formType = {
   newPasswordAgain: string,
   phoneNumber: string,
   email: string,
+  city: string,
+  street: string,
+  houseNumber: number,
 
 }
 
@@ -40,6 +43,18 @@ const Page = () => {
       payload.phoneNumber = data.phoneNumber;
 
     }
+    if (data.city && data.city !== user?.address?.city) {
+      payload.city = data.city;
+
+    }
+    if (data.street && data.street !== user?.address?.street) {
+      payload.street = data.street;
+
+    }
+    if (data.houseNumber && data.houseNumber !== user?.address?.houseNumber) {
+      payload.houseNumber = data.houseNumber;
+
+    }
 
     if (data.newPassword && data.newPassword === data.newPasswordAgain && data.password) {
       payload.password = data.password;
@@ -64,7 +79,7 @@ const Page = () => {
   };
 
   const { register, handleSubmit, formState: { errors } } = useForm<formType>({
-   });
+  });
 
   return (
     <div className="border-borderColor border-[1px] rounded-lg p-6 flex flex-col">
@@ -117,7 +132,46 @@ const Page = () => {
               <div className="">{errors.phoneNumber.message}</div>
             )}
           </div>
+          {/* dsad */}
+          <div className="flex flex-col gap-[10px]">
+            <label className="leading-3.5 font-medium">City</label>
+            <input className="input px-3 py-2"
 
+              defaultValue={user?.address?.city || ""}
+              {...register("city", {
+
+              })}
+              disabled={!isEditing}
+            />
+  
+          </div>
+
+          <div className="flex flex-col gap-[10px]">
+            <label className="leading-3.5 font-medium">Street</label>
+            <input className="input px-3 py-2"
+
+              defaultValue={user?.address?.street || ""}
+              {...register("street", {
+
+              })}
+              disabled={!isEditing}
+            />
+      
+          </div>
+
+          <div className="flex flex-col gap-[10px]">
+            <label className="leading-3.5 font-medium">houseNumber</label>
+            <input className="input px-3 py-2"
+
+              defaultValue={user?.address?.houseNumber || ""}
+              {...register("houseNumber", {
+
+              })}
+              disabled={!isEditing}
+            />
+       
+          </div>
+          {/* "dasdasdd" */}
         </div>
         <div className="">
           <h2 className="text-[18px] leading-7 font-medium mb-2.5">Password Management</h2>
@@ -147,6 +201,8 @@ const Page = () => {
                 disabled={!isEditing}
               />
             </div>
+
+
 
           </div>
         </div>

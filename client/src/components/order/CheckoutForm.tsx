@@ -4,7 +4,7 @@ import PaymentCard from "@/components/order/PaymentCard";
 import { useAppSelector } from "@/hooks/reduxHooks"
 import { Elements, useElements, useStripe } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
 import { Lock, Send } from "lucide-react";
 import { useParams } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
@@ -33,30 +33,54 @@ const CheckoutForm = ({ order }: { order: Order }) => {
     const { user } = useAppSelector(state => state.auth);
     const [clientSecret, setClientSecret] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
-    const [error, setError] = useState<string | null>(null);
     const stripe = useStripe();
     const elements = useElements();
     const [shipping, setShipping] = useState<Shipping>(Shipping.Economy);
     const { cart } = useAppSelector(state => state.cart)
+    const [promocode, setPromocode] = useState<string>("");
+    const [discount, setDiscount] = useState<number>(0);
+    const [error, setError] = useState<string | null>(null);
 
-    useEffect(() => {
-        const getClientSecret = async () => {
-            try {
+    const usePromocode = async () => {
+        try {
+            const res = await axios.post("http://localhost:5200/api/promocode/use", { PromoC: promocode }, { withCredentials: true });
+            if (res.data) {
+                setDiscount(res.data.discount + discount);
+                setPromocode("");
 
-                if (order) {
-
-                    const res = await axios.post("http://localhost:5200/api/payment/payment-intent", { amount: convertToSubcurrency((shipping + order.totalPrice)) });
-                    setClientSecret(res.data.clientSecret);
-                }
-            } catch (err) {
-                console.error(err);
             }
+        } catch (err) {
+            console.error(err);
+            if (axios.isAxiosError(err) && err.response)
+                setError(err.response.data);
         }
+    }
+    const getClientSecret = async () => {
+        try {
+
+            if (order) {
+
+                const res = await axios.post("http://localhost:5200/api/payment/payment-intent", { amount: convertToSubcurrency((shipping + order.totalPrice) * ((100 - discount) / 100)) });
+                setClientSecret(res.data.clientSecret);
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    }
+    useEffect(() => {
+
         getClientSecret();
         console.log(cart);
 
-    }, [])
+    }, [discount, shipping]);
 
+
+    useEffect(() => {
+
+        getClientSecret();
+        if (user?.usualPromocode.discountPercent)
+            setDiscount(user.usualPromocode.discountPercent)
+    }, [user])
     const placeOrder = async () => {
         setLoading(true);
 
@@ -69,18 +93,18 @@ const CheckoutForm = ({ order }: { order: Order }) => {
             setLoading(false);
         }
         if (order) {
-            const res = await axios.patch("http://localhost:5200/api/order/update-order", { formData, shipping,cartId:cart?._id }, { withCredentials: true });
+            const res = await axios.patch("http://localhost:5200/api/order/update-order", { formData, percent: discount, shipping, cartId: cart?._id, totalPrice: parseFloat(((shipping + order.totalPrice) * ((100 - discount) / 100)).toFixed(2)) }, { withCredentials: true });
             const { error } = await stripe.confirmPayment({
                 elements,
                 clientSecret,
                 confirmParams: {
-                    return_url: `http://localhost:3000/orders/order/sucess/${shipping + order.totalPrice}`,
+                    return_url: `http://localhost:3000/orders/order/sucess/${((shipping + order.totalPrice) * ((100 - discount) / 100)).toFixed(2)}`,
                 }
             })
             setLoading(false);
             if (error.message && error) {
                 setError(error.message);
-            } 
+            }
 
 
         }
@@ -247,15 +271,20 @@ const CheckoutForm = ({ order }: { order: Order }) => {
                         <span className="text-gray">Shipping</span>
                         <span className="text-black">${shipping.toFixed(2)}</span>
                     </div>
+                    <div className="flex items-center justify-between text-sm leading-5 ">
+                        <span className="text-gray">Discount</span>
+                        <span className={`text-black ${discount > 0 ? "text-green-600" : ""}`}>{discount}%</span>
+                    </div>
                 </div>
                 <div className="mt-[18px] mb-[30px] text-lg leading-7 font-bold flex items-center justify-between">
                     <span>Total</span>
-                    <span>${(shipping + order.totalPrice).toFixed(2)}</span>
+                    <span>${((shipping + order.totalPrice) * ((100 - discount) / 100)).toFixed(2)}</span>
                 </div>
-                 <div className="flex items-center gap-2 relative overflow-hidden pr-14">
+                <div className="flex items-center gap-2 relative overflow-hidden pr-14">
                     <label>Promocode: </label>
-                    <input className="input px-2 py-1 uppercase" type="text" />
-                    <button className="btn absolute right-0 px-2 py-1"><Send/></button>
+
+                    <input value={promocode} onChange={(e) => setPromocode(e.target.value)} className="input px-2 py-1 " type="text" />
+                    <button onClick={async () => await usePromocode()} className="btn absolute right-0 px-2 py-1"><Send /></button>
                 </div>
                 <div className="w-full items-center flex flex-col gap-4">
                     <button onClick={placeOrder} type="submit" className="btn py-3   mt-6      px-2 max-w-[328px] w-full">{loading ? (<span>Processing...</span>) : (<span>Place Order</span>)}</button>

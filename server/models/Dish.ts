@@ -1,6 +1,14 @@
 import mongoose, { mongo, Schema } from "mongoose";
 
-
+export interface IDish {
+  title: string,
+  description: string,
+  price: { type: Number, required: true },
+  imageUrl: string,
+  restaurantId: mongoose.Types.ObjectId,
+  typeOfFood: "Appetizers" | "Main Courses" | "Desserts" | "Drinks",
+  sold: number,
+}
 
 const DishSchema = new Schema({
   title: { type: String, required: true },

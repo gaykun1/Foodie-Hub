@@ -34,7 +34,7 @@ __turbopack_context__.s({
     "convertToSubcurrency": (()=>convertToSubcurrency)
 });
 const convertToSubcurrency = (num)=>{
-    return Math.round(parseInt(num.toFixed(2)) * 100);
+    return Math.round(parseFloat(num.toFixed(2)) * 100);
 };
 if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
     __turbopack_context__.k.registerExports(module, globalThis.$RefreshHelpers$);
@@ -59,7 +59,7 @@ function PaymentCard({ clientSecret }) {
             className: "animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid mx-auto"
         }, void 0, false, {
             fileName: "[project]/src/components/order/PaymentCard.tsx",
-            lineNumber: 20,
+            lineNumber: 14,
             columnNumber: 34
         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
             className: "shadow-xs border-borderColor border-[1px] flex flex-col gap-4 rounded-xl py-7 px-6 ",
@@ -72,20 +72,20 @@ function PaymentCard({ clientSecret }) {
                             children: "Your Details"
                         }, void 0, false, {
                             fileName: "[project]/src/components/order/PaymentCard.tsx",
-                            lineNumber: 23,
+                            lineNumber: 17,
                             columnNumber: 25
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                             className: "text-gray text-base! leading-7 "
                         }, void 0, false, {
                             fileName: "[project]/src/components/order/PaymentCard.tsx",
-                            lineNumber: 24,
+                            lineNumber: 18,
                             columnNumber: 25
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/order/PaymentCard.tsx",
-                    lineNumber: 22,
+                    lineNumber: 16,
                     columnNumber: 21
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -94,18 +94,18 @@ function PaymentCard({ clientSecret }) {
                         className: ""
                     }, void 0, false, {
                         fileName: "[project]/src/components/order/PaymentCard.tsx",
-                        lineNumber: 28,
+                        lineNumber: 22,
                         columnNumber: 42
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/components/order/PaymentCard.tsx",
-                    lineNumber: 26,
+                    lineNumber: 20,
                     columnNumber: 21
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/order/PaymentCard.tsx",
-            lineNumber: 21,
+            lineNumber: 15,
             columnNumber: 17
         }, this)
     }, void 0, false);
@@ -154,39 +154,67 @@ var Shipping = /*#__PURE__*/ function(Shipping) {
 }(Shipping || {});
 const CheckoutForm = ({ order })=>{
     _s();
+    var _s1 = __turbopack_context__.k.signature();
     const { register, trigger, getValues, formState: { errors } } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hook$2d$form$2f$dist$2f$index$2e$esm$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useForm"])();
     const { user } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$hooks$2f$reduxHooks$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAppSelector"])({
         "CheckoutForm.useAppSelector": (state)=>state.auth
     }["CheckoutForm.useAppSelector"]);
     const [clientSecret, setClientSecret] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("");
     const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
-    const [error, setError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
     const stripe = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$stripe$2f$react$2d$stripe$2d$js$2f$dist$2f$react$2d$stripe$2e$umd$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useStripe"])();
     const elements = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$stripe$2f$react$2d$stripe$2d$js$2f$dist$2f$react$2d$stripe$2e$umd$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useElements"])();
     const [shipping, setShipping] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(2.2);
     const { cart } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$hooks$2f$reduxHooks$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAppSelector"])({
         "CheckoutForm.useAppSelector": (state)=>state.cart
     }["CheckoutForm.useAppSelector"]);
+    const [promocode, setPromocode] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("");
+    const [discount, setDiscount] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(0);
+    const [error, setError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
+    const usePromocode = async ()=>{
+        try {
+            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].post("http://localhost:5200/api/promocode/use", {
+                PromoC: promocode
+            }, {
+                withCredentials: true
+            });
+            if (res.data) {
+                setDiscount(res.data.discount + discount);
+                setPromocode("");
+            }
+        } catch (err) {
+            console.error(err);
+            if (__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].isAxiosError(err) && err.response) setError(err.response.data);
+        }
+    };
+    const getClientSecret = async ()=>{
+        try {
+            if (order) {
+                const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].post("http://localhost:5200/api/payment/payment-intent", {
+                    amount: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$payment$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["convertToSubcurrency"])((shipping + order.totalPrice) * ((100 - discount) / 100))
+                });
+                setClientSecret(res.data.clientSecret);
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    };
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "CheckoutForm.useEffect": ()=>{
-            const getClientSecret = {
-                "CheckoutForm.useEffect.getClientSecret": async ()=>{
-                    try {
-                        if (order) {
-                            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].post("http://localhost:5200/api/payment/payment-intent", {
-                                amount: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$payment$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["convertToSubcurrency"])(shipping + order.totalPrice)
-                            });
-                            setClientSecret(res.data.clientSecret);
-                        }
-                    } catch (err) {
-                        console.error(err);
-                    }
-                }
-            }["CheckoutForm.useEffect.getClientSecret"];
             getClientSecret();
             console.log(cart);
         }
-    }["CheckoutForm.useEffect"], []);
+    }["CheckoutForm.useEffect"], [
+        discount,
+        shipping
+    ]);
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "CheckoutForm.useEffect": ()=>{
+            getClientSecret();
+            if (user?.usualPromocode.discountPercent) setDiscount(user.usualPromocode.discountPercent);
+        }
+    }["CheckoutForm.useEffect"], [
+        user
+    ]);
     const placeOrder = async ()=>{
         setLoading(true);
         const formData = getValues();
@@ -200,8 +228,10 @@ const CheckoutForm = ({ order })=>{
         if (order) {
             const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].patch("http://localhost:5200/api/order/update-order", {
                 formData,
+                percent: discount,
                 shipping,
-                cartId: cart?._id
+                cartId: cart?._id,
+                totalPrice: parseFloat(((shipping + order.totalPrice) * ((100 - discount) / 100)).toFixed(2))
             }, {
                 withCredentials: true
             });
@@ -209,7 +239,7 @@ const CheckoutForm = ({ order })=>{
                 elements,
                 clientSecret,
                 confirmParams: {
-                    return_url: `http://localhost:3000/orders/order/sucess/${shipping + order.totalPrice}`
+                    return_url: `http://localhost:3000/orders/order/sucess/${((shipping + order.totalPrice) * ((100 - discount) / 100)).toFixed(2)}`
                 }
             });
             setLoading(false);
@@ -232,7 +262,7 @@ const CheckoutForm = ({ order })=>{
                                 children: "Your Details"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                lineNumber: 94,
+                                lineNumber: 118,
                                 columnNumber: 21
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -240,13 +270,13 @@ const CheckoutForm = ({ order })=>{
                                 children: user?.email ? user.email : user?.username
                             }, void 0, false, {
                                 fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                lineNumber: 95,
+                                lineNumber: 119,
                                 columnNumber: 21
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                        lineNumber: 93,
+                        lineNumber: 117,
                         columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -259,7 +289,7 @@ const CheckoutForm = ({ order })=>{
                                     children: "Delivery Information"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                    lineNumber: 99,
+                                    lineNumber: 123,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -273,7 +303,7 @@ const CheckoutForm = ({ order })=>{
                                                     children: "Country/Region"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                                    lineNumber: 102,
+                                                    lineNumber: 126,
                                                     columnNumber: 33
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -287,7 +317,7 @@ const CheckoutForm = ({ order })=>{
                                                             children: "Ukraine"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                                            lineNumber: 104,
+                                                            lineNumber: 128,
                                                             columnNumber: 37
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -295,7 +325,7 @@ const CheckoutForm = ({ order })=>{
                                                             children: "Poland"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                                            lineNumber: 105,
+                                                            lineNumber: 129,
                                                             columnNumber: 37
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -303,19 +333,19 @@ const CheckoutForm = ({ order })=>{
                                                             children: "Germany"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                                            lineNumber: 106,
+                                                            lineNumber: 130,
                                                             columnNumber: 37
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                                    lineNumber: 103,
+                                                    lineNumber: 127,
                                                     columnNumber: 33
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                            lineNumber: 101,
+                                            lineNumber: 125,
                                             columnNumber: 29
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -326,7 +356,7 @@ const CheckoutForm = ({ order })=>{
                                                     children: "Name"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                                    lineNumber: 110,
+                                                    lineNumber: 134,
                                                     columnNumber: 33
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -341,7 +371,7 @@ const CheckoutForm = ({ order })=>{
                                                     className: "input py-2 px-3 "
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                                    lineNumber: 112,
+                                                    lineNumber: 136,
                                                     columnNumber: 33
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -349,13 +379,13 @@ const CheckoutForm = ({ order })=>{
                                                     children: errors.name?.message
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                                    lineNumber: 118,
+                                                    lineNumber: 142,
                                                     columnNumber: 33
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                            lineNumber: 109,
+                                            lineNumber: 133,
                                             columnNumber: 29
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -366,92 +396,12 @@ const CheckoutForm = ({ order })=>{
                                                     children: "Surname"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                                    lineNumber: 121,
-                                                    columnNumber: 33
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                                                    type: "text",
-                                                    ...register("surname", {
-                                                        required: "Required!",
-                                                        pattern: {
-                                                            value: /^[A-Za-z]+$/,
-                                                            message: "Only letters"
-                                                        }
-                                                    }),
-                                                    className: "input py-2 px-3 "
-                                                }, void 0, false, {
-                                                    fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                                    lineNumber: 123,
-                                                    columnNumber: 33
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "text-red-500",
-                                                    children: errors.name?.message
-                                                }, void 0, false, {
-                                                    fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                                    lineNumber: 129,
-                                                    columnNumber: 33
-                                                }, this)
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                            lineNumber: 120,
-                                            columnNumber: 29
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "flex flex-col gap-1",
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
-                                                    className: "text-gray text-base! leading-7 ",
-                                                    children: "City "
-                                                }, void 0, false, {
-                                                    fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                                    lineNumber: 133,
-                                                    columnNumber: 33
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                                                    type: "text",
-                                                    ...register("city", {
-                                                        required: "Required!",
-                                                        pattern: {
-                                                            value: /^[A-Za-z]+$/,
-                                                            message: "Only letters"
-                                                        }
-                                                    }),
-                                                    className: "input py-2 px-3 "
-                                                }, void 0, false, {
-                                                    fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                                    lineNumber: 135,
-                                                    columnNumber: 33
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "text-red-500",
-                                                    children: errors.name?.message
-                                                }, void 0, false, {
-                                                    fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                                    lineNumber: 141,
-                                                    columnNumber: 33
-                                                }, this)
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                            lineNumber: 132,
-                                            columnNumber: 29
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "flex flex-col gap-1",
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
-                                                    className: "text-gray text-base! leading-7 ",
-                                                    children: "Street"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/src/components/order/CheckoutForm.tsx",
                                                     lineNumber: 145,
                                                     columnNumber: 33
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
                                                     type: "text",
-                                                    ...register("street", {
+                                                    ...register("surname", {
                                                         required: "Required!",
                                                         pattern: {
                                                             value: /^[A-Za-z]+$/,
@@ -483,15 +433,20 @@ const CheckoutForm = ({ order })=>{
                                             children: [
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
                                                     className: "text-gray text-base! leading-7 ",
-                                                    children: "House number"
+                                                    children: "City "
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/order/CheckoutForm.tsx",
                                                     lineNumber: 157,
                                                     columnNumber: 33
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                                                    ...register("houseNumber", {
-                                                        required: "Required!"
+                                                    type: "text",
+                                                    ...register("city", {
+                                                        required: "Required!",
+                                                        pattern: {
+                                                            value: /^[A-Za-z]+$/,
+                                                            message: "Only letters"
+                                                        }
                                                     }),
                                                     className: "input py-2 px-3 "
                                                 }, void 0, false, {
@@ -504,7 +459,7 @@ const CheckoutForm = ({ order })=>{
                                                     children: errors.name?.message
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                                    lineNumber: 160,
+                                                    lineNumber: 165,
                                                     columnNumber: 33
                                                 }, this)
                                             ]
@@ -518,10 +473,85 @@ const CheckoutForm = ({ order })=>{
                                             children: [
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
                                                     className: "text-gray text-base! leading-7 ",
+                                                    children: "Street"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/components/order/CheckoutForm.tsx",
+                                                    lineNumber: 169,
+                                                    columnNumber: 33
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                                    type: "text",
+                                                    ...register("street", {
+                                                        required: "Required!",
+                                                        pattern: {
+                                                            value: /^[A-Za-z]+$/,
+                                                            message: "Only letters"
+                                                        }
+                                                    }),
+                                                    className: "input py-2 px-3 "
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/components/order/CheckoutForm.tsx",
+                                                    lineNumber: 171,
+                                                    columnNumber: 33
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "text-red-500",
+                                                    children: errors.name?.message
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/components/order/CheckoutForm.tsx",
+                                                    lineNumber: 177,
+                                                    columnNumber: 33
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/src/components/order/CheckoutForm.tsx",
+                                            lineNumber: 168,
+                                            columnNumber: 29
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "flex flex-col gap-1",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                                                    className: "text-gray text-base! leading-7 ",
+                                                    children: "House number"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/components/order/CheckoutForm.tsx",
+                                                    lineNumber: 181,
+                                                    columnNumber: 33
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                                    ...register("houseNumber", {
+                                                        required: "Required!"
+                                                    }),
+                                                    className: "input py-2 px-3 "
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/components/order/CheckoutForm.tsx",
+                                                    lineNumber: 183,
+                                                    columnNumber: 33
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "text-red-500",
+                                                    children: errors.name?.message
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/components/order/CheckoutForm.tsx",
+                                                    lineNumber: 184,
+                                                    columnNumber: 33
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/src/components/order/CheckoutForm.tsx",
+                                            lineNumber: 180,
+                                            columnNumber: 29
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "flex flex-col gap-1",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                                                    className: "text-gray text-base! leading-7 ",
                                                     children: "Apartment number (optionally)"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                                    lineNumber: 164,
+                                                    lineNumber: 188,
                                                     columnNumber: 33
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -531,30 +561,30 @@ const CheckoutForm = ({ order })=>{
                                                     className: "input py-2 px-3 "
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                                    lineNumber: 167,
+                                                    lineNumber: 191,
                                                     columnNumber: 33
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                            lineNumber: 163,
+                                            lineNumber: 187,
                                             columnNumber: 29
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                    lineNumber: 100,
+                                    lineNumber: 124,
                                     columnNumber: 25
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                            lineNumber: 98,
+                            lineNumber: 122,
                             columnNumber: 21
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                        lineNumber: 97,
+                        lineNumber: 121,
                         columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -567,7 +597,7 @@ const CheckoutForm = ({ order })=>{
                                     children: "Shipping Method"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                    lineNumber: 176,
+                                    lineNumber: 200,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -586,7 +616,7 @@ const CheckoutForm = ({ order })=>{
                                                             className: "accent-primary cursor-pointer"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                                            lineNumber: 180,
+                                                            lineNumber: 204,
                                                             columnNumber: 37
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -597,7 +627,7 @@ const CheckoutForm = ({ order })=>{
                                                                     children: "Economy Shipping"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                                                    lineNumber: 182,
+                                                                    lineNumber: 206,
                                                                     columnNumber: 41
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -605,19 +635,19 @@ const CheckoutForm = ({ order })=>{
                                                                     children: "~50+ minutes"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                                                    lineNumber: 183,
+                                                                    lineNumber: 207,
                                                                     columnNumber: 41
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                                            lineNumber: 181,
+                                                            lineNumber: 205,
                                                             columnNumber: 37
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                                    lineNumber: 179,
+                                                    lineNumber: 203,
                                                     columnNumber: 33
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -628,13 +658,13 @@ const CheckoutForm = ({ order })=>{
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                                    lineNumber: 187,
+                                                    lineNumber: 211,
                                                     columnNumber: 33
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                            lineNumber: 178,
+                                            lineNumber: 202,
                                             columnNumber: 29
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -650,7 +680,7 @@ const CheckoutForm = ({ order })=>{
                                                             className: "accent-primary cursor-pointer"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                                            lineNumber: 191,
+                                                            lineNumber: 215,
                                                             columnNumber: 37
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -661,7 +691,7 @@ const CheckoutForm = ({ order })=>{
                                                                     children: "Standart Shipping"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                                                    lineNumber: 193,
+                                                                    lineNumber: 217,
                                                                     columnNumber: 41
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -669,19 +699,19 @@ const CheckoutForm = ({ order })=>{
                                                                     children: "~30-50 minutes"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                                                    lineNumber: 194,
+                                                                    lineNumber: 218,
                                                                     columnNumber: 41
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                                            lineNumber: 192,
+                                                            lineNumber: 216,
                                                             columnNumber: 37
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                                    lineNumber: 190,
+                                                    lineNumber: 214,
                                                     columnNumber: 33
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -692,13 +722,13 @@ const CheckoutForm = ({ order })=>{
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                                    lineNumber: 198,
+                                                    lineNumber: 222,
                                                     columnNumber: 33
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                            lineNumber: 189,
+                                            lineNumber: 213,
                                             columnNumber: 29
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -714,7 +744,7 @@ const CheckoutForm = ({ order })=>{
                                                             className: "accent-primary cursor-pointer"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                                            lineNumber: 202,
+                                                            lineNumber: 226,
                                                             columnNumber: 37
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -725,7 +755,7 @@ const CheckoutForm = ({ order })=>{
                                                                     children: "Express Shipping"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                                                    lineNumber: 204,
+                                                                    lineNumber: 228,
                                                                     columnNumber: 41
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -733,19 +763,19 @@ const CheckoutForm = ({ order })=>{
                                                                     children: "~15-30 minutes"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                                                    lineNumber: 205,
+                                                                    lineNumber: 229,
                                                                     columnNumber: 41
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                                            lineNumber: 203,
+                                                            lineNumber: 227,
                                                             columnNumber: 37
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                                    lineNumber: 201,
+                                                    lineNumber: 225,
                                                     columnNumber: 33
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -756,43 +786,43 @@ const CheckoutForm = ({ order })=>{
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                                    lineNumber: 209,
+                                                    lineNumber: 233,
                                                     columnNumber: 33
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                            lineNumber: 200,
+                                            lineNumber: 224,
                                             columnNumber: 29
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                    lineNumber: 177,
+                                    lineNumber: 201,
                                     columnNumber: 25
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                            lineNumber: 175,
+                            lineNumber: 199,
                             columnNumber: 21
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                        lineNumber: 174,
+                        lineNumber: 198,
                         columnNumber: 17
                     }, this),
                     order && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$order$2f$PaymentCard$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                         clientSecret: clientSecret
                     }, void 0, false, {
                         fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                        lineNumber: 215,
+                        lineNumber: 239,
                         columnNumber: 28
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                lineNumber: 92,
+                lineNumber: 116,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -803,7 +833,7 @@ const CheckoutForm = ({ order })=>{
                         children: "Order Summary"
                     }, void 0, false, {
                         fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                        lineNumber: 223,
+                        lineNumber: 247,
                         columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -821,7 +851,7 @@ const CheckoutForm = ({ order })=>{
                                                 alt: ""
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                                lineNumber: 229,
+                                                lineNumber: 253,
                                                 columnNumber: 37
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -832,7 +862,7 @@ const CheckoutForm = ({ order })=>{
                                                         children: item.title
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                                        lineNumber: 231,
+                                                        lineNumber: 255,
                                                         columnNumber: 41
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -843,19 +873,19 @@ const CheckoutForm = ({ order })=>{
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                                        lineNumber: 232,
+                                                        lineNumber: 256,
                                                         columnNumber: 41
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                                lineNumber: 230,
+                                                lineNumber: 254,
                                                 columnNumber: 37
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                        lineNumber: 228,
+                                        lineNumber: 252,
                                         columnNumber: 33
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -866,19 +896,19 @@ const CheckoutForm = ({ order })=>{
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                        lineNumber: 235,
+                                        lineNumber: 259,
                                         columnNumber: 33
                                     }, this)
                                 ]
                             }, idx, true, {
                                 fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                lineNumber: 227,
+                                lineNumber: 251,
                                 columnNumber: 29
                             }, this);
                         })
                     }, void 0, false, {
                         fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                        lineNumber: 224,
+                        lineNumber: 248,
                         columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -892,7 +922,7 @@ const CheckoutForm = ({ order })=>{
                                         children: "Subtotal"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                        lineNumber: 243,
+                                        lineNumber: 267,
                                         columnNumber: 25
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -903,13 +933,13 @@ const CheckoutForm = ({ order })=>{
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                        lineNumber: 244,
+                                        lineNumber: 268,
                                         columnNumber: 25
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                lineNumber: 242,
+                                lineNumber: 266,
                                 columnNumber: 21
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -920,7 +950,7 @@ const CheckoutForm = ({ order })=>{
                                         children: "Shipping"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                        lineNumber: 247,
+                                        lineNumber: 271,
                                         columnNumber: 25
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -931,19 +961,47 @@ const CheckoutForm = ({ order })=>{
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                        lineNumber: 248,
+                                        lineNumber: 272,
                                         columnNumber: 25
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                lineNumber: 246,
+                                lineNumber: 270,
+                                columnNumber: 21
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "flex items-center justify-between text-sm leading-5 ",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                        className: "text-gray",
+                                        children: "Discount"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/order/CheckoutForm.tsx",
+                                        lineNumber: 275,
+                                        columnNumber: 25
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                        className: `text-black ${discount > 0 ? "text-green-600" : ""}`,
+                                        children: [
+                                            discount,
+                                            "%"
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/src/components/order/CheckoutForm.tsx",
+                                        lineNumber: 276,
+                                        columnNumber: 25
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/components/order/CheckoutForm.tsx",
+                                lineNumber: 274,
                                 columnNumber: 21
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                        lineNumber: 241,
+                        lineNumber: 265,
                         columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -953,23 +1011,23 @@ const CheckoutForm = ({ order })=>{
                                 children: "Total"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                lineNumber: 252,
+                                lineNumber: 280,
                                 columnNumber: 21
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                 children: [
                                     "$",
-                                    (shipping + order.totalPrice).toFixed(2)
+                                    ((shipping + order.totalPrice) * ((100 - discount) / 100)).toFixed(2)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                lineNumber: 253,
+                                lineNumber: 281,
                                 columnNumber: 21
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                        lineNumber: 251,
+                        lineNumber: 279,
                         columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -979,34 +1037,44 @@ const CheckoutForm = ({ order })=>{
                                 children: "Promocode: "
                             }, void 0, false, {
                                 fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                lineNumber: 256,
+                                lineNumber: 284,
                                 columnNumber: 21
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                                className: "input px-2 py-1 uppercase",
+                                value: promocode,
+                                onChange: (e)=>setPromocode(e.target.value),
+                                className: "input px-2 py-1 ",
                                 type: "text"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                lineNumber: 257,
+                                lineNumber: 286,
                                 columnNumber: 21
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                onClick: _s1(async ()=>{
+                                    _s1();
+                                    return await usePromocode();
+                                }, "q8mm6r4x+skCY+Y0AyEMcG+GfZo=", false, function() {
+                                    return [
+                                        usePromocode
+                                    ];
+                                }),
                                 className: "btn absolute right-0 px-2 py-1",
                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$send$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Send$3e$__["Send"], {}, void 0, false, {
                                     fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                    lineNumber: 258,
-                                    columnNumber: 72
+                                    lineNumber: 287,
+                                    columnNumber: 115
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                lineNumber: 258,
+                                lineNumber: 287,
                                 columnNumber: 21
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                        lineNumber: 255,
-                        columnNumber: 18
+                        lineNumber: 283,
+                        columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "w-full items-center flex flex-col gap-4",
@@ -1019,18 +1087,18 @@ const CheckoutForm = ({ order })=>{
                                     children: "Processing..."
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                    lineNumber: 261,
+                                    lineNumber: 290,
                                     columnNumber: 135
                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                     children: "Place Order"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                    lineNumber: 261,
+                                    lineNumber: 290,
                                     columnNumber: 166
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                lineNumber: 261,
+                                lineNumber: 290,
                                 columnNumber: 21
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1040,43 +1108,43 @@ const CheckoutForm = ({ order })=>{
                                         size: 12
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                        lineNumber: 263,
+                                        lineNumber: 292,
                                         columnNumber: 105
                                     }, this),
                                     " All transactions are secure and encrypted."
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                lineNumber: 263,
+                                lineNumber: 292,
                                 columnNumber: 21
                             }, this),
                             error != null && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                 children: error
                             }, void 0, false, {
                                 fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                                lineNumber: 264,
+                                lineNumber: 293,
                                 columnNumber: 40
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                        lineNumber: 260,
+                        lineNumber: 289,
                         columnNumber: 17
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/order/CheckoutForm.tsx",
-                lineNumber: 222,
+                lineNumber: 246,
                 columnNumber: 13
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/order/CheckoutForm.tsx",
-        lineNumber: 91,
+        lineNumber: 115,
         columnNumber: 9
     }, this);
 };
-_s(CheckoutForm, "+SQWA+OHANM18GHMULDew1IFisA=", false, function() {
+_s(CheckoutForm, "CBrgFMqkHmmYTKHyUOF8u2T2tGs=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hook$2d$form$2f$dist$2f$index$2e$esm$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useForm"],
         __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$hooks$2f$reduxHooks$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAppSelector"],

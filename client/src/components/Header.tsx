@@ -38,7 +38,7 @@ const Header = () => {
       }
     }
   }
-  console.log();
+
 
   const updateCount = async (amount: number, id: string, title: string) => {
     try {
@@ -120,16 +120,16 @@ const Header = () => {
 
               }
 
-            }} placeholder='Search for restaurants or dishes...'
+            }} placeholder='Search for restaurants...'
               type="text"
               className='leading-[22px] pl-[38px] h-[40px] pr-3  text-sm input'
             />
 
-            {activePanel === "search" ? <div className="min-w-[200px] flex flex-col top-full panel  left-0 absolute border-borderColor mt-1  bg-primary  p-3 border-[1px] rounded-[6px]">
+            {activePanel === "search" ? <div className="min-w-[250px] flex flex-col top-full panel  left-0 absolute border-borderColor mt-1  bg-primary  p-3 border-[1px] rounded-[6px]">
               <div className="flex flex-col gap-2 items-start text-sm font-semibold">
                 {restaurants.length > 0 ? restaurants.map((restaurant, index) => {
                   return (
-                    <Link href={`/restaurant/menu/${restaurant._id}`} key={index}>{restaurant.title}</Link>
+                    <Link className='btn p-2 w-full ' href={`/restaurant/menu/${restaurant._id}`} key={index}>{restaurant.title}</Link>
                   )
                 }) : (<span className=''>Not found!</span>)}
               </div>

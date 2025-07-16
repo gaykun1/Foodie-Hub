@@ -169,7 +169,6 @@ const Header = ()=>{
             }
         }
     };
-    console.log();
     const updateCount = async (amount, id, title)=>{
         try {
             if (amount === 0) {
@@ -388,7 +387,7 @@ const Header = ()=>{
                                             setActivePanel("search");
                                         }
                                     },
-                                    placeholder: "Search for restaurants or dishes...",
+                                    placeholder: "Search for restaurants...",
                                     type: "text",
                                     className: "leading-[22px] pl-[38px] h-[40px] pr-3  text-sm input"
                                 }, void 0, false, {
@@ -397,11 +396,12 @@ const Header = ()=>{
                                     columnNumber: 13
                                 }, this),
                                 activePanel === "search" ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "min-w-[200px] flex flex-col top-full panel  left-0 absolute border-borderColor mt-1  bg-primary  p-3 border-[1px] rounded-[6px]",
+                                    className: "min-w-[250px] flex flex-col top-full panel  left-0 absolute border-borderColor mt-1  bg-primary  p-3 border-[1px] rounded-[6px]",
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "flex flex-col gap-2 items-start text-sm font-semibold",
                                         children: restaurants.length > 0 ? restaurants.map((restaurant, index)=>{
                                             return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                                                className: "btn p-2 w-full ",
                                                 href: `/restaurant/menu/${restaurant._id}`,
                                                 children: restaurant.title
                                             }, index, false, {

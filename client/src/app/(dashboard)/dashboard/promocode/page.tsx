@@ -3,11 +3,16 @@ import axios from 'axios';
 import { SubmitHandler, useForm } from 'react-hook-form'
 
 const Page = () => {
-    const { register, formState: { errors }, handleSubmit, reset } = useForm<formFields>();
+    const { register, formState: { errors }, handleSubmit, reset } = useForm<formFields>({
+        defaultValues: {
+            type: "Usual",
+        }
+    });
 
     type formFields = {
         code: string,
         percent: number,
+        type: "Usual" | "Special",
     }
 
     const onSubmit: SubmitHandler<formFields> = async (data) => {
@@ -28,7 +33,14 @@ const Page = () => {
                 <form className='p-4 border-borderColor flex items-end gap-3 border-[1px] rounded-lg w-fit' onSubmit={handleSubmit(onSubmit)}>
                     <div className="flex flex-col gap-2">
                         <label >Code</label>
-                        <input className='input p-2 uppercase' {...register("code", { required: "Code is required" })} type="text" />
+                        <input className='input p-2 ' {...register("code", { required: "Code is required" })} type="text" />
+                    </div>
+                    <div className="flex flex-col gap-2">
+                        <label >Type</label>
+                        <select {...register("type")} className='input p-2'>
+                            <option>Special</option>
+                            <option>Usual</option>
+                        </select>
                     </div>
                     <div className="flex flex-col gap-2 basis-[100px]">
                         <label >Percent</label>

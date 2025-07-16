@@ -9,10 +9,15 @@ interface IUser {
     role: string,
     email: string,
     cart: mongoose.Types.ObjectId,
-    promocodes: {
-        code: mongoose.Types.ObjectId| null,
-        isUsed: boolean,
-    }[],
+    promocodes: mongoose.Types.ObjectId[] | null,
+    usualPromocode: mongoose.Types.ObjectId | null,
+    address: {
+        street: string,
+        houseNumber: string,
+        city: string,
+    }
+
+
 }
 
 
@@ -22,13 +27,19 @@ const userSchema = new mongoose.Schema<IUser>({
     favourites: [{ type: mongoose.Schema.Types.ObjectId, ref: "Restaurant" }],
     phoneNumber: { type: String, unique: true },
     email: { type: String, unique: true },
+    address: {
+        street: { type: String },
+        city: { type: String },
+        houseNumber: { type: Number },
+    },
+
     role: { type: String, enum: ["user", "admin", "courier"], default: "user" },
     cart: { type: Schema.Types.ObjectId, ref: "Cart" },
-    promocodes: [
-        {
-            code: { type: Schema.Types.ObjectId, default: null, ref: "Promocode" },
-            isUsed: { type: Boolean, default: false },
-        }],
+    promocodes: [{ type: Schema.Types.ObjectId, default: null, ref: "Promocode" }],
+    usualPromocode: { type: Schema.Types.ObjectId, default: null, ref: "Promocode" },
+
+
+
 
 })
 
