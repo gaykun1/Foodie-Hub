@@ -110,14 +110,28 @@ export const getAbout = async (req: Request, res: Response) => {
 };
 
 export const getLastSevenReviews = async (req: Request, res: Response): Promise<void> => {
+    const id = req.params.id;
     try {
-        const reviews = await Review.find().populate({ path: "sender", select: "username" }).sort({ updatedAt: -1 }).limit(7);
-        if (!reviews) {
-            res.status(404).json("Not found!");
-            return;
+        if (id == null) {
+
+
+            const reviews = await Review.find().populate({ path: "sender", select: "username" }).sort({ updatedAt: -1 }).limit(7);
+            if (!reviews) {
+                res.status(404).json("Not found!");
+                return;
+            }
+            res.status(200).json(reviews);
+            return
+        } else {
+            const reviews = await Review.find({ restaurantId: id }).populate({ path: "sender", select: "username" }).sort({ updatedAt: -1 }).limit(7);
+            if (!reviews) {
+                res.status(404).json("Not found!");
+                return;
+            }
+            res.status(200).json(reviews);
+            return
         }
-        res.status(200).json(reviews);
-        return
+
     }
     catch (err) {
 
@@ -131,14 +145,25 @@ export const getLastSevenReviews = async (req: Request, res: Response): Promise<
     }
 }
 export const getTopSevenDishes = async (req: Request, res: Response): Promise<void> => {
+    const id = req.params.id;
     try {
-        const topDishes = await Dish.find().sort({ sold: -1 }).limit(7);
-        if (!topDishes) {
-            res.status(404).json("Not found!");
-            return;
+        if (id == null) {
+            const topDishes = await Dish.find().sort({ sold: -1 }).limit(7);
+            if (!topDishes) {
+                res.status(404).json("Not found!");
+                return;
+            }
+            res.status(200).json(topDishes);
+            return
+        } else {
+            const topDishes = await Dish.find({ restaurantId: id }).sort({ sold: -1 }).limit(7);
+            if (!topDishes) {
+                res.status(404).json("Not found!");
+                return;
+            }
+            res.status(200).json(topDishes);
+            return
         }
-        res.status(200).json(topDishes);
-        return
     }
     catch (err) {
 

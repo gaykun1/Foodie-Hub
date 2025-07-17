@@ -8,7 +8,7 @@ import Dish from "../models/Dish";
 export const getCart = async (req: Request, res: Response): Promise<void> => {
     try {
         let cart = await Cart.findOne({ userId: (req as AuthRequest).userId }).populate({ path: "items.dishId" }).populate({ path: "restaurantId", select: "title imageUrl" });
-        if (!cart) {//not having cart we create a new one
+        if (!cart) {
             cart = await Cart.create({ userId: (req as AuthRequest).userId, items: [], restaurantId: null });
             cart = await Cart.findOne({ userId: (req as AuthRequest).userId })
                 .populate({ path: "items.dishId" }).populate({ path: "restaurantId", select: "title imageUrl" });
@@ -20,7 +20,7 @@ export const getCart = async (req: Request, res: Response): Promise<void> => {
     } catch (err) {
 
 
-        res.status(500).json("Server error!");
+        res.status(500).json(err);
         return;
 
     }

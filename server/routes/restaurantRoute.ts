@@ -4,6 +4,7 @@ import express from "express";
 import { createDish, createItem, createReview, deleteDish, getAbout, getDishes, getDishesNearYou, getFavouriteRestaurants, getLastSevenReviews, getRestaurantAddress, getRestaurantById, getRestaurantsFiltered, getReviews, getTopSevenDishes, handleAbout, searchRestaurants, toggleToFavourite } from "../controllers/restaurantController";
 import { authMiddleware } from "../middleware/authMiddleware";
 import { adminMiddleware } from "../middleware/adminMiddleware";
+import { restaurantMiddleware } from "../middleware/restaurantMiddleware";
 
 const restaurantRoute = express.Router();
 
@@ -21,8 +22,13 @@ restaurantRoute.get("/about/:id", getAbout);
 restaurantRoute.get("/review/:id", getReviews);
 restaurantRoute.post("/review", authMiddleware, createReview);
 restaurantRoute.get("/favourites", authMiddleware, getFavouriteRestaurants);
+
 restaurantRoute.get("/get-last-seven-reviews", adminMiddleware, getLastSevenReviews);
 restaurantRoute.get("/get-top-seven-dishes", adminMiddleware, getTopSevenDishes);
+
+restaurantRoute.get("/get-last-seven-reviews/:id", restaurantMiddleware, getLastSevenReviews);
+restaurantRoute.get("/get-top-seven-dishes/:id", restaurantMiddleware, getTopSevenDishes);
+
 restaurantRoute.get("/dishes-near-you", getDishesNearYou);
 
 

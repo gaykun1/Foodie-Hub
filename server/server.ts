@@ -31,9 +31,11 @@ export const io = new Server(server, {
         origin: "http://localhost:3000",
         credentials: true
     }
-})
+});
+
 // Map for sockets
 let socketsMap = new Map<string, Socket>();
+export let restaurantsSocketsMap = new Map<string, Socket>();
 
 // Set for active admins
 export const activeAdmins = new Set<string>();
@@ -57,6 +59,13 @@ io.on("connection", (socket) => {
 
 
     })
+    socket.on("joinDashboardRestaurant", (restaurantId) => {
+        socket.join(restaurantId);
+        socketsMap.set(restaurantId, socket);
+        restaurantsSocketsMap.set(restaurantId, socket);
+    })
+
+
     socket.on("disconnect", () => {
         socketsMap.forEach((value, key) => {
             if (value === socket) {

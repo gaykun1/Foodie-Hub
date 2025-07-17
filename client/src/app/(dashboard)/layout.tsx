@@ -22,46 +22,48 @@ export default async function RootLayout({
 
   try {
 
-    const res = await axios.get("http://localhost:5200/api/auth/check-admin", {
+    const res = await axios.get("http://localhost:5200/api/auth/check-role", {
       headers: {
         Authorization: `Bearer ${token}`
       }
     });
-    if (res.data.role == "admin") {
+    if (res.data.role === "admin" || res.data.role === "restaurant") {
       return (
-     
-            <Providers>
-              <AuthClientUpload />
-              <Header />
 
-              <div className="_container flex">
-                <SideBar />
-        <div className="p-8 grow-1">
-           <div className="border-borderColor border-[1px] rounded-lg p-6 flex flex-col overflow-hidden ">
+        <Providers>
+          <AuthClientUpload />
+          <Header />
+
+          <div className="_container flex">
+            <SideBar role={res.data.role} />
+            <div className="p-8 grow-1">
+              <div className="border-borderColor border-[1px] rounded-lg p-6 flex flex-col overflow-hidden ">
                 {children}
-                </div>
-                </div>
               </div>
-              <Footer/>
-            </Providers>
-         
+            </div>
+          </div>
+          <Footer />
+        </Providers>
+
       );
     } else {
       return (
         <div className="">
-            <h1>Error</h1>
-            <p>Access denied</p>
+          <h1>Error</h1>
+          <p>Access denied</p>
         </div>
       )
     }
 
 
   } catch (err) {
+    let error = "";
     return (
       <div className="">
-            <h1>Error</h1>
-            <p>Access denied</p>
-        </div>
+        <h1>Error</h1>
+
+        <p>Access denied</p>
+      </div>
     )
   }
 

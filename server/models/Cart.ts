@@ -11,7 +11,7 @@ export interface ICart {
 
 const CartSchema = new Schema<ICart>({
   userId: { type: Schema.Types.ObjectId, required: true, ref: "User" },
-  restaurantId: { type: Schema.Types.ObjectId, ref: "Restaurant", default: null, required: true },
+  restaurantId: { type: Schema.Types.ObjectId, ref: "Restaurant", default: null },
   items: [{
     dishId: { type: Schema.Types.ObjectId, required: true, ref: "Dish" },
     amount: { type: Number, required: true, default: 1 },

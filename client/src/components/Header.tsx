@@ -1,6 +1,6 @@
 "use client"
 
-import { LogOut } from '@/api/auth'
+import { LogOut } from '@/api/api'
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks'
 import { logout } from '@/redux/authSlice'
 import { deleteItem, updateAmount } from '@/redux/cartSlice'
@@ -91,7 +91,7 @@ const Header = () => {
             </Link>
           </div>
           <nav className='basis-[250px] grow-1  flex gap-[18px] items-center'>
-            {user?.role !== "admin" ? (<><Link className='default-link font-bold' href={"/"}>Home</Link>
+            {!(user?.role === "admin" || user?.role === "restaurant") ? (<><Link className='default-link font-bold' href={"/"}>Home</Link>
               <Link className='default-link font-bold' href={"/restaurants/category/all-restaurants"}>Restaurants</Link>
               <Link className='default-link font-bold' href={"/orders"}>Orders</Link>
               {user?.role === "courier" ? (<Link className='default-link font-bold' href={"/courier"}>Courier page</Link>
@@ -99,7 +99,7 @@ const Header = () => {
               )}
             </>
 
-            ) : (<Link className='default-link font-bold' href={"/dashboard"}>Dashboard</Link>)}
+            ) : (<Link className='default-link font-bold' href={`${user.role==="admin" ?"/dashboard/overview" :"/dashboard/restaurant-overview"}`}>Dashboard</Link>)}
           </nav>
         </div>
         <div className="flex gap-5 items-center relative">

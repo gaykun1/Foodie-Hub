@@ -1,5 +1,5 @@
 "use client"
-import { getRestaurantsFiltered } from '@/api/auth';
+import { getRestaurantsFiltered } from '@/api/api';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { Category, Restaurant } from '@/redux/reduxTypes';
 import { getRestaurants } from '@/redux/restaurantSlice';

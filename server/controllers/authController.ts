@@ -6,19 +6,19 @@ import User from "../models/User";
 import jwt from "jsonwebtoken";
 // Using middleware that returns userId
 import { AuthRequest } from "../middleware/authMiddleware";
-
+import dotenv from "dotenv";
+dotenv.config();
 // Signing with bcrypt for hashing password
 export const signup = async (req: Request, res: Response): Promise<void> => {
     const { username, password } = req.body;
-    console.log(req.body);
     try {
-        const hashedPasword = await bcrypt.hash(password, 10);
-        const user = await User.create({ username: username, password: hashedPasword });
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const user = await User.create({ username: username, password: hashedPassword });
         // creating token
         const token = jwt.sign({ userId: user._id, role: user.role }, process.env.JWT_SECRET!, { expiresIn: "1h" });
         // adding token to cookie field with name "token"
         res.cookie("token", token, {
-            maxAge: 60 * 60 * 1000,//life of token - 1hour
+            maxAge: 60 * 60 * 1000, //life of token - 1hour
             httpOnly: true,
             sameSite: 'lax',
             path: '/',
@@ -153,14 +153,11 @@ export const updateProfile = async (req: Request, res: Response): Promise<void> 
     }
 }
 
-// for checking if token.role===admin using adminMiddleware out there in route
-export const checkIfAdmin = async (req: Request, res: Response): Promise<void> => {
-
-
+// for checking user role 
+export const checkRole = async (req: Request, res: Response): Promise<void> => {
     try {
-
-
-        res.json({ role: "admin" });
+        console.log((req as AuthRequest).role );
+        res.json({ role: (req as AuthRequest).role });
         return;
     } catch (err) {
         res.status(500).json({ error: 'Search error!' });

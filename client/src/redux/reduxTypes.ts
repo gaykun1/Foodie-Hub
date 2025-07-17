@@ -15,6 +15,7 @@ export interface User {
     usualPromocode: {
         discountPercent: number,
     }
+    restaurantId?: string,
 
 }
 

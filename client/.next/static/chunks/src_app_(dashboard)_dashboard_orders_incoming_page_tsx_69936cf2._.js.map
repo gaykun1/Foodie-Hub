@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 7, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/User/Desktop/pet%20projects/FoodieHub/client/src/app/%28dashboard%29/dashboard/orders/incoming/page.tsx"],"sourcesContent":["\"use client\"\r\n\r\nconst Page = () => {\r\n\r\n\r\n    return (\r\n        <div>\r\n            <h1 className=\"section-title mb-8 \">Orders overview</h1>\r\n        </div>\r\n    )\r\n}\r\n\r\nexport default Page"],"names":[],"mappings":";;;;AAAA;;AAEA,MAAM,OAAO;IAGT,qBACI,6LAAC;kBACG,cAAA,6LAAC;YAAG,WAAU;sBAAsB;;;;;;;;;;;AAGhD;KARM;uCAUS","debugId":null}}]
+}

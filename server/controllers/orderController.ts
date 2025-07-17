@@ -4,6 +4,7 @@ import Order from "../models/Order";
 import Cart from "../models/Cart";
 import { activeAdmins, io } from "../server";
 import Dish from "../models/Dish";
+import Restaurant from "../models/Restaurant";
 
 interface CartItem {
     dishId: {
@@ -101,14 +102,27 @@ export const getOrders = async (req: Request, res: Response): Promise<void> => {
     }
 }
 export const getLastSevenOrders = async (req: Request, res: Response): Promise<void> => {
+    const id = req.params.id;
     try {
-        const orders = await Order.find({ status: { $ne: null } }).sort({ updatedAt: -1 }).limit(7);
-        if (!orders) {
-            res.status(404).json("Not found!");
-            return;
+        if (id == null) {
+            const orders = await Order.find({ status: { $ne: null } }).sort({ updatedAt: -1 }).limit(7);
+            if (!orders) {
+                res.status(404).json("Not found!");
+                return;
+            }
+            res.status(200).json(orders);
+            return
+        } else {
+            const restaurant = await Restaurant.findById(id);
+            const orders = await Order.find({ status: { $ne: null }, restaurantTitle: restaurant?.title }).sort({ updatedAt: -1 }).limit(7);
+            if (!orders) {
+                res.status(404).json("Not found!");
+                return;
+            }
+            res.status(200).json(orders);
+            return
         }
-        res.status(200).json(orders);
-        return
+
     }
     catch (err) {
 

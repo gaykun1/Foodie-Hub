@@ -1,5 +1,5 @@
 import { Category, Restaurant, User } from "@/redux/reduxTypes";
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
 
 
 export const SignUp = async (password: string, username: string): Promise<User | void> => {
@@ -8,7 +8,9 @@ export const SignUp = async (password: string, username: string): Promise<User |
         if (!res) return;
         return res.data;
     } catch (err) {
-        console.error(err);
+        if (isAxiosError(err) && err.response) {
+            console.log(err.response.data.message);
+        }
     }
 }
 export const LogIn = async (password: string, username: string): Promise<User | void> => {
@@ -17,23 +19,25 @@ export const LogIn = async (password: string, username: string): Promise<User | 
         if (!res) return;
         return res.data;
     } catch (err) {
-        console.error(err);
+        if (isAxiosError(err) && err.response) {
+            console.log(err.response.data.message);
+        }
     }
 }
 
 export const LogOut = async (): Promise<void> => {
     try {
-        const res = await axios.post("http://localhost:5200/api/auth/logout",{}, { withCredentials: true });
+        const res = await axios.post("http://localhost:5200/api/auth/logout", {}, { withCredentials: true });
         if (!res) return;
         return res.data;
     } catch (err) {
         console.error(err);
     }
 }
-export const getRestaurantsFiltered = async (categorie:string): Promise<void|Restaurant[]> => {
+export const getRestaurantsFiltered = async (categorie: string): Promise<void | Restaurant[]> => {
     try {
-        if(!categorie)return;
-        const res = await axios.post("http://localhost:5200/api/restaurant/get-restaurants-filtered",{categorie});
+        if (!categorie) return;
+        const res = await axios.post("http://localhost:5200/api/restaurant/get-restaurants-filtered", { categorie });
         if (!res) return;
         return res.data;
     } catch (err) {

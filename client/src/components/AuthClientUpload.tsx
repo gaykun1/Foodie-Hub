@@ -4,7 +4,7 @@ import { login } from '@/redux/authSlice';
 import { getCart } from '@/redux/cartSlice';
 import { getInfo } from '@/redux/courierSlice';
 import { Cart } from '@/redux/reduxTypes';
-import axios from 'axios';
+import axios, { isAxiosError } from 'axios';
 import { useEffect } from 'react';
 
 const AuthClientUpload = () => {
@@ -25,13 +25,17 @@ const AuthClientUpload = () => {
                         dispatch(getInfo(res.data));
                     }
                 }
+                
                 const cartRes = await axios.get("http://localhost:5200/api/cart/get-cart", {
                     withCredentials: true,
                 });
                 dispatch(getCart(cartRes.data));
 
             } catch (err) {
-                console.error(err);
+                if(isAxiosError(err) && err.response){
+
+                    console.error(err.response.data);
+                }
             }
         };
 

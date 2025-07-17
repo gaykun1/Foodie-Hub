@@ -1,15 +1,16 @@
 "use client"
-import { SignUp,LogIn } from '@/api/auth';
+import { SignUp, LogIn } from '@/api/api';
 import { useAppDispatch } from '@/hooks/reduxHooks';
 import { login } from '@/redux/authSlice';
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+
 import React, { useState } from 'react'
 
 const Page = () => {
   const [password, setPassword] = useState<string>("");
   const [username, setUsername] = useState<string>("");
-
+  const router = useRouter();
   const dispatch = useAppDispatch();
   return (
     <div className=" flex justify-center mt-[150px]  text-primary">
@@ -30,7 +31,7 @@ const Page = () => {
           <button onClick={async () => {
             const user = await SignUp(password, username);
             if (user) dispatch(login(user));
-            redirect("/");
+            router.push("/");
           }} className='btn py-1 px-2 text-base!'>Sign up</button>
           <Link className='underline' href='login'>Log in</Link>
         </div>

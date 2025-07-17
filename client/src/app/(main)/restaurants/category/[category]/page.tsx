@@ -1,5 +1,5 @@
 "use client"
-import { getRestaurantsFiltered } from "@/api/auth";
+import { getRestaurantsFiltered } from "@/api/api";
 import RestaurantCard from "@/components/mainPage/RestaurantCard";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
 import { Category } from "@/redux/reduxTypes";

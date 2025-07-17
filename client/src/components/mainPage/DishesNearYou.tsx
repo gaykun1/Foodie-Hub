@@ -1,5 +1,5 @@
 "use client"
-import { getRestaurantsFiltered } from '@/api/auth';
+import { getRestaurantsFiltered } from '@/api/api';
 import { useAppSelector } from '@/hooks/reduxHooks';
 import { Dish } from '@/redux/reduxTypes';
 import axios from 'axios';
