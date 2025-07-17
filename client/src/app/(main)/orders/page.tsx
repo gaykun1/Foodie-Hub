@@ -72,7 +72,7 @@ const Page = () => {
     }
 
   }, [orders])
-  const currentOrders = orders?.filter(order => order.status == "Delivering" || order.status == "Preparing");
+  const currentOrders = orders?.filter(order => order.status !== "Delivered");
   const pastOrders = orders?.filter(order => order.status == "Delivered");
 
   return (

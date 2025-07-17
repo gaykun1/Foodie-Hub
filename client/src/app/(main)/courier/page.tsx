@@ -36,7 +36,7 @@ const Page = () => {
         try {
             if (courier) {
 
-                const res = await axios.get(`http://localhost:5200/api/order/free-orders/${courier.city}`);
+                const res = await axios.get(`http://localhost:5200/api/order/free-orders/${courier.city}`, { withCredentials: true });
                 setFreeOrders(res.data);
             }
         } catch (err) {
@@ -124,7 +124,7 @@ const Page = () => {
                 (pos) => {
                     const { latitude, longitude } = pos.coords;
                     setCourierLocation([latitude, longitude]);
-                    socket?.emit("updateLocation", { orderId: isWorking?._id, lat:latitude, lng:longitude });
+                    socket?.emit("updateLocation", { orderId: isWorking?._id, lat: latitude, lng: longitude });
 
                 },
                 (err) => console.error(err),

@@ -3,7 +3,8 @@ import Order from "../models/Order";
 import { AuthRequest } from "../middleware/courierMiddleware";
 import Courier from "../models/Courier";
 import User from "../models/User";
-import { activeAdmins, io } from "../server";
+import { activeAdmins, io, restaurantsSocketsMap } from "../server";
+import Restaurant from "../models/Restaurant";
 
 
 
@@ -89,6 +90,13 @@ export const changeOrderStatus = async (req: Request, res: Response): Promise<vo
         activeAdmins.forEach(adminId => {
             io.to(adminId).emit("updateOrders", orders);
         });
+        const restaurant = await Restaurant.findOne({ title: order.restaurantTitle });
+        for (const [id, socket] of restaurantsSocketsMap.entries()) {
+            if (id === restaurant?.id) {
+                const orders = await Order.find({ restaurantTitle: restaurant.title }).sort({ updatedAt: -1 }).limit(7);
+                socket.emit("updateRestaurantOrders", orders);
+            }
+        }
         res.status(200).json(status);
         return;
 
@@ -164,7 +172,7 @@ export const takeOrder = async (req: Request, res: Response): Promise<void> => {
 export const checkIfHasOrder = async (req: Request, res: Response): Promise<void> => {
     const id = req.params.id;
     try {
-        const order = await Order.findOne({ courierId: id, status: { $in: ["Delivering", "Preparing"] } });
+        const order = await Order.findOne({ courierId: id, status: { $in: ["Delivering", "Preparing", "Created"] } });
         res.status(200).json(order);
         return;
     } catch {

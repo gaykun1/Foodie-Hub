@@ -41,9 +41,9 @@ const OrderSchema = new Schema<IOrder>({
     amount: { type: Number, required: true },
   }],
   totalPrice: { type: Number, required: true },
-  discountPercent: { type: Number, def: 0},
+  discountPercent: { type: Number, def: 0 },
   shippingPrice: { type: Number },
-  status: { type: String, enum: ["Delivering", "Delivered", "Preparing"], default: null },
+  status: { type: String, enum: ["Delivering", "Delivered", "Preparing", "Created"], default: null },
   fullName: { type: String },
   adress: {
     city: { type: String },

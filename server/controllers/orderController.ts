@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { AuthRequest } from "../middleware/authMiddleware";
-import Order from "../models/Order";
+import Order, { IOrder } from "../models/Order";
 import Cart from "../models/Cart";
-import { activeAdmins, io } from "../server";
+import { activeAdmins, io, restaurantsSocketsMap } from "../server";
 import Dish from "../models/Dish";
 import Restaurant from "../models/Restaurant";
 
@@ -114,7 +114,7 @@ export const getLastSevenOrders = async (req: Request, res: Response): Promise<v
             return
         } else {
             const restaurant = await Restaurant.findById(id);
-            const orders = await Order.find({ status: { $ne: null }, restaurantTitle: restaurant?.title }).sort({ updatedAt: -1 }).limit(7);
+            const orders = await Order.find({ status: { $nin: [null, "Created"] }, restaurantTitle: restaurant?.title }).sort({ updatedAt: -1 }).limit(7);
             if (!orders) {
                 res.status(404).json("Not found!");
                 return;
@@ -136,36 +136,58 @@ export const getLastSevenOrders = async (req: Request, res: Response): Promise<v
     }
 }
 
+const getMondayDate = (d: Date) => {
+    const date = new Date(d);
+    const day = date.getDay();
+    const newDate = date.getDate() - day + (day === 0 ? -6 : +1);
+
+    date.setDate(newDate);
+    date.setHours(0, 0, 0, 0);
+    return date;
+}
+
 
 export const getNumbers = async (req: Request, res: Response): Promise<void> => {
     try {
-        const orders = await Order.find({});
-        if (!orders.length) {
-            res.status(404).json({ message: "No orders found!" });
-            return;
+        const id = req.params.id;
+        console.log(id);
+        let orders = [];
+        if (id == null) {
+            orders = await Order.find({});
+            if (!orders.length) {
+                res.status(404).json({ message: "No orders found!" });
+                return;
+            }
+        } else {
+            const restaurant = await Restaurant.findById(id);
+            orders = await Order.find({ restaurantTitle: restaurant?.title });
+            if (!orders.length) {
+                res.status(404).json({ message: "No orders found!" });
+                return;
+            }
         }
+
 
         const now = new Date();
 
         const numOfOrders = orders.length;
         const totalRevenue = orders.reduce((acc, cur) => acc + cur.totalPrice, 0);
         const averageOrderValue = +(totalRevenue / numOfOrders).toFixed(2);
-
-        const startOfThisWeek = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-        const endOfThisWeek = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 7);
-        const startOfLastWeek = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7);
-        const endOfLastWeek = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-
+        const startOfThisWeek = getMondayDate(new Date());
+        const endOfThisWeek = new Date(startOfThisWeek);
+        endOfThisWeek.setDate(startOfThisWeek.getDate() + 6);
+        const startOfLastWeek = new Date(startOfThisWeek);
+        startOfLastWeek.setDate(startOfThisWeek.getDate() - 7);
+        const endOfLastWeek = new Date(startOfLastWeek);
+        endOfLastWeek.setDate(startOfLastWeek.getDate() + 6);
         const [ordersThisWeek, ordersLastWeek] = await Promise.all([
             Order.find({ createdAt: { $gte: startOfThisWeek, $lte: endOfThisWeek } }),
             Order.find({ createdAt: { $gte: startOfLastWeek, $lte: endOfLastWeek } })
         ]);
-
         const totalOrdersThisWeek = ordersThisWeek.length;
         const totalOrdersLastWeek = ordersLastWeek.length;
         const revenueThisWeek = ordersThisWeek.reduce((acc, cur) => acc + cur.totalPrice, 0);
         const revenueLastWeek = ordersLastWeek.reduce((acc, cur) => acc + cur.totalPrice, 0);
-
         const avgOrderValueThisWeek = totalOrdersThisWeek > 0 ? +(revenueThisWeek / totalOrdersThisWeek).toFixed(2) : 0;
         const avgOrderValueLastWeek = totalOrdersLastWeek > 0 ? +(revenueLastWeek / totalOrdersLastWeek).toFixed(2) : 0;
 
@@ -238,7 +260,7 @@ export const updateOrder = async (req: Request, res: Response): Promise<void> =>
 
             const order = await Order.findOneAndUpdate({ status: null, userId: (req as AuthRequest).userId }, {
                 $set: {
-                    status: "Preparing",
+                    status: "Created",
                     approxTime: shipping == 2.2 ? 50 : shipping == 3.2 ? 30 : 15,
                     shippingPrice: shipping,
                     discountPercent: percent,
@@ -259,11 +281,17 @@ export const updateOrder = async (req: Request, res: Response): Promise<void> =>
                     })
                 }
             }
+            const restaurant = await Restaurant.findOne({ title: order?.restaurantTitle });
+            for (const [id, socket] of restaurantsSocketsMap.entries()) {
+                if (id === restaurant?.id) {
+                    const orders = await Order.find({ status: "Created", restaurantTitle: restaurant.title });
+                    socket.emit("incomingOrders", orders);
+                }
+            }
 
-            const orders = await Order.find({ status: { $ne: null } }).sort({ updatedAt: -1 }).limit(7);
-            activeAdmins.forEach(adminId => {
-                io.to(adminId).emit("updateOrders", orders);
-            });
+            //      activeAdmins.forEach(adminId => {
+            //     io.to(adminId).emit("updateOrders", orders);
+            // });
             res.status(200).json("Created!");
             return
         }
@@ -288,7 +316,7 @@ export const updateOrder = async (req: Request, res: Response): Promise<void> =>
 export const getFreeOrders = async (req: Request, res: Response): Promise<void> => {
     const city = req.params.city;
     try {
-        const orders = await Order.find({ status: "Preparing", "adress.city": city, courierId: null });
+        const orders = await Order.find({ status: { $in: ["Preparing", "Created"] }, "adress.city": city, courierId: null });
         if (!orders) {
             res.status(404).json("Not found!");
             return;

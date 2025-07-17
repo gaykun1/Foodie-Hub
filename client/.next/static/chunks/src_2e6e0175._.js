@@ -210,7 +210,7 @@ const CheckoutForm = ({ order })=>{
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "CheckoutForm.useEffect": ()=>{
             getClientSecret();
-            if (user?.usualPromocode.discountPercent) setDiscount(user.usualPromocode.discountPercent);
+            if (user?.usualPromocode?.discountPercent) setDiscount(user.usualPromocode.discountPercent);
         }
     }["CheckoutForm.useEffect"], [
         user

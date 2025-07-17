@@ -33,7 +33,10 @@ export const updateCartAmount = async (req: Request, res: Response): Promise<voi
     try {
         const order = await Order.findOne({ userId: (req as AuthRequest).userId, status: null });
         if (amount === 0) {
-            const cart = await Cart.findOneAndUpdate({ userId: (req as AuthRequest).userId }, { $pull: { items: { dishId: dishId } } },);
+            const cart = await Cart.findOneAndUpdate({ userId: (req as AuthRequest).userId }, { $pull: { items: { dishId: dishId } } }, { new: true });
+            if (cart?.items.length == 0) {
+                await Cart.findOneAndUpdate({ userId: (req as AuthRequest).userId },{$set:{restaurantId:null}});
+            }
             if (order) {
                 order.items = order.items.filter((item) => item.title !== title); //deleting items out of the cart if amount equals 0
                 if (order.items.length == 0) {
@@ -83,7 +86,7 @@ export const addToCart = async (req: Request, res: Response): Promise<void> => {
                 return;
             }
             //validation for checking if dish from other restaurant 
-            if (!cart.restaurantId?.equals(dish.restaurantId) && cart.restaurantId != null) {
+            if (!cart.restaurantId?.equals(dish.restaurantId) && cart.restaurantId !== null) {
                 res.status(400).json("Not allowed other restaurants!");
                 return;
             }

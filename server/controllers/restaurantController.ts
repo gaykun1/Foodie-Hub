@@ -4,7 +4,8 @@ import User from "../models/User";
 import { AuthRequest } from "../middleware/authMiddleware";
 import Dish, { IDish } from "../models/Dish";
 import Review, { IReview } from "../models/Review";
-import { activeAdmins, io } from "../server";
+import { activeAdmins, io, restaurantsSocketsMap } from "../server";
+import Order from "../models/Order";
 
 
 
@@ -375,6 +376,12 @@ export const createReview = async (req: Request, res: Response) => {
             activeAdmins.forEach(adminId => {
                 io.to(adminId).emit("updateReviews", reviews);
             });
+            for (const [id, socket] of restaurantsSocketsMap.entries()) {
+                if (id === restaurant?.id) {
+                    const reviews = await Review.find({ restaurantId: restaurant._id }).populate({ path: "sender", select: "username" }).sort({ updatedAt: -1 }).limit(7);
+                    socket.emit("updateRestaurantReviews", reviews);
+                }
+            }
             res.status(201).json(newReview);
             return;
         }

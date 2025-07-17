@@ -35,11 +35,11 @@ export const io = new Server(server, {
 
 // Map for sockets
 let socketsMap = new Map<string, Socket>();
-export let restaurantsSocketsMap = new Map<string, Socket>();
 
 // Set for active admins
 export const activeAdmins = new Set<string>();
 
+export let restaurantsSocketsMap = new Map<string, Socket>();
 io.on("connection", (socket) => {
 
     socket.on("updateLocation", ({ orderId, lat, lng }) => {

@@ -3,7 +3,7 @@ import { useAppSelector } from '@/hooks/reduxHooks';
 import { Dish, Order, Review } from '@/redux/reduxTypes';
 import { calculateStars } from '@/utils/rating';
 import axios from 'axios'
-import { ChevronDown } from 'lucide-react';
+import { Box, ChevronDown, DollarSign, Utensils } from 'lucide-react';
 import { useEffect, useState } from 'react'
 import { io, Socket } from 'socket.io-client';
 
@@ -14,7 +14,9 @@ const Page = () => {
   const [reviews, setReviews] = useState<Review[] | null>(null);
   const [topDishes, setTopDishes] = useState<Dish[] | null>(null);
   const [accordion, setAccordion] = useState<string | null>(null);
-
+  const [numOfOrders, setNumOfOrders] = useState<{ number: number, percent: number } | null>(null);
+  const [totalRevenue, setTotalRevenue] = useState<{ number: number, percent: number } | null>(null);
+  const [averageOrderValue, setAverageOrderValue] = useState<{ number: number, percent: number } | null>(null);
   useEffect(() => {
     if (user?.restaurantId) {
 
@@ -55,34 +57,89 @@ const Page = () => {
     }
   }, [user?.restaurantId])
 
-
-
-
-
   useEffect(() => {
-    const sock = io("http://localhost:5200");
-    setSocket(sock);
-  }, [])
+    if (user?.restaurantId) {
+      const getNumbers = async () => {
+        try {
+          const res = await axios.get(`http://localhost:5200/api/order/order-values/${user?.restaurantId}`, { withCredentials: true });
+          setNumOfOrders(res.data.numOfOrders);
+          setTotalRevenue(res.data.totalRevenue);
+          setAverageOrderValue(res.data.averageOrderValue);
+        } catch (err) {
+          console.error(err);
+        }
+      }
+
+      const sock = io("http://localhost:5200");
+      setSocket(sock);
+
+      getNumbers();
+    }
+  }, [user?.restaurantId])
 
   useEffect(() => {
     if (socket) {
-      socket.emit("joinDashboardRestaurant", { restaurantId: user?._id });
+      const restaurantId = user?.restaurantId;
+      socket.emit("joinDashboardRestaurant", restaurantId);
       socket.on("updateRestaurantOrders", (orders) => {
         setOrders(orders);
       })
-      socket.on("updateRestaurantOrders", (reviews) => {
+      socket.on("updateRestaurantReviews", (reviews) => {
         setReviews(reviews);
       })
 
+
       return () => {
-        socket.off();
+        socket.off("updateRestaurantOrders");
+        socket.off("updateRestaurantReviews");
       };
+
     }
   }, [socket])
 
   return (
     <div>
       <h1 className="section-title mb-8 ">Restaurant overview</h1>
+      {totalRevenue && averageOrderValue && numOfOrders &&
+        <div className="grid grid-cols-3 gap-6 mb-8">
+          <div className="p-[50px] rounded-lg border-borderColor border-[1px]">
+            <div className="flex items-center justify-between mb-2.5">
+              <span className='text-sm leading-5 font-medium text-gray'>Total Orders</span>
+              <Box className='text-primary' size={16} />
+            </div>
+            <div className="flex flex-col">
+              <span className='text-2xl leading-8 font-bold'>{numOfOrders.number}</span>
+              <span className='text-xs leading-4  text-gray'>{numOfOrders.percent > 0 ? "Increased" : "Decreased"} by {numOfOrders.percent}% this week</span>
+
+            </div>
+          </div>
+
+          <div className="p-[50px] rounded-lg border-borderColor border-[1px]">
+            <div className="flex items-center justify-between mb-2.5">
+              <span className='text-sm leading-5 font-medium text-gray'>Total Revenue</span>
+              <DollarSign className='text-primary' size={16} />
+            </div>
+            <div className="flex flex-col">
+              <span className='text-2xl leading-8 font-bold'>${totalRevenue.number}</span>
+              <span className='text-xs leading-4  text-gray'>{totalRevenue.percent > 0 ? "Up" : "Down"} {totalRevenue.percent}% from last week</span>
+
+
+            </div>
+          </div>
+
+          <div className="p-[50px] rounded-lg border-borderColor border-[1px]">
+            <div className="flex items-center justify-between mb-2.5">
+              <span className='text-sm leading-5 font-medium text-gray'>Avg. Order Value</span>
+              <Utensils className='text-primary' size={16} />
+            </div>
+            <div className="flex flex-col">
+              <span className='text-2xl leading-8 font-bold'>{averageOrderValue?.number}</span>
+              <span className='text-xs leading-4  text-gray'>{averageOrderValue.percent > 0 ? "Increased" : "Decreased"} by {averageOrderValue.percent}% this week</span>
+
+            </div>
+          </div>
+        </div>
+      }
       <div className="flex flex-col gap-3 ">
         {/* Recent updated order table */}
         <div className="rounded-lg border-borderColor border-[1px] px-[25px] py-[50px] flex flex-col gap-6">

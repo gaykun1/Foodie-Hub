@@ -78,7 +78,7 @@ const CheckoutForm = ({ order }: { order: Order }) => {
     useEffect(() => {
 
         getClientSecret();
-        if (user?.usualPromocode.discountPercent)
+        if (user?.usualPromocode?.discountPercent)
             setDiscount(user.usualPromocode.discountPercent)
     }, [user])
     const placeOrder = async () => {
