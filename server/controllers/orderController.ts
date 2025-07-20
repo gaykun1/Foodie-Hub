@@ -101,6 +101,33 @@ export const getOrders = async (req: Request, res: Response): Promise<void> => {
 
     }
 }
+
+
+export const getOrdersCreated = async (req: Request, res: Response): Promise<void> => {
+    const id = req.params.id;
+    try {
+        const restaurant = await Restaurant.findById(id);
+        const orders = await Order.find({ restaurantTitle: restaurant?.title, status: "Created" });
+        if (!orders) {
+            res.status(404).json("Not found!");
+            return;
+        }
+        res.status(200).json(orders);
+        return
+    }
+    catch (err) {
+
+
+        res.status(500).json("Server error!");
+        return;
+
+
+
+
+    }
+}
+
+
 export const getLastSevenOrders = async (req: Request, res: Response): Promise<void> => {
     const id = req.params.id;
     try {
@@ -150,17 +177,17 @@ const getMondayDate = (d: Date) => {
 export const getNumbers = async (req: Request, res: Response): Promise<void> => {
     try {
         const id = req.params.id;
-        console.log(id);
+       
         let orders = [];
         if (id == null) {
-            orders = await Order.find({});
+            orders = await Order.find({ status: { $ne: "Created" } });
             if (!orders.length) {
                 res.status(404).json({ message: "No orders found!" });
                 return;
             }
         } else {
             const restaurant = await Restaurant.findById(id);
-            orders = await Order.find({ restaurantTitle: restaurant?.title });
+            orders = await Order.find({ restaurantTitle: restaurant?.title, status: { $ne: "Created" } });
             if (!orders.length) {
                 res.status(404).json({ message: "No orders found!" });
                 return;
@@ -253,7 +280,7 @@ export const getOrdersCourier = async (req: Request, res: Response): Promise<voi
 export const updateOrder = async (req: Request, res: Response): Promise<void> => {
     const { formData, shipping, cartId, totalPrice, percent } = req.body;
 
-    console.log(req.body);
+
 
     try {
         if (formData.city && formData.countryOrRegion && formData.houseNumber && formData.street) {
@@ -316,7 +343,7 @@ export const updateOrder = async (req: Request, res: Response): Promise<void> =>
 export const getFreeOrders = async (req: Request, res: Response): Promise<void> => {
     const city = req.params.city;
     try {
-        const orders = await Order.find({ status: { $in: ["Preparing", "Created"] }, "adress.city": city, courierId: null });
+        const orders = await Order.find({ status: { $in: ["Preparing"] }, "adress.city": city, courierId: null });
         if (!orders) {
             res.status(404).json("Not found!");
             return;
@@ -329,5 +356,15 @@ export const getFreeOrders = async (req: Request, res: Response): Promise<void> 
     }
 }
 
-
+export const toggleToPreparing = async (req: Request, res: Response): Promise<void> => {
+    const { id } = req.body;
+    try {
+        await Order.findByIdAndUpdate(id, { $set: { status: "Preparing" } });
+        res.status(200).json("Toggled status to Preparing");
+        return;
+    } catch (err) {
+        res.status(500).json("Server error!");
+        return;
+    }
+}
 

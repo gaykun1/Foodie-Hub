@@ -7,9 +7,9 @@ const RestaurantCard = ({restaurant}:{restaurant:Restaurant}) => {
   return (
     <div>
          <div  className="shadow-xs rounded-lg border-[1px] overflow-hidden border-borderColor ">
-                                        <div className="mb-5  h-40 w-full overflow-hidden">
+                                        <div className="mb-5  aspect-video w-full overflow-hidden">
 
-                                            <img src={restaurant.imageUrl} alt="Restaurant" />
+                                            <img className='w-full' src={restaurant.imageUrl} alt="Restaurant" />
                                         </div>
                                         <div className="pb-[17px] pr-[17px] pl-5 flex flex-col gap-3">
                                             <div className="flex flex-col gap-[2px]">

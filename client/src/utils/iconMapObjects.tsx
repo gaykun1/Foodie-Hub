@@ -1,7 +1,9 @@
 "use client"
 
 
-import L from "leaflet"
+
+    const L = require("leaflet");
+
 
 
 export const receiverIcon = new L.Icon({
@@ -15,8 +17,8 @@ export const restaurantIcon =
         iconSize: [25, 25],
     })
 
-export const courierIcon  =  new L.Icon({
-    iconUrl:"/courier.png",
-    iconSize:[25,25],
+export const courierIcon = new L.Icon({
+    iconUrl: "/courier.png",
+    iconSize: [25, 25],
 })
 

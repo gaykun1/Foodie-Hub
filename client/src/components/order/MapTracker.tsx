@@ -7,6 +7,7 @@ import { MapContainer, Marker, TileLayer, useMap } from 'react-leaflet';
 import { io, Socket } from 'socket.io-client';
 import "leaflet/dist/leaflet.css";
 import { InvalidateMapSize } from '@/utils/InvalidateMapSize ';
+import { useAppSelector } from '@/hooks/reduxHooks';
 
 
 
@@ -14,12 +15,11 @@ const MapTracker = ({ isWorking, Width, Height, socket, courierLocation }: { Wid
     const [restaurantLocation, setRestaurantLocation] = useState<[number, number] | null>(null);
     const [receiverLocation, setReceiverLocation] = useState<[number, number] | null>(null);
     const [loadingLocation, setLoadingLocation] = useState<boolean>(true);
-
+    const { user } = useAppSelector(state => state.auth);
 
     // connecting to socket room, geocoding receiver adress
     useEffect(() => {
         if (socket && isWorking) {
-            socket.emit("joinOrder", isWorking._id);
             const geoCode = async () => {
                 try {
                     await getRestaurentLocation();
@@ -38,11 +38,11 @@ const MapTracker = ({ isWorking, Width, Height, socket, courierLocation }: { Wid
         }
     }, [socket, isWorking]);
 
-const isReady =
-  !loadingLocation &&
-  courierLocation &&
-  receiverLocation &&
-  restaurantLocation;
+    const isReady =
+        !loadingLocation &&
+        courierLocation &&
+        receiverLocation &&
+        restaurantLocation;
 
     // geocoding fuuctions -- latitude longitude for marker position on the map
     const getRestaurentLocation = async () => {
@@ -79,7 +79,7 @@ const isReady =
         }
     }
 
-    
+
     return (<>
 
         {

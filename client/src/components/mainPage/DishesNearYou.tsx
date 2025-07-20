@@ -36,7 +36,7 @@ const DishesNearYou = () => {
 
 
             </div>
-            <div className="grid grid-cols-5 gap-x-6">
+            <div className="grid md:grid-cols-3 sm:grid-cols-2 p-10 sm:p-0  lg:grid-cols-5 gap-6">
                 {dishes.length > 0 ?
 
                     dishes.map((dish, idx) => (

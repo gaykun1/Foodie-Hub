@@ -2,6 +2,7 @@
 import MapTracker from '@/components/order/MapTracker';
 import OrderCard from '@/components/order/OrderCard';
 import ViewDetailsSideBar from '@/components/ViewDetailsSideBar';
+import { useAppSelector } from '@/hooks/reduxHooks';
 import { Order } from '@/redux/reduxTypes'
 import axios from 'axios';
 import { Map, } from 'lucide-react';
@@ -14,9 +15,10 @@ const Page = () => {
   const [socket, setSocket] = useState<Socket | null>(null);
   const [viewDetails, setViewDetails] = useState<Order | null>(null);
   const [courierLocation, setCourierLocation] = useState<[number, number] | null>(null);
-
+  const { user } = useAppSelector((state) => state.auth);
   // creating a socket connection
   useEffect(() => {
+
 
     const sock = io("http://localhost:5200");
     setSocket(sock);
@@ -27,21 +29,6 @@ const Page = () => {
 
   }, []);
 
-  useEffect(() => {
-    if (!socket) return;
-    const handleLocationUpdate = ({ lat, lng }: { lat: number; lng: number }) => {
-      setCourierLocation([lat, lng]);
-      console.log("locationUpdate:", lat, lng);
-    };
-
-    socket.on("locationUpdate", handleLocationUpdate);
-
-    return () => {
-      socket.off("locationUpdate", handleLocationUpdate);
-    };
-
-
-  }, [socket])
 
   useEffect(() => {
     const getOrders = async () => {
@@ -56,12 +43,46 @@ const Page = () => {
       }
     }
     getOrders();
-
-
-
-
-
   }, [])
+
+
+
+
+  useEffect(() => {
+    if (!socket) return;
+    if (orders) {
+
+      const activeOrders = orders.filter(
+        order => order.status === "Preparing" || order.status === "Delivering"
+      );
+
+      activeOrders.forEach(order => {
+        socket.emit("joinOrder", { orderId: order._id, userId: user?._id });
+      });
+
+
+      const handleLocationUpdate = ({ lat, lng }: { lat: number; lng: number }) => {
+        setCourierLocation([lat, lng]);
+        console.log("locationUpdate:", lat, lng);
+      };
+      socket.on("locationUpdate", handleLocationUpdate);
+      socket.on("updateOrderStatus", ({ status, id }) => {
+        const order = orders?.find(order => order._id === id);
+        if (order) {
+          setOrders((prev) => prev?.map(order => order._id === id ? { ...order, status } : order));
+          console.log(status);
+        }
+      });
+
+      return () => {
+        socket.off("locationUpdate", handleLocationUpdate);
+        socket.off("updateOrderStatus");
+      };
+    }
+
+  }, [socket, orders])
+
+
 
   useEffect(() => {
     if (orders) {
@@ -114,7 +135,7 @@ const Page = () => {
                 <div className="flex flex-col mb-8 gap-1.5">
                   <div className="flex items-center gap-2">
                     <Map className='text-primary' size={20} />
-                    <h2 className='text-xl leading-7 font-bold'>Live Tracking</h2>
+                    <h2 className='text-xl leading-7 font-bold '>Live Tracking</h2>
                   </div>
 
                   <p className='text-sm leading-5 text-gray'>Your order is on its way to {viewDetails?.adress.houseNumber} {viewDetails?.adress.street}</p>

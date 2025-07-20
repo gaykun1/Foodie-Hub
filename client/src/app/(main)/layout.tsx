@@ -22,13 +22,15 @@ export default async function RootLayout({
 
     <Providers>
       <AuthClientUpload />
-      <Header />
-      <div className="_container ">
-        <div className="">
-          {children}
+      <div className="">
+        <Header />
+        <div className="_container ">
+          <div className="">
+            {children}
+          </div>
         </div>
+        <Footer />
       </div>
-      <Footer />
     </Providers>
 
   );

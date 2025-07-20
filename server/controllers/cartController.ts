@@ -29,7 +29,7 @@ export const getCart = async (req: Request, res: Response): Promise<void> => {
 // updating cart items amount
 export const updateCartAmount = async (req: Request, res: Response): Promise<void> => {
     const { dishId, amount, title } = req.body;
-    console.log(amount, title);
+    
     try {
         const order = await Order.findOne({ userId: (req as AuthRequest).userId, status: null });
         if (amount === 0) {

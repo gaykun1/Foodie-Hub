@@ -34,7 +34,7 @@ export const io = new Server(server, {
 });
 
 // Map for sockets
-let socketsMap = new Map<string, Socket>();
+export let socketsMap = new Map<string, Socket>();
 
 // Set for active admins
 export const activeAdmins = new Set<string>();
@@ -46,7 +46,7 @@ io.on("connection", (socket) => {
         io.to(orderId).emit("locationUpdate", { lat, lng });
     })
 
-    socket.on("joinOrder", (orderId, userId) => {
+    socket.on("joinOrder", ({ orderId, userId }) => {
         socket.join(orderId);
         socketsMap.set(userId, socket);
 
@@ -61,7 +61,6 @@ io.on("connection", (socket) => {
     })
     socket.on("joinDashboardRestaurant", (restaurantId) => {
         socket.join(restaurantId);
-        socketsMap.set(restaurantId, socket);
         restaurantsSocketsMap.set(restaurantId, socket);
     })
 

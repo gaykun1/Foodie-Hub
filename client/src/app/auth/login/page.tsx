@@ -12,7 +12,7 @@ const Page = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   return (
-    <div className=" flex justify-center mt-[150px]  text-primary">
+    <div className=" flex justify-center mt-[150px] mx-5 text-primary">
       <div className='max-w-[550px] w-full rounded-[25px] border-[2px] border-borderColor flex flex-col gap-4 p-6'>
         <h2 className="text-3xl font-bold">Login</h2>
         <div className=" flex flex-col gap-2">

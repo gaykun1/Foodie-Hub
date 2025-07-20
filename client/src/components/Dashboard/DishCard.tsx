@@ -35,9 +35,10 @@ const DishCard = ({ dish, toCart, onDeleted }: { dish: Dish, toCart: boolean, on
     const isInCart = (cart?.items.find(item => item.dishId.title === dish.title)) ? true : false;
     return (
         <div className='rounded-lg shadow-xs border-[1px] flex flex-col gap-5 border-borderColor h-full  overflow-hidden'>
-            <div className=" max-w-[324px]  w-full">
-                <img className=' h-40 w-full' src={dish.imageUrl} alt="dish image" />
+            <div className=" max-w-[324px]  w-full ">
+                <img className='  w-full' src={dish.imageUrl} alt="dish image" />
             </div>
+           
             <div className="px-4 pb-4 flex flex-col justify-between h-full">
                 <div className="">
                     <h2 className='text-lg leading-7 font-semibold '>{dish.title}</h2>

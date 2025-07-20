@@ -3,7 +3,7 @@ import Order from "../models/Order";
 import { AuthRequest } from "../middleware/courierMiddleware";
 import Courier from "../models/Courier";
 import User from "../models/User";
-import { activeAdmins, io, restaurantsSocketsMap } from "../server";
+import { activeAdmins, io, restaurantsSocketsMap, socketsMap } from "../server";
 import Restaurant from "../models/Restaurant";
 
 
@@ -88,14 +88,25 @@ export const changeOrderStatus = async (req: Request, res: Response): Promise<vo
         }
         const orders = await Order.find().sort({ updatedAt: -1 }).limit(7);
         activeAdmins.forEach(adminId => {
-            io.to(adminId).emit("updateOrders", orders);
+            io.to(adminId.toString()).emit("updateOrders", orders);
         });
         const restaurant = await Restaurant.findOne({ title: order.restaurantTitle });
-        for (const [id, socket] of restaurantsSocketsMap.entries()) {
-            if (id === restaurant?.id) {
-                const orders = await Order.find({ restaurantTitle: restaurant.title }).sort({ updatedAt: -1 }).limit(7);
-                socket.emit("updateRestaurantOrders", orders);
+        if (restaurant) {
+            for (const [id, socket] of restaurantsSocketsMap.entries()) {
+                if (id === restaurant.id) {
+                    const orders = await Order.find({ restaurantTitle: restaurant.title }).sort({ updatedAt: -1 }).limit(7);
+                    socket.emit("updateRestaurantOrders", orders);
+
+                }
             }
+        }
+
+        const socketUser = socketsMap.get(order.userId.toString());
+        console.log(socketUser);
+
+        if (socketUser) {
+            socketUser.emit("updateOrderStatus", { status, id: order._id });
+            console.log("ok");
         }
         res.status(200).json(status);
         return;

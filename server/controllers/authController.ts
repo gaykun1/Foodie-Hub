@@ -116,7 +116,7 @@ export const profile = async (req: Request, res: Response): Promise<void> => {
 // Partly updating  profile fields  (including new password)
 export const updateProfile = async (req: Request, res: Response): Promise<void> => {
     const { payload } = req.body;
-    console.log(payload);
+    
     try {
         const user = await User.findOne({ _id: (req as AuthRequest).userId })
         if (user) {
@@ -156,7 +156,7 @@ export const updateProfile = async (req: Request, res: Response): Promise<void> 
 // for checking user role 
 export const checkRole = async (req: Request, res: Response): Promise<void> => {
     try {
-        console.log((req as AuthRequest).role );
+        
         res.json({ role: (req as AuthRequest).role });
         return;
     } catch (err) {
