@@ -2,10 +2,6 @@
 import {
     PaymentElement,
 } from "@stripe/react-stripe-js";
-import { User } from "lucide-react";
-import { FormEvent, useEffect, useState } from "react";
-import axios from "axios";
-import { convertToSubcurrency } from "@/utils/payment";
 
 export default function PaymentCard({ clientSecret }: { clientSecret: string}) {
 

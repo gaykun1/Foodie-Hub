@@ -43,7 +43,7 @@ const CheckoutForm = ({ order }: { order: Order }) => {
 
     const usePromocode = async () => {
         try {
-            const res = await axios.post("http://localhost:5200/api/promocode/use", { PromoC: promocode }, { withCredentials: true });
+            const res = await axios.post(`http://localhost:5200/api/promocodes/${promocode}/use`, { }, { withCredentials: true });
             if (res.data) {
                 setDiscount(res.data.discount + discount);
                 setPromocode("");
@@ -93,7 +93,7 @@ const CheckoutForm = ({ order }: { order: Order }) => {
             setLoading(false);
         }
         if (order) {
-            const res = await axios.patch("http://localhost:5200/api/order/update-order", { formData, percent: discount, shipping, cartId: cart?._id, totalPrice: parseFloat(((shipping + order.totalPrice) * ((100 - discount) / 100)).toFixed(2)) }, { withCredentials: true });
+            const res = await axios.patch("http://localhost:5200/api/orders", { formData, percent: discount, shipping, cartId: cart?._id, totalPrice: parseFloat(((shipping + order.totalPrice) * ((100 - discount) / 100)).toFixed(2)) }, { withCredentials: true });
             const { error } = await stripe.confirmPayment({
                 elements,
                 clientSecret,

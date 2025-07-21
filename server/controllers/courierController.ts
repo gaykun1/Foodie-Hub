@@ -77,7 +77,8 @@ export const checkIfSentApplication = async (req: Request, res: Response): Promi
 }
 
 export const changeOrderStatus = async (req: Request, res: Response): Promise<void> => {
-    const { id, status } = req.body;
+    const { status } = req.body;
+    const id = req.params.id;
     try {
 
 
@@ -121,7 +122,8 @@ export const changeOrderStatus = async (req: Request, res: Response): Promise<vo
 
 export const toggleApplication = async (req: Request, res: Response): Promise<void> => {
 
-    const { id, status } = req.body;
+    const { status } = req.body;
+    const id = req.params.id;
     try {
         const application = await Courier.findById(id);
         if (!application) {
@@ -164,8 +166,8 @@ export const profile = async (req: Request, res: Response): Promise<void> => {
 }
 
 export const takeOrder = async (req: Request, res: Response): Promise<void> => {
-    const { id, courierId } = req.body;
-
+    const { courierId } = req.body;
+    const id = req.params.id;
     try {
         const order = await Order.findOneAndUpdate({ _id: id }, { $set: { courierId: courierId } });
         if (!order) {

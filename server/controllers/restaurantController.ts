@@ -10,7 +10,7 @@ import Order from "../models/Order";
 
 
 export const getRestaurantsFiltered = async (req: Request, res: Response): Promise<void> => {
-    const { categorie } = req.body;
+    const { categorie } = req.query;
 
     try {
         if (categorie === Category.All) {
@@ -65,7 +65,8 @@ export const createItem = async (req: Request, res: Response) => {
     }
 };
 export const handleAbout = async (req: Request, res: Response) => {
-    const { id, info } = req.body;
+    const {  info } = req.body;
+    const id = req.params.id;
     try {
 
         const restaurant = await Restaurant.findById(id);
@@ -271,7 +272,7 @@ export const getRestaurantAddress = async (req: Request, res: Response): Promise
         return;
     }
 }
-export const toggleToFavourite = async (req: Request, res: Response): Promise<void> => {
+export const toggleFavourite = async (req: Request, res: Response): Promise<void> => {
     const { restaurantId } = req.body;
     try {
         const user = await User.findById((req as AuthRequest).userId);
@@ -302,7 +303,7 @@ export const toggleToFavourite = async (req: Request, res: Response): Promise<vo
 
 export const searchRestaurants = async (req: Request, res: Response): Promise<void> => {
 
-    const { chars } = req.body;
+    const { chars } = req.query;
     try {
 
         const restaurants = await Restaurant.find({ title: { $regex: chars, $options: 'i' } }).limit(5);

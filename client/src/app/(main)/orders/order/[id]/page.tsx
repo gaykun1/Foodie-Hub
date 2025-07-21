@@ -21,7 +21,7 @@ const Page = () => {
 
     const getOrder = async () => {
         try {
-            const res = await axios.get(`http://localhost:5200/api/order/get-order/${id}`, { withCredentials: true });
+            const res = await axios.get(`http://localhost:5200/api/order/orders/${id}`, { withCredentials: true });
             if (res.data) {
                 setOrder(res.data);
 

@@ -36,7 +36,7 @@ const DishCard = ({ dish, toCart, onDeleted })=>{
     };
     const addToCart = async ()=>{
         try {
-            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].post("http://localhost:5200/api/cart/add-to-cart", {
+            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].post("http://localhost:5200/api/cart/items", {
                 id: dish._id
             }, {
                 withCredentials: true
@@ -223,7 +223,7 @@ const DishesNearYou = ()=>{
             if (user?.address?.city) {
                 const getDishesNearYou = {
                     "DishesNearYou.useEffect.getDishesNearYou": async ()=>{
-                        const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get(`http://localhost:5200/api/restaurant/dishes-near-you?city=${user.address.city}`);
+                        const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get(`http://localhost:5200/api/restaurant/dishes/nearby?city=${user.address.city}`);
                         if (res.data) setDishes(res.data);
                     }
                 }["DishesNearYou.useEffect.getDishesNearYou"];

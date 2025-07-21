@@ -19,7 +19,7 @@ const Page = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const getApplications = async () => {
         try {
-            const res = await axios.get("http://localhost:5200/api/courier/get-applications");
+            const res = await axios.get("http://localhost:5200/api/courier/applications",{withCredentials:true});
             if (!res.data) {
                 return;
             }
@@ -38,7 +38,7 @@ const Page = () => {
 
     const toggleApplication = async (status: string, id: string) => {
         try {
-            const res = await axios.post("http://localhost:5200/api/courier/toggle-application", { status, id });
+            const res = await axios.post(`http://localhost:5200/api/courier/applications/${id}`, { status});
             if (res) {
 
                 getApplications();

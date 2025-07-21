@@ -12,7 +12,7 @@ const Page = () => {
     const { user } = useAppSelector((state) => state.auth);
     const getCreatedOrders = async () => {
         try {
-            const res = await axios.get(`http://localhost:5200/api/order/get-created-orders/${user?.restaurantId}`, { withCredentials: true });
+            const res = await axios.get(`http://localhost:5200/api/order/orders/${user?.restaurantId}/created`, { withCredentials: true });
             if (res.data) {
                 setOrders(res.data);
             }

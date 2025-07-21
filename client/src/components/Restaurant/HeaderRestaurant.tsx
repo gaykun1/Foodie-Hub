@@ -24,7 +24,7 @@ export default function HeaderRestaurant() {
     const getRestaurantInfo = async () => {
       try {
         setIsLoading(true);
-        const res = await axios.get(`http://localhost:5200/api/restaurant/get-restaurant-by-id/${id}`);
+        const res = await axios.get(`http://localhost:5200/api/restaurant/restaurants/${id}`);
         setCurrentRestaurant(res.data);
       } catch (err) {
         console.error(err);
@@ -37,9 +37,9 @@ export default function HeaderRestaurant() {
 
   const path  = usePathname();
 
-  const addToFavourite = async () => {
+  const toggleFavourite = async () => {
     try {
-      const res = await axios.post("http://localhost:5200/api/restaurant/add-to-favourite", { restaurantId: id }, { withCredentials: true });
+      const res = await axios.post(`http://localhost:5200/api/restaurant/restaurants/${id}/favourite`, { }, { withCredentials: true });
       dispatch(updateFavourites(res.data));
       return;
     } catch (err) {
@@ -114,7 +114,7 @@ export default function HeaderRestaurant() {
           </div>
         </div>
         <div className="">
-          <button onClick={() => addToFavourite()} className="rounded-md border-borderColor border-[1px] transition-all hover:bg-[#E8618CFF] cursor-pointer  px-4 py-2 flex items-center font-medium leading-5.5 gap-2">
+          <button onClick={() => toggleFavourite()} className="rounded-md border-borderColor border-[1px] transition-all hover:bg-[#E8618CFF] cursor-pointer  px-4 py-2 flex items-center font-medium leading-5.5 gap-2">
             <Heart size={14} className={` ${user?.favourites?.includes(id) ? "fill-[#E8618CFF]" : ""}`} />
             <span>Favorite</span>
 

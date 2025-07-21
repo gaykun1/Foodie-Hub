@@ -48,7 +48,7 @@ const MapTracker = ({ isWorking, socket, courierLocation }: {  isWorking: Order 
     const getRestaurentLocation = async () => {
         try {
             if (isWorking) {
-                const res1 = await axios.get(`http://localhost:5200/api/restaurant/get-restaurant-adress/${isWorking.restaurantTitle}`);
+                const res1 = await axios.get(`http://localhost:5200/api/restaurant/restaurants/${isWorking.restaurantTitle}/address`);
                 const adress = res1.data.adress;
                 const address = `${adress.street} ${adress.houseNumber}, ${adress.city}`;
                 const res2 = await axios.get(`http://localhost:5200/api/geocode?q=${address}`)

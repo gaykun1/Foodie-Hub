@@ -176,7 +176,7 @@ const getMondayDate = (d: Date) => {
 
 export const getNumbers = async (req: Request, res: Response): Promise<void> => {
     try {
-        const id = req.params.id;
+        const id = req.query.id;
        
         let orders = [];
         if (id == null) {
@@ -357,7 +357,7 @@ export const getFreeOrders = async (req: Request, res: Response): Promise<void> 
 }
 
 export const toggleToPreparing = async (req: Request, res: Response): Promise<void> => {
-    const { id } = req.body;
+    const  id  = req.params.id;
     try {
         await Order.findByIdAndUpdate(id, { $set: { status: "Preparing" } });
         res.status(200).json("Toggled status to Preparing");

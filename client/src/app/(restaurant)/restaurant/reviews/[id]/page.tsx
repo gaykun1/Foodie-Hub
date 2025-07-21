@@ -21,7 +21,7 @@ const Page = () => {
     const getReviews = async () => {
         try {
             setLoading(true);
-           const res = await axios.get(`http://localhost:5200/api/restaurant/review/${id}?page=${page}`);
+           const res = await axios.get(`http://localhost:5200/api/restaurant/restaurants/${id}/reviews?page=${page}`);
             if (res.data)
                 setReviews(res.data);
         } catch (err) {
@@ -34,7 +34,7 @@ const Page = () => {
 
     const createReview = async () => {
         try {
-            const res = await axios.post(`http://localhost:5200/api/restaurant/review`, { id: id, text: text, rating: rating }, { withCredentials: true });
+            const res = await axios.post(`http://localhost:5200/api/restaurant/reviews`, { id: id, text: text, rating: rating }, { withCredentials: true });
             if (res.data)
                 getReviews();
         } catch (err) {

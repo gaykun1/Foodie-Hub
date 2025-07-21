@@ -4,8 +4,8 @@ import { addToCart,  getCart, updateCartAmount } from "../controllers/cartContro
 
 const cartRoute = express.Router();
 
-cartRoute.post("/add-item", addToCart);
+cartRoute.post("/items", addToCart);
 cartRoute.get("/", getCart);
-cartRoute.post("/change-amount",  updateCartAmount);
+cartRoute.patch("/items/:id",  updateCartAmount);
 
 export default cartRoute;

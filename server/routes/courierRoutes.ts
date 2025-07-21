@@ -6,12 +6,12 @@ import { adminMiddleware } from "../middleware/adminMiddleware";
 
 const courierRoute = express.Router();
 
-courierRoute.post("/apply", authMiddleware, createApplication);//
-courierRoute.get("/is-application-sent", authMiddleware, checkIfSentApplication);//
+courierRoute.post("/applications", authMiddleware, createApplication);//
+courierRoute.get("/applications/status", authMiddleware, checkIfSentApplication);
 courierRoute.get("/applications",adminMiddleware, getApplications);//
 courierRoute.get("/profile", courierMiddleware, profile);//
-courierRoute.post("/take-order", courierMiddleware, takeOrder);
-courierRoute.get("/has-order/:id", checkIfHasOrder);//
-courierRoute.patch("/update-order-status", courierMiddleware, changeOrderStatus);//
-courierRoute.post("/toggle-application", toggleApplication);//
+courierRoute.post("/orders/:id/take", courierMiddleware, takeOrder);
+courierRoute.get("/orders/:id/status", checkIfHasOrder);//
+courierRoute.patch("/orders/:id/status", courierMiddleware, changeOrderStatus);//
+courierRoute.post("/applications/:id", toggleApplication);//
 export default courierRoute;

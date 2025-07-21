@@ -9,7 +9,7 @@ import { useState } from "react";
 
 const takeOrder = async (id: string, courierId: string) => {
     try {
-        const res = await axios.post("http://localhost:5200/api/courier/take-order", { id, courierId }, { withCredentials: true });
+        const res = await axios.post(`http://localhost:5200/api/courier/orders/${id}/take`, { id, courierId }, { withCredentials: true });
     } catch (err) {
         console.error(err);
     }

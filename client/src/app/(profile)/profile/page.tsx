@@ -66,7 +66,7 @@ const Page = () => {
     if (Object.keys(payload).length === 0) return;
 
     try {
-      const res = await axios.patch("http://localhost:5200/api/auth/update-profile", {
+      const res = await axios.patch("http://localhost:5200/api/auth/profile", {
         payload
       }, { withCredentials: true });
       if (res.data)

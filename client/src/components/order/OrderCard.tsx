@@ -1,9 +1,7 @@
 "use client"
 
 import { Order } from "@/redux/reduxTypes"
-import axios from "axios";
 import { Check, ChevronsRight, ClipboardList, Clock, DollarSign } from "lucide-react";
-import Link from "next/link";
 
 const OrderCard = ({ order, setViewDetails }: { order: Order, setViewDetails: React.Dispatch<React.SetStateAction<Order | null>>; }) => {
     const date = new Date((order.createdAt)).toDateString();

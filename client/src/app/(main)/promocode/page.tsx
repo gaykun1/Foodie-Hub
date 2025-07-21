@@ -12,7 +12,7 @@ const Page = () => {
     const checkPromo = async () => {
 
         try {
-            const res = await axios.post("http://localhost:5200/api/promocode/get", { promoC: promocode }, { withCredentials: true });
+            const res = await axios.post(`http://localhost:5200/api/promocodes/${promocode}`, {}, { withCredentials: true });
             if (res.data) {
                 setError("Used");
                 setPromocode("");

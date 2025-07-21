@@ -30,7 +30,7 @@ const Header = () => {
     }
     if (word.length >= 2) {
       try {
-        const res = await axios.post("http://localhost:5200/api/restaurant/search-restaurants", { chars: word });
+        const res = await axios.get(`http://localhost:5200/api/restaurant/restaurants/search?chars=${word}`);
         if (!res) return;
         return res.data;
       } catch (err) {
@@ -46,7 +46,7 @@ const Header = () => {
         dispatch(deleteItem(title));
       }
       dispatch(updateAmount({ amount: amount, dishId: id }));
-      const res = await axios.post("http://localhost:5200/api/cart/amount", { amount: amount, dishId: id, title: title }, { withCredentials: true });
+      const res = await axios.post(`http://localhost:5200/api/cart/items/${id}`, { amount: amount, title: title }, { withCredentials: true });
     } catch (err) {
       console.error(err);
     }
@@ -73,7 +73,7 @@ const Header = () => {
 
   const createOrder = async () => {
     try {
-      const res = await axios.post("http://localhost:5200/api/order/create-order", { cart }, { withCredentials: true });
+      const res = await axios.post("http://localhost:5200/api/order/orders", { cart }, { withCredentials: true });
       if (res.data)
         return res.data;
     } catch (err) {
@@ -260,17 +260,17 @@ const Header = () => {
 
             {activePanel === "navMenu" &&
               <div className="min-w-[200px] flex   flex-col top-full panel  right-0 absolute  border-borderColor mt-1  bg-primary  p-3 border-[1px] rounded-[6px]">
-                   <nav className='flex flex-col   '>
-            {!(user?.role === "admin" || user?.role === "restaurant") ? (<><Link className='default-link font-bold' href={"/"}>Home</Link>
-              <Link className='default-link font-bold ' href={"/restaurants/category/all-restaurants"}>Restaurants</Link>
-              <Link className='default-link font-bold' href={"/orders"}>Orders</Link>
-              {user?.role === "courier" ? (<Link className='default-link font-bold' href={"/courier"}>Courier page</Link>
-              ) : (<Link className='default-link font-bold' href={"/job"}>Get a job</Link>
-              )}
-            </>
+                <nav className='flex flex-col   '>
+                  {!(user?.role === "admin" || user?.role === "restaurant") ? (<><Link className='default-link font-bold' href={"/"}>Home</Link>
+                    <Link className='default-link font-bold ' href={"/restaurants/category/all-restaurants"}>Restaurants</Link>
+                    <Link className='default-link font-bold' href={"/orders"}>Orders</Link>
+                    {user?.role === "courier" ? (<Link className='default-link font-bold' href={"/courier"}>Courier page</Link>
+                    ) : (<Link className='default-link font-bold' href={"/job"}>Get a job</Link>
+                    )}
+                  </>
 
-            ) : (<Link className='default-link font-bold' href={`${user.role === "admin" ? "/dashboard/overview" : "/dashboard/restaurant-overview"}`}>Dashboard</Link>)}
-          </nav>
+                  ) : (<Link className='default-link font-bold' href={`${user.role === "admin" ? "/dashboard/overview" : "/dashboard/restaurant-overview"}`}>Dashboard</Link>)}
+                </nav>
               </div>
 
             }

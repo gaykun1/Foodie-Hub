@@ -22,7 +22,7 @@ const ApplicationForm = () => {
 
         try {
             setLoading(true);
-            const res = await axios.post("http://localhost:5200/api/courier/create-application", { data }, { withCredentials: true });
+            const res = await axios.post("http://localhost:5200/api/courier/applications", { data }, { withCredentials: true });
             setAlreadySent(res.data.status);
 
             reset();
@@ -43,7 +43,7 @@ const ApplicationForm = () => {
             try {
 
 
-                const res = await axios.get("http://localhost:5200/api/courier/check-if-sent", { withCredentials: true })
+                const res = await axios.get("http://localhost:5200/api/courier/applications/status", { withCredentials: true })
 
                 setAlreadySent(res.data.status);
 

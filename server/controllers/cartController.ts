@@ -28,12 +28,12 @@ export const getCart = async (req: Request, res: Response): Promise<void> => {
 }
 // updating cart items amount
 export const updateCartAmount = async (req: Request, res: Response): Promise<void> => {
-    const { dishId, amount, title } = req.body;
-    
+    const { amount, title } = req.body;
+    const id = req.params.id
     try {
         const order = await Order.findOne({ userId: (req as AuthRequest).userId, status: null });
         if (amount === 0) {
-            const cart = await Cart.findOneAndUpdate({ userId: (req as AuthRequest).userId }, { $pull: { items: { dishId: dishId } } }, { new: true });
+            const cart = await Cart.findOneAndUpdate({ userId: (req as AuthRequest).userId }, { $pull: { items: { dishId: id } } }, { new: true });
             if (cart?.items.length == 0) {
                 await Cart.findOneAndUpdate({ userId: (req as AuthRequest).userId },{$set:{restaurantId:null}});
             }
@@ -49,7 +49,7 @@ export const updateCartAmount = async (req: Request, res: Response): Promise<voi
             return;
         } else {
 
-            const cart = await Cart.findOneAndUpdate({ userId: (req as AuthRequest).userId, "items.dishId": dishId }, { $set: { "items.$.amount": amount } });
+            const cart = await Cart.findOneAndUpdate({ userId: (req as AuthRequest).userId, "items.dishId": id }, { $set: { "items.$.amount": amount } });
 
             if (order) {
                 const item = order.items.find(item => item.title == title);

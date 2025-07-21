@@ -23,7 +23,7 @@ export default async function RootLayout({
 
   try {
 
-    const res = await axios.get("http://localhost:5200/api/auth/check-role", {
+    const res = await axios.get("http://localhost:5200/api/auth/profile/roles", {
       headers: {
         Authorization: `Bearer ${token}`
       }

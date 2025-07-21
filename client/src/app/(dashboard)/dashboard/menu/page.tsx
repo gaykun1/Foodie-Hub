@@ -12,7 +12,7 @@ const page = () => {
     useEffect(() => {
         const searchRestaurants = async () => {
             try {
-                const res = await axios.post(`http://localhost:5200/api/restaurant/search-restaurants`, { chars: word });
+                const res = await axios.get(`http://localhost:5200/api/restaurant/restaurants/search?chars=${word}` );
                 setItems(res.data);
             } catch (err) {
                 console.log(err);

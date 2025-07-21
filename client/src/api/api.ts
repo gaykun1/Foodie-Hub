@@ -37,7 +37,7 @@ export const LogOut = async (): Promise<void> => {
 export const getRestaurantsFiltered = async (categorie: string): Promise<void | Restaurant[]> => {
     try {
         if (!categorie) return;
-        const res = await axios.post("http://localhost:5200/api/restaurant/get-restaurants-filtered", { categorie });
+        const res = await axios.get(`http://localhost:5200/api/restaurant/restaurants/filter?categorie=${categorie}`,);
         if (!res) return;
         return res.data;
     } catch (err) {

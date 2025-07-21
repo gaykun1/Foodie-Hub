@@ -23,7 +23,7 @@ const Page = () => {
 
       const getLastSevenOrders = async () => {
         try {
-          const res = await axios.get(`http://localhost:5200/api/order/get-last-seven/${user?.restaurantId}`, { withCredentials: true });
+          const res = await axios.get(`http://localhost:5200/api/order/restaurants/${user?.restaurantId}/orders/recent`, { withCredentials: true });
           if (res) {
             setOrders(res.data);
           }
@@ -33,7 +33,7 @@ const Page = () => {
       }
       const getLastSevenReviews = async () => {
         try {
-          const res = await axios.get(`http://localhost:5200/api/restaurant/get-last-seven-reviews/${user?.restaurantId}`, { withCredentials: true });
+          const res = await axios.get(`http://localhost:5200/api/restaurant/restaurants/${user?.restaurantId}/reviews/recent`, { withCredentials: true });
           if (res) {
             setReviews(res.data);
           }
@@ -43,7 +43,7 @@ const Page = () => {
       }
       const getTopSevenDishes = async () => {
         try {
-          const res = await axios.get(`http://localhost:5200/api/restaurant/get-top-seven-dishes/${user?.restaurantId}`, { withCredentials: true });
+          const res = await axios.get(`http://localhost:5200/api/restaurant/restaurants/${user?.restaurantId}/dishes/top`, { withCredentials: true });
           if (res) {
             setTopDishes(res.data);
           }
@@ -61,7 +61,7 @@ const Page = () => {
     if (user?.restaurantId) {
       const getNumbers = async () => {
         try {
-          const res = await axios.get(`http://localhost:5200/api/order/order-values/${user?.restaurantId}`, { withCredentials: true });
+          const res = await axios.get(`http://localhost:5200/api/order/orders/statistics?id=${user?.restaurantId}`, { withCredentials: true });
           setNumOfOrders(res.data.numOfOrders);
           setTotalRevenue(res.data.totalRevenue);
           setAverageOrderValue(res.data.averageOrderValue);

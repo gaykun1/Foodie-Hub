@@ -7,17 +7,17 @@ import { restaurantMiddleware } from "../middleware/restaurantMiddleware";
 
 const orderRoute = express.Router();
 
-orderRoute.post("/create-order", authMiddleware, createOrder);
-orderRoute.get("/created-orders/:id", restaurantMiddleware, getOrdersCreated);//
-orderRoute.patch("/update-order", authMiddleware, updateOrder);//
-orderRoute.get("/order/:id", authMiddleware, getOrder);//
+orderRoute.post("/orders", authMiddleware, createOrder);
+orderRoute.get("/orders/:id/created", restaurantMiddleware, getOrdersCreated);//
+orderRoute.patch("/orders", authMiddleware, updateOrder);//
+orderRoute.get("/orders/:id", authMiddleware, getOrder);//
 orderRoute.get("/orders", authMiddleware, getOrders);//
-orderRoute.get("/last-seven-orders", adminMiddleware, getLastSevenOrders);//
-orderRoute.get("/last-seven-orders/:id", restaurantMiddleware, getLastSevenOrders);//
-orderRoute.get("/courier-orders/:id",courierMiddleware, getOrdersCourier);//
-orderRoute.get("/order-values", adminMiddleware, getNumbers);
-orderRoute.get("/order-values/:id", restaurantMiddleware, getNumbers);
+orderRoute.get("/orders/recent", adminMiddleware, getLastSevenOrders);//
+orderRoute.get("/restaurants/:id/orders/recent", restaurantMiddleware, getLastSevenOrders);//
+orderRoute.get("/couriers/:id/orders", courierMiddleware, getOrdersCourier);//
+orderRoute.get("/orders/statistics", adminMiddleware, getNumbers);
+orderRoute.get("/restaurants/:id/orders/statistics", restaurantMiddleware, getNumbers);
 orderRoute.get("/free-orders/:city", courierMiddleware, getFreeOrders);
-orderRoute.patch("/toggle-to-preparing", restaurantMiddleware, toggleToPreparing);
+orderRoute.patch("/orders/:id/status", restaurantMiddleware, toggleToPreparing);
 
 export default orderRoute;

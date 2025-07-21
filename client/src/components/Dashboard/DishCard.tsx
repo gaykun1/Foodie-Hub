@@ -23,7 +23,7 @@ const DishCard = ({ dish, toCart, onDeleted }: { dish: Dish, toCart: boolean, on
 
     const addToCart = async () => {
         try {
-            const res = await axios.post("http://localhost:5200/api/cart/add-to-cart", { id: dish._id }, { withCredentials: true });
+            const res = await axios.post("http://localhost:5200/api/cart/items", { id: dish._id }, { withCredentials: true });
             if (res.data) {
                 dispatch(getCart(res.data));
             }

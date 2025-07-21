@@ -6,9 +6,9 @@ import { createPromocode, getPromocode, usePromocode } from "../controllers/prom
 const promocodeRoute = express.Router();
 
 
-promocodeRoute.post("/get",authMiddleware,getPromocode);
-promocodeRoute.post("/create",adminMiddleware,createPromocode);
-promocodeRoute.post("/use",authMiddleware,usePromocode);
+promocodeRoute.post("/promocodes/:code",authMiddleware,getPromocode);
+promocodeRoute.post("/promocodes",adminMiddleware,createPromocode);
+promocodeRoute.post("/promocodes/:code/use",authMiddleware,usePromocode);
 
 
 export default promocodeRoute;

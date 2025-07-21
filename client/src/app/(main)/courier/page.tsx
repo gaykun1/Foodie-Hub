@@ -49,7 +49,7 @@ const Page = () => {
         try {
             if (courier) {
 
-                const res = await axios.get(`http://localhost:5200/api/order/get-orders-courier/${courier._id}`);
+                const res = await axios.get(`http://localhost:5200/api/order/couriers/${courier._id}/orders`,{withCredentials:true});
                 if (res.data) {
                     setCourierOrders(res.data);
                 }
@@ -65,7 +65,7 @@ const Page = () => {
         try {
             if (courier) {
 
-                const res = await axios.get(`http://localhost:5200/api/courier/check-if-has-order/${courier._id}`,);
+                const res = await axios.get(`http://localhost:5200/api/courier/orders/${courier._id}/status`);
                 setIsWorking(res.data);
                 setViewDetails(res.data);
                 return res.data;
@@ -78,7 +78,7 @@ const Page = () => {
     //changing status of the order
     const toggleOrderStatus = async (status: string, id: string) => {
         try {
-            const res = await axios.patch("http://localhost:5200/api/courier/change-order-status", { status: status, id: id }, { withCredentials: true });
+            const res = await axios.patch(`http://localhost:5200/api/courier/orders/${id}/status`, { status: status }, { withCredentials: true });
             if (res) {
 
                 setStatus(res.data);

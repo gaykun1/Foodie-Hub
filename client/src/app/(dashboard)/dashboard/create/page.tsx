@@ -72,7 +72,7 @@ const Page = () => {
 
 
       const res = await axios.post(
-        "http://localhost:5200/api/restaurant/create-restaurant",
+        "http://localhost:5200/api/restaurant/restaurants",
         restaurantData,
         {
 

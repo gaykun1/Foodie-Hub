@@ -15,7 +15,7 @@ const Page = () => {
     const [active, setActive] = useState<boolean>();
     const getTextAbout = async () => {
         try {
-            const res = await axios.get(`http://localhost:5200/api/restaurant/about/${id}`,);
+            const res = await axios.get(`http://localhost:5200/api/restaurant/restaurants/${id}/about`,);
             setInfo(res.data);
         } catch (err) {
             console.error(err);
@@ -24,7 +24,7 @@ const Page = () => {
     }
     const handleTextAbout = async () => {
         try {
-            const res = await axios.post(`http://localhost:5200/api/restaurant/about`,{id,info});
+            const res = await axios.post(`http://localhost:5200/api/restaurant/restaurants/${id}/about`,{id,info});
             setInfo(res.data);
         } catch (err) {
             console.error(err);

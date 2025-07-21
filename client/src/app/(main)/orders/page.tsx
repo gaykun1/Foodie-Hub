@@ -39,7 +39,7 @@ const Page = () => {
     const getOrders = async () => {
       try {
         setLoading(true);
-        const res = await axios.get("http://localhost:5200/api/order/get-orders", { withCredentials: true });
+        const res = await axios.get("http://localhost:5200/api/order/orders", { withCredentials: true });
         if (res) setOrders(res.data);
       } catch (err) {
         console.error(err);
