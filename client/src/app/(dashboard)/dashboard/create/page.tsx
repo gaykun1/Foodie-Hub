@@ -108,7 +108,7 @@ const Page = () => {
       )}
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="grid grid-cols-2 mb-4">
+        <div className="grid sm:grid-cols-2 mb-4">
           <div className="p-2 flex flex-col gap-3">
             <div className="flex flex-col gap-2">
               <label htmlFor="title" className="text-lg font-medium">
@@ -134,7 +134,7 @@ const Page = () => {
             </div>
             <div className="flex flex-col gap-3">
               <label htmlFor="mySelect">First working day of the week:</label>
-              <div className="flex  gap-3 w-[350px]">
+              <div className="flex  gap-3 w-full">
                 <select className="border-[1px] rounded-sm " id="mySelect" {...register("startDay")}>
                   <option value="Monday">Monday</option>
                   <option value="Tuesday">Tuesday</option>
@@ -159,7 +159,7 @@ const Page = () => {
             </div>
             <div className="flex flex-col gap-3">
               <label htmlFor="mySelect">Last working day of the week:</label>
-              <div className="flex  gap-3 w-[350px]">
+              <div className="flex  gap-3 lg:w-[350px]">
                 <select className="border-[1px] rounded-sm " id="mySelect" {...register("endDay")}>
                   <option value="Monday">Monday</option>
                   <option value="Tuesday">Tuesday</option>

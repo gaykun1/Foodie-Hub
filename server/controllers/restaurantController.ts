@@ -352,8 +352,7 @@ export const deleteDish = async (req: Request, res: Response): Promise<void> => 
     }
 }
 
-// route for creating review and recalculating rating of Restaurant
-
+// creating review and recalculating rating of Restaurant
 export const createReview = async (req: Request, res: Response) => {
     const { id, text, rating } = req.body;
     try {
@@ -400,6 +399,7 @@ export const createReview = async (req: Request, res: Response) => {
 
 export const getReviews = async (req: Request, res: Response) => {
     const id = req.params.id;
+    const page = parseInt(req.query.page as string);
     try {
 
 
@@ -409,8 +409,8 @@ export const getReviews = async (req: Request, res: Response) => {
                 path: "sender",
                 select: "username"
             },
-        });
-
+        }).skip((page - 1) * 10).limit(10);
+        console.log
         if (reviews) {
             res.status(201).json(reviews.reviews);
             return;

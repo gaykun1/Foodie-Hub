@@ -11,7 +11,7 @@ import { useAppSelector } from '@/hooks/reduxHooks';
 
 
 
-const MapTracker = ({ isWorking, Width, Height, socket, courierLocation }: { Width: string, Height: string, isWorking: Order | null, socket: Socket | null, courierLocation: [number, number] | null }) => {
+const MapTracker = ({ isWorking, socket, courierLocation }: {  isWorking: Order | null, socket: Socket | null, courierLocation: [number, number] | null }) => {
     const [restaurantLocation, setRestaurantLocation] = useState<[number, number] | null>(null);
     const [receiverLocation, setReceiverLocation] = useState<[number, number] | null>(null);
     const [loadingLocation, setLoadingLocation] = useState<boolean>(true);
@@ -85,7 +85,7 @@ const MapTracker = ({ isWorking, Width, Height, socket, courierLocation }: { Wid
         {
             !isReady ? (<div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid mx-auto"></div>) : courierLocation != null && receiverLocation != null && restaurantLocation != null &&
 
-                <MapContainer zoom={15} style={{ width: Width, height: Height }} center={receiverLocation} >
+                <MapContainer className='h-full w-full' zoom={15}  center={receiverLocation} >
                     <InvalidateMapSize />
                     <TileLayer attribution='copy& Copyright openStreetMap ' url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' />
                     <Marker position={receiverLocation} icon={receiverIcon} />

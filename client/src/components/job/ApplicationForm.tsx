@@ -1,6 +1,6 @@
 "use client"
 
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form"
 
@@ -28,8 +28,12 @@ const ApplicationForm = () => {
             reset();
 
         } catch (err) {
-            console.error(err);
-        } finally {
+            if (isAxiosError(err) && err.response) {
+                if (axios.isAxiosError(err) && err.response)
+                    console.log(err.response.data);
+            }
+        }
+        finally {
             setLoading(false);
         }
     }
@@ -50,8 +54,8 @@ const ApplicationForm = () => {
         checkIfSent()
     }, [])
     return (
-        <form  onSubmit={handleSubmit(onSubmit)}>
-            <div className="grid grid-cols-2 mb-4">
+        <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="grid sm:grid-cols-2 mb-4">
                 <div className="p-2 flex flex-col gap-3">
                     <div className="flex flex-col gap-2">
                         <label className="text-lg font-medium">

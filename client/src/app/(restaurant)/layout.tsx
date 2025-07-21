@@ -25,13 +25,15 @@ export default async function RootLayout({
 
     <Providers>
       <AuthClientUpload />
-      <Header />
-      <HeaderRestaurant />
-      <div className="_container mt-[34px]">
+      <div className="h-screen flex flex-col">
+        <Header />
+        <HeaderRestaurant />
+        <div className="_container mt-[34px]">
 
-        {children}
+          {children}
+        </div>
+        <Footer />
       </div>
-      <Footer/>
     </Providers>
 
   );

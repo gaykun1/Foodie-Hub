@@ -51,19 +51,21 @@ const Page = () => {
         <div>
             <h1 className='section-title mb-6'>Job applications</h1>
             <div className="flex pl-4 flex-col gap-6 w-full ">
-                {loading ? <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid mx-auto"></div> : (!applications || applications.length == 0) ? <span className="text-xl font-bold text-center pt-10 leading-8">No applications</span> : applications?.map((app, idx) => (
-                    <div key={idx} className="flex items-center justify-between border-b-[1px] border-borderColor py-2">
-                        <div className="flex items-center gap-4 mr-4">
-                            <div className=" border-[1px] size-14 flex items-center justify-center   border-borderColor rounded-md overflow-hidden">
+                {loading ? <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid mx-auto"></div> : (!applications || applications.length == 0) ? <span className="text-xl font-bold text-center pt-10 leading-8">No applications</span> : (
+                    <div className="grid xl:grid-cols-2 gap-6">
+                        {applications?.map((app, idx) => (
+                    <div key={idx} className="flex w-fit sm:flex-row flex-col sm:items-center justify-between border-[1px] rounded-lg p-2 border-borderColor py-2">
+                        <div className="flex items-center gap-2 sm:mr-4">
+                            <div className=" border-[1px] size-14 sm:flex items-center justify-center hidden min-w-[56px]  border-borderColor rounded-md overflow-hidden">
                                 <User size={24} />
                             </div>
-                            <div className="border-r-[1px] border-borderColor pr-4 mr-4">
+                            <div className="border-r-[1px] border-borderColor sm:block flex flex-wrap gap-1 items-center  mb-2 pr-4 sm:mr-4">
                                 <h3 className='text-base leading-6 font-semibold'>
                                     {app.fullname}
                                 </h3>
                                 <span className='text-sm leading-5 text-gray'>Age: {app.age} City: {app.city}</span>
                             </div>
-                            <div className="flex items-center gap-4">
+                            <div className="flex items-center gap-2">
                                 <button onClick={async () => await toggleApplication("accepted", app._id)} className="btn p-3"><Check /></button>
                                 <button onClick={async () => await toggleApplication("declined", app._id)} className="btn p-3"><X /></button>
                             </div>
@@ -74,6 +76,8 @@ const Page = () => {
                         </div>
                     </div>
                 ))}
+                    </div>
+                )}
 
 
             </div>

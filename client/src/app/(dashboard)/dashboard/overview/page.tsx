@@ -96,7 +96,7 @@ const page = () => {
     <div>
       <h1 className='section-title mb-8'>Dashboard Overview</h1>
       {totalRevenue && averageOrderValue && numOfOrders &&
-        <div className="grid grid-cols-3 gap-6 mb-8">
+        <div className="grid md:grid-cols-3 gap-6 mb-8">
           <div className="p-[50px] rounded-lg border-borderColor border-[1px]">
             <div className="flex items-center justify-between mb-2.5">
               <span className='text-sm leading-5 font-medium text-gray'>Total Orders</span>
@@ -174,7 +174,7 @@ const page = () => {
           </table>
         </div>
 
-        <div className="flex gap-6 items-start">
+        <div className="flex md:flex-row flex-col gap-6 md:items-start">
           {/* last 7 reviews table */}
           <div className="rounded-lg border-borderColor border-[1px]  px-[25px] py-[50px] flex flex-col basis-[550px]  gap-6">
             <div className="flex flex-col gap-1">

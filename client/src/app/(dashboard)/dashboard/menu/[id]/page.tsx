@@ -84,11 +84,11 @@ const page = () => {
     }, []);
     console.log(menu);
 
-    return (
+    return ( 
         <>
             <div className="mb-7 pb-3 border-b-[1px] border-borderColor flex flex-col gap-3 ">
                 <h1 className="section-title">Create a dish</h1>
-                <form className="grid grid-cols-2 gap-3" onSubmit={handleSubmit(createDish)} >
+                <form className="grid sm:grid-cols-2 gap-3" onSubmit={handleSubmit(createDish)} >
                     <div className=" flex flex-col gap-4">
                         <div className="">
                             <label className="text-lg  font-medium" htmlFor="title">Title</label>
@@ -136,7 +136,7 @@ const page = () => {
                         {dishesLoading
                             ?
                             (<div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid mx-auto"></div>) :
-                            <div className="grid grid-cols-4 gap-[25px]">
+                            <div className="grid px-2 sm:px-0 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-[25px]">
                                 {menu.map((dish, idx) => {
                                     return (
                                         <div className="" key={idx}>

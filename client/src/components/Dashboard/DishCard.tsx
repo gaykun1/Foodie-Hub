@@ -34,9 +34,9 @@ const DishCard = ({ dish, toCart, onDeleted }: { dish: Dish, toCart: boolean, on
 
     const isInCart = (cart?.items.find(item => item.dishId.title === dish.title)) ? true : false;
     return (
-        <div className='rounded-lg shadow-xs border-[1px] flex flex-col gap-5 border-borderColor h-full  overflow-hidden'>
-            <div className=" max-w-[324px]  w-full ">
-                <img className='  w-full' src={dish.imageUrl} alt="dish image" />
+        <div className='rounded-lg shadow-xs border-[1px] w-fit flex flex-col gap-5 border-borderColor h-full  overflow-hidden'>
+            <div className=" max-w-[324px] relative  w-full aspect-video ">
+                <img className=' h-full w-full object-contain' src={dish.imageUrl} alt="dish image" />
             </div>
            
             <div className="px-4 pb-4 flex flex-col justify-between h-full">
@@ -50,7 +50,7 @@ const DishCard = ({ dish, toCart, onDeleted }: { dish: Dish, toCart: boolean, on
                 </div>
                 {toCart ? (<button disabled={isInCart} onClick={async () => {
                     await addToCart();
-                }} className='text-base! disabled:pointer-events-none disabled:bg-gray! leading-[26px]! py-2 w-full gap-2 flex items-center btn'>
+                }} className='!text-base disabled:pointer-events-none disabled:bg-gray! leading-[26px]! py-2 w-full gap-2 flex items-center btn'>
 
                     {!isInCart ? (<><ShoppingCart size={16} /><span>Add to Cart</span></>) : (<span>In Cart</span>)}
                 </button>) : (

@@ -8,28 +8,28 @@ import { restaurantMiddleware } from "../middleware/restaurantMiddleware";
 
 const restaurantRoute = express.Router();
 
-restaurantRoute.post("/create-restaurant", createItem);
-restaurantRoute.get("/get-restaurant-by-id/:id", getRestaurantById);
-restaurantRoute.get("/get-restaurant-adress/:title", getRestaurantAddress);
-restaurantRoute.post("/get-restaurants-filtered", getRestaurantsFiltered);
-restaurantRoute.post("/search-restaurants", searchRestaurants);
+restaurantRoute.post("/restaurants", createItem);//
+restaurantRoute.get("/restaurants/:id", getRestaurantById);//
+restaurantRoute.get("/restaurants/:title/address", getRestaurantAddress);
+restaurantRoute.post("/restaurants/filter", getRestaurantsFiltered);//
+restaurantRoute.post("/restaurants/search", searchRestaurants);//
 restaurantRoute.post("/add-to-favourite", authMiddleware, toggleToFavourite);
 restaurantRoute.get("/dishes/:id", getDishes);
 restaurantRoute.delete("/dishes/:id", deleteDish);
 restaurantRoute.post("/dishes", createDish);
 restaurantRoute.post("/about", handleAbout);
 restaurantRoute.get("/about/:id", getAbout);
-restaurantRoute.get("/review/:id", getReviews);
-restaurantRoute.post("/review", authMiddleware, createReview);
-restaurantRoute.get("/favourites", authMiddleware, getFavouriteRestaurants);
+restaurantRoute.get("/reviews/:id", getReviews);
+restaurantRoute.post("/reviews", authMiddleware, createReview);
+restaurantRoute.get("/restaurants/favourites", authMiddleware, getFavouriteRestaurants);
 
-restaurantRoute.get("/get-last-seven-reviews", adminMiddleware, getLastSevenReviews);
-restaurantRoute.get("/get-top-seven-dishes", adminMiddleware, getTopSevenDishes);
+restaurantRoute.get("/restaurants/reviews/top", adminMiddleware, getLastSevenReviews);
+restaurantRoute.get("/restaurants/dishes/top", adminMiddleware, getTopSevenDishes);
 
-restaurantRoute.get("/get-last-seven-reviews/:id", restaurantMiddleware, getLastSevenReviews);
-restaurantRoute.get("/get-top-seven-dishes/:id", restaurantMiddleware, getTopSevenDishes);
+restaurantRoute.get("/restaurants/:id/dishes/top", restaurantMiddleware, getLastSevenReviews);
+restaurantRoute.get("/restaurants/:id/dishes/top", restaurantMiddleware, getTopSevenDishes);
 
-restaurantRoute.get("/dishes-near-you", getDishesNearYou);
+restaurantRoute.get("/dishes/nearby", getDishesNearYou);
 
 
 

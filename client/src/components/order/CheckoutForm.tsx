@@ -29,7 +29,7 @@ type FormFields = {
     apartmentNumbr: number,
 }
 const CheckoutForm = ({ order }: { order: Order }) => {
-    const { register, trigger, getValues, formState: { errors } } = useForm<FormFields>()
+    const { register, getValues, formState: { errors } } = useForm<FormFields>()
     const { user } = useAppSelector(state => state.auth);
     const [clientSecret, setClientSecret] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
@@ -112,17 +112,19 @@ const CheckoutForm = ({ order }: { order: Order }) => {
 
     }
     return (
-        <section className='flex gap-8 mt-10 items-start mb-12'>
-            <div className="basis-[886px] grow-0 flex flex-col gap-8">
+        <section className='flex flex-col  md:flex-row gap-8 mt-10 md:items-start mb-12'>
+            {/* left side  */}
+            <div className="md:basis-[700px] lg:basis-[886px] grow-0 flex flex-col gap-8">
                 <div className="shadow-xs border-borderColor border-[1px] rounded-xl py-7 px-6 flex flex-col gap-3">
                     <h2 className="text-2xl leading-8 font-bold text-secondary">Your Details</h2>
                     <p className="text-gray text-base! leading-7 ">{user?.email ? user.email : user?.username}</p>
                 </div>
+                {/* info form (personal & adress data) */}
                 <div className="shadow-xs border-borderColor border-[1px] rounded-xl py-7 px-6 text-sm leading-[22px] text-secondary  flex flex-col ">
                     <div className="">
                         <h2 className="text-2xl leading-8 font-bold ">Delivery Information</h2>
-                        <div className="grid grid-cols-2  gap-4">
-                            <div className="flex flex-col w-[50%] col-span-2 gap-1">
+                        <div className="grid lg:grid-cols-2  gap-4">
+                            <div className="flex flex-col w-[50%] lg:col-span-2 gap-1">
                                 <label className="text-gray text-base! leading-7 ">Country/Region</label>
                                 <select {...register("countryOrRegion", { required: true })} className="input py-2 px-3 ">
                                     <option value="Ukraine">Ukraine</option>
@@ -194,7 +196,7 @@ const CheckoutForm = ({ order }: { order: Order }) => {
                         </div>
                     </div>
                 </div>
-
+                {/* shipping */}
                 <div className="shadow-xs border-borderColor border-[1px] rounded-xl py-7 px-6 flex flex-col ">
                     <div className="">
                         <h2 className="text-2xl leading-8 font-bold text-secondary mb-3">Shipping Method</h2>
@@ -236,16 +238,14 @@ const CheckoutForm = ({ order }: { order: Order }) => {
                         </div>
                     </div>
                 </div>
+                {/* Stripe paymentCard component */}
                 {order && (<PaymentCard clientSecret={clientSecret} />)}
-
             </div>
-
-
-
-
-            <div className=" shadow-xs  border-borderColor border-[1px] rounded-xl  py-[52px] pr-[42px] pl-[57px]">
+            {/* right side "Order summary" */}
+            <div className=" shadow-xs  border-borderColor border-[1px] rounded-xl  py-[52px] lg:px-11 px-7  ">
                 <h2 className="text-2xl leading-8 font-bold text-secondary mb-[21px]">Order Summary</h2>
                 <div className="flex flex-col gap-8 pb-6 border-b-[1px] mb-6 border-borderColor">
+                    {/* items */}
                     {order?.items.map((item, idx) => {
                         return (
                             <div key={idx} className="flex items-center w-full justify-between  h-16">

@@ -1075,7 +1075,7 @@ const links = [
         }, void 0, false, {
             fileName: "[project]/src/components/Profile/SideBar.tsx",
             lineNumber: 9,
-            columnNumber: 47
+            columnNumber: 49
         }, this)
     },
     {
@@ -1086,32 +1086,39 @@ const links = [
         }, void 0, false, {
             fileName: "[project]/src/components/Profile/SideBar.tsx",
             lineNumber: 10,
-            columnNumber: 71
+            columnNumber: 73
         }, this)
     }
 ];
 const SideBarProfile = ()=>{
     const path = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["usePathname"])();
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "basis-[255px] border-[1px] rounded-lg border-borderColor p-4.5 gap-2   flex flex-col",
-        children: links.map((link, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
-                href: link.href,
-                className: ` p-2 pl-3 ${path === link.href ? "rounded-[6px] bg-[#f7f7f7FF] text-[#393939FF]" : "text-gray"}  leading-[22px]   flex font-medium gap-2 items-center `,
-                children: [
-                    link.icon,
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                        children: link.label
-                    }, void 0, false, {
-                        fileName: "[project]/src/components/Profile/SideBar.tsx",
-                        lineNumber: 19,
-                        columnNumber: 17
-                    }, this)
-                ]
-            }, index, true, {
-                fileName: "[project]/src/components/Profile/SideBar.tsx",
-                lineNumber: 17,
-                columnNumber: 3
-            }, this))
+        className: "hidden  relative md:basis-[255px] border-[1px] rounded-lg border-borderColor p-4.5 gap-2   lg:flex flex-col",
+        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            className: "hidden lg:block",
+            children: links.map((link, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
+                    href: link.href,
+                    className: ` p-2 pl-3 ${path === link.href ? "rounded-[6px] bg-[#f7f7f7FF] text-[#393939FF]" : "text-gray"}  leading-[22px]   flex font-medium gap-2 items-center `,
+                    children: [
+                        link.icon,
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                            children: link.label
+                        }, void 0, false, {
+                            fileName: "[project]/src/components/Profile/SideBar.tsx",
+                            lineNumber: 20,
+                            columnNumber: 25
+                        }, this)
+                    ]
+                }, index, true, {
+                    fileName: "[project]/src/components/Profile/SideBar.tsx",
+                    lineNumber: 18,
+                    columnNumber: 21
+                }, this))
+        }, void 0, false, {
+            fileName: "[project]/src/components/Profile/SideBar.tsx",
+            lineNumber: 16,
+            columnNumber: 13
+        }, this)
     }, void 0, false, {
         fileName: "[project]/src/components/Profile/SideBar.tsx",
         lineNumber: 15,

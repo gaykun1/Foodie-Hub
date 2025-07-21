@@ -1,7 +1,7 @@
 "use client"
 
 import { Order } from "@/redux/reduxTypes"
-import { Calendar, MapPin, User } from "lucide-react"
+import { Calendar, MapPin, ReceiptText, User } from "lucide-react"
 
 const ViewDetailsSideBar = ({ viewDetails }: { viewDetails: Order | null }) => {
 
@@ -12,7 +12,7 @@ const ViewDetailsSideBar = ({ viewDetails }: { viewDetails: Order | null }) => {
                     (
                         <>
                             <div className="flex flex-col gap-1 pb-4 mb-6 border-b-[1px] border-borderColor ">
-                                <h2 className='text-2xl leading-8 font-bold '>Order Details</h2>
+                                <h2 className='text-2xl leading-8 font-bold flex items-center gap-1 md'>Order Details <ReceiptText /></h2>
                                 <p className='tetx-sm leading-5 text-gray'>ID:{viewDetails?._id}</p>
                             </div>
                             <div className="pb-4 mb-6 border-b-[1px] border-borderColor flex flex-col gap-3">

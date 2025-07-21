@@ -95,7 +95,7 @@ app.get("/api/geocode", async (req: Request, res: Response) => {
 // apis
 app.use("/api/auth", authRoute);
 app.use("/api/restaurant", restaurantRoute);
-app.use("/api/cart", cartRoute);
+app.use("/api/cart", authMiddleware, cartRoute);
 app.use("/api/order", orderRoute);
 app.use("/api/payment", payRoute);
 app.use("/api/courier", courierRoute);

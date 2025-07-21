@@ -266,6 +266,12 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$AuthCli
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/axios/lib/axios.js [app-rsc] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$Dashboard$2f$SideBar$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/Dashboard/SideBar.tsx [app-rsc] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$Footer$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/Footer.tsx [app-rsc] (ecmascript)");
+(()=>{
+    const e = new Error("Cannot find module '@/components/Profile/ResponsiveSidebarProfile'");
+    e.code = 'MODULE_NOT_FOUND';
+    throw e;
+})();
+;
 ;
 ;
 ;
@@ -290,12 +296,24 @@ async function RootLayout({ children }) {
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$AuthClientUpload$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                         fileName: "[project]/src/app/(dashboard)/layout.tsx",
-                        lineNumber: 34,
+                        lineNumber: 35,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$Header$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                         fileName: "[project]/src/app/(dashboard)/layout.tsx",
-                        lineNumber: 35,
+                        lineNumber: 36,
+                        columnNumber: 11
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "border-[1px] mt-6 rounded-lg w-fit border-borderColor p-4.5",
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(ResponsiveSidebar, {}, void 0, false, {
+                            fileName: "[project]/src/app/(dashboard)/layout.tsx",
+                            lineNumber: 38,
+                            columnNumber: 13
+                        }, this)
+                    }, void 0, false, {
+                        fileName: "[project]/src/app/(dashboard)/layout.tsx",
+                        lineNumber: 37,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -305,7 +323,7 @@ async function RootLayout({ children }) {
                                 role: res.data.role
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(dashboard)/layout.tsx",
-                                lineNumber: 38,
+                                lineNumber: 42,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -315,29 +333,29 @@ async function RootLayout({ children }) {
                                     children: children
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(dashboard)/layout.tsx",
-                                    lineNumber: 40,
+                                    lineNumber: 44,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(dashboard)/layout.tsx",
-                                lineNumber: 39,
+                                lineNumber: 43,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/(dashboard)/layout.tsx",
-                        lineNumber: 37,
+                        lineNumber: 41,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$Footer$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                         fileName: "[project]/src/app/(dashboard)/layout.tsx",
-                        lineNumber: 45,
+                        lineNumber: 49,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/(dashboard)/layout.tsx",
-                lineNumber: 33,
+                lineNumber: 34,
                 columnNumber: 9
             }, this);
         } else {
@@ -348,20 +366,20 @@ async function RootLayout({ children }) {
                         children: "Error"
                     }, void 0, false, {
                         fileName: "[project]/src/app/(dashboard)/layout.tsx",
-                        lineNumber: 52,
+                        lineNumber: 56,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                         children: "Access denied"
                     }, void 0, false, {
                         fileName: "[project]/src/app/(dashboard)/layout.tsx",
-                        lineNumber: 53,
+                        lineNumber: 57,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/(dashboard)/layout.tsx",
-                lineNumber: 51,
+                lineNumber: 55,
                 columnNumber: 9
             }, this);
         }
@@ -374,20 +392,20 @@ async function RootLayout({ children }) {
                     children: "Error"
                 }, void 0, false, {
                     fileName: "[project]/src/app/(dashboard)/layout.tsx",
-                    lineNumber: 63,
+                    lineNumber: 67,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                     children: "Access denied"
                 }, void 0, false, {
                     fileName: "[project]/src/app/(dashboard)/layout.tsx",
-                    lineNumber: 65,
+                    lineNumber: 69,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/app/(dashboard)/layout.tsx",
-            lineNumber: 62,
+            lineNumber: 66,
             columnNumber: 7
         }, this);
     }

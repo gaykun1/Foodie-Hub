@@ -22,10 +22,10 @@ export default async function RootLayout({
 
     <Providers>
       <AuthClientUpload />
-      <div className="">
+      <div className="h-screen flex flex-col">
         <Header />
         <div className="_container ">
-          <div className="">
+          <div className="flex-1">
             {children}
           </div>
         </div>

@@ -18,22 +18,35 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist
 const Page = ()=>{
     const [applications, setApplications] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
     const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(true);
-    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
-        const getApplications = async ()=>{
-            try {
-                const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].get("http://localhost:5200/api/courier/get-applications");
-                if (!res.data) {
-                    return;
-                }
-                setApplications(res.data);
-            } catch (err) {
-                console.error(err);
-            } finally{
-                setLoading(false);
+    const getApplications = async ()=>{
+        try {
+            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].get("http://localhost:5200/api/courier/get-applications");
+            if (!res.data) {
+                return;
             }
-        };
+            setApplications(res.data);
+        } catch (err) {
+            console.error(err);
+        } finally{
+            setLoading(false);
+        }
+    };
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
         getApplications();
     }, []);
+    const toggleApplication = async (status, id)=>{
+        try {
+            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].post("http://localhost:5200/api/courier/toggle-application", {
+                status,
+                id
+            });
+            if (res) {
+                getApplications();
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
@@ -41,7 +54,7 @@ const Page = ()=>{
                 children: "Job applications"
             }, void 0, false, {
                 fileName: "[project]/src/app/(dashboard)/dashboard/applications/page.tsx",
-                lineNumber: 36,
+                lineNumber: 52,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -50,75 +63,31 @@ const Page = ()=>{
                     className: "animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid mx-auto"
                 }, void 0, false, {
                     fileName: "[project]/src/app/(dashboard)/dashboard/applications/page.tsx",
-                    lineNumber: 38,
+                    lineNumber: 54,
                     columnNumber: 28
-                }, this) : applications == null ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                }, this) : !applications || applications.length == 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                     className: "text-xl font-bold text-center pt-10 leading-8",
                     children: "No applications"
                 }, void 0, false, {
                     fileName: "[project]/src/app/(dashboard)/dashboard/applications/page.tsx",
-                    lineNumber: 38,
-                    columnNumber: 161
-                }, this) : applications.map((app, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "flex items-center justify-between border-b-[1px] border-borderColor py-2",
-                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "flex items-center gap-4",
-                            children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: " border-[1px] size-20 relative  border-borderColor rounded-md overflow-hidden"
-                                }, void 0, false, {
-                                    fileName: "[project]/src/app/(dashboard)/dashboard/applications/page.tsx",
-                                    lineNumber: 41,
-                                    columnNumber: 29
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "",
-                                    children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                            className: "text-base leading-6 font-semibold",
-                                            children: item.title
-                                        }, void 0, false, {
-                                            fileName: "[project]/src/app/(dashboard)/dashboard/applications/page.tsx",
-                                            lineNumber: 45,
-                                            columnNumber: 33
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                            className: "text-sm leading-5 text-gray",
-                                            children: [
-                                                "Quantity: ",
-                                                item.amount
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/src/app/(dashboard)/dashboard/applications/page.tsx",
-                                            lineNumber: 48,
-                                            columnNumber: 33
-                                        }, this)
-                                    ]
-                                }, void 0, true, {
-                                    fileName: "[project]/src/app/(dashboard)/dashboard/applications/page.tsx",
-                                    lineNumber: 44,
-                                    columnNumber: 29
-                                }, this)
-                            ]
-                        }, void 0, true, {
-                            fileName: "[project]/src/app/(dashboard)/dashboard/applications/page.tsx",
-                            lineNumber: 40,
-                            columnNumber: 25
-                        }, this)
-                    }, idx, false, {
-                        fileName: "[project]/src/app/(dashboard)/dashboard/applications/page.tsx",
-                        lineNumber: 39,
-                        columnNumber: 21
-                    }, this))
+                    lineNumber: 54,
+                    columnNumber: 184
+                }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: ""
+                }, void 0, false, {
+                    fileName: "[project]/src/app/(dashboard)/dashboard/applications/page.tsx",
+                    lineNumber: 55,
+                    columnNumber: 21
+                }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/(dashboard)/dashboard/applications/page.tsx",
-                lineNumber: 37,
+                lineNumber: 53,
                 columnNumber: 13
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/(dashboard)/dashboard/applications/page.tsx",
-        lineNumber: 35,
+        lineNumber: 51,
         columnNumber: 9
     }, this);
 };

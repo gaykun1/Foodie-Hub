@@ -30,7 +30,7 @@ const Page = () => {
             <h1 className='section-title'>Promocodes</h1>
             <div className="flex flex-col gap-2 ">
                 <h2 className='text-xl font-semibold'>Create promocode</h2>
-                <form className='p-4 border-borderColor flex items-end gap-3 border-[1px] rounded-lg w-fit' onSubmit={handleSubmit(onSubmit)}>
+                <form className='p-4 border-borderColor flex flex-col sm:flex-row sm:items-end gap-3 border-[1px] rounded-lg w-fit' onSubmit={handleSubmit(onSubmit)}>
                     <div className="flex flex-col gap-2">
                         <label >Code</label>
                         <input className='input p-2 ' {...register("code", { required: "Code is required" })} type="text" />

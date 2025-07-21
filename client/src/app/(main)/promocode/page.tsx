@@ -24,7 +24,7 @@ const Page = () => {
         }
     }
 
-    return (<div className="flex items-center justify-center pt-[150px]">
+    return (<div className="flex items-center justify-center pt-30  flex-col">
         <div className='flex flex-col gap-6 items-center py-4 px-8 border-borderColor rounded-lg  border-[1px] max-w-[500px] h-[300px] justify-center '>
             <h1 className='section-title '>Enter your Promocode</h1>
             <div className='flex gap-3 items-center' >

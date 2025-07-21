@@ -17,11 +17,11 @@ const Page = () => {
     const [active, setActive] = useState<boolean>(false);
     const [text, setText] = useState<string>("");
     const [rating, setRating] = useState<number>(0);
-    const {user} = useAppSelector(state=>state.auth);
+    const [page, setPage] = useState<number>(1);
     const getReviews = async () => {
         try {
             setLoading(true);
-            const res = await axios.get(`http://localhost:5200/api/restaurant/review/${id}`);
+           const res = await axios.get(`http://localhost:5200/api/restaurant/review/${id}?page=${page}`);
             if (res.data)
                 setReviews(res.data);
         } catch (err) {
@@ -34,7 +34,6 @@ const Page = () => {
 
     const createReview = async () => {
         try {
-
             const res = await axios.post(`http://localhost:5200/api/restaurant/review`, { id: id, text: text, rating: rating }, { withCredentials: true });
             if (res.data)
                 getReviews();
@@ -54,15 +53,15 @@ const Page = () => {
 
                 <h1 className='section-title'>Reviews</h1>
                 {/* TODO check user whether hes admin role */}
-         
-                {active ?(  <button onClick={() => {
+
+                {active ? (<button onClick={() => {
                     setActive(false);
 
-                }} className='p-3 rounded-md btn  '><X size={16} /></button>) : (  <button onClick={() => {
+                }} className='p-3 rounded-md btn  '><X size={16} /></button>) : (<button onClick={() => {
                     setActive(true);
 
                 }} className='p-3 rounded-md btn '><Pen size={16} /></button>)}
-              
+
             </div>
             {active &&
                 (
@@ -73,7 +72,7 @@ const Page = () => {
                             <button onClick={async () => {
                                 setActive(false);
                                 await createReview();
-                                
+
                             }} className='btn p-2  bottom-[7px] right-0'>Create</button>
                             <div className="flex flex-col gap-1">
                                 <div className="flex gap-1">
@@ -102,24 +101,24 @@ const Page = () => {
                     </div>
 
                 )}
-                <div className='grid grid-cols-2 gap-5'>
-            {
-                loading ? (<div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid mx-auto"></div>) :
-                    reviews.length > 0 ? reviews.map((review, idx) => {
-                        return (
-                            <div key={idx} className=" flex flex-col gap-1 border-borderColor border-[1px] p-2 rounded-lg">
-                                <h2 className="mb-1 text-lg leading-7 font-medium border-b-[1px] border-borderColor pb-0.5">{review.sender.username}</h2>
-                                <p className='leading-7 text-base'>{review.text}</p>
-                                <div className="flex  gap-2 items-center">
-                                    <div className="flex items-center gap-3 ">{calculateStars(review.rating || 0)}</div>
-                                   <span className='text-lg font-medium'>{review.rating}</span> </div>
+            <div className='grid md:grid-cols-2 gap-5'>
+                {
+                    loading ? (<div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid mx-auto"></div>) :
+                        reviews.length > 0 ? reviews.map((review, idx) => {
+                            return (
+                                <div key={idx} className=" flex flex-col gap-1 border-borderColor border-[1px] p-2 rounded-lg">
+                                    <h2 className="mb-1 text-lg leading-7 font-medium border-b-[1px] border-borderColor pb-0.5">{review.sender.username}</h2>
+                                    <p className='leading-7 text-base break-all'>{review.text}</p>
+                                    <div className="flex  gap-2 items-center">
+                                        <div className="flex items-center gap-3 ">{calculateStars(review.rating || 0)}</div>
+                                        <span className='text-lg font-medium'>{review.rating}</span> </div>
 
-                            </div>
-                        )
-                    }) : (<span className='text-lg leading-5 font-medium text-center mt-6'>No info yet!</span>)
+                                </div>
+                            )
+                        }) : (<span className='text-lg leading-5 font-medium text-center mt-6'>No info yet!</span>)
 
-            }
-</div>
+                }
+            </div>
         </div>
     )
 }

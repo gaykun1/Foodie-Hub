@@ -9,7 +9,7 @@ authRoute.post("/signup", signup)
 authRoute.post("/login", login);
 authRoute.post("/logout", logout);
 authRoute.get("/profile", authMiddleware, profile);
-authRoute.get("/check-role", authMiddleware, checkRole);
+authRoute.get("/role-check", authMiddleware, checkRole);
 authRoute.patch("/update-profile", authMiddleware, updateProfile);
 
 export default authRoute;

@@ -365,7 +365,7 @@ const Header = ()=>{
                             columnNumber: 11
                         }, this),
                         activePanel === "search" ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "min-w-[450px] flex flex-col top-full panel  left-4 absolute border-borderColor mt-1  bg-primary  p-3 border-[1px] rounded-[6px]",
+                            className: "sm:min-w-[450px] flex flex-col min-w-[320px] top-full panel  left-4 absolute border-borderColor mt-1  bg-primary  p-3 border-[1px] rounded-[6px]",
                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "flex flex-col gap-2 items-start text-sm font-semibold",
                                 children: restaurants.length > 0 ? restaurants.map((restaurant, index)=>{
@@ -1235,6 +1235,7 @@ function HeaderRestaurant() {
                                         className: "flex items-center gap-2 text-lg leading-7  ",
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$map$2d$pin$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__MapPin$3e$__["MapPin"], {
+                                                className: "",
                                                 size: 20
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/Restaurant/HeaderRestaurant.tsx",
@@ -1264,6 +1265,7 @@ function HeaderRestaurant() {
                                         className: "flex items-center gap-2 text-lg leading-7  ",
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$clock$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Clock$3e$__["Clock"], {
+                                                className: "",
                                                 size: 20
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/Restaurant/HeaderRestaurant.tsx",
@@ -1271,7 +1273,7 @@ function HeaderRestaurant() {
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                className: "gap-1 items-center flex",
+                                                className: "gap-1 items-center flex flex-wrap",
                                                 children: [
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                         className: "",
@@ -1290,14 +1292,14 @@ function HeaderRestaurant() {
                                                                 fileName: "[project]/src/components/Restaurant/HeaderRestaurant.tsx",
                                                                 lineNumber: 89,
                                                                 columnNumber: 62
-                                                            }, this)
+                                                            }, this),
+                                                            ":"
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/components/Restaurant/HeaderRestaurant.tsx",
                                                         lineNumber: 88,
                                                         columnNumber: 17
                                                     }, this),
-                                                    ":",
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                         className: "",
                                                         children: [
@@ -1369,10 +1371,10 @@ function HeaderRestaurant() {
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "my-10 border-b-[1px] border-borderColor  py-6 flex items-center justify-between pl-5 pr-2.5 _container",
+                className: "my-10 border-b-[1px] border-borderColor sm:flex-row flex-col gap-4   pb-6 flex md:items-center sm:justify-between pl-5 pr-2.5 _container",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "flex gap-4",
+                        className: "flex flex-col  md:flex-row gap-4 ",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "flex gap-1 items-center",
@@ -1398,7 +1400,7 @@ function HeaderRestaurant() {
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "flex gap-1 items-center",
+                                className: "flex gap-1 items-center ",
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$globe$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Globe$3e$__["Globe"], {
                                         size: 18
@@ -1408,7 +1410,7 @@ function HeaderRestaurant() {
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                                        className: "hover:underline",
+                                        className: "hover:underline ",
                                         href: currentRestaurant?.websiteUrl || "#",
                                         children: [
                                             " ",
@@ -1470,7 +1472,7 @@ function HeaderRestaurant() {
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "border-b-[1px] border-borderColor pb-3 flex gap-10 items-cente justify-center",
+                className: "border-b-[1px] border-borderColor pb-3 flex gap-10 px-2 items-cente justify-center",
                 children: Object.entries(links).map(([text, link], idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                         className: `btn py-2 basis-[342px] ${path == link ? "" : "bg-borderColor! text-gray!"} `,
                         href: link,

@@ -88,7 +88,7 @@ const Page = () => {
         <p className="text-gray leading-5">Manage your personal information and password.</p>
       </div>
       <form onSubmit={handleSubmit(handleSave)}>
-        <div className="grid grid-cols-2 gap-x-4  gap-y-3.5 border-b-[1px] border-borderColor text-sm pb-6 mb-[30px]">
+        <div className="grid  sm:grid-cols-2 gap-x-4  gap-y-3.5 border-b-[1px] border-borderColor text-sm pb-6 mb-[30px]">
           <div className="flex flex-col gap-[10px]">
             <label className="leading-3.5 font-medium">Full Name</label>
             <input className="input px-3 py-2"
@@ -175,7 +175,7 @@ const Page = () => {
         </div>
         <div className="">
           <h2 className="text-[18px] leading-7 font-medium mb-2.5">Password Management</h2>
-          <div className="grid grid-cols-2 gap-x-4  gap-y-3.5 text-sm">
+          <div className="grid sm:grid-cols-2 gap-x-4  gap-y-3.5 text-sm">
             <div className="flex flex-col gap-[10px]">
               <label className="leading-3.5 font-medium">Current Password</label>
               <input className="input px-3 py-2"

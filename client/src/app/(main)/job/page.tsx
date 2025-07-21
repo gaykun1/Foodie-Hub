@@ -20,11 +20,11 @@ const page = () => {
             <section className="p-4  border-[2px] rounded-lg text-primary shadow-xs my-6">
                 <h2 className='section-title mb-4'>Requirements</h2>
                 <div className="flex flex-col gap-3 ml-2">
-                    <span className='text-lg leading-6 font-bold    flex items-center gap-2 uppercase'> age 18+ <Check /></span>
-                    <span className='text-lg leading-6 font-bold    flex items-center gap-2 uppercase'> smartphone <Check /></span>
-                    <span className='text-lg leading-6 font-bold    flex items-center gap-2 uppercase'>attentiveness and politeness
-                        <Check /></span>
-                    <span className='text-lg leading-6 font-bold    flex items-center gap-2 uppercase'> — preferably — bicycle/motorcycle/car (if necessary) <Check /></span>
+                    <div className='text-lg leading-6 font-bold    flex  gap-2 uppercase'><span>age 18+</span><Check /></div>
+                    <div className='text-lg leading-6 font-bold    flex  gap-2 uppercase'><span>smartphone</span><Check /></div>
+                    <div className='text-lg leading-6 font-bold    flex  gap-2 uppercase'><span className='w-fit'>attentiveness and politeness</span>
+                        <Check /></div>
+                    <div className='text-lg leading-6 font-bold    flex  gap-2 uppercase'><span>bicycle/motorcycle/car</span><Check /></div>
                 </div>
             </section>
             <section className="p-4  border-[2px] rounded-lg text-primary shadow-xs my-6">

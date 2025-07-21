@@ -79,16 +79,16 @@ export default function HeaderRestaurant() {
           </div>
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2 text-lg leading-7  ">
-              <MapPin size={20} />
+              <MapPin className="" size={20} />
               <span>{currentRestaurant?.adress.street} {currentRestaurant?.adress.houseNumber}, {currentRestaurant?.adress.city}</span>
             </div>
             <div className="flex items-center gap-2 text-lg leading-7  ">
-              <Clock size={20} />
-              <div className="gap-1 items-center flex">
+              <Clock className="" size={20} />
+              <div className="gap-1 items-center flex flex-wrap">
                 <div className="">
-                  <span>{currentRestaurant?.startDay}</span>-<span>{currentRestaurant?.endDay}</span>
+                  <span>{currentRestaurant?.startDay}</span>-<span>{currentRestaurant?.endDay}</span>:
                 </div>
-                :
+                
                 <div className="">
                   <span>{currentRestaurant?.startHour}</span>-<span>{currentRestaurant?.endHour}</span>
                 </div>
@@ -102,15 +102,15 @@ export default function HeaderRestaurant() {
       </div>
       {/* header */}
 
-      <div className="my-10 border-b-[1px] border-borderColor  py-6 flex items-center justify-between pl-5 pr-2.5 _container">
-        <div className="flex gap-4">
+      <div className="my-10 border-b-[1px] border-borderColor sm:flex-row flex-col gap-4   pb-6 flex md:items-center sm:justify-between pl-5 pr-2.5 _container">
+        <div className="flex flex-col  md:flex-row gap-4 ">
           <div className="flex gap-1 items-center">
             <Phone size={18} />
             <span>{currentRestaurant?.phone}</span>
           </div>
-          <div className="flex gap-1 items-center">
+          <div className="flex gap-1 items-center ">
             <Globe size={18} />
-            <Link className="hover:underline" href={currentRestaurant?.websiteUrl || "#"}> {currentRestaurant?.websiteUrl}</Link>
+            <Link className="hover:underline " href={currentRestaurant?.websiteUrl || "#"}> {currentRestaurant?.websiteUrl}</Link>
           </div>
         </div>
         <div className="">
@@ -121,7 +121,7 @@ export default function HeaderRestaurant() {
           </button>
         </div>
       </div>
-      <div className="border-b-[1px] border-borderColor pb-3 flex gap-10 items-cente justify-center">
+      <div className="border-b-[1px] border-borderColor pb-3 flex gap-10 px-2 items-cente justify-center">
         {Object.entries(links).map(([text, link],idx) => (
           <Link key={idx} className={`btn py-2 basis-[342px] ${path==link ? "" :"bg-borderColor! text-gray!"} `} href={link}>{text}</Link>
         ))}

@@ -22,7 +22,7 @@ const restaurantLinks = [
 const SideBar = ({ role }: { role: string }) => {
     const path = usePathname();
     return (
-        <div className="basis-[255px] border-r-[1px] border-borderColor p-2 h-[900px] flex flex-col">
+        <div className="basis-[255px] hidden border-r-[1px] border-borderColor p-2 h-[900px] lg:flex flex-col">
             {role === "admin" ? adminLinks.map((link, index) => (
                 <Link key={index} href={link.href} className={` p-2 pl-3 ${(path === (link.href)) ? "rounded-[6px] text-white bg-primary" : "text-gray"}  leading-[22px]   flex font-medium gap-2 items-center `}>
                     {link.icon}

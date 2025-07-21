@@ -435,7 +435,7 @@ const Header = ()=>{
                             columnNumber: 11
                         }, this),
                         activePanel === "search" ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "min-w-[450px] flex flex-col top-full panel  left-4 absolute border-borderColor mt-1  bg-primary  p-3 border-[1px] rounded-[6px]",
+                            className: "sm:min-w-[450px] flex flex-col min-w-[320px] top-full panel  left-4 absolute border-borderColor mt-1  bg-primary  p-3 border-[1px] rounded-[6px]",
                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "flex flex-col gap-2 items-start text-sm font-semibold",
                                 children: restaurants.length > 0 ? restaurants.map((restaurant, index)=>{

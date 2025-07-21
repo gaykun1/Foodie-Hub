@@ -8,6 +8,7 @@ import AuthClientUpload from "@/components/AuthClientUpload";
 import axios from "axios";
 import SideBar from "@/components/Dashboard/SideBar";
 import Footer from "@/components/Footer";
+import ResponsiveSidebar from "@/components/Profile/ResponsiveSidebar";
 
 
 
@@ -32,17 +33,24 @@ export default async function RootLayout({
 
         <Providers>
           <AuthClientUpload />
-          <Header />
+          <div className="h-screen flex flex-col">
+            <Header />
+            <div className="_container">
+              <div className="border-[1px] mt-6 lg:hidden mb-8 rounded-lg w-fit border-borderColor p-4.5">
+                <ResponsiveSidebar type={res.data.role} />
 
-          <div className="_container flex">
-            <SideBar role={res.data.role} />
-            <div className="p-8 grow-1">
-              <div className="border-borderColor border-[1px] rounded-lg p-6 flex flex-col overflow-hidden ">
-                {children}
+              </div>
+              <div className="flex">
+                <SideBar role={res.data.role} />
+                <div className="md:p-8 grow-1">
+                  <div className="border-borderColor border-[1px] rounded-lg p-6 flex flex-col  ">
+                    {children}
+                  </div>
+                </div>
               </div>
             </div>
+            <Footer />
           </div>
-          <Footer />
         </Providers>
 
       );
