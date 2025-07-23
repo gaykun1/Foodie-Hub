@@ -1,10 +1,11 @@
 "use client"
 
 import { Order } from "@/redux/reduxTypes"
-import { Check, ChevronsRight, ClipboardList, Clock, DollarSign } from "lucide-react";
+import { ChevronsRight, ClipboardList, Clock, DollarSign } from "lucide-react";
+import React, { useMemo } from "react";
 
-const OrderCard = ({ order, setViewDetails }: { order: Order, setViewDetails: React.Dispatch<React.SetStateAction<Order | null>>; }) => {
-    const date = new Date((order.createdAt)).toDateString();
+const OrderCard = React.memo(({ order, setViewDetails }: { order: Order, setViewDetails: React.Dispatch<React.SetStateAction<Order | null>>; }) => {
+    const date = useMemo(() => new Date((order.createdAt)).toDateString(), [order.createdAt]);
 
 
     return (
@@ -60,6 +61,6 @@ const OrderCard = ({ order, setViewDetails }: { order: Order, setViewDetails: Re
 
         </div>
     )
-}
+});
 
 export default OrderCard

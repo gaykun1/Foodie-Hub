@@ -19,11 +19,15 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist
 const Page = ()=>{
     const [promocode, setPromocode] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
     const [error, setError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
+    const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
     const checkPromo = async ()=>{
+        if (!promocode.trim()) {
+            setError("Please enter a promocode");
+            return;
+        }
         try {
-            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].post("http://localhost:5200/api/promocode/get", {
-                promoC: promocode
-            }, {
+            setLoading(true);
+            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].post(`http://localhost:5200/api/promocode/promocodes/${promocode}`, {}, {
                 withCredentials: true
             });
             if (res.data) {
@@ -34,6 +38,8 @@ const Page = ()=>{
             if ((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["isAxiosError"])(err) && err.response) {
                 setError(err.response.data);
             }
+        } finally{
+            setLoading(false);
         }
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -46,7 +52,7 @@ const Page = ()=>{
                     children: "Enter your Promocode"
                 }, void 0, false, {
                     fileName: "[project]/src/app/(main)/promocode/page.tsx",
-                    lineNumber: 29,
+                    lineNumber: 35,
                     columnNumber: 13
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -59,40 +65,41 @@ const Page = ()=>{
                             className: " py-2 px-1 input "
                         }, void 0, false, {
                             fileName: "[project]/src/app/(main)/promocode/page.tsx",
-                            lineNumber: 31,
+                            lineNumber: 37,
                             columnNumber: 17
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                             onClick: checkPromo,
-                            className: "btn py-2 px-1  ",
+                            className: `btn py-2 px-1 ${loading ? "bg-gray" : ""} `,
                             children: "Use"
                         }, void 0, false, {
                             fileName: "[project]/src/app/(main)/promocode/page.tsx",
-                            lineNumber: 32,
+                            lineNumber: 38,
                             columnNumber: 17
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/(main)/promocode/page.tsx",
-                    lineNumber: 30,
+                    lineNumber: 36,
                     columnNumber: 13
                 }, this),
                 error != null && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                    className: error === "Used" ? "text-green-500" : "text-red-500",
                     children: error
                 }, void 0, false, {
                     fileName: "[project]/src/app/(main)/promocode/page.tsx",
-                    lineNumber: 34,
+                    lineNumber: 40,
                     columnNumber: 32
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/app/(main)/promocode/page.tsx",
-            lineNumber: 28,
+            lineNumber: 34,
             columnNumber: 9
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/app/(main)/promocode/page.tsx",
-        lineNumber: 27,
+        lineNumber: 33,
         columnNumber: 13
     }, this);
 };

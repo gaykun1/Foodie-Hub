@@ -13,11 +13,19 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$clipboard$2d$list$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ClipboardList$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/clipboard-list.js [app-client] (ecmascript) <export default as ClipboardList>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$clock$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Clock$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/clock.js [app-client] (ecmascript) <export default as Clock>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$dollar$2d$sign$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__DollarSign$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/dollar-sign.js [app-client] (ecmascript) <export default as DollarSign>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
+;
+var _s = __turbopack_context__.k.signature();
 "use client";
 ;
 ;
-const OrderCard = ({ order, setViewDetails })=>{
-    const date = new Date(order.createdAt).toDateString();
+const OrderCard = /*#__PURE__*/ _s(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].memo(_c = _s(({ order, setViewDetails })=>{
+    _s();
+    const date = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMemo"])({
+        "OrderCard.useMemo[date]": ()=>new Date(order.createdAt).toDateString()
+    }["OrderCard.useMemo[date]"], [
+        order.createdAt
+    ]);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: `rounded-lg shadow-xs border-[1px]  ${order.status == "Delivering" ? "border-[#636AE8FF]" : "border-borderColor"}`,
         children: [
@@ -34,7 +42,7 @@ const OrderCard = ({ order, setViewDetails })=>{
                                     children: order.restaurantTitle
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/order/OrderCard.tsx",
-                                    lineNumber: 18,
+                                    lineNumber: 17,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -42,13 +50,13 @@ const OrderCard = ({ order, setViewDetails })=>{
                                     children: date
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/order/OrderCard.tsx",
-                                    lineNumber: 20,
+                                    lineNumber: 19,
                                     columnNumber: 25
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/order/OrderCard.tsx",
-                            lineNumber: 17,
+                            lineNumber: 16,
                             columnNumber: 21
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -59,18 +67,18 @@ const OrderCard = ({ order, setViewDetails })=>{
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/order/OrderCard.tsx",
-                            lineNumber: 22,
+                            lineNumber: 21,
                             columnNumber: 21
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/order/OrderCard.tsx",
-                    lineNumber: 16,
+                    lineNumber: 15,
                     columnNumber: 17
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/order/OrderCard.tsx",
-                lineNumber: 15,
+                lineNumber: 14,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -87,12 +95,12 @@ const OrderCard = ({ order, setViewDetails })=>{
                                     alt: "restaurant image"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/order/OrderCard.tsx",
-                                    lineNumber: 28,
+                                    lineNumber: 27,
                                     columnNumber: 25
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/components/order/OrderCard.tsx",
-                                lineNumber: 27,
+                                lineNumber: 26,
                                 columnNumber: 21
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -105,7 +113,7 @@ const OrderCard = ({ order, setViewDetails })=>{
                                                 size: 16
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/order/OrderCard.tsx",
-                                                lineNumber: 32,
+                                                lineNumber: 31,
                                                 columnNumber: 29
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -115,13 +123,13 @@ const OrderCard = ({ order, setViewDetails })=>{
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/order/OrderCard.tsx",
-                                                lineNumber: 33,
+                                                lineNumber: 32,
                                                 columnNumber: 29
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/order/OrderCard.tsx",
-                                        lineNumber: 31,
+                                        lineNumber: 30,
                                         columnNumber: 25
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -131,20 +139,20 @@ const OrderCard = ({ order, setViewDetails })=>{
                                                 size: 24
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/order/OrderCard.tsx",
-                                                lineNumber: 35,
+                                                lineNumber: 34,
                                                 columnNumber: 116
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                 children: order.totalPrice.toFixed(2)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/order/OrderCard.tsx",
-                                                lineNumber: 35,
+                                                lineNumber: 34,
                                                 columnNumber: 140
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/order/OrderCard.tsx",
-                                        lineNumber: 35,
+                                        lineNumber: 34,
                                         columnNumber: 25
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -154,7 +162,7 @@ const OrderCard = ({ order, setViewDetails })=>{
                                                 size: 16
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/order/OrderCard.tsx",
-                                                lineNumber: 37,
+                                                lineNumber: 36,
                                                 columnNumber: 29
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -165,25 +173,25 @@ const OrderCard = ({ order, setViewDetails })=>{
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/order/OrderCard.tsx",
-                                                lineNumber: 38,
+                                                lineNumber: 37,
                                                 columnNumber: 29
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/order/OrderCard.tsx",
-                                        lineNumber: 36,
+                                        lineNumber: 35,
                                         columnNumber: 25
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/order/OrderCard.tsx",
-                                lineNumber: 30,
+                                lineNumber: 29,
                                 columnNumber: 21
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/order/OrderCard.tsx",
-                        lineNumber: 26,
+                        lineNumber: 25,
                         columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -194,7 +202,7 @@ const OrderCard = ({ order, setViewDetails })=>{
                                 children: order.status
                             }, void 0, false, {
                                 fileName: "[project]/src/components/order/OrderCard.tsx",
-                                lineNumber: 44,
+                                lineNumber: 43,
                                 columnNumber: 21
                             }, this),
                             order.status === "Delivering" ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -205,7 +213,7 @@ const OrderCard = ({ order, setViewDetails })=>{
                                         children: "Track order"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/order/OrderCard.tsx",
-                                        lineNumber: 47,
+                                        lineNumber: 46,
                                         columnNumber: 29
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -216,24 +224,24 @@ const OrderCard = ({ order, setViewDetails })=>{
                                                 children: "View Details"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/order/OrderCard.tsx",
-                                                lineNumber: 50,
+                                                lineNumber: 49,
                                                 columnNumber: 33
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevrons$2d$right$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronsRight$3e$__["ChevronsRight"], {}, void 0, false, {
                                                 fileName: "[project]/src/components/order/OrderCard.tsx",
-                                                lineNumber: 51,
+                                                lineNumber: 50,
                                                 columnNumber: 33
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/order/OrderCard.tsx",
-                                        lineNumber: 49,
+                                        lineNumber: 48,
                                         columnNumber: 29
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/order/OrderCard.tsx",
-                                lineNumber: 46,
+                                lineNumber: 45,
                                 columnNumber: 25
                             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                 onClick: ()=>setViewDetails(order),
@@ -243,43 +251,44 @@ const OrderCard = ({ order, setViewDetails })=>{
                                         children: "View Details"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/order/OrderCard.tsx",
-                                        lineNumber: 55,
+                                        lineNumber: 54,
                                         columnNumber: 25
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevrons$2d$right$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronsRight$3e$__["ChevronsRight"], {}, void 0, false, {
                                         fileName: "[project]/src/components/order/OrderCard.tsx",
-                                        lineNumber: 56,
+                                        lineNumber: 55,
                                         columnNumber: 25
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/order/OrderCard.tsx",
-                                lineNumber: 54,
+                                lineNumber: 53,
                                 columnNumber: 26
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/order/OrderCard.tsx",
-                        lineNumber: 43,
+                        lineNumber: 42,
                         columnNumber: 17
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/order/OrderCard.tsx",
-                lineNumber: 25,
+                lineNumber: 24,
                 columnNumber: 13
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/order/OrderCard.tsx",
-        lineNumber: 13,
+        lineNumber: 12,
         columnNumber: 9
     }, this);
-};
-_c = OrderCard;
+}, "/i5/KsEptyuA1SdhX3MWimUQvhU=")), "/i5/KsEptyuA1SdhX3MWimUQvhU=");
+_c1 = OrderCard;
 const __TURBOPACK__default__export__ = OrderCard;
-var _c;
-__turbopack_context__.k.register(_c, "OrderCard");
+var _c, _c1;
+__turbopack_context__.k.register(_c, "OrderCard$React.memo");
+__turbopack_context__.k.register(_c1, "OrderCard");
 if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
     __turbopack_context__.k.registerExports(module, globalThis.$RefreshHelpers$);
 }
@@ -425,7 +434,7 @@ const MapTracker = ({ isWorking, socket, courierLocation })=>{
     const getRestaurentLocation = async ()=>{
         try {
             if (isWorking) {
-                const res1 = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get(`http://localhost:5200/api/restaurant/get-restaurant-adress/${isWorking.restaurantTitle}`);
+                const res1 = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get(`http://localhost:5200/api/restaurant/restaurants/${isWorking.restaurantTitle}/address`);
                 const adress = res1.data.adress;
                 const address = `${adress.street} ${adress.houseNumber}, ${adress.city}`;
                 const res2 = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get(`http://localhost:5200/api/geocode?q=${address}`);
@@ -1020,7 +1029,9 @@ const Page = ()=>{
     const getYourOrders = async ()=>{
         try {
             if (courier) {
-                const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get(`http://localhost:5200/api/order/get-orders-courier/${courier._id}`);
+                const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get(`http://localhost:5200/api/order/couriers/${courier._id}/orders`, {
+                    withCredentials: true
+                });
                 if (res.data) {
                     setCourierOrders(res.data);
                 }
@@ -1033,7 +1044,7 @@ const Page = ()=>{
     const checkIfHasOrder = async ()=>{
         try {
             if (courier) {
-                const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get(`http://localhost:5200/api/courier/check-if-has-order/${courier._id}`);
+                const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get(`http://localhost:5200/api/courier/orders/${courier._id}/status`);
                 setIsWorking(res.data);
                 setViewDetails(res.data);
                 return res.data;
@@ -1045,9 +1056,8 @@ const Page = ()=>{
     //changing status of the order
     const toggleOrderStatus = async (status, id)=>{
         try {
-            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].patch("http://localhost:5200/api/courier/change-order-status", {
-                status: status,
-                id: id
+            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].patch(`http://localhost:5200/api/courier/orders/${id}/status`, {
+                status: status
             }, {
                 withCredentials: true
             });

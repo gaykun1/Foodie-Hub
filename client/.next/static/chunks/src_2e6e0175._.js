@@ -58,7 +58,7 @@ function PaymentCard({ clientSecret }) {
             className: "animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid mx-auto"
         }, void 0, false, {
             fileName: "[project]/src/components/order/PaymentCard.tsx",
-            lineNumber: 14,
+            lineNumber: 10,
             columnNumber: 34
         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
             className: "shadow-xs border-borderColor border-[1px] flex flex-col gap-4 rounded-xl py-7 px-6 ",
@@ -71,20 +71,20 @@ function PaymentCard({ clientSecret }) {
                             children: "Your Details"
                         }, void 0, false, {
                             fileName: "[project]/src/components/order/PaymentCard.tsx",
-                            lineNumber: 17,
+                            lineNumber: 13,
                             columnNumber: 25
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                             className: "text-gray text-base! leading-7 "
                         }, void 0, false, {
                             fileName: "[project]/src/components/order/PaymentCard.tsx",
-                            lineNumber: 18,
+                            lineNumber: 14,
                             columnNumber: 25
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/order/PaymentCard.tsx",
-                    lineNumber: 16,
+                    lineNumber: 12,
                     columnNumber: 21
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -93,18 +93,18 @@ function PaymentCard({ clientSecret }) {
                         className: ""
                     }, void 0, false, {
                         fileName: "[project]/src/components/order/PaymentCard.tsx",
-                        lineNumber: 22,
+                        lineNumber: 18,
                         columnNumber: 42
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/components/order/PaymentCard.tsx",
-                    lineNumber: 20,
+                    lineNumber: 16,
                     columnNumber: 21
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/order/PaymentCard.tsx",
-            lineNumber: 15,
+            lineNumber: 11,
             columnNumber: 17
         }, this)
     }, void 0, false);
@@ -171,9 +171,7 @@ const CheckoutForm = ({ order })=>{
     const [error, setError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
     const usePromocode = async ()=>{
         try {
-            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].post("http://localhost:5200/api/promocode/use", {
-                PromoC: promocode
-            }, {
+            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].post(`http://localhost:5200/api/promocodes/${promocode}/use`, {}, {
                 withCredentials: true
             });
             if (res.data) {
@@ -225,7 +223,7 @@ const CheckoutForm = ({ order })=>{
             setLoading(false);
         }
         if (order) {
-            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].patch("http://localhost:5200/api/order/update-order", {
+            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].patch("http://localhost:5200/api/order/orders", {
                 formData,
                 percent: discount,
                 shipping,
@@ -1199,7 +1197,7 @@ const Page = ()=>{
     const [order, setOrder] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])();
     const getOrder = async ()=>{
         try {
-            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get(`http://localhost:5200/api/order/get-order/${id}`, {
+            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get(`http://localhost:5200/api/order/orders/${id}`, {
                 withCredentials: true
             });
             if (res.data) {

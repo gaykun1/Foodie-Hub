@@ -7,7 +7,7 @@ import { getRestaurants } from "@/redux/restaurantSlice";
 import { ChevronRight, Clock, SlidersHorizontal, Star } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const links: Record<Category, string> = {
   [Category.All]: "all-restaurants",
@@ -25,7 +25,7 @@ export default function Home() {
   const entry = Object.entries(links).find(([key, val]) => val === category);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const currentTitle = entry ? entry[0] : Category.All;
-  const fetchRestaurants = async (category: string) => {
+  const fetchRestaurants =useCallback( async (category: string) => {
     try {
       setIsLoading(true);
 
@@ -33,15 +33,16 @@ export default function Home() {
       if (info) dispatch(getRestaurants(info));
 
     } catch (err) {
+
       console.error(err);
     } finally {
       setIsLoading(false);
     }
-  };
+  },[dispatch])
 
   useEffect(() => {
     fetchRestaurants(currentTitle);
-  }, [])
+  }, [currentTitle,fetchRestaurants])
 
   return (
     <section className="mx-5 my-10 border-[2px] border-borderColor rounded-lg sm:p-8 p-6 ">
@@ -52,24 +53,24 @@ export default function Home() {
           onMouseLeave={() => setIsActiveFilterMenu(false)}
           className="relative "
         >
-          <button  onClick={() => setIsActiveFilterMenu(!isActiveFilterMenu)} className={`text-xl relative  flex items-center gap-2 cursor-pointer group ${isActiveFilterMenu ? "text-primary" : ""}`}>
+          <button onClick={() => setIsActiveFilterMenu(!isActiveFilterMenu)} className={`text-xl relative  flex items-center gap-2 cursor-pointer group ${isActiveFilterMenu ? "text-primary" : ""}`}>
             <span className="group-hover:text-primary font-semibold transition-colors hidden sm:block ">Filter</span>
             <SlidersHorizontal className={`group-hover:text-primary  transition-all ${isActiveFilterMenu ? "rotate-90 " : ""}`} size={18} />
-          
+
 
           </button>
-            {isActiveFilterMenu && (
-              <div className="absolute w-[200px] top-full right-0">
-                <div className=" mt-3  p-3 w-full  bg-primary  rounded-md border-gray items-start font-medium text-white border-[1px] text-base flex flex-col gap-1 ">
-                  {Object.entries(links).map(([key, value], index) => {
-                    return (
-                      <Link className="transition-opacity hover:opacity-65" key={index} href={`${value}`}>{key}</Link>
-                    )
-                  })}
-                </div>
+          {isActiveFilterMenu && (
+            <div className="absolute w-[200px] top-full right-0">
+              <div className=" mt-3  p-3 w-full  bg-primary  rounded-md border-gray items-start font-medium text-white border-[1px] text-base flex flex-col gap-1 ">
+                {Object.entries(links).map(([key, value], index) => {
+                  return (
+                    <Link className="transition-opacity hover:opacity-65" key={index} href={`${value}`}>{key}</Link>
+                  )
+                })}
               </div>
+            </div>
 
-            )}
+          )}
         </div>
       </div>
       {

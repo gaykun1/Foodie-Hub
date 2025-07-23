@@ -77,7 +77,7 @@ const Page = ()=>{
                 startHour: data.startHour,
                 endHour: data.endHour
             };
-            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].post("http://localhost:5200/api/restaurant/create-restaurant", restaurantData, {
+            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].post("http://localhost:5200/api/restaurant/restaurants", restaurantData, {
                 withCredentials: true
             });
             setServerError(null);

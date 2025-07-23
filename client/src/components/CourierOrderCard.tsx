@@ -4,21 +4,20 @@ import { useAppSelector } from "@/hooks/reduxHooks";
 import { Order } from "@/redux/reduxTypes"
 import axios from "axios";
 import { Check, ChevronsRight, ClipboardList, Clock, DollarSign } from "lucide-react";
-import Link from "next/link";
-import { useState } from "react";
+import { useCallback, useMemo } from "react";
 
-const takeOrder = async (id: string, courierId: string) => {
-    try {
-        const res = await axios.post(`http://localhost:5200/api/courier/orders/${id}/take`, { id, courierId }, { withCredentials: true });
-    } catch (err) {
-        console.error(err);
-    }
 
-}
 
 const CourierOrderCard = ({ order, checkIfHasOrder, setViewDetails }: { order: Order, checkIfHasOrder: () => void, setViewDetails: React.Dispatch<React.SetStateAction<Order | null>>, }) => {
     const { courier } = useAppSelector(state => state.courier);
-    const date = new Date((order.createdAt)).toDateString();
+    const takeOrder = useCallback(async (id: string, courierId: string) => {
+        try {
+            const res = await axios.post(`http://localhost:5200/api/courier/orders/${id}/take`, { id, courierId }, { withCredentials: true });
+        } catch (err) {
+            console.error(err);
+        }
+    }, []);
+    const date = useMemo(() => new Date((order.createdAt)).toDateString(), [order.createdAt]);
     return (
         <div className={`rounded-lg shadow-xs border-[1px]  ${order.status == "Delivering" ? "border-[#636AE8FF]" : "border-borderColor"}`}>
             {/* header */}

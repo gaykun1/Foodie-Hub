@@ -10,8 +10,7 @@ import Order from "../models/Order";
 
 
 export const getRestaurantsFiltered = async (req: Request, res: Response): Promise<void> => {
-    const { categorie } = req.query;
-
+    const categorie = req.query.categorie;
     try {
         if (categorie === Category.All) {
             const restaurants = await Restaurant.find({});
@@ -65,7 +64,7 @@ export const createItem = async (req: Request, res: Response) => {
     }
 };
 export const handleAbout = async (req: Request, res: Response) => {
-    const {  info } = req.body;
+    const { info } = req.body;
     const id = req.params.id;
     try {
 
@@ -179,21 +178,30 @@ export const getTopSevenDishes = async (req: Request, res: Response): Promise<vo
     }
 }
 export const getDishesNearYou = async (req: Request, res: Response): Promise<void> => {
+    console.log("[getDishesNearYou] start");
+
     const city = req.query.city;
+    console.log("[getDishesNearYou] city:", city);
+
     try {
         const restaurants = await Restaurant.find({ "adress.city": city }).populate<{ dishes: IDish[] }>("dishes");
+        console.log("[getDishesNearYou] restaurants:", restaurants);
+
         let dishes: IDish[] = [];
         restaurants.forEach((item) => {
             dishes.push(...item.dishes);
         })
+
         const newDishes = dishes.sort((a, b) => b.sold - a.sold).slice(0, 5);
+        console.log("[getDishesNearYou] newDishes:", newDishes);
+
         res.status(200).json(newDishes);
-        return;
     } catch (err) {
+        console.error("[getDishesNearYou] error:", err);
         res.status(500).json("Server error!");
-        return;
     }
 }
+
 
 
 export const createDish = async (req: Request, res: Response) => {
@@ -402,18 +410,13 @@ export const getReviews = async (req: Request, res: Response) => {
     const id = req.params.id;
     const page = parseInt(req.query.page as string);
     try {
-
-
-        const reviews = await Restaurant.findById(id).select("reviews").populate({
-            path: "reviews",
-            populate: {
-                path: "sender",
-                select: "username"
-            },
-        }).skip((page - 1) * 10).limit(10);
-        console.log
+        const total = await Review.countDocuments({ restaurantId: id });
+        const reviews = await Review.find({ restaurantId: id })
+            .populate({ path: "sender", select: "username" })
+            .skip((page - 1) * 10)
+            .limit(10);
         if (reviews) {
-            res.status(201).json(reviews.reviews);
+            res.status(201).json({ reviews: reviews, length: (total/10)%10!==0 ?(total/10)+1 :(total/10)  });
             return;
         }
         else {

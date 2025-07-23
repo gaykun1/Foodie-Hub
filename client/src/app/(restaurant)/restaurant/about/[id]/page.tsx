@@ -1,30 +1,32 @@
 "use client"
-import DishCard from '@/components/Dashboard/DishCard';
 import { useAppSelector } from '@/hooks/reduxHooks';
-import { Dish } from '@/redux/reduxTypes';
 import axios from 'axios';
-import { Check, Pen, X } from 'lucide-react';
+import { Pen, X } from 'lucide-react';
 import { useParams } from 'next/navigation';
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 
 const Page = () => {
-
     const { id } = useParams() as { id: string }
     const [info, setInfo] = useState<string>();
     const { user } = useAppSelector(state => state.auth);
     const [active, setActive] = useState<boolean>();
-    const getTextAbout = async () => {
+    const [loading, setLoading] = useState<boolean>(false);
+    const getTextAbout = useCallback(async () => {
         try {
+            setLoading(true);
+
             const res = await axios.get(`http://localhost:5200/api/restaurant/restaurants/${id}/about`,);
             setInfo(res.data);
         } catch (err) {
             console.error(err);
+        } finally {
+            setLoading(false);
         }
 
-    }
+    }, [id])
     const handleTextAbout = async () => {
         try {
-            const res = await axios.post(`http://localhost:5200/api/restaurant/restaurants/${id}/about`,{id,info});
+            const res = await axios.post(`http://localhost:5200/api/restaurant/restaurants/${id}/about`, { id, info });
             setInfo(res.data);
         } catch (err) {
             console.error(err);
@@ -41,20 +43,20 @@ const Page = () => {
             <div className="flex items-center justify-between">
                 <h1 className='section-title'>About</h1>
                 {user?.role == "admin" && (
-                <div className="flex items-start gap-3 text-lg">
-                    <span>Change or Create info</span>
-                    
-                      
-                        {active ?(  <button onClick={() => {
-                    setActive(false);
+                    <div className="flex items-start gap-3 text-lg">
+                        <span>Change or Create info</span>
 
-                }} className='p-3 rounded-md btn  '><X size={16} /></button>) : (  <button onClick={() => {
-                    setActive(true);
 
-                }} className='p-3 rounded-md btn '><Pen size={16} /></button>)}
-                   
-                </div>
-                 )}
+                        {active ? (<button onClick={() => {
+                            setActive(false);
+
+                        }} className='p-3 rounded-md btn  '><X size={16} /></button>) : (<button onClick={() => {
+                            setActive(true);
+
+                        }} className='p-3 rounded-md btn '><Pen size={16} /></button>)}
+
+                    </div>
+                )}
             </div>
             {active &&
                 (
@@ -66,7 +68,8 @@ const Page = () => {
                         }} className='btn p-2 absolute bottom-[7px] right-0'>Create</button>
                     </div>
                 )}
-            {info ? (
+
+            {loading ? <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid mx-auto"></div> : info ? (
                 <p className="text-lg leading-5 font-medium mt-6 whitespace-pre-wrap ">{info}</p>
 
             ) : (

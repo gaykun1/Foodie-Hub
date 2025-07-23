@@ -1,7 +1,7 @@
 "use client"
-import { redirect, useParams } from "next/navigation";
+import { redirect, useParams, useRouter } from "next/navigation";
 import { Order } from "@/redux/reduxTypes";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import getStripe from "@/utils/stripe";
 import { convertToSubcurrency } from "@/utils/payment";
@@ -18,25 +18,24 @@ const Page = () => {
     const [shipping, setShipping] = useState<Shipping>(Shipping.Economy);
     const { id } = useParams() as { id: string };
     const [order, setOrder] = useState<Order>();
-
-    const getOrder = async () => {
+    const router = useRouter();
+    const getOrder = useCallback(async () => {
         try {
             const res = await axios.get(`http://localhost:5200/api/order/orders/${id}`, { withCredentials: true });
             if (res.data) {
                 setOrder(res.data);
 
-            } 
+            }
         } catch (err) {
-            redirect("/orders");
-
+            router.push("/orders");
             console.error(err);
         }
     }
-
+        , [id])
     useEffect(() => {
         getOrder();
 
-    }, [])
+    }, [getOrder])
 
 
 

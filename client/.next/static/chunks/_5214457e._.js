@@ -31,17 +31,25 @@ const Page = ()=>{
         "Page.useAppSelector": (state)=>state.auth
     }["Page.useAppSelector"]);
     const [active, setActive] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])();
-    const getTextAbout = async ()=>{
-        try {
-            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get(`http://localhost:5200/api/restaurant/about/${id}`);
-            setInfo(res.data);
-        } catch (err) {
-            console.error(err);
+    const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
+    const getTextAbout = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
+        "Page.useCallback[getTextAbout]": async ()=>{
+            try {
+                setLoading(true);
+                const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get(`http://localhost:5200/api/restaurant/restaurants/${id}/about`);
+                setInfo(res.data);
+            } catch (err) {
+                console.error(err);
+            } finally{
+                setLoading(false);
+            }
         }
-    };
+    }["Page.useCallback[getTextAbout]"], [
+        id
+    ]);
     const handleTextAbout = async ()=>{
         try {
-            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].post(`http://localhost:5200/api/restaurant/about`, {
+            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].post(`http://localhost:5200/api/restaurant/restaurants/${id}/about`, {
                 id,
                 info
             });
@@ -66,7 +74,7 @@ const Page = ()=>{
                         children: "About"
                     }, void 0, false, {
                         fileName: "[project]/src/app/(restaurant)/restaurant/about/[id]/page.tsx",
-                        lineNumber: 42,
+                        lineNumber: 44,
                         columnNumber: 17
                     }, this),
                     user?.role == "admin" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -76,8 +84,8 @@ const Page = ()=>{
                                 children: "Change or Create info"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(restaurant)/restaurant/about/[id]/page.tsx",
-                                lineNumber: 45,
-                                columnNumber: 21
+                                lineNumber: 47,
+                                columnNumber: 25
                             }, this),
                             active ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                 onClick: ()=>{
@@ -88,13 +96,13 @@ const Page = ()=>{
                                     size: 16
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(restaurant)/restaurant/about/[id]/page.tsx",
-                                    lineNumber: 51,
-                                    columnNumber: 53
+                                    lineNumber: 53,
+                                    columnNumber: 61
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(restaurant)/restaurant/about/[id]/page.tsx",
-                                lineNumber: 48,
-                                columnNumber: 37
+                                lineNumber: 50,
+                                columnNumber: 36
                             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                 onClick: ()=>{
                                     setActive(true);
@@ -104,24 +112,24 @@ const Page = ()=>{
                                     size: 16
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(restaurant)/restaurant/about/[id]/page.tsx",
-                                    lineNumber: 54,
-                                    columnNumber: 52
+                                    lineNumber: 56,
+                                    columnNumber: 60
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(restaurant)/restaurant/about/[id]/page.tsx",
-                                lineNumber: 51,
-                                columnNumber: 84
+                                lineNumber: 53,
+                                columnNumber: 90
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/(restaurant)/restaurant/about/[id]/page.tsx",
-                        lineNumber: 44,
-                        columnNumber: 17
+                        lineNumber: 46,
+                        columnNumber: 21
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/(restaurant)/restaurant/about/[id]/page.tsx",
-                lineNumber: 41,
+                lineNumber: 43,
                 columnNumber: 13
             }, this),
             active && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -133,7 +141,7 @@ const Page = ()=>{
                         className: "input p-3 resize-none h-[250px] pb-[38px"
                     }, void 0, false, {
                         fileName: "[project]/src/app/(restaurant)/restaurant/about/[id]/page.tsx",
-                        lineNumber: 62,
+                        lineNumber: 64,
                         columnNumber: 25
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -145,38 +153,44 @@ const Page = ()=>{
                         children: "Create"
                     }, void 0, false, {
                         fileName: "[project]/src/app/(restaurant)/restaurant/about/[id]/page.tsx",
-                        lineNumber: 63,
+                        lineNumber: 65,
                         columnNumber: 25
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/(restaurant)/restaurant/about/[id]/page.tsx",
-                lineNumber: 61,
+                lineNumber: 63,
                 columnNumber: 21
             }, this),
-            info ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+            loading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid mx-auto"
+            }, void 0, false, {
+                fileName: "[project]/src/app/(restaurant)/restaurant/about/[id]/page.tsx",
+                lineNumber: 72,
+                columnNumber: 24
+            }, this) : info ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                 className: "text-lg leading-5 font-medium mt-6 whitespace-pre-wrap ",
                 children: info
             }, void 0, false, {
                 fileName: "[project]/src/app/(restaurant)/restaurant/about/[id]/page.tsx",
-                lineNumber: 70,
+                lineNumber: 73,
                 columnNumber: 17
             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                 className: "text-lg leading-5 font-medium text-center mt-6",
                 children: "No info yet!"
             }, void 0, false, {
                 fileName: "[project]/src/app/(restaurant)/restaurant/about/[id]/page.tsx",
-                lineNumber: 73,
+                lineNumber: 76,
                 columnNumber: 17
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/(restaurant)/restaurant/about/[id]/page.tsx",
-        lineNumber: 40,
+        lineNumber: 42,
         columnNumber: 9
     }, this);
 };
-_s(Page, "HK7OJpRjcVgNnyJjhgP8F+mU634=", false, function() {
+_s(Page, "ymYzY/m50nrGFGbhIP7AS4fRcFM=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useParams"],
         __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$hooks$2f$reduxHooks$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAppSelector"]

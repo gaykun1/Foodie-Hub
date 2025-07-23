@@ -4,7 +4,6 @@ import DishCard from "@/components/Dashboard/DishCard";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import { Dish } from "@/redux/reduxTypes";
 import axios from "axios";
-import { useParams } from "next/navigation"
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 

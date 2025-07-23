@@ -3,13 +3,13 @@
 import { Order } from "@/redux/reduxTypes"
 import axios from "axios";
 import { Check, ChevronsRight, ClipboardList, Clock, DollarSign } from "lucide-react";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useMemo } from "react";
 const OrderCardDashboard = ({ order, setOrders }: { order: Order, setOrders: Dispatch<SetStateAction<Order[]>> }) => {
-    const date = new Date((order.createdAt)).toDateString();
+    const date = useMemo(() =>  new Date((order.createdAt)).toDateString(), [order.createdAt]);
 
     const toggleToPreparing = async () => {
         try {
-            const res = await axios.patch(`http://localhost:5200/api/order/orders/${order._id}/status`, { }, { withCredentials: true });
+            const res = await axios.patch(`http://localhost:5200/api/order/orders/${order._id}/status`, {}, { withCredentials: true });
             setOrders((prev) => prev.filter(item => item._id !== order._id));
         } catch (err) {
             console.error(err);

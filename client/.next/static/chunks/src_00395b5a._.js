@@ -99,7 +99,7 @@ const Page = ()=>{
                 const getLastSevenOrders = {
                     "Page.useEffect.getLastSevenOrders": async ()=>{
                         try {
-                            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get(`http://localhost:5200/api/order/get-last-seven/${user?.restaurantId}`, {
+                            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get(`http://localhost:5200/api/order/restaurants/${user?.restaurantId}/orders/recent`, {
                                 withCredentials: true
                             });
                             if (res) {
@@ -113,7 +113,7 @@ const Page = ()=>{
                 const getLastSevenReviews = {
                     "Page.useEffect.getLastSevenReviews": async ()=>{
                         try {
-                            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get(`http://localhost:5200/api/restaurant/get-last-seven-reviews/${user?.restaurantId}`, {
+                            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get(`http://localhost:5200/api/restaurant/restaurants/${user?.restaurantId}/reviews/recent`, {
                                 withCredentials: true
                             });
                             if (res) {
@@ -127,7 +127,7 @@ const Page = ()=>{
                 const getTopSevenDishes = {
                     "Page.useEffect.getTopSevenDishes": async ()=>{
                         try {
-                            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get(`http://localhost:5200/api/restaurant/get-top-seven-dishes/${user?.restaurantId}`, {
+                            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get(`http://localhost:5200/api/restaurant/restaurants/${user?.restaurantId}/dishes/top`, {
                                 withCredentials: true
                             });
                             if (res) {
@@ -152,7 +152,7 @@ const Page = ()=>{
                 const getNumbers = {
                     "Page.useEffect.getNumbers": async ()=>{
                         try {
-                            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get(`http://localhost:5200/api/order/order-values/${user?.restaurantId}`, {
+                            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get(`http://localhost:5200/api/order/orders/statistics?id=${user?.restaurantId}`, {
                                 withCredentials: true
                             });
                             setNumOfOrders(res.data.numOfOrders);

@@ -23,7 +23,7 @@ const Page = () => {
     useEffect(() => {
         const sock = io("http://localhost:5200");
         setSocket(sock);
-
+        return () => {sock.disconnect();}
     }, []);
 
     useEffect(() => {
@@ -35,7 +35,7 @@ const Page = () => {
                 setOrders(orders);
             })
         }
-    }, [socket, user]);
+    }, [socket, user?.restaurantId]);
 
     return (
         <div>
@@ -43,14 +43,14 @@ const Page = () => {
             {orders.length > 0 ? (
 
                 <div className="grid md:grid-cols-2  lg:grid-cols-3 gap-6">
-                    {orders.map((order, idx) => (
-                        <OrderCardDashboard setOrders={setOrders} key={idx} order={order}/>
+                    {orders.map((order) => (
+                        <OrderCardDashboard setOrders={setOrders} key={order._id} order={order} />
                     ))}
-                        </div>
-                    ) : <span className="text-lg leading-7 font-medium">No orders yet!</span>}
-
                 </div>
-            )
+            ) : <span className="text-lg leading-7 font-medium">No orders yet!</span>}
+
+        </div>
+    )
 }
 
-            export default Page
+export default Page

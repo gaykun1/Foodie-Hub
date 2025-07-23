@@ -36,7 +36,7 @@ const DishCard = ({ dish, toCart, onDeleted })=>{
     };
     const addToCart = async ()=>{
         try {
-            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].post("http://localhost:5200/api/cart/add-to-cart", {
+            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].post("http://localhost:5200/api/cart/items", {
                 id: dish._id
             }, {
                 withCredentials: true
@@ -297,7 +297,7 @@ const page = ()=>{
                         children: "Create a dish"
                     }, void 0, false, {
                         fileName: "[project]/src/app/(dashboard)/dashboard/add-dish/page.tsx",
-                        lineNumber: 94,
+                        lineNumber: 93,
                         columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -316,7 +316,7 @@ const page = ()=>{
                                                 children: "Title"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(dashboard)/dashboard/add-dish/page.tsx",
-                                                lineNumber: 98,
+                                                lineNumber: 97,
                                                 columnNumber: 29
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -325,13 +325,13 @@ const page = ()=>{
                                                 type: "text"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(dashboard)/dashboard/add-dish/page.tsx",
-                                                lineNumber: 99,
+                                                lineNumber: 98,
                                                 columnNumber: 29
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(dashboard)/dashboard/add-dish/page.tsx",
-                                        lineNumber: 97,
+                                        lineNumber: 96,
                                         columnNumber: 25
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -343,7 +343,7 @@ const page = ()=>{
                                                 children: "Description"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(dashboard)/dashboard/add-dish/page.tsx",
-                                                lineNumber: 102,
+                                                lineNumber: 101,
                                                 columnNumber: 29
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -352,13 +352,13 @@ const page = ()=>{
                                                 type: "text"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(dashboard)/dashboard/add-dish/page.tsx",
-                                                lineNumber: 103,
+                                                lineNumber: 102,
                                                 columnNumber: 29
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(dashboard)/dashboard/add-dish/page.tsx",
-                                        lineNumber: 101,
+                                        lineNumber: 100,
                                         columnNumber: 25
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -370,7 +370,7 @@ const page = ()=>{
                                                 children: "Choose type of food"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(dashboard)/dashboard/add-dish/page.tsx",
-                                                lineNumber: 106,
+                                                lineNumber: 105,
                                                 columnNumber: 29
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -383,7 +383,7 @@ const page = ()=>{
                                                         children: "Appetizers"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/(dashboard)/dashboard/add-dish/page.tsx",
-                                                        lineNumber: 108,
+                                                        lineNumber: 107,
                                                         columnNumber: 33
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -391,7 +391,7 @@ const page = ()=>{
                                                         children: "Main Courses"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/(dashboard)/dashboard/add-dish/page.tsx",
-                                                        lineNumber: 109,
+                                                        lineNumber: 108,
                                                         columnNumber: 33
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -399,7 +399,7 @@ const page = ()=>{
                                                         children: "Desserts"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/(dashboard)/dashboard/add-dish/page.tsx",
-                                                        lineNumber: 110,
+                                                        lineNumber: 109,
                                                         columnNumber: 33
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -407,25 +407,25 @@ const page = ()=>{
                                                         children: "Drinks"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/(dashboard)/dashboard/add-dish/page.tsx",
-                                                        lineNumber: 111,
+                                                        lineNumber: 110,
                                                         columnNumber: 33
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/(dashboard)/dashboard/add-dish/page.tsx",
-                                                lineNumber: 107,
+                                                lineNumber: 106,
                                                 columnNumber: 29
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(dashboard)/dashboard/add-dish/page.tsx",
-                                        lineNumber: 105,
+                                        lineNumber: 104,
                                         columnNumber: 25
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/(dashboard)/dashboard/add-dish/page.tsx",
-                                lineNumber: 96,
+                                lineNumber: 95,
                                 columnNumber: 21
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -440,7 +440,7 @@ const page = ()=>{
                                                 children: "Price"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(dashboard)/dashboard/add-dish/page.tsx",
-                                                lineNumber: 118,
+                                                lineNumber: 117,
                                                 columnNumber: 29
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -451,13 +451,13 @@ const page = ()=>{
                                                 type: "text"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(dashboard)/dashboard/add-dish/page.tsx",
-                                                lineNumber: 119,
+                                                lineNumber: 118,
                                                 columnNumber: 29
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(dashboard)/dashboard/add-dish/page.tsx",
-                                        lineNumber: 117,
+                                        lineNumber: 116,
                                         columnNumber: 25
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -469,7 +469,7 @@ const page = ()=>{
                                                 children: "Image"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(dashboard)/dashboard/add-dish/page.tsx",
-                                                lineNumber: 123,
+                                                lineNumber: 122,
                                                 columnNumber: 29
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -478,19 +478,19 @@ const page = ()=>{
                                                 type: "file"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(dashboard)/dashboard/add-dish/page.tsx",
-                                                lineNumber: 124,
+                                                lineNumber: 123,
                                                 columnNumber: 29
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(dashboard)/dashboard/add-dish/page.tsx",
-                                        lineNumber: 122,
+                                        lineNumber: 121,
                                         columnNumber: 25
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/(dashboard)/dashboard/add-dish/page.tsx",
-                                lineNumber: 116,
+                                lineNumber: 115,
                                 columnNumber: 21
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -500,19 +500,19 @@ const page = ()=>{
                                 children: loading ? "Creating..." : "Create"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(dashboard)/dashboard/add-dish/page.tsx",
-                                lineNumber: 128,
+                                lineNumber: 127,
                                 columnNumber: 21
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/(dashboard)/dashboard/add-dish/page.tsx",
-                        lineNumber: 95,
+                        lineNumber: 94,
                         columnNumber: 17
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/(dashboard)/dashboard/add-dish/page.tsx",
-                lineNumber: 93,
+                lineNumber: 92,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -523,7 +523,7 @@ const page = ()=>{
                         children: "Menu"
                     }, void 0, false, {
                         fileName: "[project]/src/app/(dashboard)/dashboard/add-dish/page.tsx",
-                        lineNumber: 135,
+                        lineNumber: 134,
                         columnNumber: 17
                     }, this),
                     menu.length > 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -531,7 +531,7 @@ const page = ()=>{
                             className: "animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid mx-auto"
                         }, void 0, false, {
                             fileName: "[project]/src/app/(dashboard)/dashboard/add-dish/page.tsx",
-                            lineNumber: 142,
+                            lineNumber: 141,
                             columnNumber: 30
                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: "grid px-2 sm:px-0 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-[25px]",
@@ -544,36 +544,36 @@ const page = ()=>{
                                         onDeleted: getDishes
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(dashboard)/dashboard/add-dish/page.tsx",
-                                        lineNumber: 147,
+                                        lineNumber: 146,
                                         columnNumber: 45
                                     }, this)
                                 }, idx, false, {
                                     fileName: "[project]/src/app/(dashboard)/dashboard/add-dish/page.tsx",
-                                    lineNumber: 146,
+                                    lineNumber: 145,
                                     columnNumber: 41
                                 }, this);
                             })
                         }, void 0, false, {
                             fileName: "[project]/src/app/(dashboard)/dashboard/add-dish/page.tsx",
-                            lineNumber: 143,
+                            lineNumber: 142,
                             columnNumber: 29
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/(dashboard)/dashboard/add-dish/page.tsx",
-                        lineNumber: 138,
+                        lineNumber: 137,
                         columnNumber: 22
                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "text-center mt-5",
                         children: "No dishes!"
                     }, void 0, false, {
                         fileName: "[project]/src/app/(dashboard)/dashboard/add-dish/page.tsx",
-                        lineNumber: 156,
+                        lineNumber: 155,
                         columnNumber: 25
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/(dashboard)/dashboard/add-dish/page.tsx",
-                lineNumber: 134,
+                lineNumber: 133,
                 columnNumber: 13
             }, this)
         ]

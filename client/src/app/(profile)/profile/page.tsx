@@ -60,7 +60,10 @@ const Page = () => {
       payload.password = data.password;
       payload.newPassword = data.newPassword;
       payload.newPasswordAgain = data.newPasswordAgain;
-      if (payload.newPassword !== payload.newPasswordAgain) setIsEquals(false);
+      if (payload.newPassword !== payload.newPasswordAgain) {
+        setIsEquals(false)
+        return;
+      };
     }
 
     if (Object.keys(payload).length === 0) return;
@@ -218,7 +221,7 @@ const Page = () => {
 
           <button disabled={isEditing}
             type="button"
-            onClick={() => { setIsEditing(true); }}
+            onClick={() => { setIsEditing(true); setIsEquals(true); }}
             className="btn p-2 disabled:bg-gray! disabled:cursor-auto!"
           >
             Edit

@@ -1,10 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
+import { AuthRequest } from "./authMiddleware";
 
-export interface AuthRequest extends Request {
-    userId?: string;
 
-}
 
 export const adminMiddleware = (req: Request, res: Response, next: NextFunction): void => {
    const token = req.cookies?.token || req.headers.authorization?.split(' ')[1];

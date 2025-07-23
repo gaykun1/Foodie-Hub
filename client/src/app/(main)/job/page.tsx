@@ -1,8 +1,6 @@
 import ApplicationForm from '@/components/job/ApplicationForm'
 import JobBanner from '@/components/job/JobBanner'
-import { ArrowRight, BadgeDollarSign, Bike, Calendar, CalendarSync, Check, CircleOff, Dot } from 'lucide-react'
-import Link from 'next/link'
-import React from 'react'
+import { BadgeDollarSign, Bike,  CalendarSync, Check, CircleOff, Dot } from 'lucide-react'
 
 const page = () => {
     return (

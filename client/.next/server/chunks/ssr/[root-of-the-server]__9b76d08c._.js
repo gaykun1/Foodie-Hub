@@ -21,9 +21,7 @@ const OrderCardDashboard = ({ order, setOrders })=>{
     const date = new Date(order.createdAt).toDateString();
     const toggleToPreparing = async ()=>{
         try {
-            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].patch("http://localhost:5200/api/order/toggle-to-preparing", {
-                id: order._id
-            }, {
+            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].patch(`http://localhost:5200/api/order/orders/${order._id}/status`, {}, {
                 withCredentials: true
             });
             setOrders((prev)=>prev.filter((item)=>item._id !== order._id));
@@ -290,7 +288,7 @@ const Page = ()=>{
     const { user } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$hooks$2f$reduxHooks$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useAppSelector"])((state)=>state.auth);
     const getCreatedOrders = async ()=>{
         try {
-            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].get(`http://localhost:5200/api/order/get-created-orders/${user?.restaurantId}`, {
+            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].get(`http://localhost:5200/api/order/orders/${user?.restaurantId}/created`, {
                 withCredentials: true
             });
             if (res.data) {

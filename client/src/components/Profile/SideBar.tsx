@@ -1,7 +1,7 @@
 
 "use client"
 
-import { AlignJustify, BarChart, Heart, Home, LogOut, Plus, Settings, ShoppingCart, User, Utensils } from "lucide-react"
+import {Heart, User} from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation";
 

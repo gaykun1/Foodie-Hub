@@ -1,6 +1,4 @@
 import Link from 'next/link'
-import React from 'react'
-
 const Banner = () => {
   return (
     <section className="mt-12 pt-[83px] pb-[86]  mb-[50px]   bg-[#E8618CCC] rounded-lg flex  items-center justify-center">

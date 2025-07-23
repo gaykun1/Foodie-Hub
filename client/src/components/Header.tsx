@@ -10,7 +10,7 @@ import { Hamburger, Minus, Plus, Search, ShoppingCart, UserRound, X } from 'luci
 import Image from 'next/image'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 
 const Header = () => {
 

@@ -1,12 +1,15 @@
 "use client"
-import MapTracker from '@/components/order/MapTracker';
+const MapTracker = dynamic(() => import('@/components/order/MapTracker'), {
+  ssr: false,
+})
 import OrderCard from '@/components/order/OrderCard';
 import ViewDetailsSideBar from '@/components/ViewDetailsSideBar';
 import { useAppSelector } from '@/hooks/reduxHooks';
 import { Order } from '@/redux/reduxTypes'
 import axios from 'axios';
-import { ArrowLeft, ChevronDown, Map, } from 'lucide-react';
-import { useEffect, useState } from 'react'
+import { ChevronDown, Map, } from 'lucide-react';
+import dynamic from 'next/dynamic';
+import { useEffect, useMemo, useState } from 'react'
 import { io, Socket } from 'socket.io-client';
 
 const Page = () => {
@@ -98,8 +101,8 @@ const Page = () => {
     }
 
   }, [orders])
-  const currentOrders = orders?.filter(order => order.status !== "Delivered");
-  const pastOrders = orders?.filter(order => order.status == "Delivered");
+  const currentOrders = useMemo(() => orders?.filter(order => order.status !== "Delivered"), [orders])
+  const pastOrders = useMemo(() => orders?.filter(order => order.status === "Delivered"), [orders])
 
   return (
     <div className='py-8 '>
@@ -125,7 +128,7 @@ const Page = () => {
                     <p className='text-sm leading-5 text-gray'>Your order is on its way to {viewDetails?.adress.houseNumber} {viewDetails?.adress.street}</p>
                   </div>
                   <div className="overflow-hidden h-[250px] w-[420px]  rounded-lg">
-                    <MapTracker  courierLocation={courierLocation} socket={socket} isWorking={viewDetails} />
+                    <MapTracker courierLocation={courierLocation} socket={socket} isWorking={viewDetails} />
 
                   </div>
                 </div>
@@ -141,13 +144,13 @@ const Page = () => {
               <div className="">
                 <h2 className="text-2xl leading-8 font-bold mb-4.5 ">Current Orders ( {currentOrders?.length} )</h2>
                 <div className="gap-4 grid  lg:grid-cols-2">
-                  { currentOrders && currentOrders.length > 0 ?  currentOrders?.map((order, idx) => (
+                  {currentOrders && currentOrders.length > 0 ? currentOrders?.map((order, idx) => (
                     <div className="" key={idx}>
                       <OrderCard setViewDetails={setViewDetails} order={order} />
 
                     </div>
-                  ))  :<span className='text-lg leading-7 font-semibold'>No current orders yet!</span>}
-                
+                  )) : <span className='text-lg leading-7 font-semibold'>No current orders yet!</span>}
+
                 </div>
               </div>
 
@@ -155,12 +158,12 @@ const Page = () => {
               <div className="mt-9">
                 <h2 className="text-2xl leading-8 font-bold mb-4.5">Past Orders (  {pastOrders?.length} )</h2>
                 <div className="gap-4 grid  lg:grid-cols-2">
-                          { pastOrders && pastOrders.length > 0 ?  pastOrders?.map((order, idx) => (
+                  {pastOrders && pastOrders.length > 0 ? pastOrders?.map((order, idx) => (
                     <div className="" key={idx}>
                       <OrderCard setViewDetails={setViewDetails} order={order} />
 
                     </div>
-                  ))  : <span className='text-lg leading-7 font-semibold'>No past orders yet!</span>}
+                  )) : <span className='text-lg leading-7 font-semibold'>No past orders yet!</span>}
                 </div>
               </div>
             </div>
@@ -177,7 +180,7 @@ const Page = () => {
                     <p className='text-sm leading-5 text-gray'>Your order is on its way to {viewDetails?.adress.houseNumber} {viewDetails?.adress.street}</p>
                   </div>
                   <div className="overflow-hidden  rounded-lg max-h-[250px] max-w-[420px]">
-                    <MapTracker  courierLocation={courierLocation} socket={socket} isWorking={viewDetails} />
+                    <MapTracker courierLocation={courierLocation} socket={socket} isWorking={viewDetails} />
 
                   </div>
                 </div>

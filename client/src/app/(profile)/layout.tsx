@@ -4,7 +4,6 @@ import Header from "@/components/Header";
 import Providers from "../providers/Providers";
 import AuthClientUpload from "@/components/AuthClientUpload";
 import SideBarProfile from "@/components/Profile/SideBar";
-import { AlignJustify } from "lucide-react";
 import ResponsiveSidebar from "@/components/Profile/ResponsiveSidebar";
 import Footer from "@/components/Footer";
 

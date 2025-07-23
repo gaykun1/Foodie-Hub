@@ -9,7 +9,7 @@ import axios from "axios";
 import { Clock, Globe, Heart, MapPin, Phone } from "lucide-react";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 
 
 
@@ -33,7 +33,7 @@ export default function HeaderRestaurant() {
       }
     }
     getRestaurantInfo();
-  }, [])
+  }, [id])
 
   const path  = usePathname();
 
@@ -51,9 +51,15 @@ export default function HeaderRestaurant() {
     About: `/restaurant/about/${id}`,
     Reviews: `/restaurant/reviews/${id}`,
   }
+ const rating = useMemo(()=>calculateStars(currentRestaurant?.rating || 0),[currentRestaurant?.rating]) ;
   return (
-    <>
-      <div className="relative w-full h-[600px]">
+    <div>
+     {isLoading
+          ?
+          (<div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid mx-auto"></div>) :
+          
+          <>
+                <div className="relative w-full h-[600px]">
         <img
           src={currentRestaurant?.imageUrl}
           alt="restaurant photo"
@@ -68,7 +74,7 @@ export default function HeaderRestaurant() {
           <div className="flex gap-2 items-center">
             <div className="flex gap-2 items-center  max-w-[135px] w-full">
 
-              {calculateStars(currentRestaurant?.rating || 0).map((star, idx) => (
+              {rating.map((star, idx) => (
                 <span key={idx}>{star}</span>
               ))}
             </div>
@@ -126,12 +132,12 @@ export default function HeaderRestaurant() {
           <Link key={idx} className={`btn py-2 basis-[342px] ${path==link ? "" :"bg-borderColor! text-gray!"} `} href={link}>{text}</Link>
         ))}
       </div>
-    </>
+          </>
+          }
+
+    </div>
   )
 
 
 
 }
-//  {isLoading
-//           ?
-//           (<div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid mx-auto"></div>) :

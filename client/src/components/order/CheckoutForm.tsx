@@ -1,16 +1,13 @@
 "use client"
-import getStripe from "@/utils/stripe";
 import PaymentCard from "@/components/order/PaymentCard";
 import { useAppSelector } from "@/hooks/reduxHooks"
-import { Elements, useElements, useStripe } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
-import axios, { isAxiosError } from "axios";
+import { useElements, useStripe } from "@stripe/react-stripe-js";
+import { } from "@stripe/stripe-js";
+import axios, { } from "axios";
 import { Lock, Send } from "lucide-react";
-import { useParams } from "next/navigation";
-import { FormEvent, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { convertToSubcurrency } from "@/utils/payment";
 import { useForm } from "react-hook-form";
-import { getEventListeners } from "events";
 import { Order } from "@/redux/reduxTypes";
 
 enum Shipping {
@@ -41,9 +38,9 @@ const CheckoutForm = ({ order }: { order: Order }) => {
     const [discount, setDiscount] = useState<number>(0);
     const [error, setError] = useState<string | null>(null);
 
-    const usePromocode = async () => {
+    const usePromocode = useCallback(async () => {
         try {
-            const res = await axios.post(`http://localhost:5200/api/promocodes/${promocode}/use`, { }, { withCredentials: true });
+            const res = await axios.post(`http://localhost:5200/api/promocodes/${promocode}/use`, {}, { withCredentials: true });
             if (res.data) {
                 setDiscount(res.data.discount + discount);
                 setPromocode("");
@@ -54,7 +51,7 @@ const CheckoutForm = ({ order }: { order: Order }) => {
             if (axios.isAxiosError(err) && err.response)
                 setError(err.response.data);
         }
-    }
+    }, [promocode]);
     const getClientSecret = async () => {
         try {
 
@@ -93,7 +90,7 @@ const CheckoutForm = ({ order }: { order: Order }) => {
             setLoading(false);
         }
         if (order) {
-            const res = await axios.patch("http://localhost:5200/api/orders", { formData, percent: discount, shipping, cartId: cart?._id, totalPrice: parseFloat(((shipping + order.totalPrice) * ((100 - discount) / 100)).toFixed(2)) }, { withCredentials: true });
+            const res = await axios.patch("http://localhost:5200/api/order/orders", { formData, percent: discount, shipping, cartId: cart?._id, totalPrice: parseFloat(((shipping + order.totalPrice) * ((100 - discount) / 100)).toFixed(2)) }, { withCredentials: true });
             const { error } = await stripe.confirmPayment({
                 elements,
                 clientSecret,

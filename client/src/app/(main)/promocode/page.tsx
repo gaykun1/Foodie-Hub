@@ -1,7 +1,6 @@
 "use client"
 
 import axios, { isAxiosError } from 'axios'
-import { ArrowRight } from 'lucide-react'
 import { FormEvent, useState } from 'react'
 
 
@@ -9,10 +8,15 @@ import { FormEvent, useState } from 'react'
 const Page = () => {
     const [promocode, setPromocode] = useState<string>("");
     const [error, setError] = useState<string | null>(null);
+    const [loading, setLoading] = useState<boolean>(false);
     const checkPromo = async () => {
-
+        if (!promocode.trim()) {
+            setError("Please enter a promocode");
+            return;
+        }
         try {
-            const res = await axios.post(`http://localhost:5200/api/promocodes/${promocode}`, {}, { withCredentials: true });
+            setLoading(true);
+            const res = await axios.post(`http://localhost:5200/api/promocode/promocodes/${promocode}`, {}, { withCredentials: true });
             if (res.data) {
                 setError("Used");
                 setPromocode("");
@@ -21,6 +25,8 @@ const Page = () => {
             if (isAxiosError(err) && err.response) {
                 setError(err.response.data);
             }
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -29,9 +35,9 @@ const Page = () => {
             <h1 className='section-title '>Enter your Promocode</h1>
             <div className='flex gap-3 items-center' >
                 <input value={promocode} onChange={(e) => setPromocode(e.target.value)} type="text" className=' py-2 px-1 input ' />
-                <button onClick={checkPromo} className='btn py-2 px-1  '>Use</button>
+                <button onClick={checkPromo} className={`btn py-2 px-1 ${loading ? "bg-gray" : ""} `}>Use</button>
             </div>
-            {error != null && (<span>{error}</span>)}
+            {error != null && (<span className={error === "Used" ? "text-green-500" : "text-red-500"}>{error}</span>)}
         </div>
     </div>
     )

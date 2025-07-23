@@ -9,18 +9,26 @@ import { useEffect, useState } from 'react'
 const page = () => {
     const [word, setWord] = useState<string>("");
     const [items, setItems] = useState<Pick<Restaurant, "imageUrl" | "title" | "_id">[] | null>(null);
-    useEffect(() => {
-        const searchRestaurants = async () => {
-            try {
-                const res = await axios.get(`http://localhost:5200/api/restaurant/restaurants/search?chars=${word}` );
-                setItems(res.data);
-            } catch (err) {
-                console.log(err);
-            }
+    const [loading, setLoading] = useState<boolean>(false);
+    const searchRestaurants = async () => {
+        try {
+            setLoading(true);
+            const res = await axios.get(`http://localhost:5200/api/restaurant/restaurants/search?chars=${word}`);
+            setItems(res.data);
+        } catch (err) {
+            console.log(err);
+        } finally{
+            setLoading(false);
         }
+    }
+    useEffect(() => {
 
 
-        searchRestaurants();
+        const timeout = setTimeout(() => {
+            searchRestaurants();
+
+        }, 500);
+        return () => clearTimeout(timeout);
         console.log(items);
     }, [word])
 
@@ -34,7 +42,7 @@ const page = () => {
                 </div>
                 <input onChange={(e) => setWord(e.target.value)} className='input  p-3' type="text" />
                 <div className="min-h-[150px] border-borderColor rounded-md border-[2px] p-3 ">
-                    {items ? (
+                    {loading ?<div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid mx-auto"></div> : items ? (
 
                         <div className='flex flex-col gap-4'>{
                             items.map((item, index) => {

@@ -61,7 +61,7 @@ const page = () => {
 
     const getNumbers = async () => {
       try {
-        const res = await axios.get("http://localhost:5200/api/order/restaurants/orders/statistics", { withCredentials: true });
+        const res = await axios.get("http://localhost:5200/api/order/orders/statistics", { withCredentials: true });
         setNumOfOrders(res.data.numOfOrders);
         setTotalRevenue(res.data.totalRevenue);
         setAverageOrderValue(res.data.averageOrderValue);

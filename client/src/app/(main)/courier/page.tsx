@@ -4,11 +4,14 @@ import OrderCard from '@/components/order/OrderCard';
 import { useAppSelector } from '@/hooks/reduxHooks';
 import { Order } from '@/redux/reduxTypes'
 import axios from 'axios';
-import { Bike, ChevronDown, Map, PackageCheck, } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react'
+import { Bike, ChevronDown, PackageCheck, } from 'lucide-react';
+import { useEffect, useState } from 'react'
 import { io, Socket } from 'socket.io-client';
-import MapTracker from '@/components/order/MapTracker';
+const MapTracker = dynamic(() => import('@/components/order/MapTracker'), {
+    ssr: false,
+})
 import ViewDetailsSideBar from '@/components/ViewDetailsSideBar';
+import dynamic from 'next/dynamic';
 
 const Page = () => {
     const [freeOrders, setFreeOrders] = useState<Order[] | null>(null);
@@ -49,7 +52,7 @@ const Page = () => {
         try {
             if (courier) {
 
-                const res = await axios.get(`http://localhost:5200/api/order/couriers/${courier._id}/orders`,{withCredentials:true});
+                const res = await axios.get(`http://localhost:5200/api/order/couriers/${courier._id}/orders`, { withCredentials: true });
                 if (res.data) {
                     setCourierOrders(res.data);
                 }
@@ -160,12 +163,12 @@ const Page = () => {
                             <h2 className="text-2xl leading-8 font-bold mb-4.5 ">Free orders ( {freeOrders?.length} )</h2>
 
                             <div className="gap-4 grid lg:grid-cols-2">
-                                   { freeOrders && freeOrders.length > 0 ?  freeOrders?.map((order, idx) => (
-                    <div className="" key={idx}>
-                      <OrderCard setViewDetails={setViewDetails} order={order} />
+                                {freeOrders && freeOrders.length > 0 ? freeOrders?.map((order, idx) => (
+                                    <div className="" key={idx}>
+                                        <OrderCard setViewDetails={setViewDetails} order={order} />
 
-                    </div>
-                  ))  : <span className='text-lg leading-7 font-semibold'>No free orders yet!</span>}
+                                    </div>
+                                )) : <span className='text-lg leading-7 font-semibold'>No free orders yet!</span>}
                             </div>
 
 
@@ -207,7 +210,7 @@ const Page = () => {
                             </div>
                             <div className="flex items-center gap-7">
                                 <button disabled={status === "Delivered" || status === "Delivering"} onClick={async () => await toggleOrderStatus("Delivering", isWorking._id)} className="btn flex items-center p-3 gap-3 text-lg!"><Bike />Delivering</button>
-                                <button disabled={status === "Delivered"} onClick={async () => {await toggleOrderStatus("Delivered", isWorking._id); setIsWorking(null)}} className="btn flex items-center p-3 gap-3 text-lg!"><PackageCheck />Delivered</button>
+                                <button disabled={status === "Delivered"} onClick={async () => { await toggleOrderStatus("Delivered", isWorking._id); setIsWorking(null) }} className="btn flex items-center p-3 gap-3 text-lg!"><PackageCheck />Delivered</button>
                             </div>
                         </div>
                     </div>
@@ -216,8 +219,8 @@ const Page = () => {
 
                 </div>
                 <div className="hidden grow-1  lg:block">
-                    
-                        <ViewDetailsSideBar viewDetails={viewDetails} /> 
+
+                    <ViewDetailsSideBar viewDetails={viewDetails} />
                 </div>
             </div>
 
