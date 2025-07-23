@@ -165,7 +165,7 @@ const Page = () => {
                             <div className="gap-4 grid lg:grid-cols-2">
                                 {freeOrders && freeOrders.length > 0 ? freeOrders?.map((order, idx) => (
                                     <div className="" key={idx}>
-                                        <OrderCard setViewDetails={setViewDetails} order={order} />
+                                        <CourierOrderCard checkIfHasOrder={checkIfHasOrder} setViewDetails={setViewDetails} order={order} />
 
                                     </div>
                                 )) : <span className='text-lg leading-7 font-semibold'>No free orders yet!</span>}
@@ -214,7 +214,7 @@ const Page = () => {
                             </div>
                         </div>
                     </div>
-                    ) : (<div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid "></div>)}
+                    ) : (<div className="animate-spin rounded-full h-12 w-12 border-t-4  border-blue-500 border-solid "></div> )}
 
 
                 </div>

@@ -23,17 +23,24 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist
 const page = ()=>{
     const [word, setWord] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
     const [items, setItems] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
+    const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
+    const searchRestaurants = async ()=>{
+        try {
+            setLoading(true);
+            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].get(`http://localhost:5200/api/restaurant/restaurants/search?chars=${word}`);
+            setItems(res.data);
+        } catch (err) {
+            console.log(err);
+        } finally{
+            setLoading(false);
+        }
+    };
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
-        const searchRestaurants = async ()=>{
-            try {
-                const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].get(`http://localhost:5200/api/restaurant/restaurants/search?chars=${word}`);
-                setItems(res.data);
-            } catch (err) {
-                console.log(err);
-            }
-        };
-        searchRestaurants();
-        console.log(items);
+        const timeout = setTimeout(()=>{
+            searchRestaurants();
+        }, 500);
+        return ()=>clearTimeout(timeout);
+        "TURBOPACK unreachable";
     }, [
         word
     ]);
@@ -50,20 +57,20 @@ const page = ()=>{
                             children: "Find restaurant "
                         }, void 0, false, {
                             fileName: "[project]/src/app/(dashboard)/dashboard/menu/page.tsx",
-                            lineNumber: 31,
+                            lineNumber: 39,
                             columnNumber: 21
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$search$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Search$3e$__["Search"], {
                             size: 30
                         }, void 0, false, {
                             fileName: "[project]/src/app/(dashboard)/dashboard/menu/page.tsx",
-                            lineNumber: 33,
+                            lineNumber: 41,
                             columnNumber: 21
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/(dashboard)/dashboard/menu/page.tsx",
-                    lineNumber: 30,
+                    lineNumber: 38,
                     columnNumber: 17
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -72,12 +79,18 @@ const page = ()=>{
                     type: "text"
                 }, void 0, false, {
                     fileName: "[project]/src/app/(dashboard)/dashboard/menu/page.tsx",
-                    lineNumber: 35,
+                    lineNumber: 43,
                     columnNumber: 17
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: "min-h-[150px] border-borderColor rounded-md border-[2px] p-3 ",
-                    children: items ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    children: loading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid mx-auto"
+                    }, void 0, false, {
+                        fileName: "[project]/src/app/(dashboard)/dashboard/menu/page.tsx",
+                        lineNumber: 45,
+                        columnNumber: 31
+                    }, this) : items ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "flex flex-col gap-4",
                         children: [
                             items.map((item, index)=>{
@@ -92,12 +105,12 @@ const page = ()=>{
                                                 alt: "dish image"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(dashboard)/dashboard/menu/page.tsx",
-                                                lineNumber: 44,
+                                                lineNumber: 52,
                                                 columnNumber: 45
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(dashboard)/dashboard/menu/page.tsx",
-                                            lineNumber: 43,
+                                            lineNumber: 51,
                                             columnNumber: 41
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -108,7 +121,7 @@ const page = ()=>{
                                                     children: item.title
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(dashboard)/dashboard/menu/page.tsx",
-                                                    lineNumber: 48,
+                                                    lineNumber: 56,
                                                     columnNumber: 45
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -118,29 +131,29 @@ const page = ()=>{
                                                         className: "btn p-3 mr-5",
                                                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$pen$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Pen$3e$__["Pen"], {}, void 0, false, {
                                                             fileName: "[project]/src/app/(dashboard)/dashboard/menu/page.tsx",
-                                                            lineNumber: 53,
+                                                            lineNumber: 61,
                                                             columnNumber: 53
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/(dashboard)/dashboard/menu/page.tsx",
-                                                        lineNumber: 52,
+                                                        lineNumber: 60,
                                                         columnNumber: 49
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(dashboard)/dashboard/menu/page.tsx",
-                                                    lineNumber: 51,
+                                                    lineNumber: 59,
                                                     columnNumber: 45
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/(dashboard)/dashboard/menu/page.tsx",
-                                            lineNumber: 47,
+                                            lineNumber: 55,
                                             columnNumber: 41
                                         }, this)
                                     ]
                                 }, index, true, {
                                     fileName: "[project]/src/app/(dashboard)/dashboard/menu/page.tsx",
-                                    lineNumber: 42,
+                                    lineNumber: 50,
                                     columnNumber: 37
                                 }, this);
                             }),
@@ -148,29 +161,29 @@ const page = ()=>{
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/(dashboard)/dashboard/menu/page.tsx",
-                        lineNumber: 39,
+                        lineNumber: 47,
                         columnNumber: 25
                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                         children: "Not found!"
                     }, void 0, false, {
                         fileName: "[project]/src/app/(dashboard)/dashboard/menu/page.tsx",
-                        lineNumber: 64,
+                        lineNumber: 72,
                         columnNumber: 29
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/app/(dashboard)/dashboard/menu/page.tsx",
-                    lineNumber: 36,
+                    lineNumber: 44,
                     columnNumber: 17
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/app/(dashboard)/dashboard/menu/page.tsx",
-            lineNumber: 29,
+            lineNumber: 37,
             columnNumber: 13
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/app/(dashboard)/dashboard/menu/page.tsx",
-        lineNumber: 28,
+        lineNumber: 36,
         columnNumber: 9
     }, this);
 };

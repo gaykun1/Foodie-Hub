@@ -46,7 +46,7 @@ const Page = ()=>{
                 status
             });
             if (res) {
-                getApplications();
+                setApplications((prev)=>prev?.filter((item)=>item._id !== id) || []);
             }
         } catch (err) {
             console.error(err);
@@ -59,7 +59,7 @@ const Page = ()=>{
                 children: "Job applications"
             }, void 0, false, {
                 fileName: "[project]/src/app/(dashboard)/dashboard/applications/page.tsx",
-                lineNumber: 52,
+                lineNumber: 53,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -68,14 +68,14 @@ const Page = ()=>{
                     className: "animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid mx-auto"
                 }, void 0, false, {
                     fileName: "[project]/src/app/(dashboard)/dashboard/applications/page.tsx",
-                    lineNumber: 54,
+                    lineNumber: 55,
                     columnNumber: 28
                 }, this) : !applications || applications.length == 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                     className: "text-xl font-bold text-center pt-10 leading-8",
                     children: "No applications"
                 }, void 0, false, {
                     fileName: "[project]/src/app/(dashboard)/dashboard/applications/page.tsx",
-                    lineNumber: 54,
+                    lineNumber: 55,
                     columnNumber: 184
                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: "grid xl:grid-cols-2 gap-6",
@@ -91,13 +91,13 @@ const Page = ()=>{
                                                 size: 24
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(dashboard)/dashboard/applications/page.tsx",
-                                                lineNumber: 60,
-                                                columnNumber: 33
+                                                lineNumber: 61,
+                                                columnNumber: 41
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(dashboard)/dashboard/applications/page.tsx",
-                                            lineNumber: 59,
-                                            columnNumber: 29
+                                            lineNumber: 60,
+                                            columnNumber: 37
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             className: "border-r-[1px] border-borderColor sm:block flex flex-wrap gap-1 items-center  mb-2 pr-4 sm:mr-4",
@@ -107,8 +107,8 @@ const Page = ()=>{
                                                     children: app.fullname
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(dashboard)/dashboard/applications/page.tsx",
-                                                    lineNumber: 63,
-                                                    columnNumber: 33
+                                                    lineNumber: 64,
+                                                    columnNumber: 41
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                     className: "text-sm leading-5 text-gray",
@@ -120,14 +120,14 @@ const Page = ()=>{
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/app/(dashboard)/dashboard/applications/page.tsx",
-                                                    lineNumber: 66,
-                                                    columnNumber: 33
+                                                    lineNumber: 67,
+                                                    columnNumber: 41
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/(dashboard)/dashboard/applications/page.tsx",
-                                            lineNumber: 62,
-                                            columnNumber: 29
+                                            lineNumber: 63,
+                                            columnNumber: 37
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             className: "flex items-center gap-2",
@@ -137,38 +137,38 @@ const Page = ()=>{
                                                     className: "btn p-3",
                                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$check$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Check$3e$__["Check"], {}, void 0, false, {
                                                         fileName: "[project]/src/app/(dashboard)/dashboard/applications/page.tsx",
-                                                        lineNumber: 69,
-                                                        columnNumber: 128
+                                                        lineNumber: 70,
+                                                        columnNumber: 136
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(dashboard)/dashboard/applications/page.tsx",
-                                                    lineNumber: 69,
-                                                    columnNumber: 33
+                                                    lineNumber: 70,
+                                                    columnNumber: 41
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                                     onClick: async ()=>await toggleApplication("declined", app._id),
                                                     className: "btn p-3",
                                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$x$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__X$3e$__["X"], {}, void 0, false, {
                                                         fileName: "[project]/src/app/(dashboard)/dashboard/applications/page.tsx",
-                                                        lineNumber: 70,
-                                                        columnNumber: 128
+                                                        lineNumber: 71,
+                                                        columnNumber: 136
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(dashboard)/dashboard/applications/page.tsx",
-                                                    lineNumber: 70,
-                                                    columnNumber: 33
+                                                    lineNumber: 71,
+                                                    columnNumber: 41
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/(dashboard)/dashboard/applications/page.tsx",
-                                            lineNumber: 68,
-                                            columnNumber: 29
+                                            lineNumber: 69,
+                                            columnNumber: 37
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/(dashboard)/dashboard/applications/page.tsx",
-                                    lineNumber: 58,
-                                    columnNumber: 25
+                                    lineNumber: 59,
+                                    columnNumber: 33
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     className: "flex justify-between flex-col",
@@ -181,8 +181,8 @@ const Page = ()=>{
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/(dashboard)/dashboard/applications/page.tsx",
-                                            lineNumber: 74,
-                                            columnNumber: 29
+                                            lineNumber: 75,
+                                            columnNumber: 37
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                             className: "text-sm leading-5 text-gray",
@@ -192,35 +192,35 @@ const Page = ()=>{
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/(dashboard)/dashboard/applications/page.tsx",
-                                            lineNumber: 75,
-                                            columnNumber: 29
+                                            lineNumber: 76,
+                                            columnNumber: 37
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/(dashboard)/dashboard/applications/page.tsx",
-                                    lineNumber: 73,
-                                    columnNumber: 25
+                                    lineNumber: 74,
+                                    columnNumber: 33
                                 }, this)
                             ]
                         }, idx, true, {
                             fileName: "[project]/src/app/(dashboard)/dashboard/applications/page.tsx",
-                            lineNumber: 57,
-                            columnNumber: 21
+                            lineNumber: 58,
+                            columnNumber: 29
                         }, this))
                 }, void 0, false, {
                     fileName: "[project]/src/app/(dashboard)/dashboard/applications/page.tsx",
-                    lineNumber: 55,
+                    lineNumber: 56,
                     columnNumber: 21
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/(dashboard)/dashboard/applications/page.tsx",
-                lineNumber: 53,
+                lineNumber: 54,
                 columnNumber: 13
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/(dashboard)/dashboard/applications/page.tsx",
-        lineNumber: 51,
+        lineNumber: 52,
         columnNumber: 9
     }, this);
 };

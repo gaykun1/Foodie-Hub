@@ -177,7 +177,6 @@ const getMondayDate = (d: Date) => {
 export const getNumbers = async (req: Request, res: Response): Promise<void> => {
     try {
         const id = req.query.id;
-       
         let orders = [];
         if (id == null) {
             orders = await Order.find({ status: { $ne: "Created" } });
@@ -300,7 +299,7 @@ export const updateOrder = async (req: Request, res: Response): Promise<void> =>
                     totalPrice: totalPrice,
                 }
             }, { new: true });
-            const cart = await Cart.findOneAndDelete({ userId: (req as AuthRequest).userId, _id: cartId });
+            const cart = await Cart.findOneAndUpdate({ userId: (req as AuthRequest).userId, _id: cartId },{$set:{restaurantId:null,items:[]}});
             if (order) {
                 for (const item of order.items) {
                     const dish = await Dish.findOneAndUpdate({ title: item.title }, {

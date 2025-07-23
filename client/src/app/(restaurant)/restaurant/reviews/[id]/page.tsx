@@ -1,10 +1,10 @@
 "use client"
-import {  Review } from '@/redux/reduxTypes';
+import { Review } from '@/redux/reduxTypes';
 import { calculateStars } from '@/utils/rating';
 import axios from 'axios';
 import { Pen, Star, X } from 'lucide-react';
 import { useParams } from 'next/navigation';
-import React, { useCallback, useEffect,  useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 
 const Page = () => {
     const { id } = useParams() as { id: string }
@@ -15,8 +15,8 @@ const Page = () => {
     const [rating, setRating] = useState<number>(0);
     const [page, setPage] = useState<number>(1);
     const [pagesAmount, setPagesAmount] = useState<number>(1);
-    
-    const getReviews = async () => {
+
+    const getReviews = useCallback(async () => {
         try {
             setLoading(true);
             const res = await axios.get(`http://localhost:5200/api/restaurant/restaurants/${id}/reviews?page=${page}`);
@@ -29,9 +29,9 @@ const Page = () => {
             setLoading(false);
 
         }
-    }
+    }, [page, id]);
 
-    const createReview = useCallback(async () => {
+    const createReview = async () => {
         try {
             const res = await axios.post(`http://localhost:5200/api/restaurant/reviews`, { id: id, text: text, rating: rating }, { withCredentials: true });
             if (res.data)
@@ -42,10 +42,11 @@ const Page = () => {
             setLoading(false);
 
         }
-    }, [page, id]);
+    }
     useEffect(() => {
         getReviews();
     }, [page])
+    console.log(pagesAmount);
     return (
         <div className='flex flex-col gap-9 pb-8'>
             <div className="flex items-center justify-between">
@@ -114,13 +115,14 @@ const Page = () => {
 
                                 </div>
                             )
-                        }) : (<span className='text-lg leading-5 font-medium text-center mt-6'>No info yet!</span>)
+                        }) : (<span className='text-lg leading-5 font-medium text-center col-span-2 mt-6'>No info yet!</span>)
 
                 }
             </div>
             <div className='mt-6 flex items-center gap-5 justify-center'>
-                {Array.from({ length: pagesAmount }).map((_, idx) => (
-                    <button onClick={() => setPage(idx + 1)} key={idx} className={`w-[40px] aspect-square flex items-center justify-center rounded-lg border-borderColor transition-colors hover:bg-primary cursor-pointer border-[1px] font-semibold text-lg  ${page === (idx + 1) ? "bg-primary" : ""}  `}>{idx}</button>
+
+                {pagesAmount > 1 && Array.from({ length: pagesAmount }).map((_, idx) => (
+                    <button onClick={() => setPage(idx + 1)} key={idx} className={`w-[40px] aspect-square flex items-center justify-center rounded-lg border-borderColor transition-colors hover:bg-primary cursor-pointer border-[1px] font-semibold text-lg  ${page === (idx + 1) ? "bg-primary" : ""}  `}>{idx + 1}</button>
                 ))}
             </div>
         </div>

@@ -113,7 +113,7 @@ const Page = () => {
         </div>
       </div>
       {orders && orders.length > 0 ? (
-        <div className='flex flex-col gap-6 border-b-[2px] border-borderColor'>
+        <div className='flex flex-col gap-6 lg:border-b-0 border-b-[2px] border-borderColor'>
           <div className="lg:hidden border-b-[2px] border-borderColor pb-3">
 
             <div className={` grow-1  flex-col gap-8  ${activeSidebar ? "h-auto flex" : "h-0 hidden"}`}>
@@ -127,10 +127,13 @@ const Page = () => {
 
                     <p className='text-sm leading-5 text-gray'>Your order is on its way to {viewDetails?.adress.houseNumber} {viewDetails?.adress.street}</p>
                   </div>
-                  <div className="overflow-hidden h-[250px] w-[420px]  rounded-lg">
-                    <MapTracker courierLocation={courierLocation} socket={socket} isWorking={viewDetails} />
+                  <div className="flex w-full justify-center">
+                    <div className="overflow-hidden h-[250px] w-[420px]  rounded-lg">
+                      <MapTracker courierLocation={courierLocation} socket={socket} isWorking={viewDetails} />
 
+                    </div>
                   </div>
+
                 </div>
               )}
 
@@ -139,7 +142,7 @@ const Page = () => {
             </div>
           </div>
           <div className="flex relative gap-8">
-            <div className="lg:basis-[874px] w-full  pt-1">
+            <div className="lg:basis-[865px] w-full  pt-1">
               {/* current orders */}
               <div className="">
                 <h2 className="text-2xl leading-8 font-bold mb-4.5 ">Current Orders ( {currentOrders?.length} )</h2>
@@ -179,7 +182,7 @@ const Page = () => {
 
                     <p className='text-sm leading-5 text-gray'>Your order is on its way to {viewDetails?.adress.houseNumber} {viewDetails?.adress.street}</p>
                   </div>
-                  <div className="overflow-hidden  rounded-lg max-h-[250px] max-w-[420px]">
+                  <div className="overflow-hidden  rounded-lg h-[250px] w-[420px]">
                     <MapTracker courierLocation={courierLocation} socket={socket} isWorking={viewDetails} />
 
                   </div>

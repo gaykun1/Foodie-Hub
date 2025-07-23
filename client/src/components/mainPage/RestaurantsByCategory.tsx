@@ -50,10 +50,9 @@ const RestaurantsByCategory = () => {
                 (<div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid mx-auto"></div>) :
                 (
                     isActive === Category.All ? (<>
-                        <div className="flex justify-between items-center gap-5">
-
+                        <div className="flex justify-between items-center gap-5 md:mb-2">
                             <h1 className='section-title'>Top-Rated Restaurants</h1>
-                            <Link href={`restaurants/category/all-restaurants`} className="flex items-center sm:gap-2 leading-[22px] font-medium text-primary group">
+                            <Link href={`restaurants/category/all-restaurants`} className="flex items-center sm:gap-2  leading-[22px] font-medium text-primary group">
                                 <span className='group-hover:text-black transition-colors '>View All</span>
                                 <ChevronRight className='group-hover:text-black transition-colors  ' />
                             </Link>

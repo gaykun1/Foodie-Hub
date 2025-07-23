@@ -10,7 +10,7 @@ import { Hamburger, Minus, Plus, Search, ShoppingCart, UserRound, X } from 'luci
 import Image from 'next/image'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect,  useState } from 'react'
 
 const Header = () => {
 
@@ -46,7 +46,7 @@ const Header = () => {
         dispatch(deleteItem(title));
       }
       dispatch(updateAmount({ amount: amount, dishId: id }));
-      const res = await axios.post(`http://localhost:5200/api/cart/items/${id}`, { amount: amount, title: title }, { withCredentials: true });
+      const res = await axios.patch(`http://localhost:5200/api/cart/items/${id}`, { amount: amount, title: title }, { withCredentials: true });
     } catch (err) {
       console.error(err);
     }
@@ -261,11 +261,11 @@ const Header = () => {
             {activePanel === "navMenu" &&
               <div className="min-w-[200px] flex   flex-col top-full panel  right-0 absolute  border-borderColor mt-1  bg-primary  p-3 border-[1px] rounded-[6px]">
                 <nav className='flex flex-col   '>
-                  {!(user?.role === "admin" || user?.role === "restaurant") ? (<><Link className='default-link font-bold' href={"/"}>Home</Link>
-                    <Link className='default-link font-bold ' href={"/restaurants/category/all-restaurants"}>Restaurants</Link>
-                    <Link className='default-link font-bold' href={"/orders"}>Orders</Link>
-                    {user?.role === "courier" ? (<Link className='default-link font-bold' href={"/courier"}>Courier page</Link>
-                    ) : (<Link className='default-link font-bold' href={"/job"}>Get a job</Link>
+                  {!(user?.role === "admin" || user?.role === "restaurant") ? (<><Link className='transition-all text-white   leading-7 hover:opacity-65  font-bold' href={"/"}>Home</Link>
+                    <Link className='transition-all text-white   font-bold leading-7 hover:opacity-65   ' href={"/restaurants/category/all-restaurants"}>Restaurants</Link>
+                    <Link className='transition-all text-white   font-bold leading-7 hover:opacity-65  ' href={"/orders"}>Orders</Link>
+                    {user?.role === "courier" ? (<Link className='transition-all text-white    leading-7 hover:opacity-65  font-bold' href={"/courier"}>Courier page</Link>
+                    ) : (<Link className='transition-all text-white   font-bold leading-7 hover:opacity-65  ' href={"/job"}>Get a job</Link>
                     )}
                   </>
 

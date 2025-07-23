@@ -346,6 +346,10 @@
     z-index: 100;
   }
 
+  .col-span-2 {
+    grid-column: span 2 / span 2;
+  }
+
   .m-0 {
     margin: calc(var(--spacing) * 0);
   }
@@ -364,6 +368,10 @@
 
   .my-10 {
     margin-block: calc(var(--spacing) * 10);
+  }
+
+  .my-auto {
+    margin-block: auto;
   }
 
   .mt-1 {
@@ -1714,6 +1722,12 @@
   }
 
   @media (hover: hover) {
+    .group-hover\:text-secondary:is(:where(.group):hover *) {
+      color: var(--color-secondary);
+    }
+  }
+
+  @media (hover: hover) {
     .hover\:bg-\[\#E8618CFF\]:hover {
       background-color: #e8618c;
     }
@@ -1764,6 +1778,12 @@
   @media (hover: hover) {
     .hover\:text-primary:hover {
       color: var(--color-primary);
+    }
+  }
+
+  @media (hover: hover) {
+    .hover\:text-secondary:hover {
+      color: var(--color-secondary);
     }
   }
 
@@ -1957,6 +1977,12 @@
   }
 
   @media (width >= 48rem) {
+    .md\:mb-2 {
+      margin-bottom: calc(var(--spacing) * 2);
+    }
+  }
+
+  @media (width >= 48rem) {
     .md\:flex {
       display: flex;
     }
@@ -2071,6 +2097,12 @@
   }
 
   @media (width >= 64rem) {
+    .lg\:basis-\[865px\] {
+      flex-basis: 865px;
+    }
+  }
+
+  @media (width >= 64rem) {
     .lg\:basis-\[874px\] {
       flex-basis: 874px;
     }
@@ -2103,6 +2135,13 @@
   @media (width >= 64rem) {
     .lg\:grid-cols-5 {
       grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+  }
+
+  @media (width >= 64rem) {
+    .lg\:border-b-0 {
+      border-bottom-style: var(--tw-border-style);
+      border-bottom-width: 0;
     }
   }
 

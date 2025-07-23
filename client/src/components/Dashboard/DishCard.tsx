@@ -35,7 +35,7 @@ const DishCard = ({ dish, toCart, onDeleted }: { dish: Dish, toCart: boolean, on
     const handleClick = useCallback(() => {
         addToCart();
     }, [])
-    const isInCart = useMemo(() => (cart?.items.some(item => item.dishId.title === dish.title)), [])
+    const isInCart = useMemo(() => (cart?.items.some(item => item.dishId.title === dish.title)), [cart]);
     return (
         <div className='rounded-lg shadow-xs border-[1px] w-fit flex flex-col gap-5 border-borderColor h-full  overflow-hidden'>
             <div className=" max-w-[324px] relative  w-full aspect-video ">

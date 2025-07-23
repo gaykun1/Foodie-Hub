@@ -1,10 +1,10 @@
 import { application, Request, Response } from "express";
 import Order from "../models/Order";
-import { AuthRequest } from "../middleware/courierMiddleware";
 import Courier from "../models/Courier";
 import User from "../models/User";
 import { activeAdmins, io, restaurantsSocketsMap, socketsMap } from "../server";
 import Restaurant from "../models/Restaurant";
+import { AuthRequest } from "../middleware/authMiddleware";
 
 
 
@@ -124,6 +124,7 @@ export const toggleApplication = async (req: Request, res: Response): Promise<vo
 
     const { status } = req.body;
     const id = req.params.id;
+    console.log(status,id);
     try {
         const application = await Courier.findById(id);
         if (!application) {

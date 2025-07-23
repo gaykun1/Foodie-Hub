@@ -41,7 +41,7 @@ const Page = () => {
             const res = await axios.post(`http://localhost:5200/api/courier/applications/${id}`, { status });
             if (res) {
 
-                setApplications((prev) => prev?.map((item) => item._id == id ? { ...item, status } : item) || []);
+                setApplications((prev) => prev?.filter((item) => item._id !== id )|| []);
 
             }
         } catch (err) {

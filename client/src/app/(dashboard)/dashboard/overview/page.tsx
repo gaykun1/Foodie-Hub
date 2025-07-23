@@ -95,46 +95,48 @@ const page = () => {
   return (
     <div>
       <h1 className='section-title mb-8'>Dashboard Overview</h1>
-      {totalRevenue && averageOrderValue && numOfOrders &&
-        <div className="grid md:grid-cols-3 gap-6 mb-8">
-          <div className="p-[50px] rounded-lg border-borderColor border-[1px]">
-            <div className="flex items-center justify-between mb-2.5">
-              <span className='text-sm leading-5 font-medium text-gray'>Total Orders</span>
-              <Box className='text-primary' size={16} />
-            </div>
-            <div className="flex flex-col">
-              <span className='text-2xl leading-8 font-bold'>{numOfOrders.number}</span>
-              <span className='text-xs leading-4  text-gray'>{numOfOrders.percent > 0 ? "Increased" : "Decreased"} by {numOfOrders.percent}% this week</span>
 
-            </div>
+      <div className="grid md:grid-cols-3 gap-6 mb-8">
+        <div className="p-[50px] rounded-lg border-borderColor border-[1px]">
+          <div className="flex items-center justify-between mb-2.5">
+            <span className='text-sm leading-5 font-medium text-gray'>Total Orders</span>
+            <Box className='text-primary' size={16} />
           </div>
+          <div className="flex flex-col">
+            <span className='text-2xl leading-8 font-bold'>{numOfOrders?.number ?? 0}</span>
+            {numOfOrders !== null && <span className='text-xs leading-4  text-gray'>{numOfOrders.percent > 0 ? "Increased" : "Decreased"} by {numOfOrders.percent}% this week</span>
+            }
 
-          <div className="p-[50px] rounded-lg border-borderColor border-[1px]">
-            <div className="flex items-center justify-between mb-2.5">
-              <span className='text-sm leading-5 font-medium text-gray'>Total Revenue</span>
-              <DollarSign className='text-primary' size={16} />
-            </div>
-            <div className="flex flex-col">
-              <span className='text-2xl leading-8 font-bold'>${totalRevenue.number}</span>
-              <span className='text-xs leading-4  text-gray'>{totalRevenue.percent > 0 ? "Up" : "Down"} {totalRevenue.percent}% from last week</span>
-              {/* Додати щось  */}
-
-            </div>
-          </div>
-
-          <div className="p-[50px] rounded-lg border-borderColor border-[1px]">
-            <div className="flex items-center justify-between mb-2.5">
-              <span className='text-sm leading-5 font-medium text-gray'>Avg. Order Value</span>
-              <Utensils className='text-primary' size={16} />
-            </div>
-            <div className="flex flex-col">
-              <span className='text-2xl leading-8 font-bold'>{averageOrderValue?.number}</span>
-              <span className='text-xs leading-4  text-gray'>{averageOrderValue.percent > 0 ? "Increased" : "Decreased"} by {averageOrderValue.percent}% this week</span>
-
-            </div>
           </div>
         </div>
-      }
+
+        <div className="p-[50px] rounded-lg border-borderColor border-[1px]">
+          <div className="flex items-center justify-between mb-2.5">
+            <span className='text-sm leading-5 font-medium text-gray'>Total Revenue</span>
+            <DollarSign className='text-primary' size={16} />
+          </div>
+          <div className="flex flex-col">
+            <span className='text-2xl leading-8 font-bold'>${totalRevenue?.number ?? 0}</span>
+            {totalRevenue !== null && <span className='text-xs leading-4  text-gray'>{totalRevenue.percent > 0 ? "Up" : "Down"} {totalRevenue.percent}% from last week</span>
+            }
+
+          </div>
+        </div>
+
+        <div className="p-[50px] rounded-lg border-borderColor border-[1px]">
+          <div className="flex items-center justify-between mb-2.5">
+            <span className='text-sm leading-5 font-medium text-gray'>Avg. Order Value</span>
+            <Utensils className='text-primary' size={16} />
+          </div>
+          <div className="flex flex-col">
+            <span className='text-2xl leading-8 font-bold'>${averageOrderValue?.number ?? 0}</span>
+            {averageOrderValue !== null &&
+              <span className='text-xs leading-4  text-gray'>{averageOrderValue.percent > 0 ? "Increased" : "Decreased"} by {averageOrderValue.percent}% this week</span>
+            }
+          </div>
+        </div>
+      </div>
+
 
       <div className="flex flex-col gap-3 ">
         {/* Recent updated order table */}
@@ -224,7 +226,7 @@ const page = () => {
                     </div>
                     <span className='px-2 py-1  text-primary text-xs leading-5 font-semibold rounded-4xl bg-[#F7F7F7FF]'>{dish.sold} Sold</span>
                   </div>
-                  
+
                 ))
               }
             </div>

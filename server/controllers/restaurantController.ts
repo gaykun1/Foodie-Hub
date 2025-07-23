@@ -281,7 +281,7 @@ export const getRestaurantAddress = async (req: Request, res: Response): Promise
     }
 }
 export const toggleFavourite = async (req: Request, res: Response): Promise<void> => {
-    const { restaurantId } = req.body;
+    const  restaurantId  = req.params.id;
     try {
         const user = await User.findById((req as AuthRequest).userId);
         if (user) {
@@ -364,6 +364,7 @@ export const deleteDish = async (req: Request, res: Response): Promise<void> => 
 // creating review and recalculating rating of Restaurant
 export const createReview = async (req: Request, res: Response) => {
     const { id, text, rating } = req.body;
+    console.log(req.body);
     try {
         const newReview = new Review({
             sender: (req as AuthRequest).userId,
@@ -416,7 +417,7 @@ export const getReviews = async (req: Request, res: Response) => {
             .skip((page - 1) * 10)
             .limit(10);
         if (reviews) {
-            res.status(201).json({ reviews: reviews, length: (total/10)%10!==0 ?(total/10)+1 :(total/10)  });
+            res.status(201).json({ reviews: reviews, length: Math.ceil(total / 10) });
             return;
         }
         else {

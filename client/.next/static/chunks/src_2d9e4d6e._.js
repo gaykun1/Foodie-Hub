@@ -181,7 +181,7 @@ const Header = ()=>{
                 amount: amount,
                 dishId: id
             }));
-            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].post(`http://localhost:5200/api/cart/items/${id}`, {
+            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].patch(`http://localhost:5200/api/cart/items/${id}`, {
                 amount: amount,
                 title: title
             }, {
@@ -827,7 +827,7 @@ const Header = ()=>{
                                         children: !(user?.role === "admin" || user?.role === "restaurant") ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
                                             children: [
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                                                    className: "default-link font-bold",
+                                                    className: "transition-all text-white   leading-7 hover:opacity-65  font-bold",
                                                     href: "/",
                                                     children: "Home"
                                                 }, void 0, false, {
@@ -836,7 +836,7 @@ const Header = ()=>{
                                                     columnNumber: 82
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                                                    className: "default-link font-bold ",
+                                                    className: "transition-all text-white   font-bold leading-7 hover:opacity-65   ",
                                                     href: "/restaurants/category/all-restaurants",
                                                     children: "Restaurants"
                                                 }, void 0, false, {
@@ -845,7 +845,7 @@ const Header = ()=>{
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                                                    className: "default-link font-bold",
+                                                    className: "transition-all text-white   font-bold leading-7 hover:opacity-65  ",
                                                     href: "/orders",
                                                     children: "Orders"
                                                 }, void 0, false, {
@@ -854,7 +854,7 @@ const Header = ()=>{
                                                     columnNumber: 21
                                                 }, this),
                                                 user?.role === "courier" ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                                                    className: "default-link font-bold",
+                                                    className: "transition-all text-white    leading-7 hover:opacity-65  font-bold",
                                                     href: "/courier",
                                                     children: "Courier page"
                                                 }, void 0, false, {
@@ -862,7 +862,7 @@ const Header = ()=>{
                                                     lineNumber: 267,
                                                     columnNumber: 50
                                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                                                    className: "default-link font-bold",
+                                                    className: "transition-all text-white   font-bold leading-7 hover:opacity-65  ",
                                                     href: "/job",
                                                     children: "Get a job"
                                                 }, void 0, false, {

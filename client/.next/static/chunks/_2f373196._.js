@@ -27,7 +27,7 @@ const ApplicationForm = ()=>{
     const onSubmit = async (data)=>{
         try {
             setLoading(true);
-            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].post("http://localhost:5200/api/courier/create-application", {
+            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].post("http://localhost:5200/api/courier/applications", {
                 data
             }, {
                 withCredentials: true
@@ -47,7 +47,7 @@ const ApplicationForm = ()=>{
             const checkIfSent = {
                 "ApplicationForm.useEffect.checkIfSent": async ()=>{
                     try {
-                        const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get("http://localhost:5200/api/courier/check-if-sent", {
+                        const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get("http://localhost:5200/api/courier/applications/status", {
                             withCredentials: true
                         });
                         setAlreadySent(res.data.status);
