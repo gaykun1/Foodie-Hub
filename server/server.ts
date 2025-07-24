@@ -42,23 +42,23 @@ export const activeAdmins = new Set<string>();
 export let restaurantsSocketsMap = new Map<string, Socket>();
 io.on("connection", (socket) => {
     // updating location
-    socket.on("updateLocation", ({ orderId, lat, lng }) => {
+    socket.on("updateLocation", ({ orderId, lat, lng }:{orderId:string, lat:number, lng:number}) => {
         io.to(orderId).emit("locationUpdate", { lat, lng });
     })
     // room for courier and receiver
-    socket.on("joinOrder", ({ orderId, userId }) => {
+    socket.on("joinOrder", ({ orderId, userId }: { orderId: string, userId: string }) => {
         socket.join(orderId);
         socketsMap.set(userId, socket);
 
     })
 
     // rooms for dashboard roles
-    socket.on("joinDashboard", (adminId) => {
+    socket.on("joinDashboard", (adminId:string) => {
         socket.join(adminId);
         socketsMap.set(adminId, socket);
         activeAdmins.add(adminId);
     })
-    socket.on("joinDashboardRestaurant", (restaurantId) => {
+    socket.on("joinDashboardRestaurant", (restaurantId:string) => {
         socket.join(restaurantId);
         restaurantsSocketsMap.set(restaurantId, socket);
     })
