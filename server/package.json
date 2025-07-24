@@ -4,8 +4,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only server.ts",
-    "build": "npm install && tsc",
-    "start":  " node dist/server.js"
+    "build": "npm install tsc",
+    "start":  "node dist/server.js"
 
   },
   "keywords": [],
