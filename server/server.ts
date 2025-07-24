@@ -40,7 +40,7 @@ export let socketsMap = new Map<string, Socket>();
 export const activeAdmins = new Set<string>();
 
 export let restaurantsSocketsMap = new Map<string, Socket>();
-io.on("connection", (socket) => {
+io.on("connection", (socket:Socket) => {
     // updating location
     socket.on("updateLocation", ({ orderId, lat, lng }:{orderId:string, lat:number, lng:number}) => {
         io.to(orderId).emit("locationUpdate", { lat, lng });
