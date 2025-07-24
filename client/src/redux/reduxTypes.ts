@@ -20,13 +20,6 @@ export interface User {
 }
 
 
-
-export interface AuthType {
-    user: User | null;
-    isAuthenticated: boolean;
-
-}
-
 export interface ICourier {
     _id: string,
     fullname: string,

@@ -1,28 +1,16 @@
 "use client";
-import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
-import { login } from "@/redux/authSlice";
-import { Restaurant, User } from "@/redux/reduxTypes";
+import { useAppSelector } from "@/hooks/reduxHooks";
+import { Restaurant } from "@/redux/reduxTypes";
 import axios from "axios";
-import { ArrowRight, Pen } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-
-type formType = {
-  username: string,
-  password: string,
-  newPassword: string,
-  newPasswordAgain: string,
-  phoneNumber: string,
-  email: string,
-
-}
 
 const Page = () => {
 
-  const { user } = useAppSelector((state) => state.auth);
   const [items, setItems] = useState<Restaurant[]>();
+
+  // getting favourite restaurants
   useEffect(() => {
     const getFavourites = async () => {
       try {

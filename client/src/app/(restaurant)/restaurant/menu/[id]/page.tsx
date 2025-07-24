@@ -8,7 +8,9 @@ import React, { useCallback, useEffect, useState } from 'react'
 const Page = () => {
     const [menu, setMenu] = useState<Dish[]>([]);
     const [dishesLoading, setDishesLoading] = useState<boolean>(false);
-    const { id } = useParams() as { id: string }
+    const { id } = useParams() as { id: string };
+
+    // optimized func depending on id 
     const getDishes = useCallback(async () => {
         try {
             setDishesLoading(true);

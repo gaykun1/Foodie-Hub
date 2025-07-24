@@ -9,7 +9,9 @@ const Page = () => {
     const [promocode, setPromocode] = useState<string>("");
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
+    // func for using promocode and checking if it`s used
     const checkPromo = async () => {
+        // validating input 
         if (!promocode.trim()) {
             setError("Please enter a promocode");
             return;

@@ -1,7 +1,7 @@
 "use client"
 
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AuthType, ICourier, User } from "./reduxTypes";
+import {  ICourier,  } from "./reduxTypes";
 
 type initialStateType = {
     courier: ICourier | null,

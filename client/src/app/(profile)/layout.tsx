@@ -6,6 +6,8 @@ import AuthClientUpload from "@/components/AuthClientUpload";
 import SideBarProfile from "@/components/Profile/SideBar";
 import ResponsiveSidebar from "@/components/Profile/ResponsiveSidebar";
 import Footer from "@/components/Footer";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 
 
@@ -15,26 +17,30 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // auth middleware
+  const token = await (await cookies()).get("token")?.value;
+  if (!token) redirect("/auth/login");
   return (
 
     <Providers>
+      {/* started info component */}
       <AuthClientUpload />
-           <div className="h-screen flex flex-col">
-      <Header />
+      <div className="h-screen flex flex-col">
+        <Header />
 
-      <div className="_container ">
-        <div className="border-[1px] lg:hidden mt-6 rounded-lg w-fit border-borderColor p-4.5">
-          <ResponsiveSidebar type="profile"/>
-        
-        </div>
-        <div className=" relative flex py-12 gap-12 min-h-[586px]">
-          <SideBarProfile />
-          <div className=" grow-1">
-            {children}
+        <div className="_container ">
+          <div className="border-[1px] lg:hidden mt-6 rounded-lg w-fit border-borderColor p-4.5">
+            <ResponsiveSidebar type="profile" />
+
+          </div>
+          <div className=" relative flex py-12 gap-12 min-h-[586px]">
+            <SideBarProfile />
+            <div className=" grow-1">
+              {children}
+            </div>
           </div>
         </div>
-      </div>
-      <Footer/>
+        <Footer />
       </div>
     </Providers>
 

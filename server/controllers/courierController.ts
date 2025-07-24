@@ -1,4 +1,4 @@
-import { application, Request, Response } from "express";
+import { Request, Response } from "express";
 import Order from "../models/Order";
 import Courier from "../models/Courier";
 import User from "../models/User";
@@ -32,7 +32,7 @@ export const createApplication = async (req: Request, res: Response): Promise<vo
     const { data } = req.body;
     try {
 
-        // створення стартового темплейта для кур'єра 
+        // creating initial model for courier
         const newCourier = await Courier.create({
             fullname: data.name + " " + data.surname,
             phoneNumber: data.phoneNumber,
@@ -76,6 +76,7 @@ export const checkIfSentApplication = async (req: Request, res: Response): Promi
     }
 }
 
+
 export const changeOrderStatus = async (req: Request, res: Response): Promise<void> => {
     const { status } = req.body;
     const id = req.params.id;
@@ -87,12 +88,15 @@ export const changeOrderStatus = async (req: Request, res: Response): Promise<vo
             res.status(404).json("Not found!");
             return;
         }
+        // taking last 7 updated and emitting it through socket for admin panel
         const orders = await Order.find().sort({ updatedAt: -1 }).limit(7);
         activeAdmins.forEach(adminId => {
             io.to(adminId.toString()).emit("updateOrders", orders);
         });
         const restaurant = await Restaurant.findOne({ title: order.restaurantTitle });
         if (restaurant) {
+            // taking last 7 updated and emitting it through socket for restaurant panel
+            //finding id of a rest.  in the map of sockets [ids,sockets]
             for (const [id, socket] of restaurantsSocketsMap.entries()) {
                 if (id === restaurant.id) {
                     const orders = await Order.find({ restaurantTitle: restaurant.title }).sort({ updatedAt: -1 }).limit(7);
@@ -101,7 +105,7 @@ export const changeOrderStatus = async (req: Request, res: Response): Promise<vo
                 }
             }
         }
-
+        //emitting order status
         const socketUser = socketsMap.get(order.userId.toString());
         console.log(socketUser);
 
@@ -124,7 +128,7 @@ export const toggleApplication = async (req: Request, res: Response): Promise<vo
 
     const { status } = req.body;
     const id = req.params.id;
-    console.log(status,id);
+    console.log(status, id);
     try {
         const application = await Courier.findById(id);
         if (!application) {
@@ -137,6 +141,7 @@ export const toggleApplication = async (req: Request, res: Response): Promise<vo
             res.status(200).json("application accepted");
             return;
         } else {
+            //deleting courier if declined
             const application = await Courier.findByIdAndDelete(id);
             res.status(200).json("application declined");
             return;

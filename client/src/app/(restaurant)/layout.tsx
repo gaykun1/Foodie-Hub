@@ -24,6 +24,8 @@ export default async function RootLayout({
   return (
 
     <Providers>
+      {/* starter info component  */}
+
       <AuthClientUpload />
       <div className="h-screen flex flex-col">
         <Header />

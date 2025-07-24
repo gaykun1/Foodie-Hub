@@ -1,7 +1,13 @@
 "use client"
 
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AuthType, User } from "./reduxTypes";
+import { User } from "./reduxTypes";
+
+interface AuthType {
+    user: User | null;
+    isAuthenticated: boolean;
+
+}
 
 const initialState: AuthType = {
     user: null,

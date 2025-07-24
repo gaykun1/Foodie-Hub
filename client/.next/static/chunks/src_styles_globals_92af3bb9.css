@@ -350,6 +350,40 @@
     grid-column: span 2 / span 2;
   }
 
+  .container {
+    width: 100%;
+  }
+
+  @media (width >= 40rem) {
+    .container {
+      max-width: 40rem;
+    }
+  }
+
+  @media (width >= 48rem) {
+    .container {
+      max-width: 48rem;
+    }
+  }
+
+  @media (width >= 64rem) {
+    .container {
+      max-width: 64rem;
+    }
+  }
+
+  @media (width >= 80rem) {
+    .container {
+      max-width: 80rem;
+    }
+  }
+
+  @media (width >= 96rem) {
+    .container {
+      max-width: 96rem;
+    }
+  }
+
   .m-0 {
     margin: calc(var(--spacing) * 0);
   }
@@ -368,10 +402,6 @@
 
   .my-10 {
     margin-block: calc(var(--spacing) * 10);
-  }
-
-  .my-auto {
-    margin-block: auto;
   }
 
   .mt-1 {
@@ -631,10 +661,6 @@
     height: 100vh;
   }
 
-  .max-h-\[250px\] {
-    max-height: 250px;
-  }
-
   .min-h-\[150px\] {
     min-height: 150px;
   }
@@ -705,10 +731,6 @@
 
   .max-w-\[328px\] {
     max-width: 328px;
-  }
-
-  .max-w-\[420px\] {
-    max-width: 420px;
   }
 
   .max-w-\[500px\] {
@@ -1722,12 +1744,6 @@
   }
 
   @media (hover: hover) {
-    .group-hover\:text-secondary:is(:where(.group):hover *) {
-      color: var(--color-secondary);
-    }
-  }
-
-  @media (hover: hover) {
     .hover\:bg-\[\#E8618CFF\]:hover {
       background-color: #e8618c;
     }
@@ -1778,12 +1794,6 @@
   @media (hover: hover) {
     .hover\:text-primary:hover {
       color: var(--color-primary);
-    }
-  }
-
-  @media (hover: hover) {
-    .hover\:text-secondary:hover {
-      color: var(--color-secondary);
     }
   }
 

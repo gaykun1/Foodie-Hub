@@ -16,11 +16,13 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // auth middleware
   const token = await (await cookies()).get("token")?.value;
   if (!token) redirect("/auth/login");
   return (
 
     <Providers>
+      {/* starter info component  */}
       <AuthClientUpload />
       <div className="h-screen flex flex-col">
         <Header />

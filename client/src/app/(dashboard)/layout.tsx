@@ -18,9 +18,10 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  //checking if loggined (`middleware`)
   const token = (await cookies()).get("token")?.value;
   if (!token) redirect("/auth/login");
-
+  
   try {
 
     const res = await axios.get("http://localhost:5200/api/auth/profile/roles", {
@@ -32,6 +33,7 @@ export default async function RootLayout({
       return (
 
         <Providers>
+          {/* auth starter component */}
           <AuthClientUpload />
           <div className="h-screen flex flex-col">
             <Header />

@@ -10,6 +10,8 @@ const page = () => {
     const [word, setWord] = useState<string>("");
     const [items, setItems] = useState<Pick<Restaurant, "imageUrl" | "title" | "_id">[] | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
+
+    // searching restaurant with input string 
     const searchRestaurants = async () => {
         try {
             setLoading(true);
@@ -21,6 +23,7 @@ const page = () => {
             setLoading(false);
         }
     }
+    //making timeout for more efficient search process
     useEffect(() => {
 
 

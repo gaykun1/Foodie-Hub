@@ -22,18 +22,12 @@ const Page = () => {
   const [activeSidebar, setActiveSidebar] = useState<boolean>(false);
   // creating a socket connection
   useEffect(() => {
-
-
     const sock = io("http://localhost:5200");
     setSocket(sock);
-
-
     return () => { sock.disconnect(); }
-
-
   }, []);
 
-
+  // scroll to top 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [viewDetails]);
@@ -55,7 +49,7 @@ const Page = () => {
 
 
 
-
+  // socket using for dynamic tracking courier every 5sec(interval)
   useEffect(() => {
     if (!socket) return;
     if (orders) {
@@ -91,7 +85,7 @@ const Page = () => {
   }, [socket, orders])
 
 
-
+  // getting default value for viewDetails if having Preparing Order
   useEffect(() => {
     if (orders) {
 
@@ -101,6 +95,7 @@ const Page = () => {
     }
 
   }, [orders])
+  // Optimized filtered orders
   const currentOrders = useMemo(() => orders?.filter(order => order.status !== "Delivered"), [orders])
   const pastOrders = useMemo(() => orders?.filter(order => order.status === "Delivered"), [orders])
 

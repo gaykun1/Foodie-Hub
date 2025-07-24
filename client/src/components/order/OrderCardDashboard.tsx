@@ -4,9 +4,12 @@ import { Order } from "@/redux/reduxTypes"
 import axios from "axios";
 import { Check, ChevronsRight, ClipboardList, Clock, DollarSign } from "lucide-react";
 import { Dispatch, SetStateAction, useMemo } from "react";
+// order card specifically for restaurant deshboard
 const OrderCardDashboard = ({ order, setOrders }: { order: Order, setOrders: Dispatch<SetStateAction<Order[]>> }) => {
-    const date = useMemo(() =>  new Date((order.createdAt)).toDateString(), [order.createdAt]);
+    //  memorized calculation of suitable format of order date 
+    const date = useMemo(() => new Date((order.createdAt)).toDateString(), [order.createdAt]);
 
+    // func for toggling restaurant status from "Created" to "Preparing" = "Cooking"
     const toggleToPreparing = async () => {
         try {
             const res = await axios.patch(`http://localhost:5200/api/order/orders/${order._id}/status`, {}, { withCredentials: true });

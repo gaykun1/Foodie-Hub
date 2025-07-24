@@ -20,7 +20,9 @@ const Page = ()=>{
     const [promocode, setPromocode] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
     const [error, setError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
     const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
+    // func for using promocode and checking if it`s used
     const checkPromo = async ()=>{
+        // validating input 
         if (!promocode.trim()) {
             setError("Please enter a promocode");
             return;
@@ -52,7 +54,7 @@ const Page = ()=>{
                     children: "Enter your Promocode"
                 }, void 0, false, {
                     fileName: "[project]/src/app/(main)/promocode/page.tsx",
-                    lineNumber: 35,
+                    lineNumber: 37,
                     columnNumber: 13
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -65,7 +67,7 @@ const Page = ()=>{
                             className: " py-2 px-1 input "
                         }, void 0, false, {
                             fileName: "[project]/src/app/(main)/promocode/page.tsx",
-                            lineNumber: 37,
+                            lineNumber: 39,
                             columnNumber: 17
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -74,13 +76,13 @@ const Page = ()=>{
                             children: "Use"
                         }, void 0, false, {
                             fileName: "[project]/src/app/(main)/promocode/page.tsx",
-                            lineNumber: 38,
+                            lineNumber: 40,
                             columnNumber: 17
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/(main)/promocode/page.tsx",
-                    lineNumber: 36,
+                    lineNumber: 38,
                     columnNumber: 13
                 }, this),
                 error != null && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -88,18 +90,18 @@ const Page = ()=>{
                     children: error
                 }, void 0, false, {
                     fileName: "[project]/src/app/(main)/promocode/page.tsx",
-                    lineNumber: 40,
+                    lineNumber: 42,
                     columnNumber: 32
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/app/(main)/promocode/page.tsx",
-            lineNumber: 34,
+            lineNumber: 36,
             columnNumber: 9
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/app/(main)/promocode/page.tsx",
-        lineNumber: 33,
+        lineNumber: 35,
         columnNumber: 13
     }, this);
 };

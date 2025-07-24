@@ -6,6 +6,8 @@ import { AuthRequest } from "./authMiddleware";
 
 export const courierMiddleware = (req: Request, res: Response, next: NextFunction): void => {
     const token = req.cookies?.token ;
+    // checking auth token in cookies 
+
     if (!token) {
         res.status(401).json({ message: 'Unauthorized (no token)' });
         return;
@@ -19,6 +21,8 @@ export const courierMiddleware = (req: Request, res: Response, next: NextFunctio
         }
         (req as AuthRequest).userId = decoded.userId;
         next();
+        //returning userId if its courier role
+
 
     } catch (err) {
         res.status(401).json({ message: 'Invalid token' });

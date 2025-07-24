@@ -11,6 +11,8 @@ const Page = () => {
     const { user } = useAppSelector(state => state.auth);
     const [active, setActive] = useState<boolean>();
     const [loading, setLoading] = useState<boolean>(false);
+
+    // optimized depending on ID
     const getTextAbout = useCallback(async () => {
         try {
             setLoading(true);
@@ -23,7 +25,9 @@ const Page = () => {
             setLoading(false);
         }
 
-    }, [id])
+    }, [id]);
+
+    // updating or creating text info about restaurant 
     const handleTextAbout = async () => {
         try {
             const res = await axios.post(`http://localhost:5200/api/restaurant/restaurants/${id}/about`, { id, info });

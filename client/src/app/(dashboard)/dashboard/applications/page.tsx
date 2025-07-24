@@ -4,6 +4,7 @@ import axios from "axios";
 import { Check, User, X } from "lucide-react";
 import { useEffect, useState } from "react";
 
+// custom courier interface
 interface ICourier {
     fullname: string,
     phoneNumber: string,
@@ -14,9 +15,11 @@ interface ICourier {
     city: string,
 }
 
+
 const Page = () => {
     const [applications, setApplications] = useState<ICourier[] | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
+    // func - get applications (couriers in status "Processing")
     const getApplications = async () => {
         try {
             const res = await axios.get("http://localhost:5200/api/courier/applications", { withCredentials: true });
@@ -35,7 +38,7 @@ const Page = () => {
         getApplications();
     }, [])
 
-
+    // func for accepting or - the courier for work
     const toggleApplication = async (status: string, id: string) => {
         try {
             const res = await axios.post(`http://localhost:5200/api/courier/applications/${id}`, { status });

@@ -10,12 +10,13 @@ import { convertToSubcurrency } from "@/utils/payment";
 import { useForm } from "react-hook-form";
 import { Order } from "@/redux/reduxTypes";
 
+// shipping prices
 enum Shipping {
     Economy = 2.20,
     Standart = 3.20,
     Express = 5.20,
 }
-
+// order form type
 type FormFields = {
     name: string,
     surname: string,
@@ -38,6 +39,7 @@ const CheckoutForm = ({ order }: { order: Order }) => {
     const [discount, setDiscount] = useState<number>(0);
     const [error, setError] = useState<string | null>(null);
 
+    // func for using promocode
     const usePromocode = useCallback(async () => {
         try {
             const res = await axios.post(`http://localhost:5200/api/promocodes/${promocode}/use`, {}, { withCredentials: true });
@@ -52,6 +54,7 @@ const CheckoutForm = ({ order }: { order: Order }) => {
                 setError(err.response.data);
         }
     }, [promocode]);
+    // getting client secret after acreating payment intent to make background for transaction
     const getClientSecret = async () => {
         try {
 
@@ -64,6 +67,7 @@ const CheckoutForm = ({ order }: { order: Order }) => {
             console.error(err);
         }
     }
+    // depending on the price because of price prop necessary in the createIntent func 
     useEffect(() => {
 
         getClientSecret();
@@ -71,32 +75,34 @@ const CheckoutForm = ({ order }: { order: Order }) => {
 
     }, [discount, shipping]);
 
-
+    // getting again new intent if price chagnes because of discount 
     useEffect(() => {
 
         getClientSecret();
         if (user?.usualPromocode?.discountPercent)
             setDiscount(user.usualPromocode.discountPercent)
     }, [user])
+
+    //func for  placing order 
     const placeOrder = async () => {
         setLoading(true);
-
+        // getting values of useForm form
         const formData = getValues();
         console.log(formData, "yes");
         if (!stripe || !elements) return;
-        const { error: submitError } = await elements.submit();
+        const { error: submitError } = await elements.submit();//stripe error handler
         if (submitError && submitError.message) {
             setError(submitError.message);
             setLoading(false);
         }
         if (order) {
             const res = await axios.patch("http://localhost:5200/api/order/orders", { formData, percent: discount, shipping, cartId: cart?._id, totalPrice: parseFloat(((shipping + order.totalPrice) * ((100 - discount) / 100)).toFixed(2)) }, { withCredentials: true });
-            const { error } = await stripe.confirmPayment({
+            const { error } = await stripe.confirmPayment({ //creating transaction
                 elements,
                 clientSecret,
                 confirmParams: {
-                    return_url: `http://localhost:3000/orders/order/sucess/${((shipping + order.totalPrice) * ((100 - discount) / 100)).toFixed(2)}`,
-                }
+                    return_url: `http://localhost:3000/orders/order/success/${((shipping + order.totalPrice) * ((100 - discount) / 100)).toFixed(2)}`,
+                } //rediraction to success page
             })
             setLoading(false);
             if (error.message && error) {

@@ -8,7 +8,7 @@ interface ICourier {
     transport: string,
     userId: mongoose.Types.ObjectId,
     age: number,
-    status: "Working" | "Processing",
+    status: "Working" | "Processing",//Working means -application has been approved and Processing - interviewing
     city: string,
 }
 

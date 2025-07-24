@@ -3,6 +3,7 @@
 import DishCard from "@/components/Dashboard/DishCard";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import { Dish } from "@/redux/reduxTypes";
+import { uploadImageToCloudinary } from "@/utils/uploadImageToCloudinary";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -14,30 +15,16 @@ type formFields = {
     image: FileList,
     typeOfFood: string,
 }
-const uploadImageToCloudinary = async (file: File): Promise<string | null> => {
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", "Images");
+// func for uploading image into a cloud
 
-    const res = await fetch("https://api.cloudinary.com/v1_1/dv3j72lqn/image/upload", {
-        method: "POST",
-        body: formData,
-    });
-
-    const data = await res.json();
-    if (!res.ok) {
-        console.error("Cloudinary error:", data);
-        return null;
-    }
-
-    return data.secure_url || null;
-};
 const page = () => {
     const [dishesLoading, setDishesLoading] = useState<boolean>(false);
     const [menu, setMenu] = useState<Dish[]>([]);
     const { register, handleSubmit, reset, formState: { errors } } = useForm<formFields>();
     const [loading, setLoading] = useState<boolean>(false);
     const { user } = useAppSelector(state => state.auth);
+
+    
     const createDish: SubmitHandler<formFields> = async (data) => {
         console.log("hello");
         try {
@@ -78,7 +65,7 @@ const page = () => {
 
         }
     }
-
+    // getting dishes each time after rendering
     useEffect(() => {
         if (user?.restaurantId) {
 

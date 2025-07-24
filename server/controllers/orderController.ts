@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { AuthRequest } from "../middleware/authMiddleware";
-import Order, { IOrder } from "../models/Order";
+import Order from "../models/Order";
 import Cart from "../models/Cart";
-import { activeAdmins, io, restaurantsSocketsMap } from "../server";
+import { restaurantsSocketsMap } from "../server";
 import Dish from "../models/Dish";
 import Restaurant from "../models/Restaurant";
 
@@ -28,6 +28,7 @@ interface Cart {
     items: CartItem[];
 }
 
+
 export const createOrder = async (req: Request, res: Response): Promise<void> => {
     const { cart }: { cart: Cart } = req.body;
     try {
@@ -39,6 +40,7 @@ export const createOrder = async (req: Request, res: Response): Promise<void> =>
 
             const order = await Order.create({ userId: (req as AuthRequest).userId, items: [], shippingPrice: null, totalPrice: 0, approxTime: 0, restaurantTitle: cart.restaurantId.title, restaurantImage: cart?.restaurantId.imageUrl });
             let sum = 0;
+            // loop for pushing cart items to order items including summing all the prices
             (cart as Cart).items.forEach(item => {
                 order.items.push({ title: item.dishId.title, price: item.dishId.price, amount: item.amount, imageUrl: item.dishId.imageUrl });
                 sum += (item.amount * item.dishId.price);
@@ -127,7 +129,6 @@ export const getOrdersCreated = async (req: Request, res: Response): Promise<voi
     }
 }
 
-
 export const getLastSevenOrders = async (req: Request, res: Response): Promise<void> => {
     const id = req.params.id;
     try {
@@ -163,17 +164,18 @@ export const getLastSevenOrders = async (req: Request, res: Response): Promise<v
     }
 }
 
+// func for getting start of the week with the date
 const getMondayDate = (d: Date) => {
     const date = new Date(d);
     const day = date.getDay();
     const newDate = date.getDate() - day + (day === 0 ? -6 : +1);
-
+    // returning date with start of the week
     date.setDate(newDate);
     date.setHours(0, 0, 0, 0);
     return date;
 }
 
-
+// func for getting statistics for the week (dashboard)
 export const getNumbers = async (req: Request, res: Response): Promise<void> => {
     try {
         const id = req.query.id;
@@ -199,13 +201,16 @@ export const getNumbers = async (req: Request, res: Response): Promise<void> => 
         const numOfOrders = orders.length;
         const totalRevenue = orders.reduce((acc, cur) => acc + cur.totalPrice, 0);
         const averageOrderValue = +(totalRevenue / numOfOrders).toFixed(2);
+        // getting that func for start day
         const startOfThisWeek = getMondayDate(new Date());
         const endOfThisWeek = new Date(startOfThisWeek);
         endOfThisWeek.setDate(startOfThisWeek.getDate() + 6);
+        // making end of the week by adding 6 to start of the week
         const startOfLastWeek = new Date(startOfThisWeek);
         startOfLastWeek.setDate(startOfThisWeek.getDate() - 7);
         const endOfLastWeek = new Date(startOfLastWeek);
         endOfLastWeek.setDate(startOfLastWeek.getDate() + 6);
+        // func that making x promises at one time
         const [ordersThisWeek, ordersLastWeek] = await Promise.all([
             Order.find({ createdAt: { $gte: startOfThisWeek, $lte: endOfThisWeek } }),
             Order.find({ createdAt: { $gte: startOfLastWeek, $lte: endOfLastWeek } })
@@ -231,7 +236,7 @@ export const getNumbers = async (req: Request, res: Response): Promise<void> => 
             avgOrderValueLastWeek > 0
                 ? +((avgOrderValueThisWeek - avgOrderValueLastWeek) / avgOrderValueLastWeek * 100).toFixed(2)
                 : 0;
-
+        // adding + in the start to convert string (toFixed->string) to number
         res.status(200).json({
             numOfOrders: {
                 number: +numOfOrders.toFixed(2),
@@ -276,10 +281,10 @@ export const getOrdersCourier = async (req: Request, res: Response): Promise<voi
 
     }
 }
+
+
 export const updateOrder = async (req: Request, res: Response): Promise<void> => {
     const { formData, shipping, cartId, totalPrice, percent } = req.body;
-
-
 
     try {
         if (formData.city && formData.countryOrRegion && formData.houseNumber && formData.street) {
@@ -299,14 +304,16 @@ export const updateOrder = async (req: Request, res: Response): Promise<void> =>
                     totalPrice: totalPrice,
                 }
             }, { new: true });
-            const cart = await Cart.findOneAndUpdate({ userId: (req as AuthRequest).userId, _id: cartId },{$set:{restaurantId:null,items:[]}});
+            const cart = await Cart.findOneAndUpdate({ userId: (req as AuthRequest).userId, _id: cartId }, { $set: { restaurantId: null, items: [] } });
             if (order) {
+                // incrementing sold with $inc
                 for (const item of order.items) {
                     const dish = await Dish.findOneAndUpdate({ title: item.title }, {
                         $inc: { sold: item.amount }
                     })
                 }
             }
+            // emitting incoming orders to restaurant dashboard
             const restaurant = await Restaurant.findOne({ title: order?.restaurantTitle });
             for (const [id, socket] of restaurantsSocketsMap.entries()) {
                 if (id === restaurant?.id) {
@@ -315,9 +322,6 @@ export const updateOrder = async (req: Request, res: Response): Promise<void> =>
                 }
             }
 
-            //      activeAdmins.forEach(adminId => {
-            //     io.to(adminId).emit("updateOrders", orders);
-            // });
             res.status(200).json("Created!");
             return
         }
@@ -356,7 +360,7 @@ export const getFreeOrders = async (req: Request, res: Response): Promise<void> 
 }
 
 export const toggleToPreparing = async (req: Request, res: Response): Promise<void> => {
-    const  id  = req.params.id;
+    const id = req.params.id;
     try {
         await Order.findByIdAndUpdate(id, { $set: { status: "Preparing" } });
         res.status(200).json("Toggled status to Preparing");

@@ -2,6 +2,7 @@
 
 import DishCard from "@/components/Dashboard/DishCard";
 import { Dish } from "@/redux/reduxTypes";
+import { uploadImageToCloudinary } from "@/utils/uploadImageToCloudinary";
 import axios from "axios";
 import { useParams } from "next/navigation"
 import { useEffect, useState } from "react";
@@ -14,24 +15,7 @@ type formFields = {
     image: FileList,
     typeOfFood: string,
 }
-const uploadImageToCloudinary = async (file: File): Promise<string | null> => {
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", "Images");
 
-    const res = await fetch("https://api.cloudinary.com/v1_1/dv3j72lqn/image/upload", {
-        method: "POST",
-        body: formData,
-    });
-
-    const data = await res.json();
-    if (!res.ok) {
-        console.error("Cloudinary error:", data);
-        return null;
-    }
-
-    return data.secure_url || null;
-};
 const page = () => {
     const [dishesLoading, setDishesLoading] = useState<boolean>(false);
     const [menu, setMenu] = useState<Dish[]>([]);
@@ -42,6 +26,7 @@ const page = () => {
         console.log("hello");
         try {
             setLoading(true);
+            // uploading to cloud image (returning image url)
             const imageUrl = await uploadImageToCloudinary(data.image[0]);
             const dish = {
                 title: data.title,
@@ -88,6 +73,7 @@ const page = () => {
         <>
             <div className="mb-7 pb-3 border-b-[1px] border-borderColor flex flex-col gap-3 ">
                 <h1 className="section-title">Create a dish</h1>
+                {/* form */}
                 <form className="grid sm:grid-cols-2 gap-3" onSubmit={handleSubmit(createDish)} >
                     <div className=" flex flex-col gap-4">
                         <div className="">
@@ -128,6 +114,7 @@ const page = () => {
 
             </div>
             <div className="flex flex-col gap-3 ">
+                {/* menu of already created dishes */}
                 <h1 className="section-title">Menu</h1>
                 {menu.length > 0 ?
 
@@ -140,6 +127,7 @@ const page = () => {
                                 {menu.map((dish, idx) => {
                                     return (
                                         <div className="" key={idx}>
+                                            {/* onDeleted identifier to delete an dish out of the menu*/}
                                             <DishCard dish={dish} toCart={false} onDeleted={getDishes} />
                                         </div>
                                     )

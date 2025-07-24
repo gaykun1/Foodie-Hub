@@ -1,11 +1,11 @@
-import mongoose, { mongo, Schema } from "mongoose";
+import mongoose, {  Schema } from "mongoose";
 
 
 export interface IPromocode {
   code: string,
   createdAt: Date,
   discountPercent: number,
-  type: "Usual" | "Special",
+  type: "Usual" | "Special",//usual-for weekend use and special for one time use
   isUsed?: boolean,
 }
 const PromocodeSchema = new Schema<IPromocode>({

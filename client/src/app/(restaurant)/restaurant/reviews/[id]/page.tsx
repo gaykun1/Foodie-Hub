@@ -16,6 +16,7 @@ const Page = () => {
     const [page, setPage] = useState<number>(1);
     const [pagesAmount, setPagesAmount] = useState<number>(1);
 
+    // optimized depending on id and page 
     const getReviews = useCallback(async () => {
         try {
             setLoading(true);
@@ -30,6 +31,7 @@ const Page = () => {
 
         }
     }, [page, id]);
+
 
     const createReview = async () => {
         try {
@@ -104,6 +106,7 @@ const Page = () => {
                 {
                     loading ? (<div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid mx-auto"></div>) :
                         reviews.length > 0 ? reviews.map((review, idx) => {
+                            // func that returns array of stars icons depending on review.rating prop
                             const starRating = calculateStars(review.rating || 0);
                             return (
                                 <div key={idx} className=" flex flex-col gap-1 border-borderColor border-[1px] p-2 rounded-lg">
@@ -120,7 +123,7 @@ const Page = () => {
                 }
             </div>
             <div className='mt-6 flex items-center gap-5 justify-center'>
-
+                {/* creating array with length of pages to make length iterations  */}
                 {pagesAmount > 1 && Array.from({ length: pagesAmount }).map((_, idx) => (
                     <button onClick={() => setPage(idx + 1)} key={idx} className={`w-[40px] aspect-square flex items-center justify-center rounded-lg border-borderColor transition-colors hover:bg-primary cursor-pointer border-[1px] font-semibold text-lg  ${page === (idx + 1) ? "bg-primary" : ""}  `}>{idx + 1}</button>
                 ))}

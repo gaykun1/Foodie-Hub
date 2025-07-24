@@ -28,8 +28,10 @@ const Page = () => {
         </div>
         <div className="flex items-center justify-between">
           <button onClick={async () => {
+            // logIn api 
             const user = await LogIn(password, username);
             if (user) dispatch(login(user));
+            // redirection to "/"
             router.push("/");
           }} className='btn py-1 px-2 text-base!'>Log in</button>
           <Link className='underline' href='register'>Sign up</Link>

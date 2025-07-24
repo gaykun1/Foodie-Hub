@@ -1,11 +1,11 @@
 "use client";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
 import { login } from "@/redux/authSlice";
-import { User } from "@/redux/reduxTypes";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
+// form type for profile data
 type formType = {
   username: string,
   password: string,
@@ -20,8 +20,6 @@ type formType = {
 }
 
 const Page = () => {
-
-
   const { user } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -29,8 +27,10 @@ const Page = () => {
 
 
   const handleSave: SubmitHandler<formType> = async (data) => {
+    // Partial - for unnessasary fields
     const payload: Partial<formType> = {};
 
+    // checking if (changed)
     if (data.username && data.username !== user?.username) {
       payload.username = data.username;
     }
@@ -65,7 +65,7 @@ const Page = () => {
         return;
       };
     }
-
+    // if nothing has changed returning;
     if (Object.keys(payload).length === 0) return;
 
     try {
@@ -108,6 +108,7 @@ const Page = () => {
               defaultValue={user?.email || ""}
               {...register("email", {
                 validate: {
+                  // validating email format with regex
                   isUAFormat: (value) =>
                     /^\w+@\w+\.\w{2,3}$/.test(value) || "Wrong email format",
                 }
@@ -125,6 +126,7 @@ const Page = () => {
               defaultValue={user?.phoneNumber || ""}
               {...register("phoneNumber", {
                 validate: {
+                  // validating phone number format with regex
                   isUAFormat: (value) =>
                     /^\+380\d{9}$/.test(value) || "Phone must be in +380XXXXXXXXX format",
                 }
@@ -146,7 +148,7 @@ const Page = () => {
               })}
               disabled={!isEditing}
             />
-  
+
           </div>
 
           <div className="flex flex-col gap-[10px]">
@@ -159,7 +161,7 @@ const Page = () => {
               })}
               disabled={!isEditing}
             />
-      
+
           </div>
 
           <div className="flex flex-col gap-[10px]">
@@ -172,7 +174,7 @@ const Page = () => {
               })}
               disabled={!isEditing}
             />
-       
+
           </div>
           {/* "dasdasdd" */}
         </div>

@@ -4,6 +4,7 @@ import axios, { isAxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form"
 
+// application form type 
 type formFields = {
     name: string,
     surname: string,
@@ -23,6 +24,7 @@ const ApplicationForm = () => {
         try {
             setLoading(true);
             const res = await axios.post("http://localhost:5200/api/courier/applications", { data }, { withCredentials: true });
+            // giving status sent to disable button while checking on admin side 
             setAlreadySent(res.data.status);
 
             reset();
@@ -38,6 +40,7 @@ const ApplicationForm = () => {
         }
     }
 
+    // getting status of ur application every render
     useEffect(() => {
         const checkIfSent = async () => {
             try {
@@ -79,7 +82,7 @@ const ApplicationForm = () => {
                         </label>
                         <input type="text" {...register("age", {
                             required: "Age is required", validate: {
-
+                                // validating if is number
                                 isNumber: (value) => /^\d+$/.test(value) || "Must be number!",
                                 min: (value) =>
                                     +value >= 18 || "Must be at least 18",
@@ -112,7 +115,7 @@ const ApplicationForm = () => {
                         </label>
                         <input {...register("email", {
                             required: "Email is required", validate: {
-
+                                // validating if is email format
                                 validEmail: (value) => /^\w+@\w+\.\w{2,3}$/.test(value) || "Wrong email format!"
 
                             }

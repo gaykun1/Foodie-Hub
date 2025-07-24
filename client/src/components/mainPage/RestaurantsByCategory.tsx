@@ -17,7 +17,9 @@ const RestaurantsByCategory = () => {
     const dispatch = useAppDispatch();
     const { restaurants } = useAppSelector(state => state.restaurants);
     const categories = useMemo(() => Object.values(Category), []);
-    const fetchRestaurants = useCallback(    async (category: string) => {
+
+    // memorized func for fetching restaurants
+    const fetchRestaurants = useCallback(async (category: string) => {
         try {
             setIsLoading(true);
 
@@ -30,7 +32,7 @@ const RestaurantsByCategory = () => {
             setIsLoading(false);
         }
     }, [dispatch])
-
+    // depending on active state(categorie value)
     useEffect(() => {
         fetchRestaurants(isActive);
     }, [isActive])

@@ -10,6 +10,7 @@ import { useCallback, useMemo } from "react";
 
 const CourierOrderCard = ({ order, checkIfHasOrder, setViewDetails }: { order: Order, checkIfHasOrder: () => void, setViewDetails: React.Dispatch<React.SetStateAction<Order | null>>, }) => {
     const { courier } = useAppSelector(state => state.courier);
+    // func for taking order memorized 
     const takeOrder = useCallback(async (id: string, courierId: string) => {
         try {
             const res = await axios.post(`http://localhost:5200/api/courier/orders/${id}/take`, { id, courierId }, { withCredentials: true });
@@ -17,6 +18,7 @@ const CourierOrderCard = ({ order, checkIfHasOrder, setViewDetails }: { order: O
             console.error(err);
         }
     }, []);
+    //memorized date converted to dateString format
     const date = useMemo(() => new Date((order.createdAt)).toDateString(), [order.createdAt]);
     return (
         <div className={`rounded-lg shadow-xs border-[1px]  ${order.status == "Delivering" ? "border-[#636AE8FF]" : "border-borderColor"}`}>

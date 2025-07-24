@@ -20,7 +20,7 @@ const Page = () => {
   useEffect(() => {
     if (user?.restaurantId) {
 
-
+      // funcs for getting recent orders and reviews data
       const getLastSevenOrders = async () => {
         try {
           const res = await axios.get(`http://localhost:5200/api/order/restaurants/${user?.restaurantId}/orders/recent`, { withCredentials: true });
@@ -41,6 +41,7 @@ const Page = () => {
           console.error(err);
         }
       }
+      // func for top restaurant dishes
       const getTopSevenDishes = async () => {
         try {
           const res = await axios.get(`http://localhost:5200/api/restaurant/restaurants/${user?.restaurantId}/dishes/top`, { withCredentials: true });
@@ -57,8 +58,10 @@ const Page = () => {
     }
   }, [user?.restaurantId])
 
+
   useEffect(() => {
     if (user?.restaurantId) {
+      // getting general numbers
       const getNumbers = async () => {
         try {
           const res = await axios.get(`http://localhost:5200/api/order/orders/statistics?id=${user?.restaurantId}`, { withCredentials: true });
@@ -69,7 +72,7 @@ const Page = () => {
           console.error(err);
         }
       }
-
+      // connecting to io server
       const sock = io("http://localhost:5200");
       setSocket(sock);
 
@@ -100,7 +103,7 @@ const Page = () => {
   return (
     <div>
       <h1 className="section-title mb-8 ">Restaurant overview</h1>
-        <div className="grid md:grid-cols-3 gap-6 mb-8">
+      <div className="grid md:grid-cols-3 gap-6 mb-8">
         <div className="p-[50px] rounded-lg border-borderColor border-[1px]">
           <div className="flex items-center justify-between mb-2.5">
             <span className='text-sm leading-5 font-medium text-gray'>Total Orders</span>

@@ -31,10 +31,11 @@ const DishCard = ({ dish, toCart, onDeleted }: { dish: Dish, toCart: boolean, on
             console.error(err);
         }
     }
-
+    // optimized handleClick func for adding one time item to cart
     const handleClick = useCallback(() => {
         addToCart();
     }, [])
+    // memorizing calculation for checking if item is in cart
     const isInCart = useMemo(() => (cart?.items.some(item => item.dishId.title === dish.title)), [cart]);
     return (
         <div className='rounded-lg shadow-xs border-[1px] w-fit flex flex-col gap-5 border-borderColor h-full  overflow-hidden'>
@@ -52,7 +53,7 @@ const DishCard = ({ dish, toCart, onDeleted }: { dish: Dish, toCart: boolean, on
                         ${dish.price}
                     </div>
                     {toCart ? (<button disabled={isInCart} onClick={handleClick} className='!text-base disabled:pointer-events-none disabled:bg-gray! leading-[26px]! py-2 w-full gap-2 flex items-center btn'>
-
+                        {/* disabled  button if in is in cart */}
                         {!isInCart ? (<><ShoppingCart size={16} /><span>Add to Cart</span></>) : (<span>In Cart</span>)}
                     </button>) : (
                         <button onClick={deleteDish} className='text-base! leading-[26px]! gap-2 p-2 bg-[#E8618CFF]! hover:bg-[#e8616c]! flex items-center btn'>

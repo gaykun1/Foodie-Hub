@@ -98,7 +98,7 @@ const Page = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }, [viewDetails]);
 
-    // loading content on the page - [courier]
+    // loading content on the page
     useEffect(() => {
         const load = async () => {
             setLoading(true);

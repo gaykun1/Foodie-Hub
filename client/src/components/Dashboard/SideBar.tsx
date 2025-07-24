@@ -1,10 +1,9 @@
 
 "use client"
-
-import { BarChart, FileUser, Home, ListOrdered, Percent, Plus, Settings, ShoppingCart, SquareRoundCorner, Utensils } from "lucide-react"
+import { BarChart, FileUser, Home, ListOrdered, Percent, Plus,  SquareRoundCorner, Utensils } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation";
-
+// sidebar links for both admin and restaurant 
 const adminLinks = [
     { href: '/dashboard/overview', label: 'Dashboard Overview', icon: <Home size={18} /> },
     { href: '/dashboard/create', label: 'Add a Restaurant', icon: <Plus size={18} /> },

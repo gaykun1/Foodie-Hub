@@ -4,7 +4,7 @@ import RestaurantCard from "@/components/mainPage/RestaurantCard";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
 import { Category } from "@/redux/reduxTypes";
 import { getRestaurants } from "@/redux/restaurantSlice";
-import { ChevronRight, Clock, SlidersHorizontal, Star } from "lucide-react";
+import { SlidersHorizontal } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
@@ -25,7 +25,8 @@ export default function Home() {
   const entry = Object.entries(links).find(([key, val]) => val === category);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const currentTitle = entry ? entry[0] : Category.All;
-  const fetchRestaurants =useCallback( async (category: string) => {
+  // optimized func for fetching 
+  const fetchRestaurants = useCallback(async (category: string) => {
     try {
       setIsLoading(true);
 
@@ -38,11 +39,12 @@ export default function Home() {
     } finally {
       setIsLoading(false);
     }
-  },[dispatch])
+  }, [dispatch])
 
+  
   useEffect(() => {
     fetchRestaurants(currentTitle);
-  }, [currentTitle,fetchRestaurants])
+  }, [currentTitle, fetchRestaurants])
 
   return (
     <section className="mx-5 my-10 border-[2px] border-borderColor rounded-lg sm:p-8 p-6 ">

@@ -46,9 +46,11 @@ const DishCard = ({ dish, toCart, onDeleted })=>{
             console.error(err);
         }
     };
+    // optimized handleClick func for adding one time item to cart
     const handleClick = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useCallback"])(()=>{
         addToCart();
     }, []);
+    // memorizing calculation for checking if item is in cart
     const isInCart = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useMemo"])(()=>cart?.items.some((item)=>item.dishId.title === dish.title), [
         cart
     ]);
@@ -63,12 +65,12 @@ const DishCard = ({ dish, toCart, onDeleted })=>{
                     alt: "dish image"
                 }, void 0, false, {
                     fileName: "[project]/src/components/Dashboard/DishCard.tsx",
-                    lineNumber: 42,
+                    lineNumber: 43,
                     columnNumber: 17
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/Dashboard/DishCard.tsx",
-                lineNumber: 41,
+                lineNumber: 42,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -82,7 +84,7 @@ const DishCard = ({ dish, toCart, onDeleted })=>{
                                 children: dish.title
                             }, void 0, false, {
                                 fileName: "[project]/src/components/Dashboard/DishCard.tsx",
-                                lineNumber: 47,
+                                lineNumber: 48,
                                 columnNumber: 21
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -90,13 +92,13 @@ const DishCard = ({ dish, toCart, onDeleted })=>{
                                 children: dish.description
                             }, void 0, false, {
                                 fileName: "[project]/src/components/Dashboard/DishCard.tsx",
-                                lineNumber: 48,
+                                lineNumber: 49,
                                 columnNumber: 21
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/Dashboard/DishCard.tsx",
-                        lineNumber: 46,
+                        lineNumber: 47,
                         columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -110,7 +112,7 @@ const DishCard = ({ dish, toCart, onDeleted })=>{
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/Dashboard/DishCard.tsx",
-                                lineNumber: 51,
+                                lineNumber: 52,
                                 columnNumber: 21
                             }, this),
                             toCart ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -123,14 +125,14 @@ const DishCard = ({ dish, toCart, onDeleted })=>{
                                             size: 16
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/Dashboard/DishCard.tsx",
-                                            lineNumber: 56,
+                                            lineNumber: 57,
                                             columnNumber: 41
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                             children: "Add to Cart"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/Dashboard/DishCard.tsx",
-                                            lineNumber: 56,
+                                            lineNumber: 57,
                                             columnNumber: 67
                                         }, this)
                                     ]
@@ -138,12 +140,12 @@ const DishCard = ({ dish, toCart, onDeleted })=>{
                                     children: "In Cart"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/Dashboard/DishCard.tsx",
-                                    lineNumber: 56,
+                                    lineNumber: 57,
                                     columnNumber: 99
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/components/Dashboard/DishCard.tsx",
-                                lineNumber: 54,
+                                lineNumber: 55,
                                 columnNumber: 32
                             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                 onClick: deleteDish,
@@ -152,30 +154,30 @@ const DishCard = ({ dish, toCart, onDeleted })=>{
                                     size: 16
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/Dashboard/DishCard.tsx",
-                                    lineNumber: 60,
+                                    lineNumber: 61,
                                     columnNumber: 29
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/components/Dashboard/DishCard.tsx",
-                                lineNumber: 58,
+                                lineNumber: 59,
                                 columnNumber: 25
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/Dashboard/DishCard.tsx",
-                        lineNumber: 50,
+                        lineNumber: 51,
                         columnNumber: 17
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/Dashboard/DishCard.tsx",
-                lineNumber: 45,
+                lineNumber: 46,
                 columnNumber: 13
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/Dashboard/DishCard.tsx",
-        lineNumber: 40,
+        lineNumber: 41,
         columnNumber: 9
     }, this);
 };
@@ -203,6 +205,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$Dashboa
 const DishesNearYou = ()=>{
     const [dishes, setDishes] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
     const { user } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$hooks$2f$reduxHooks$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useAppSelector"])((state)=>state.auth);
+    // func for getting dishes after every render (provided if user added City in profile settings form)
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
         if (user?.address?.city) {
             const getDishesNearYou = async ()=>{
@@ -228,12 +231,12 @@ const DishesNearYou = ()=>{
                     children: "Trending Dishes Near You"
                 }, void 0, false, {
                     fileName: "[project]/src/components/mainPage/DishesNearYou.tsx",
-                    lineNumber: 29,
+                    lineNumber: 30,
                     columnNumber: 17
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/mainPage/DishesNearYou.tsx",
-                lineNumber: 27,
+                lineNumber: 28,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -243,25 +246,25 @@ const DishesNearYou = ()=>{
                         dish: dish
                     }, dish._id, false, {
                         fileName: "[project]/src/components/mainPage/DishesNearYou.tsx",
-                        lineNumber: 37,
+                        lineNumber: 38,
                         columnNumber: 25
                     }, this)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                     className: "text-xl font-semibold leading-8",
                     children: "No dishes"
                 }, void 0, false, {
                     fileName: "[project]/src/components/mainPage/DishesNearYou.tsx",
-                    lineNumber: 40,
+                    lineNumber: 41,
                     columnNumber: 23
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/mainPage/DishesNearYou.tsx",
-                lineNumber: 33,
+                lineNumber: 34,
                 columnNumber: 13
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/mainPage/DishesNearYou.tsx",
-        lineNumber: 26,
+        lineNumber: 27,
         columnNumber: 9
     }, this);
 };
@@ -484,6 +487,7 @@ const RestaurantsByCategory = ()=>{
     const dispatch = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$hooks$2f$reduxHooks$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useAppDispatch"])();
     const { restaurants } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$hooks$2f$reduxHooks$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useAppSelector"])((state)=>state.restaurants);
     const categories = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useMemo"])(()=>Object.values(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$redux$2f$reduxTypes$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Category"]), []);
+    // memorized func for fetching restaurants
     const fetchRestaurants = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useCallback"])(async (category)=>{
         try {
             setIsLoading(true);
@@ -498,6 +502,7 @@ const RestaurantsByCategory = ()=>{
     }, [
         dispatch
     ]);
+    // depending on active state(categorie value)
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
         fetchRestaurants(isActive);
     }, [
@@ -511,7 +516,7 @@ const RestaurantsByCategory = ()=>{
                 children: "Browse by Category"
             }, void 0, false, {
                 fileName: "[project]/src/components/mainPage/RestaurantsByCategory.tsx",
-                lineNumber: 40,
+                lineNumber: 42,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -525,20 +530,20 @@ const RestaurantsByCategory = ()=>{
                         children: categorie
                     }, index, false, {
                         fileName: "[project]/src/components/mainPage/RestaurantsByCategory.tsx",
-                        lineNumber: 44,
+                        lineNumber: 46,
                         columnNumber: 25
                     }, this);
                 })
             }, void 0, false, {
                 fileName: "[project]/src/components/mainPage/RestaurantsByCategory.tsx",
-                lineNumber: 41,
+                lineNumber: 43,
                 columnNumber: 13
             }, this),
             isLoading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid mx-auto"
             }, void 0, false, {
                 fileName: "[project]/src/components/mainPage/RestaurantsByCategory.tsx",
-                lineNumber: 50,
+                lineNumber: 52,
                 columnNumber: 18
             }, this) : isActive === __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$redux$2f$reduxTypes$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Category"].All ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
                 children: [
@@ -550,7 +555,7 @@ const RestaurantsByCategory = ()=>{
                                 children: "Top-Rated Restaurants"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/mainPage/RestaurantsByCategory.tsx",
-                                lineNumber: 54,
+                                lineNumber: 56,
                                 columnNumber: 29
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -562,26 +567,26 @@ const RestaurantsByCategory = ()=>{
                                         children: "View All"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/mainPage/RestaurantsByCategory.tsx",
-                                        lineNumber: 56,
+                                        lineNumber: 58,
                                         columnNumber: 33
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$right$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronRight$3e$__["ChevronRight"], {
                                         className: "group-hover:text-black transition-colors  "
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/mainPage/RestaurantsByCategory.tsx",
-                                        lineNumber: 57,
+                                        lineNumber: 59,
                                         columnNumber: 33
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/mainPage/RestaurantsByCategory.tsx",
-                                lineNumber: 55,
+                                lineNumber: 57,
                                 columnNumber: 29
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/mainPage/RestaurantsByCategory.tsx",
-                        lineNumber: 53,
+                        lineNumber: 55,
                         columnNumber: 25
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -591,13 +596,13 @@ const RestaurantsByCategory = ()=>{
                                 restaurant: restaurant
                             }, restaurant._id, false, {
                                 fileName: "[project]/src/components/mainPage/RestaurantsByCategory.tsx",
-                                lineNumber: 64,
+                                lineNumber: 66,
                                 columnNumber: 37
                             }, this);
                         })
                     }, void 0, false, {
                         fileName: "[project]/src/components/mainPage/RestaurantsByCategory.tsx",
-                        lineNumber: 61,
+                        lineNumber: 63,
                         columnNumber: 25
                     }, this)
                 ]
@@ -608,13 +613,13 @@ const RestaurantsByCategory = ()=>{
                         restaurant: restaurant
                     }, index, false, {
                         fileName: "[project]/src/components/mainPage/RestaurantsByCategory.tsx",
-                        lineNumber: 73,
+                        lineNumber: 75,
                         columnNumber: 37
                     }, this);
                 })
             }, void 0, false, {
                 fileName: "[project]/src/components/mainPage/RestaurantsByCategory.tsx",
-                lineNumber: 70,
+                lineNumber: 72,
                 columnNumber: 25
             }, this),
             restaurants?.length == 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -622,13 +627,13 @@ const RestaurantsByCategory = ()=>{
                 children: "No restaurants"
             }, void 0, false, {
                 fileName: "[project]/src/components/mainPage/RestaurantsByCategory.tsx",
-                lineNumber: 80,
+                lineNumber: 82,
                 columnNumber: 43
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/mainPage/RestaurantsByCategory.tsx",
-        lineNumber: 39,
+        lineNumber: 41,
         columnNumber: 9
     }, this);
 };

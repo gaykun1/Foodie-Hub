@@ -2,6 +2,7 @@ import { Request, Response } from "express"
 import Promocode from "../models/Promocode";
 import { AuthRequest } from "../middleware/authMiddleware";
 import User from "../models/User";
+
 export const getPromocode = async (req: Request, res: Response): Promise<void> => {
    const code = req.params.code;
 

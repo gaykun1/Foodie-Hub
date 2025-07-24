@@ -1,5 +1,5 @@
 import { loadStripe } from '@stripe/stripe-js';
-
+// promise for Stripe container
 let stripePromise;
 const getStripe = () => {
     if (!stripePromise) {

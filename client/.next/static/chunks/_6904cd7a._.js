@@ -34,6 +34,7 @@ const Page = ()=>{
     const [rating, setRating] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(0);
     const [page, setPage] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(1);
     const [pagesAmount, setPagesAmount] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(1);
+    // optimized depending on id and page 
     const getReviews = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
         "Page.useCallback[getReviews]": async ()=>{
             try {
@@ -86,7 +87,7 @@ const Page = ()=>{
                         children: "Reviews"
                     }, void 0, false, {
                         fileName: "[project]/src/app/(restaurant)/restaurant/reviews/[id]/page.tsx",
-                        lineNumber: 54,
+                        lineNumber: 56,
                         columnNumber: 17
                     }, this),
                     active ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -98,12 +99,12 @@ const Page = ()=>{
                             size: 16
                         }, void 0, false, {
                             fileName: "[project]/src/app/(restaurant)/restaurant/reviews/[id]/page.tsx",
-                            lineNumber: 59,
+                            lineNumber: 61,
                             columnNumber: 53
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/(restaurant)/restaurant/reviews/[id]/page.tsx",
-                        lineNumber: 56,
+                        lineNumber: 58,
                         columnNumber: 28
                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                         onClick: ()=>{
@@ -114,18 +115,18 @@ const Page = ()=>{
                             size: 16
                         }, void 0, false, {
                             fileName: "[project]/src/app/(restaurant)/restaurant/reviews/[id]/page.tsx",
-                            lineNumber: 62,
+                            lineNumber: 64,
                             columnNumber: 52
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/(restaurant)/restaurant/reviews/[id]/page.tsx",
-                        lineNumber: 59,
+                        lineNumber: 61,
                         columnNumber: 82
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/(restaurant)/restaurant/reviews/[id]/page.tsx",
-                lineNumber: 52,
+                lineNumber: 54,
                 columnNumber: 13
             }, this),
             active && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -137,7 +138,7 @@ const Page = ()=>{
                         className: "input p-3 resize-none h-[220px]  max-w-[600px] w-full"
                     }, void 0, false, {
                         fileName: "[project]/src/app/(restaurant)/restaurant/reviews/[id]/page.tsx",
-                        lineNumber: 69,
+                        lineNumber: 71,
                         columnNumber: 25
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -152,7 +153,7 @@ const Page = ()=>{
                                 children: "Create"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(restaurant)/restaurant/reviews/[id]/page.tsx",
-                                lineNumber: 71,
+                                lineNumber: 73,
                                 columnNumber: 29
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -170,12 +171,12 @@ const Page = ()=>{
                                                 className: i < rating ? "text-primary fill-primary" : "text-primary"
                                             }, i, false, {
                                                 fileName: "[project]/src/app/(restaurant)/restaurant/reviews/[id]/page.tsx",
-                                                lineNumber: 80,
+                                                lineNumber: 82,
                                                 columnNumber: 41
                                             }, this))
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(restaurant)/restaurant/reviews/[id]/page.tsx",
-                                        lineNumber: 77,
+                                        lineNumber: 79,
                                         columnNumber: 33
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -185,32 +186,32 @@ const Page = ()=>{
                                                 children: "Rating:"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(restaurant)/restaurant/reviews/[id]/page.tsx",
-                                                lineNumber: 94,
+                                                lineNumber: 96,
                                                 columnNumber: 37
                                             }, this),
                                             rating
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(restaurant)/restaurant/reviews/[id]/page.tsx",
-                                        lineNumber: 93,
+                                        lineNumber: 95,
                                         columnNumber: 33
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/(restaurant)/restaurant/reviews/[id]/page.tsx",
-                                lineNumber: 76,
+                                lineNumber: 78,
                                 columnNumber: 29
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/(restaurant)/restaurant/reviews/[id]/page.tsx",
-                        lineNumber: 70,
+                        lineNumber: 72,
                         columnNumber: 25
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/(restaurant)/restaurant/reviews/[id]/page.tsx",
-                lineNumber: 68,
+                lineNumber: 70,
                 columnNumber: 21
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -219,9 +220,10 @@ const Page = ()=>{
                     className: "animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid mx-auto"
                 }, void 0, false, {
                     fileName: "[project]/src/app/(restaurant)/restaurant/reviews/[id]/page.tsx",
-                    lineNumber: 105,
+                    lineNumber: 107,
                     columnNumber: 32
                 }, this) : reviews.length > 0 ? reviews.map((review, idx)=>{
+                    // func that returns array of stars icons depending on review.rating prop
                     const starRating = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$rating$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["calculateStars"])(review.rating || 0);
                     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: " flex flex-col gap-1 border-borderColor border-[1px] p-2 rounded-lg",
@@ -231,7 +233,7 @@ const Page = ()=>{
                                 children: review.sender.username
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(restaurant)/restaurant/reviews/[id]/page.tsx",
-                                lineNumber: 110,
+                                lineNumber: 113,
                                 columnNumber: 37
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -239,7 +241,7 @@ const Page = ()=>{
                                 children: review.text
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(restaurant)/restaurant/reviews/[id]/page.tsx",
-                                lineNumber: 111,
+                                lineNumber: 114,
                                 columnNumber: 37
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -250,7 +252,7 @@ const Page = ()=>{
                                         children: starRating
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(restaurant)/restaurant/reviews/[id]/page.tsx",
-                                        lineNumber: 113,
+                                        lineNumber: 116,
                                         columnNumber: 41
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -258,20 +260,20 @@ const Page = ()=>{
                                         children: review.rating
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(restaurant)/restaurant/reviews/[id]/page.tsx",
-                                        lineNumber: 114,
+                                        lineNumber: 117,
                                         columnNumber: 41
                                     }, this),
                                     " "
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/(restaurant)/restaurant/reviews/[id]/page.tsx",
-                                lineNumber: 112,
+                                lineNumber: 115,
                                 columnNumber: 37
                             }, this)
                         ]
                     }, idx, true, {
                         fileName: "[project]/src/app/(restaurant)/restaurant/reviews/[id]/page.tsx",
-                        lineNumber: 109,
+                        lineNumber: 112,
                         columnNumber: 33
                     }, this);
                 }) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -279,12 +281,12 @@ const Page = ()=>{
                     children: "No info yet!"
                 }, void 0, false, {
                     fileName: "[project]/src/app/(restaurant)/restaurant/reviews/[id]/page.tsx",
-                    lineNumber: 118,
+                    lineNumber: 121,
                     columnNumber: 31
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/(restaurant)/restaurant/reviews/[id]/page.tsx",
-                lineNumber: 103,
+                lineNumber: 105,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -297,18 +299,18 @@ const Page = ()=>{
                         children: idx + 1
                     }, idx, false, {
                         fileName: "[project]/src/app/(restaurant)/restaurant/reviews/[id]/page.tsx",
-                        lineNumber: 125,
+                        lineNumber: 128,
                         columnNumber: 21
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/src/app/(restaurant)/restaurant/reviews/[id]/page.tsx",
-                lineNumber: 122,
+                lineNumber: 125,
                 columnNumber: 13
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/(restaurant)/restaurant/reviews/[id]/page.tsx",
-        lineNumber: 51,
+        lineNumber: 53,
         columnNumber: 9
     }, this);
 };

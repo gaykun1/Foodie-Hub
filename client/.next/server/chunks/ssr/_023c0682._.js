@@ -228,6 +228,7 @@ function Home() {
     const entry = Object.entries(links).find(([key, val])=>val === category);
     const [isLoading, setIsLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
     const currentTitle = entry ? entry[0] : __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$redux$2f$reduxTypes$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Category"].All;
+    // optimized func for fetching 
     const fetchRestaurants = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useCallback"])(async (category)=>{
         try {
             setIsLoading(true);
@@ -258,7 +259,7 @@ function Home() {
                         children: currentTitle
                     }, void 0, false, {
                         fileName: "[project]/src/app/(main)/restaurants/category/[category]/page.tsx",
-                        lineNumber: 50,
+                        lineNumber: 52,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -275,7 +276,7 @@ function Home() {
                                         children: "Filter"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(main)/restaurants/category/[category]/page.tsx",
-                                        lineNumber: 57,
+                                        lineNumber: 59,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$sliders$2d$horizontal$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__SlidersHorizontal$3e$__["SlidersHorizontal"], {
@@ -283,13 +284,13 @@ function Home() {
                                         size: 18
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(main)/restaurants/category/[category]/page.tsx",
-                                        lineNumber: 58,
+                                        lineNumber: 60,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/(main)/restaurants/category/[category]/page.tsx",
-                                lineNumber: 56,
+                                lineNumber: 58,
                                 columnNumber: 11
                             }, this),
                             isActiveFilterMenu && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -303,37 +304,37 @@ function Home() {
                                             children: key
                                         }, index, false, {
                                             fileName: "[project]/src/app/(main)/restaurants/category/[category]/page.tsx",
-                                            lineNumber: 67,
+                                            lineNumber: 69,
                                             columnNumber: 21
                                         }, this);
                                     })
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(main)/restaurants/category/[category]/page.tsx",
-                                    lineNumber: 64,
+                                    lineNumber: 66,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(main)/restaurants/category/[category]/page.tsx",
-                                lineNumber: 63,
+                                lineNumber: 65,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/(main)/restaurants/category/[category]/page.tsx",
-                        lineNumber: 51,
+                        lineNumber: 53,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/(main)/restaurants/category/[category]/page.tsx",
-                lineNumber: 49,
+                lineNumber: 51,
                 columnNumber: 7
             }, this),
             isLoading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid mx-auto"
             }, void 0, false, {
                 fileName: "[project]/src/app/(main)/restaurants/category/[category]/page.tsx",
-                lineNumber: 79,
+                lineNumber: 81,
                 columnNumber: 12
             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "grid  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mb-6 gap-6 ",
@@ -342,13 +343,13 @@ function Home() {
                         restaurant: restaurant
                     }, index, false, {
                         fileName: "[project]/src/app/(main)/restaurants/category/[category]/page.tsx",
-                        lineNumber: 83,
+                        lineNumber: 85,
                         columnNumber: 17
                     }, this);
                 })
             }, void 0, false, {
                 fileName: "[project]/src/app/(main)/restaurants/category/[category]/page.tsx",
-                lineNumber: 80,
+                lineNumber: 82,
                 columnNumber: 12
             }, this),
             restaurants?.length == 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -356,13 +357,13 @@ function Home() {
                 children: "No restaurants"
             }, void 0, false, {
                 fileName: "[project]/src/app/(main)/restaurants/category/[category]/page.tsx",
-                lineNumber: 89,
+                lineNumber: 91,
                 columnNumber: 37
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/(main)/restaurants/category/[category]/page.tsx",
-        lineNumber: 48,
+        lineNumber: 50,
         columnNumber: 5
     }, this);
 }

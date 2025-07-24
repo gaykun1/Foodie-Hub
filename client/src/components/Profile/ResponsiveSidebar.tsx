@@ -10,7 +10,7 @@ const ResponsiveSidebar = ({ type }: { type: string }) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const path = usePathname();
 
-
+    // memorized links for both admin and restaurant responsive dashboard depending on type prop
     const links = useMemo(() => {
         if (type === "profile") return [{ href: '/profile', label: 'Profile', icon: <User size={18} /> },
         { href: '/profile/favourites', label: 'Favorite Restaurants', icon: <Heart size={18} /> },

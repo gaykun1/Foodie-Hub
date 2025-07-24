@@ -1,5 +1,5 @@
 "use client"
-import { redirect, useParams, useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { Order } from "@/redux/reduxTypes";
 import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
@@ -8,6 +8,7 @@ import { convertToSubcurrency } from "@/utils/payment";
 import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "@/components/order/CheckoutForm";
 
+// shipping prices
 enum Shipping {
     Economy = 2.20,
     Standart = 3.20,
@@ -43,12 +44,13 @@ const Page = () => {
         <>
 
             {order && (
+                // container for Stripe payment 
                 <Elements options={{
                     mode: "payment",
                     currency: "usd",
                     amount: convertToSubcurrency(shipping + order.totalPrice)
                 }} stripe={getStripe()}>
-
+                    
                     <CheckoutForm order={order} />
                 </Elements>)}
 

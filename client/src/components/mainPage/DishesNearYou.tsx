@@ -9,14 +9,15 @@ const DishesNearYou = () => {
     const [dishes, setDishes] = useState<Dish[]>([]);
     const { user } = useAppSelector((state) => state.auth);
 
+    // func for getting dishes after every render (provided if user added City in profile settings form)
     useEffect(() => {
-        if(user?.address?.city){
-        const getDishesNearYou = async () => {
-            const res = await axios.get(`http://localhost:5200/api/restaurant/dishes/nearby`,{params:{city:user.address.city}});
-            if (res.data)
-                setDishes(res.data);
-        };
-        getDishesNearYou();
+        if (user?.address?.city) {
+            const getDishesNearYou = async () => {
+                const res = await axios.get(`http://localhost:5200/api/restaurant/dishes/nearby`, { params: { city: user.address.city } });
+                if (res.data)
+                    setDishes(res.data);
+            };
+            getDishesNearYou();
         }
 
     }, [user?.address?.city])

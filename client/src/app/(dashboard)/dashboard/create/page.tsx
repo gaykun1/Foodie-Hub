@@ -1,8 +1,10 @@
 "use client";
 import { Category } from "@/redux/reduxTypes";
+import { uploadImageToCloudinary } from "@/utils/uploadImageToCloudinary";
 import axios from "axios";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+
 
 type formFields = {
   title: string;
@@ -20,27 +22,6 @@ type formFields = {
   endHour: String,
 };
 
-// Функція для завантаження зображення на Cloudinary
-const uploadImageToCloudinary = async (file: File): Promise<string | null> => {
-  const formData = new FormData();
-  formData.append("file", file);
-  formData.append("upload_preset", "Images");
-
-  const res = await fetch("https://api.cloudinary.com/v1_1/dv3j72lqn/image/upload", {
-    method: "POST",
-    body: formData,
-  });
-
-  const data = await res.json();
-  if (!res.ok) {
-    console.error("Cloudinary error:", data);
-    return null;
-  }
-
-  return data.secure_url || null;
-};
-
-
 const Page = () => {
   const { register, handleSubmit, reset } = useForm<formFields>();
   const [serverError, setServerError] = useState<string | null>(null);
@@ -53,7 +34,7 @@ const Page = () => {
 
       const imageUrl = await uploadImageToCloudinary(imageFile);
 
-      // Дані ресторану
+      // restaurant info
       const restaurantData = {
         title: data.title,
         description: data.description,
@@ -81,6 +62,7 @@ const Page = () => {
       );
 
       setServerError(null);
+      // reseting all the input fields after successful request
       reset();
     } catch (err) {
       if (axios.isAxiosError(err)) {

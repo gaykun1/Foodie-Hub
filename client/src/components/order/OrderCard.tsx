@@ -5,6 +5,7 @@ import { ChevronsRight, ClipboardList, Clock, DollarSign } from "lucide-react";
 import React, { useMemo } from "react";
 
 const OrderCard = React.memo(({ order, setViewDetails }: { order: Order, setViewDetails: React.Dispatch<React.SetStateAction<Order | null>>; }) => {
+    //  memorized calculation of suitable format of order date 
     const date = useMemo(() => new Date((order.createdAt)).toDateString(), [order.createdAt]);
 
 

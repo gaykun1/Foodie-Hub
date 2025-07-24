@@ -3,15 +3,14 @@ import { useAppDispatch } from '@/hooks/reduxHooks';
 import { login } from '@/redux/authSlice';
 import { getCart } from '@/redux/cartSlice';
 import { getInfo } from '@/redux/courierSlice';
-import { Cart } from '@/redux/reduxTypes';
 import axios, { isAxiosError } from 'axios';
 import { useEffect } from 'react';
-
+// fetching data component every reload
 const AuthClientUpload = () => {
     const dispatch = useAppDispatch();
 
 
-
+    // func for fetching profile + courierPrfoile + cart
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -25,14 +24,14 @@ const AuthClientUpload = () => {
                         dispatch(getInfo(res.data));
                     }
                 }
-                
+
                 const cartRes = await axios.get("http://localhost:5200/api/cart/", {
                     withCredentials: true,
                 });
                 dispatch(getCart(cartRes.data));
 
             } catch (err) {
-                if(isAxiosError(err) && err.response){
+                if (isAxiosError(err) && err.response) {
 
                     console.error(err.response.data);
                 }

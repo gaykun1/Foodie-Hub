@@ -10,6 +10,8 @@ const Page = () => {
     const [orders, setOrders] = useState<Order[]>([]);
     const [socket, setSocket] = useState<Socket | null>(null);
     const { user } = useAppSelector((state) => state.auth);
+
+    // func for getting orders in status "Created"
     const getCreatedOrders = async () => {
         try {
             const res = await axios.get(`http://localhost:5200/api/order/orders/${user?.restaurantId}/created`, { withCredentials: true });
@@ -20,12 +22,14 @@ const Page = () => {
             console.error(err);
         }
     }
+    // creating io server after rendering
     useEffect(() => {
         const sock = io("http://localhost:5200");
         setSocket(sock);
         return () => {sock.disconnect();}
     }, []);
 
+    //after this connecting to socket and listening to newly-created orders
     useEffect(() => {
         if (user?.restaurantId && socket) {
             getCreatedOrders();

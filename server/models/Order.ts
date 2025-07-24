@@ -16,7 +16,7 @@ export interface IOrder {
   totalPrice: number,
   createdAt: Date,
   shippingPrice: number,
-  status: "Delivering" | "Delivered" | "Processing" | "Preparing",
+  status: "Delivering" | "Delivered" | "Created" | "Preparing",//Preparing-Cooking Created - created but not taken by the restaurant to cook
   discountPercent: number,
   fullName: string,
   adress: {

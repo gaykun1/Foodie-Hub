@@ -6,6 +6,7 @@ import { AuthRequest } from "./authMiddleware";
 
 export const restaurantMiddleware = (req: Request, res: Response, next: NextFunction): void => {
     const token = req.cookies?.token || req.headers.authorization?.split(' ')[1];
+    // checking auth token in cookies and headers
 
     if (!token) {
         res.status(401).json({ message: 'Unauthorized (no token)' });
@@ -20,6 +21,8 @@ export const restaurantMiddleware = (req: Request, res: Response, next: NextFunc
         }
         (req as AuthRequest).userId = decoded.userId;
         next();
+        //returning userId if its restaurant role
+
 
     } catch (err) {
         res.status(401).json({ message: 'Invalid token' });

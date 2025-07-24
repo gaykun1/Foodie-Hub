@@ -17,9 +17,28 @@ const page = () => {
   const [orders, setOrders] = useState<Order[] | null>(null);
   const [reviews, setReviews] = useState<Review[] | null>(null);
   const [topDishes, setTopDishes] = useState<Dish[] | null>(null);
-
   const [accordion, setAccordion] = useState<string | null>(null);
 
+  useEffect(() => {
+    // getting general numbers 
+    const getNumbers = async () => {
+      try {
+        const res = await axios.get("http://localhost:5200/api/order/orders/statistics", { withCredentials: true });
+        setNumOfOrders(res.data.numOfOrders);
+        setTotalRevenue(res.data.totalRevenue);
+        setAverageOrderValue(res.data.averageOrderValue);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    // creating io server
+    const sock = io("http://localhost:5200");
+    setSocket(sock);
+
+    getNumbers();
+  }, [])
+
+  // funcs for getting recent orders and reviews data
   useEffect(() => {
     const getLastSevenOrders = async () => {
       try {
@@ -56,27 +75,8 @@ const page = () => {
     getLastSevenOrders();
   }, [])
 
-
   useEffect(() => {
-
-    const getNumbers = async () => {
-      try {
-        const res = await axios.get("http://localhost:5200/api/order/orders/statistics", { withCredentials: true });
-        setNumOfOrders(res.data.numOfOrders);
-        setTotalRevenue(res.data.totalRevenue);
-        setAverageOrderValue(res.data.averageOrderValue);
-      } catch (err) {
-        console.error(err);
-      }
-    }
-
-    const sock = io("http://localhost:5200");
-    setSocket(sock);
-
-    getNumbers();
-  }, [])
-
-  useEffect(() => {
+    // connecting to the room and live listening new orders and new reviews (status or item)
     if (socket) {
       socket.emit("joinDashboard", { adminId: user?._id });
       socket.on("updateOrders", (orders) => {

@@ -10,7 +10,7 @@ import { Hamburger, Minus, Plus, Search, ShoppingCart, UserRound, X } from 'luci
 import Image from 'next/image'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
-import React, { useEffect,  useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 const Header = () => {
 
@@ -22,6 +22,7 @@ const Header = () => {
   const [word, setWord] = useState<string>("");
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
 
+  // func for searching restaurant with words (+2letters)
   const searchRestaurants = async (word: string): Promise<void | Restaurant[]> => {
     if (word === "" || word.length < 2) {
       setActivePanel(null);
@@ -39,9 +40,10 @@ const Header = () => {
     }
   }
 
-
+  // func for updating cart item count
   const updateCount = async (amount: number, id: string, title: string) => {
     try {
+      //deleting on front item if length ==0
       if (amount === 0) {
         dispatch(deleteItem(title));
       }
@@ -52,7 +54,7 @@ const Header = () => {
     }
   }
 
-
+  // func for closing active panel if e.target.value !== that active panel
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
@@ -80,6 +82,7 @@ const Header = () => {
       console.error(err);
     }
   }
+  
   return (
     <header className=" shadow-borderShadow border-b-[1px]  border-borderColor z-100 relative">
       <div className='py-2 flex items-center justify-between  _container'>

@@ -204,6 +204,7 @@ const Page = ()=>{
     const [menu, setMenu] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
     const [dishesLoading, setDishesLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
     const { id } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useParams"])();
+    // optimized func depending on id 
     const getDishes = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useCallback"])(async ()=>{
         try {
             setDishesLoading(true);
@@ -236,14 +237,14 @@ const Page = ()=>{
                 children: "Our Menu"
             }, void 0, false, {
                 fileName: "[project]/src/app/(restaurant)/restaurant/menu/[id]/page.tsx",
-                lineNumber: 31,
+                lineNumber: 33,
                 columnNumber: 13
             }, this),
             dishesLoading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid mx-auto"
             }, void 0, false, {
                 fileName: "[project]/src/app/(restaurant)/restaurant/menu/[id]/page.tsx",
-                lineNumber: 32,
+                lineNumber: 34,
                 columnNumber: 31
             }, this) : typesOfFood.map((type, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: "flex flex-col gap-4 ",
@@ -253,7 +254,7 @@ const Page = ()=>{
                             children: type
                         }, void 0, false, {
                             fileName: "[project]/src/app/(restaurant)/restaurant/menu/[id]/page.tsx",
-                            lineNumber: 34,
+                            lineNumber: 36,
                             columnNumber: 21
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -263,24 +264,24 @@ const Page = ()=>{
                                     dish: dish
                                 }, idx, false, {
                                     fileName: "[project]/src/app/(restaurant)/restaurant/menu/[id]/page.tsx",
-                                    lineNumber: 37,
+                                    lineNumber: 39,
                                     columnNumber: 29
                                 }, this))
                         }, void 0, false, {
                             fileName: "[project]/src/app/(restaurant)/restaurant/menu/[id]/page.tsx",
-                            lineNumber: 35,
+                            lineNumber: 37,
                             columnNumber: 21
                         }, this)
                     ]
                 }, idx, true, {
                     fileName: "[project]/src/app/(restaurant)/restaurant/menu/[id]/page.tsx",
-                    lineNumber: 33,
+                    lineNumber: 35,
                     columnNumber: 17
                 }, this))
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/(restaurant)/restaurant/menu/[id]/page.tsx",
-        lineNumber: 30,
+        lineNumber: 32,
         columnNumber: 9
     }, this);
 };

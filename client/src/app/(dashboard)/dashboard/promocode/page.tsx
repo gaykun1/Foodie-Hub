@@ -19,6 +19,7 @@ const Page = () => {
         try {
             const res = await axios.post("http://localhost:5200/api/promocode/promocodes", { data }, { withCredentials: true });
             if (res) {
+                // reseting if successful request
                 reset();
             }
         } catch (err) {

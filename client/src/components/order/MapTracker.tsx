@@ -3,19 +3,17 @@ import { Order } from '@/redux/reduxTypes';
 import { courierIcon, receiverIcon, restaurantIcon } from '@/utils/iconMapObjects';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { MapContainer, Marker, TileLayer, useMap } from 'react-leaflet';
+import { MapContainer, Marker, TileLayer } from 'react-leaflet';
 import { io, Socket } from 'socket.io-client';
 import "leaflet/dist/leaflet.css";
 import { InvalidateMapSize } from '@/utils/InvalidateMapSize ';
-import { useAppSelector } from '@/hooks/reduxHooks';
 
 
 
-const MapTracker = ({ isWorking, socket, courierLocation }: {  isWorking: Order | null, socket: Socket | null, courierLocation: [number, number] | null }) => {
+const MapTracker = ({ isWorking, socket, courierLocation }: { isWorking: Order | null, socket: Socket | null, courierLocation: [number, number] | null }) => {
     const [restaurantLocation, setRestaurantLocation] = useState<[number, number] | null>(null);
     const [receiverLocation, setReceiverLocation] = useState<[number, number] | null>(null);
     const [loadingLocation, setLoadingLocation] = useState<boolean>(true);
-    const { user } = useAppSelector(state => state.auth);
 
     // connecting to socket room, geocoding receiver adress
     useEffect(() => {
@@ -44,7 +42,7 @@ const MapTracker = ({ isWorking, socket, courierLocation }: {  isWorking: Order 
         receiverLocation &&
         restaurantLocation;
 
-    // geocoding fuuctions -- latitude longitude for marker position on the map
+    // geocoding funcs -- latitude longitude for marker position on the map
     const getRestaurentLocation = async () => {
         try {
             if (isWorking) {
@@ -84,13 +82,13 @@ const MapTracker = ({ isWorking, socket, courierLocation }: {  isWorking: Order 
 
         {
             !isReady ? (<div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid mx-auto"></div>) : courierLocation != null && receiverLocation != null && restaurantLocation != null &&
-
-                <MapContainer className='h-full w-full' zoom={15}  center={receiverLocation} >
-                    <InvalidateMapSize />
+                // container
+                <MapContainer className='h-full w-full' zoom={15} center={receiverLocation} >
+                    <InvalidateMapSize /> {/* for prerendered map size  */}
                     <TileLayer attribution='copy& Copyright openStreetMap ' url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' />
-                    <Marker position={receiverLocation} icon={receiverIcon} />
-                    <Marker position={restaurantLocation} icon={restaurantIcon} />
-                    <Marker position={courierLocation} icon={courierIcon} />
+                    <Marker position={receiverLocation} icon={receiverIcon} /> {/*Marker for receiver*/}
+                    <Marker position={restaurantLocation} icon={restaurantIcon} /> {/*Marker for restaurant*/}
+                    <Marker position={courierLocation} icon={courierIcon} /> {/*Marker for courier*/}
                 </MapContainer >
 
 
