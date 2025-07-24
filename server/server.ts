@@ -28,7 +28,7 @@ app.use(express.json());
 
 export const io = new Server(server, {
     cors: {
-        origin: "http://localhost:3000",
+        origin: process.env.CORS_ORIGIN,
         credentials: true
     }
 });
@@ -76,7 +76,7 @@ io.on("connection", (socket) => {
 
 // cors for express server
 app.use(cors({
-    origin: "http://localhost:3000",
+    origin: process.env.CORS_ORIGIN,
     credentials: true,
 }));
 
