@@ -10,3 +10,4 @@
 # general
 .DS_Store
 build
+dist
