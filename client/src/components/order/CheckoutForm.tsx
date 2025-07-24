@@ -42,7 +42,7 @@ const CheckoutForm = ({ order }: { order: Order }) => {
     // func for using promocode
     const usePromocode = useCallback(async () => {
         try {
-            const res = await axios.post(`http://localhost:5200/api/promocodes/${promocode}/use`, {}, { withCredentials: true });
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/promocodes/${promocode}/use`, {}, { withCredentials: true });
             if (res.data) {
                 setDiscount(res.data.discount + discount);
                 setPromocode("");
@@ -60,7 +60,7 @@ const CheckoutForm = ({ order }: { order: Order }) => {
 
             if (order) {
 
-                const res = await axios.post("http://localhost:5200/api/payment/payment-intent", { amount: convertToSubcurrency((shipping + order.totalPrice) * ((100 - discount) / 100)) });
+                const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/payment/payment-intent`, { amount: convertToSubcurrency((shipping + order.totalPrice) * ((100 - discount) / 100)) });
                 setClientSecret(res.data.clientSecret);
             }
         } catch (err) {
@@ -96,7 +96,7 @@ const CheckoutForm = ({ order }: { order: Order }) => {
             setLoading(false);
         }
         if (order) {
-            const res = await axios.patch("http://localhost:5200/api/order/orders", { formData, percent: discount, shipping, cartId: cart?._id, totalPrice: parseFloat(((shipping + order.totalPrice) * ((100 - discount) / 100)).toFixed(2)) }, { withCredentials: true });
+            const res = await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/api/order/orders`, { formData, percent: discount, shipping, cartId: cart?._id, totalPrice: parseFloat(((shipping + order.totalPrice) * ((100 - discount) / 100)).toFixed(2)) }, { withCredentials: true });
             const { error } = await stripe.confirmPayment({ //creating transaction
                 elements,
                 clientSecret,

@@ -28,7 +28,7 @@ const Page = () => {
     // creating a socket connection
     useEffect(() => {
 
-        const sock = io("http://localhost:5200");
+        const sock = io(`${process.env.NEXT_PUBLIC_API_URL}`);
         setSocket(sock);
 
 
@@ -41,7 +41,7 @@ const Page = () => {
         try {
             if (courier) {
 
-                const res = await axios.get(`http://localhost:5200/api/order/free-orders/${courier.city}`, { withCredentials: true });
+                const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/order/free-orders/${courier.city}`, { withCredentials: true });
                 setFreeOrders(res.data);
             }
         } catch (err) {
@@ -52,7 +52,7 @@ const Page = () => {
         try {
             if (courier) {
 
-                const res = await axios.get(`http://localhost:5200/api/order/couriers/${courier._id}/orders`, { withCredentials: true });
+                const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/order/couriers/${courier._id}/orders`, { withCredentials: true });
                 if (res.data) {
                     setCourierOrders(res.data);
                 }
@@ -68,7 +68,7 @@ const Page = () => {
         try {
             if (courier) {
 
-                const res = await axios.get(`http://localhost:5200/api/courier/orders/${courier._id}/status`);
+                const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/courier/orders/${courier._id}/status`);
                 setIsWorking(res.data);
                 setViewDetails(res.data);
                 return res.data;
@@ -81,7 +81,7 @@ const Page = () => {
     //changing status of the order
     const toggleOrderStatus = async (status: string, id: string) => {
         try {
-            const res = await axios.patch(`http://localhost:5200/api/courier/orders/${id}/status`, { status: status }, { withCredentials: true });
+            const res = await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/api/courier/orders/${id}/status`, { status: status }, { withCredentials: true });
             if (res) {
 
                 setStatus(res.data);

@@ -23,7 +23,7 @@ const page = () => {
     // getting general numbers 
     const getNumbers = async () => {
       try {
-        const res = await axios.get("http://localhost:5200/api/order/orders/statistics", { withCredentials: true });
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/order/orders/statistics`, { withCredentials: true });
         setNumOfOrders(res.data.numOfOrders);
         setTotalRevenue(res.data.totalRevenue);
         setAverageOrderValue(res.data.averageOrderValue);
@@ -32,7 +32,7 @@ const page = () => {
       }
     }
     // creating io server
-    const sock = io("http://localhost:5200");
+    const sock = io(`${process.env.NEXT_PUBLIC_API_URL}`);
     setSocket(sock);
 
     getNumbers();
@@ -42,7 +42,7 @@ const page = () => {
   useEffect(() => {
     const getLastSevenOrders = async () => {
       try {
-        const res = await axios.get("http://localhost:5200/api/order/orders/recent", { withCredentials: true });
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/order/orders/recent`, { withCredentials: true });
         if (res) {
           setOrders(res.data);
         }
@@ -52,7 +52,7 @@ const page = () => {
     }
     const getLastSevenReviews = async () => {
       try {
-        const res = await axios.get("http://localhost:5200/api/restaurant/restaurants/reviews/recent", { withCredentials: true });
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/restaurants/reviews/recent`, { withCredentials: true });
         if (res) {
           setReviews(res.data);
         }
@@ -62,7 +62,7 @@ const page = () => {
     }
     const getTopSevenDishes = async () => {
       try {
-        const res = await axios.get("http://localhost:5200/api/restaurant/restaurants/dishes/top", { withCredentials: true });
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/restaurants/dishes/top`, { withCredentials: true });
         if (res) {
           setTopDishes(res.data);
         }

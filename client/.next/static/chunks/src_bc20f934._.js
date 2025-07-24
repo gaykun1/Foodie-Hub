@@ -8,6 +8,7 @@ var { g: global, __dirname, k: __turbopack_refresh__, m: module } = __turbopack_
 __turbopack_context__.s({
     "default": (()=>__TURBOPACK__default__export__)
 });
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$hooks$2f$reduxHooks$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/hooks/reduxHooks.ts [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$redux$2f$cartSlice$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/redux/cartSlice.ts [app-client] (ecmascript)");
@@ -30,7 +31,7 @@ const DishCard = ({ dish, toCart, onDeleted })=>{
     }["DishCard.useAppSelector"]);
     const deleteDish = async ()=>{
         try {
-            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].delete(`http://localhost:5200/api/restaurant/dishes/${dish._id}`);
+            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].delete(`${("TURBOPACK compile-time value", "http://localhost:5200")}/api/restaurant/dishes/${dish._id}`);
             if (onDeleted) onDeleted();
         } catch (err) {
             console.error(err);
@@ -38,7 +39,7 @@ const DishCard = ({ dish, toCart, onDeleted })=>{
     };
     const addToCart = async ()=>{
         try {
-            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].post("http://localhost:5200/api/cart/items", {
+            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].post(`${("TURBOPACK compile-time value", "http://localhost:5200")}/api/cart/items`, {
                 id: dish._id
             }, {
                 withCredentials: true
@@ -50,11 +51,13 @@ const DishCard = ({ dish, toCart, onDeleted })=>{
             console.error(err);
         }
     };
+    // optimized handleClick func for adding one time item to cart
     const handleClick = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
         "DishCard.useCallback[handleClick]": ()=>{
             addToCart();
         }
     }["DishCard.useCallback[handleClick]"], []);
+    // memorizing calculation for checking if item is in cart
     const isInCart = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMemo"])({
         "DishCard.useMemo[isInCart]": ()=>cart?.items.some({
                 "DishCard.useMemo[isInCart]": (item)=>item.dishId.title === dish.title
@@ -73,12 +76,12 @@ const DishCard = ({ dish, toCart, onDeleted })=>{
                     alt: "dish image"
                 }, void 0, false, {
                     fileName: "[project]/src/components/Dashboard/DishCard.tsx",
-                    lineNumber: 42,
+                    lineNumber: 43,
                     columnNumber: 17
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/Dashboard/DishCard.tsx",
-                lineNumber: 41,
+                lineNumber: 42,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -92,7 +95,7 @@ const DishCard = ({ dish, toCart, onDeleted })=>{
                                 children: dish.title
                             }, void 0, false, {
                                 fileName: "[project]/src/components/Dashboard/DishCard.tsx",
-                                lineNumber: 47,
+                                lineNumber: 48,
                                 columnNumber: 21
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -100,13 +103,13 @@ const DishCard = ({ dish, toCart, onDeleted })=>{
                                 children: dish.description
                             }, void 0, false, {
                                 fileName: "[project]/src/components/Dashboard/DishCard.tsx",
-                                lineNumber: 48,
+                                lineNumber: 49,
                                 columnNumber: 21
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/Dashboard/DishCard.tsx",
-                        lineNumber: 46,
+                        lineNumber: 47,
                         columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -120,7 +123,7 @@ const DishCard = ({ dish, toCart, onDeleted })=>{
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/Dashboard/DishCard.tsx",
-                                lineNumber: 51,
+                                lineNumber: 52,
                                 columnNumber: 21
                             }, this),
                             toCart ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -133,14 +136,14 @@ const DishCard = ({ dish, toCart, onDeleted })=>{
                                             size: 16
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/Dashboard/DishCard.tsx",
-                                            lineNumber: 56,
+                                            lineNumber: 57,
                                             columnNumber: 41
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                             children: "Add to Cart"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/Dashboard/DishCard.tsx",
-                                            lineNumber: 56,
+                                            lineNumber: 57,
                                             columnNumber: 67
                                         }, this)
                                     ]
@@ -148,12 +151,12 @@ const DishCard = ({ dish, toCart, onDeleted })=>{
                                     children: "In Cart"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/Dashboard/DishCard.tsx",
-                                    lineNumber: 56,
+                                    lineNumber: 57,
                                     columnNumber: 99
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/components/Dashboard/DishCard.tsx",
-                                lineNumber: 54,
+                                lineNumber: 55,
                                 columnNumber: 32
                             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                 onClick: deleteDish,
@@ -162,30 +165,30 @@ const DishCard = ({ dish, toCart, onDeleted })=>{
                                     size: 16
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/Dashboard/DishCard.tsx",
-                                    lineNumber: 60,
+                                    lineNumber: 61,
                                     columnNumber: 29
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/components/Dashboard/DishCard.tsx",
-                                lineNumber: 58,
+                                lineNumber: 59,
                                 columnNumber: 25
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/Dashboard/DishCard.tsx",
-                        lineNumber: 50,
+                        lineNumber: 51,
                         columnNumber: 17
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/Dashboard/DishCard.tsx",
-                lineNumber: 45,
+                lineNumber: 46,
                 columnNumber: 13
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/Dashboard/DishCard.tsx",
-        lineNumber: 40,
+        lineNumber: 41,
         columnNumber: 9
     }, this);
 };
@@ -212,6 +215,7 @@ var { g: global, __dirname, k: __turbopack_refresh__, m: module } = __turbopack_
 __turbopack_context__.s({
     "default": (()=>__TURBOPACK__default__export__)
 });
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$Dashboard$2f$DishCard$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/Dashboard/DishCard.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/axios/lib/axios.js [app-client] (ecmascript)");
@@ -234,7 +238,7 @@ const Page = ()=>{
         "Page.useCallback[getDishes]": async ()=>{
             try {
                 setDishesLoading(true);
-                const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get(`http://localhost:5200/api/restaurant/dishes/${id}`);
+                const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get(`${("TURBOPACK compile-time value", "http://localhost:5200")}/api/restaurant/dishes/${id}`);
                 if (res.data) setMenu(res.data.dishes);
             } catch (err) {
                 console.error(err);

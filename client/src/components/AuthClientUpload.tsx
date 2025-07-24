@@ -14,18 +14,18 @@ const AuthClientUpload = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await axios.get("http://localhost:5200/api/auth/profile", {
+                const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/profile`, {
                     withCredentials: true,
                 });
                 dispatch(login(res.data.user));
-                if (res.data.user.role === "courier") {
-                    const res = await axios.get("http://localhost:5200/api/courier/profile", { withCredentials: true });
+                if (res.data.user.role === `courier`) {
+                    const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/courier/profile`, { withCredentials: true });
                     if (res) {
                         dispatch(getInfo(res.data));
                     }
                 }
 
-                const cartRes = await axios.get("http://localhost:5200/api/cart/", {
+                const cartRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/cart/`, {
                     withCredentials: true,
                 });
                 dispatch(getCart(cartRes.data));

@@ -69,7 +69,7 @@ const Page = () => {
     if (Object.keys(payload).length === 0) return;
 
     try {
-      const res = await axios.patch("http://localhost:5200/api/auth/profile", {
+      const res = await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/profile`, {
         payload
       }, { withCredentials: true });
       if (res.data)

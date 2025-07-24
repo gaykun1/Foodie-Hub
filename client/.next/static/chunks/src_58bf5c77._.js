@@ -87,6 +87,7 @@ var { g: global, __dirname, k: __turbopack_refresh__, m: module } = __turbopack_
 __turbopack_context__.s({
     "default": (()=>__TURBOPACK__default__export__)
 });
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$iconMapObjects$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/utils/iconMapObjects.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/axios/lib/axios.js [app-client] (ecmascript)");
@@ -137,10 +138,10 @@ const MapTracker = ({ isWorking, socket, courierLocation })=>{
     const getRestaurentLocation = async ()=>{
         try {
             if (isWorking) {
-                const res1 = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get(`http://localhost:5200/api/restaurant/restaurants/${isWorking.restaurantTitle}/address`);
+                const res1 = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get(`${("TURBOPACK compile-time value", "http://localhost:5200")}/api/restaurant/restaurants/${isWorking.restaurantTitle}/address`);
                 const adress = res1.data.adress;
                 const address = `${adress.street} ${adress.houseNumber}, ${adress.city}`;
-                const res2 = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get(`http://localhost:5200/api/geocode?q=${address}`);
+                const res2 = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get(`${("TURBOPACK compile-time value", "http://localhost:5200")}/api/geocode?q=${address}`);
                 const lat = res2.data[0].lat;
                 const lng = res2.data[0].lon;
                 setRestaurantLocation([
@@ -156,7 +157,7 @@ const MapTracker = ({ isWorking, socket, courierLocation })=>{
         try {
             if (isWorking) {
                 const address = `${isWorking.adress.street} ${isWorking.adress.houseNumber}, ${isWorking.adress.city}`;
-                const res = await fetch(`http://localhost:5200/api/geocode?q=${address}`);
+                const res = await fetch(`${("TURBOPACK compile-time value", "http://localhost:5200")}/api/geocode?q=${address}`);
                 const data = await res.json();
                 console.log(data);
                 const lat = data[0].lat;

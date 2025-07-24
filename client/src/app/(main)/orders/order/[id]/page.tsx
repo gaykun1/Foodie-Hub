@@ -22,7 +22,7 @@ const Page = () => {
     const router = useRouter();
     const getOrder = useCallback(async () => {
         try {
-            const res = await axios.get(`http://localhost:5200/api/order/orders/${id}`, { withCredentials: true });
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/order/orders/${id}`, { withCredentials: true });
             if (res.data) {
                 setOrder(res.data);
 

@@ -14,7 +14,7 @@ const Page = () => {
     // func for getting orders in status "Created"
     const getCreatedOrders = async () => {
         try {
-            const res = await axios.get(`http://localhost:5200/api/order/orders/${user?.restaurantId}/created`, { withCredentials: true });
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/order/orders/${user?.restaurantId}/created`, { withCredentials: true });
             if (res.data) {
                 setOrders(res.data);
             }
@@ -24,7 +24,7 @@ const Page = () => {
     }
     // creating io server after rendering
     useEffect(() => {
-        const sock = io("http://localhost:5200");
+        const sock = io(`${process.env.NEXT_PUBLIC_API_URL}`);
         setSocket(sock);
         return () => {sock.disconnect();}
     }, []);

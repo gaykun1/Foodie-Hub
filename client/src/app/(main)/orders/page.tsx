@@ -22,7 +22,7 @@ const Page = () => {
   const [activeSidebar, setActiveSidebar] = useState<boolean>(false);
   // creating a socket connection
   useEffect(() => {
-    const sock = io("http://localhost:5200");
+    const sock = io(`${process.env.NEXT_PUBLIC_API_URL}`);
     setSocket(sock);
     return () => { sock.disconnect(); }
   }, []);
@@ -36,7 +36,7 @@ const Page = () => {
     const getOrders = async () => {
       try {
         setLoading(true);
-        const res = await axios.get("http://localhost:5200/api/order/orders", { withCredentials: true });
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/order/orders`, { withCredentials: true });
         if (res) setOrders(res.data);
       } catch (err) {
         console.error(err);

@@ -37,7 +37,7 @@ const page = () => {
 
             }
 
-            const res = await axios.post("http://localhost:5200/api/restaurant/dishes", { dish, id });
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/dishes`, { dish, id });
             reset();
             setMenu([...menu, res.data]);
         } catch (err) {
@@ -53,7 +53,7 @@ const page = () => {
     const getDishes = async () => {
         try {
             setDishesLoading(true);
-            const res = await axios.get(`http://localhost:5200/api/restaurant/dishes/${id}`);
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/dishes/${id}`);
             if (res.data)
                 setMenu(res.data.dishes);
         } catch (err) {

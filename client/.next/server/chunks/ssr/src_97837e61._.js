@@ -111,10 +111,10 @@ const MapTracker = ({ isWorking, socket, courierLocation })=>{
     const getRestaurentLocation = async ()=>{
         try {
             if (isWorking) {
-                const res1 = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].get(`http://localhost:5200/api/restaurant/restaurants/${isWorking.restaurantTitle}/address`);
+                const res1 = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].get(`${("TURBOPACK compile-time value", "http://localhost:5200")}/api/restaurant/restaurants/${isWorking.restaurantTitle}/address`);
                 const adress = res1.data.adress;
                 const address = `${adress.street} ${adress.houseNumber}, ${adress.city}`;
-                const res2 = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].get(`http://localhost:5200/api/geocode?q=${address}`);
+                const res2 = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].get(`${("TURBOPACK compile-time value", "http://localhost:5200")}/api/geocode?q=${address}`);
                 const lat = res2.data[0].lat;
                 const lng = res2.data[0].lon;
                 setRestaurantLocation([
@@ -130,7 +130,7 @@ const MapTracker = ({ isWorking, socket, courierLocation })=>{
         try {
             if (isWorking) {
                 const address = `${isWorking.adress.street} ${isWorking.adress.houseNumber}, ${isWorking.adress.city}`;
-                const res = await fetch(`http://localhost:5200/api/geocode?q=${address}`);
+                const res = await fetch(`${("TURBOPACK compile-time value", "http://localhost:5200")}/api/geocode?q=${address}`);
                 const data = await res.json();
                 console.log(data);
                 const lat = data[0].lat;

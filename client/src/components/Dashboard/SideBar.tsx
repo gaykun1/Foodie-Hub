@@ -1,6 +1,6 @@
 
 "use client"
-import { BarChart, FileUser, Home, ListOrdered, Percent, Plus,  SquareRoundCorner, Utensils } from "lucide-react"
+import { FileUser, Home, ListOrdered, Percent, Plus,  SquareRoundCorner, Utensils } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation";
 // sidebar links for both admin and restaurant 

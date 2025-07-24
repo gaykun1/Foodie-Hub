@@ -12,7 +12,7 @@ const OrderCardDashboard = ({ order, setOrders }: { order: Order, setOrders: Dis
     // func for toggling restaurant status from "Created" to "Preparing" = "Cooking"
     const toggleToPreparing = async () => {
         try {
-            const res = await axios.patch(`http://localhost:5200/api/order/orders/${order._id}/status`, {}, { withCredentials: true });
+            const res = await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/api/order/orders/${order._id}/status`, {}, { withCredentials: true });
             setOrders((prev) => prev.filter(item => item._id !== order._id));
         } catch (err) {
             console.error(err);

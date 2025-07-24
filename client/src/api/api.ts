@@ -4,7 +4,7 @@ import axios, { isAxiosError } from "axios";
 
 export const SignUp = async (password: string, username: string): Promise<User | void> => {
     try {
-        const res = await axios.post("http://localhost:5200/api/auth/signup", { username, password }, { withCredentials: true });
+        const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/signup`, { username, password }, { withCredentials: true });
         if (!res) return;
         return res.data;
     } catch (err) {
@@ -15,7 +15,7 @@ export const SignUp = async (password: string, username: string): Promise<User |
 }
 export const LogIn = async (password: string, username: string): Promise<User | void> => {
     try {
-        const res = await axios.post("http://localhost:5200/api/auth/login", { username, password }, { withCredentials: true });
+        const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`, { username, password }, { withCredentials: true });
         if (!res) return;
         return res.data;
     } catch (err) {
@@ -27,7 +27,7 @@ export const LogIn = async (password: string, username: string): Promise<User | 
 
 export const LogOut = async (): Promise<void> => {
     try {
-        const res = await axios.post("http://localhost:5200/api/auth/logout", {}, { withCredentials: true });
+        const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/logout`, {}, { withCredentials: true });
         if (!res) return;
         return res.data;
     } catch (err) {
@@ -37,7 +37,7 @@ export const LogOut = async (): Promise<void> => {
 export const getRestaurantsFiltered = async (categorie: string): Promise<void | Restaurant[]> => {
     try {
         if (!categorie) return;
-        const res = await axios.get(`http://localhost:5200/api/restaurant/restaurants/filter?categorie=${encodeURIComponent(categorie)}`,);
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/restaurants/filter?categorie=${encodeURIComponent(categorie)}`,);
         if (!res) return;
         return res.data;
     } catch (err) {

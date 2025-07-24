@@ -22,7 +22,7 @@ const Page = () => {
     // func - get applications (couriers in status "Processing")
     const getApplications = async () => {
         try {
-            const res = await axios.get("http://localhost:5200/api/courier/applications", { withCredentials: true });
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/courier/applications`, { withCredentials: true });
             if (!res.data) {
                 return;
             }
@@ -41,7 +41,7 @@ const Page = () => {
     // func for accepting or - the courier for work
     const toggleApplication = async (status: string, id: string) => {
         try {
-            const res = await axios.post(`http://localhost:5200/api/courier/applications/${id}`, { status });
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/courier/applications/${id}`, { status });
             if (res) {
 
                 setApplications((prev) => prev?.filter((item) => item._id !== id )|| []);

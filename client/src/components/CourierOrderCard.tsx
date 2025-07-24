@@ -13,7 +13,7 @@ const CourierOrderCard = ({ order, checkIfHasOrder, setViewDetails }: { order: O
     // func for taking order memorized 
     const takeOrder = useCallback(async (id: string, courierId: string) => {
         try {
-            const res = await axios.post(`http://localhost:5200/api/courier/orders/${id}/take`, { id, courierId }, { withCredentials: true });
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/courier/orders/${id}/take`, { id, courierId }, { withCredentials: true });
         } catch (err) {
             console.error(err);
         }

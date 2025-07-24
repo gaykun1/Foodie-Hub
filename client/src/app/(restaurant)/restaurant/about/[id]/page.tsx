@@ -17,7 +17,7 @@ const Page = () => {
         try {
             setLoading(true);
 
-            const res = await axios.get(`http://localhost:5200/api/restaurant/restaurants/${id}/about`,);
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/restaurants/${id}/about`,);
             setInfo(res.data);
         } catch (err) {
             console.error(err);
@@ -30,7 +30,7 @@ const Page = () => {
     // updating or creating text info about restaurant 
     const handleTextAbout = async () => {
         try {
-            const res = await axios.post(`http://localhost:5200/api/restaurant/restaurants/${id}/about`, { id, info });
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/restaurants/${id}/about`, { id, info });
             setInfo(res.data);
         } catch (err) {
             console.error(err);

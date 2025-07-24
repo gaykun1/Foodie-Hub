@@ -31,7 +31,7 @@ const Header = () => {
     }
     if (word.length >= 2) {
       try {
-        const res = await axios.get(`http://localhost:5200/api/restaurant/restaurants/search?chars=${word}`);
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/restaurants/search?chars=${word}`);
         if (!res) return;
         return res.data;
       } catch (err) {
@@ -48,7 +48,7 @@ const Header = () => {
         dispatch(deleteItem(title));
       }
       dispatch(updateAmount({ amount: amount, dishId: id }));
-      const res = await axios.patch(`http://localhost:5200/api/cart/items/${id}`, { amount: amount, title: title }, { withCredentials: true });
+      const res = await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/api/cart/items/${id}`, { amount: amount, title: title }, { withCredentials: true });
     } catch (err) {
       console.error(err);
     }
@@ -75,7 +75,7 @@ const Header = () => {
 
   const createOrder = async () => {
     try {
-      const res = await axios.post("http://localhost:5200/api/order/orders", { cart }, { withCredentials: true });
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/order/orders`, { cart }, { withCredentials: true });
       if (res.data)
         return res.data;
     } catch (err) {

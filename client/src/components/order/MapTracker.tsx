@@ -46,10 +46,10 @@ const MapTracker = ({ isWorking, socket, courierLocation }: { isWorking: Order |
     const getRestaurentLocation = async () => {
         try {
             if (isWorking) {
-                const res1 = await axios.get(`http://localhost:5200/api/restaurant/restaurants/${isWorking.restaurantTitle}/address`);
+                const res1 = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/restaurants/${isWorking.restaurantTitle}/address`);
                 const adress = res1.data.adress;
                 const address = `${adress.street} ${adress.houseNumber}, ${adress.city}`;
-                const res2 = await axios.get(`http://localhost:5200/api/geocode?q=${address}`)
+                const res2 = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/geocode?q=${address}`)
 
                 const lat = res2.data[0].lat;
                 const lng = res2.data[0].lon;
@@ -64,7 +64,7 @@ const MapTracker = ({ isWorking, socket, courierLocation }: { isWorking: Order |
         try {
             if (isWorking) {
                 const address = `${isWorking.adress.street} ${isWorking.adress.houseNumber}, ${isWorking.adress.city}`;
-                const res = await fetch(`http://localhost:5200/api/geocode?q=${address}`)
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/geocode?q=${address}`)
                 const data = await res.json();
                 console.log(data);
                 const lat = data[0].lat;

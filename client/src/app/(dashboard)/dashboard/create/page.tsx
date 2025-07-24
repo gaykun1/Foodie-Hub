@@ -53,7 +53,7 @@ const Page = () => {
 
 
       const res = await axios.post(
-        "http://localhost:5200/api/restaurant/restaurants",
+        `${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/restaurants`,
         restaurantData,
         {
 

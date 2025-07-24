@@ -23,7 +23,7 @@ const Page = () => {
       // funcs for getting recent orders and reviews data
       const getLastSevenOrders = async () => {
         try {
-          const res = await axios.get(`http://localhost:5200/api/order/restaurants/${user?.restaurantId}/orders/recent`, { withCredentials: true });
+          const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/order/restaurants/${user?.restaurantId}/orders/recent`, { withCredentials: true });
           if (res) {
             setOrders(res.data);
           }
@@ -33,7 +33,7 @@ const Page = () => {
       }
       const getLastSevenReviews = async () => {
         try {
-          const res = await axios.get(`http://localhost:5200/api/restaurant/restaurants/${user?.restaurantId}/reviews/recent`, { withCredentials: true });
+          const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/restaurants/${user?.restaurantId}/reviews/recent`, { withCredentials: true });
           if (res) {
             setReviews(res.data);
           }
@@ -44,7 +44,7 @@ const Page = () => {
       // func for top restaurant dishes
       const getTopSevenDishes = async () => {
         try {
-          const res = await axios.get(`http://localhost:5200/api/restaurant/restaurants/${user?.restaurantId}/dishes/top`, { withCredentials: true });
+          const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/restaurants/${user?.restaurantId}/dishes/top`, { withCredentials: true });
           if (res) {
             setTopDishes(res.data);
           }
@@ -64,7 +64,7 @@ const Page = () => {
       // getting general numbers
       const getNumbers = async () => {
         try {
-          const res = await axios.get(`http://localhost:5200/api/order/orders/statistics?id=${user?.restaurantId}`, { withCredentials: true });
+          const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/order/orders/statistics?id=${user?.restaurantId}`, { withCredentials: true });
           setNumOfOrders(res.data.numOfOrders);
           setTotalRevenue(res.data.totalRevenue);
           setAverageOrderValue(res.data.averageOrderValue);
@@ -73,7 +73,7 @@ const Page = () => {
         }
       }
       // connecting to io server
-      const sock = io("http://localhost:5200");
+      const sock = io(`${process.env.NEXT_PUBLIC_API_URL}`);
       setSocket(sock);
 
       getNumbers();

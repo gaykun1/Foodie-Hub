@@ -14,7 +14,7 @@ const Page = () => {
   useEffect(() => {
     const getFavourites = async () => {
       try {
-        const res = await axios.get("http://localhost:5200/api/restaurant/restaurants/favourites", { withCredentials: true });
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/restaurants/favourites`, { withCredentials: true });
         setItems(res.data);
       } catch (err) {
         console.error(err);

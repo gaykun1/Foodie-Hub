@@ -17,7 +17,7 @@ const Page = () => {
 
     const onSubmit: SubmitHandler<formFields> = async (data) => {
         try {
-            const res = await axios.post("http://localhost:5200/api/promocode/promocodes", { data }, { withCredentials: true });
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/promocode/promocodes`, { data }, { withCredentials: true });
             if (res) {
                 // reseting if successful request
                 reset();

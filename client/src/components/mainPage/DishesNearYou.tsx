@@ -13,7 +13,7 @@ const DishesNearYou = () => {
     useEffect(() => {
         if (user?.address?.city) {
             const getDishesNearYou = async () => {
-                const res = await axios.get(`http://localhost:5200/api/restaurant/dishes/nearby`, { params: { city: user.address.city } });
+                const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/dishes/nearby`, { params: { city: user.address.city } });
                 if (res.data)
                     setDishes(res.data);
             };

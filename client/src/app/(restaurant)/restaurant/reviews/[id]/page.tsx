@@ -20,7 +20,7 @@ const Page = () => {
     const getReviews = useCallback(async () => {
         try {
             setLoading(true);
-            const res = await axios.get(`http://localhost:5200/api/restaurant/restaurants/${id}/reviews?page=${page}`);
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/restaurants/${id}/reviews?page=${page}`);
             if (res.data)
                 setReviews(res.data.reviews);
             setPagesAmount(res.data.length);
@@ -35,7 +35,7 @@ const Page = () => {
 
     const createReview = async () => {
         try {
-            const res = await axios.post(`http://localhost:5200/api/restaurant/reviews`, { id: id, text: text, rating: rating }, { withCredentials: true });
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/reviews`, { id: id, text: text, rating: rating }, { withCredentials: true });
             if (res.data)
                 getReviews();
         } catch (err) {

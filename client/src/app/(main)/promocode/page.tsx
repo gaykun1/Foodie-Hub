@@ -18,7 +18,7 @@ const Page = () => {
         }
         try {
             setLoading(true);
-            const res = await axios.post(`http://localhost:5200/api/promocode/promocodes/${promocode}`, {}, { withCredentials: true });
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/promocode/promocodes/${promocode}`, {}, { withCredentials: true });
             if (res.data) {
                 setError("Used");
                 setPromocode("");

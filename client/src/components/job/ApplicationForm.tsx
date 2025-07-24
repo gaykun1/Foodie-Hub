@@ -23,7 +23,7 @@ const ApplicationForm = () => {
 
         try {
             setLoading(true);
-            const res = await axios.post("http://localhost:5200/api/courier/applications", { data }, { withCredentials: true });
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/courier/applications`, { data }, { withCredentials: true });
             // giving status sent to disable button while checking on admin side 
             setAlreadySent(res.data.status);
 
@@ -46,7 +46,7 @@ const ApplicationForm = () => {
             try {
 
 
-                const res = await axios.get("http://localhost:5200/api/courier/applications/status", { withCredentials: true })
+                const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/courier/applications/status`, { withCredentials: true })
 
                 setAlreadySent(res.data.status);
 

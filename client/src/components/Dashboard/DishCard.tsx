@@ -12,7 +12,7 @@ const DishCard = ({ dish, toCart, onDeleted }: { dish: Dish, toCart: boolean, on
 
     const deleteDish = async () => {
         try {
-            const res = await axios.delete(`http://localhost:5200/api/restaurant/dishes/${dish._id}`);
+            const res = await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/dishes/${dish._id}`);
 
             if (onDeleted) onDeleted();
         } catch (err) {
@@ -23,7 +23,7 @@ const DishCard = ({ dish, toCart, onDeleted }: { dish: Dish, toCart: boolean, on
 
     const addToCart = async () => {
         try {
-            const res = await axios.post("http://localhost:5200/api/cart/items", { id: dish._id }, { withCredentials: true });
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/cart/items`, { id: dish._id }, { withCredentials: true });
             if (res.data) {
                 dispatch(getCart(res.data));
             }

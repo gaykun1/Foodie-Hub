@@ -24,7 +24,7 @@ export default function HeaderRestaurant() {
     const getRestaurantInfo = async () => {
       try {
         setIsLoading(true);
-        const res = await axios.get(`http://localhost:5200/api/restaurant/restaurants/${id}`);
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/restaurants/${id}`);
         setCurrentRestaurant(res.data);
       } catch (err) {
         console.error(err);
@@ -39,7 +39,7 @@ export default function HeaderRestaurant() {
 
   const toggleFavourite = async () => {
     try {
-      const res = await axios.post(`http://localhost:5200/api/restaurant/restaurants/${id}/favourite`, { }, { withCredentials: true });
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/restaurants/${id}/favourite`, { }, { withCredentials: true });
       dispatch(updateFavourites(res.data));
       return;
     } catch (err) {

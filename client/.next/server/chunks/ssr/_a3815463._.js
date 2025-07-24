@@ -61,7 +61,7 @@ const Page = ()=>{
         // if nothing has changed returning;
         if (Object.keys(payload).length === 0) return;
         try {
-            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].patch("http://localhost:5200/api/auth/profile", {
+            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].patch(`${("TURBOPACK compile-time value", "http://localhost:5200")}/api/auth/profile`, {
                 payload
             }, {
                 withCredentials: true
