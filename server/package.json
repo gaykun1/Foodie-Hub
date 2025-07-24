@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only server.ts",
     "build": "tsc",
-    "start": "node dist/server.js"
+    "start":  "npm list path-to-regexp && node dist/server.js"
+
   },
   "keywords": [],
   "author": "",
