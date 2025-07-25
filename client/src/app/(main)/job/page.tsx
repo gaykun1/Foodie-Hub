@@ -2,7 +2,7 @@ import ApplicationForm from '@/components/job/ApplicationForm'
 import JobBanner from '@/components/job/JobBanner'
 import { BadgeDollarSign, Bike,  CalendarSync, Check, CircleOff, Dot } from 'lucide-react'
 
-const page = () => {
+const Page = () => {
     return (
         <div className='pb-10'>
             <JobBanner />
@@ -46,4 +46,4 @@ const page = () => {
     )
 }
 
-export default page
+export default Page

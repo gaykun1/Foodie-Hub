@@ -6,7 +6,7 @@ import { Pen, Search } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react'
 
-const page = () => {
+const Page = () => {
     const [word, setWord] = useState<string>("");
     const [items, setItems] = useState<Pick<Restaurant, "imageUrl" | "title" | "_id">[] | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
@@ -80,6 +80,6 @@ const page = () => {
     )
 }
 
-export default page
+export default Page
 
 

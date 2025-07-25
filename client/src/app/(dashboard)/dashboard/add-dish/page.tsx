@@ -17,7 +17,7 @@ type formFields = {
 }
 // func for uploading image into a cloud
 
-const page = () => {
+const Page = () => {
     const [dishesLoading, setDishesLoading] = useState<boolean>(false);
     const [menu, setMenu] = useState<Dish[]>([]);
     const { register, handleSubmit, reset, formState: { errors } } = useForm<formFields>();
@@ -152,4 +152,4 @@ const page = () => {
     )
 }
 
-export default page
+export default Page

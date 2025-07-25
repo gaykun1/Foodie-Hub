@@ -17,7 +17,7 @@ const links: Record<Category, string> = {
   [Category.Healthy]: "healthy",
 };
 
-export default function Home() {
+export default function Page() {
   const dispatch = useAppDispatch();
   const { restaurants } = useAppSelector(state => state.restaurants);
   const { category } = useParams() as { category: string };

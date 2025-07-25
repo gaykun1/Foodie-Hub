@@ -16,7 +16,7 @@ type formFields = {
     typeOfFood: string,
 }
 
-const page = () => {
+const Page = () => {
     const [dishesLoading, setDishesLoading] = useState<boolean>(false);
     const [menu, setMenu] = useState<Dish[]>([]);
     const { id } = useParams() as { id: string };
@@ -150,4 +150,4 @@ const page = () => {
     )
 }
 
-export default page
+export default Page

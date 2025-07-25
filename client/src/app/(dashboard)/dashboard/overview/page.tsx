@@ -8,7 +8,7 @@ import { useAppSelector } from '@/hooks/reduxHooks';
 import { Dish, Order, Review } from '@/redux/reduxTypes';
 import { calculateStars } from '@/utils/rating';
 
-const page = () => {
+const Page = () => {
   const { user } = useAppSelector((state) => state.auth)
   const [numOfOrders, setNumOfOrders] = useState<{ number: number, percent: number } | null>(null);
   const [totalRevenue, setTotalRevenue] = useState<{ number: number, percent: number } | null>(null);
@@ -237,4 +237,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page
