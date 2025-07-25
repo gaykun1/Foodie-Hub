@@ -65,6 +65,13 @@ export interface Cart {
     _id: string,
 }
 
+// shipping prices
+export enum Shipping {
+    Economy = 2.20,
+    Standart = 3.20,
+    Express = 5.20,
+}
+
 export type Order = {
     restaurantTitle: string,
     restaurantImage: string,
