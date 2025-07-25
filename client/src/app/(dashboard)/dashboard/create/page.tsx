@@ -19,7 +19,7 @@ type formFields = {
   startDay: string,
   endDay: string,
   startHour: string,
-  endHour: String,
+  endHour: string,
 };
 
 const Page = () => {
@@ -52,7 +52,7 @@ const Page = () => {
       };
 
 
-      const res = await axios.post(
+      await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/restaurants`,
         restaurantData,
         {

@@ -20,7 +20,7 @@ type formFields = {
 const Page = () => {
     const [dishesLoading, setDishesLoading] = useState<boolean>(false);
     const [menu, setMenu] = useState<Dish[]>([]);
-    const { register, handleSubmit, reset, formState: { errors } } = useForm<formFields>();
+    const { register, handleSubmit, reset } = useForm<formFields>();
     const [loading, setLoading] = useState<boolean>(false);
     const { user } = useAppSelector(state => state.auth);
 

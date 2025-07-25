@@ -19,7 +19,7 @@ const Page = () => {
       await SignUp(data.password, data.username);
       router.push("/");
     } catch (err) {
-
+      console.error(err);
     }
   }
   return (

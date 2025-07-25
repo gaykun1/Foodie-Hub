@@ -3,7 +3,7 @@ import axios from 'axios';
 import { SubmitHandler, useForm } from 'react-hook-form'
 
 const Page = () => {
-    const { register, formState: { errors }, handleSubmit, reset } = useForm<formFields>({
+    const { register, handleSubmit, reset } = useForm<formFields>({
         defaultValues: {
             type: "Usual",
         }
@@ -19,7 +19,6 @@ const Page = () => {
         try {
             const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/promocode/promocodes`, { data }, { withCredentials: true });
             if (res) {
-                // reseting if successful request
                 reset();
             }
         } catch (err) {

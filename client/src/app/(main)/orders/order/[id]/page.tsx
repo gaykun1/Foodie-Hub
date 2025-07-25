@@ -9,7 +9,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "@/components/order/CheckoutForm";
 
 // shipping prices
-enum Shipping {
+export enum Shipping {
     Economy = 2.20,
     Standart = 3.20,
     Express = 5.20,
@@ -51,7 +51,7 @@ const Page = () => {
                     amount: convertToSubcurrency(shipping + order.totalPrice)
                 }} stripe={getStripe()}>
                     
-                    <CheckoutForm order={order} />
+                    <CheckoutForm shipping={shipping} setShipping={setShipping} order={order} />
                 </Elements>)}
 
         </>

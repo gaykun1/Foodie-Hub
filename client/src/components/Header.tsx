@@ -4,7 +4,7 @@ import { LogOut } from '@/api/api'
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks'
 import { logout } from '@/redux/authSlice'
 import { deleteItem, updateAmount } from '@/redux/cartSlice'
-import { Cart, Restaurant, User } from '@/redux/reduxTypes'
+import { Restaurant } from '@/redux/reduxTypes'
 import axios from 'axios'
 import { Hamburger, Minus, Plus, Search, ShoppingCart, UserRound, X } from 'lucide-react'
 import Image from 'next/image'
@@ -48,7 +48,7 @@ const Header = () => {
         dispatch(deleteItem(title));
       }
       dispatch(updateAmount({ amount: amount, dishId: id }));
-      const res = await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/api/cart/items/${id}`, { amount: amount, title: title }, { withCredentials: true });
+      await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/api/cart/items/${id}`, { amount: amount, title: title }, { withCredentials: true });
     } catch (err) {
       console.error(err);
     }
@@ -248,7 +248,7 @@ const Header = () => {
                 <Link href="/profile" className=" text-sm font-semibold text-white transition-all hover:opacity-65">Profile</Link>
 
                 <button onClick={async () => {
-                  const data = await LogOut();
+                  await LogOut();
                   dispatch(logout());
                   setActivePanel(null);
                   redirect("/auth/login");

@@ -5,7 +5,7 @@ import { useElements, useStripe } from "@stripe/react-stripe-js";
 import { } from "@stripe/stripe-js";
 import axios, { } from "axios";
 import { Lock, Send } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useCallback, useEffect, useState } from "react";
 import { convertToSubcurrency } from "@/utils/payment";
 import { useForm } from "react-hook-form";
 import { Order } from "@/redux/reduxTypes";
@@ -26,14 +26,13 @@ type FormFields = {
     houseNumber: number,
     apartmentNumbr: number,
 }
-const CheckoutForm = ({ order }: { order: Order }) => {
+const CheckoutForm = ({ order, shipping, setShipping }: { order: Order, shipping: Shipping, setShipping:Dispatch<SetStateAction<Shipping>> }) => {
     const { register, getValues, formState: { errors } } = useForm<FormFields>()
     const { user } = useAppSelector(state => state.auth);
     const [clientSecret, setClientSecret] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
     const stripe = useStripe();
     const elements = useElements();
-    const [shipping, setShipping] = useState<Shipping>(Shipping.Economy);
     const { cart } = useAppSelector(state => state.cart)
     const [promocode, setPromocode] = useState<string>("");
     const [discount, setDiscount] = useState<number>(0);
@@ -96,7 +95,7 @@ const CheckoutForm = ({ order }: { order: Order }) => {
             setLoading(false);
         }
         if (order) {
-            const res = await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/api/order/orders`, { formData, percent: discount, shipping, cartId: cart?._id, totalPrice: parseFloat(((shipping + order.totalPrice) * ((100 - discount) / 100)).toFixed(2)) }, { withCredentials: true });
+          await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/api/order/orders`, { formData, percent: discount, shipping, cartId: cart?._id, totalPrice: parseFloat(((shipping + order.totalPrice) * ((100 - discount) / 100)).toFixed(2)) }, { withCredentials: true });
             const { error } = await stripe.confirmPayment({ //creating transaction
                 elements,
                 clientSecret,
@@ -287,7 +286,7 @@ const CheckoutForm = ({ order }: { order: Order }) => {
                     <label>Promocode: </label>
 
                     <input value={promocode} onChange={(e) => setPromocode(e.target.value)} className="input px-2 py-1 " type="text" />
-                    <button onClick={async () => await usePromocode()} className="btn absolute right-0 px-2 py-1"><Send /></button>
+                    <button onClick={usePromocode} className="btn absolute right-0 px-2 py-1"><Send /></button>
                 </div>
                 <div className="w-full items-center flex flex-col gap-4">
                     <button onClick={placeOrder} type="submit" className="btn py-3   mt-6      px-2 max-w-[328px] w-full">{loading ? (<span>Processing...</span>) : (<span>Place Order</span>)}</button>

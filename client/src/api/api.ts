@@ -1,4 +1,4 @@
-import { Category, Restaurant, User } from "@/redux/reduxTypes";
+import {  Restaurant, User } from "@/redux/reduxTypes";
 import axios, { isAxiosError } from "axios";
 
 

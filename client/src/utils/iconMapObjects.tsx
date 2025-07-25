@@ -1,6 +1,6 @@
 "use client"
 // icons for leaflet map
-const L = require("leaflet");
+import  L  from "leaflet";
 
 export const receiverIcon = new L.Icon({
     iconUrl: "/my-marker.png",

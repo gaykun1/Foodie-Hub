@@ -21,7 +21,7 @@ export default async function RootLayout({
   //checking if loggined (`middleware`)
   const token = (await cookies()).get("token")?.value;
   if (!token) redirect("/auth/login");
-  
+
   try {
 
     const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/profile/roles`, {
@@ -67,10 +67,10 @@ export default async function RootLayout({
 
 
   } catch (err) {
-    let error = "";
+    console.log(err);
     return (
       <div className="">
-        <h1>Error</h1>
+        <h1>Error </h1>
 
         <p>Access denied</p>
       </div>

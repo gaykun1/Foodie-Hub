@@ -1,9 +1,6 @@
 "use client"
-
 import axios, { isAxiosError } from 'axios'
-import { FormEvent, useState } from 'react'
-
-
+import {  useState } from 'react'
 
 const Page = () => {
     const [promocode, setPromocode] = useState<string>("");

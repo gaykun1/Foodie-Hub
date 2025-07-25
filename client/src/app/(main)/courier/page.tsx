@@ -195,7 +195,7 @@ const Page = () => {
 
                     </>) : (<div className='flex flex-col gap-6 items-center sm:items-start  mb-4.5'>
                         <div className="flex items-center gap-4 flex-wrap">
-                            <h2 className="text-2xl leading-8 font-bold  ">Taking Order ID: "{isWorking._id}" </h2>
+                            <h2 className="text-2xl leading-8 font-bold  ">Taking Order ID: {isWorking._id} </h2>
                             <div className={`border-[1px] py-2 px-4 ${status === "Delivering" ? "text-primary border-primary bg-[#636AE833]" : status == "Delivered" ? "text-[#37db70] border-[#37db70] bg-[#DCFCE7FF]" : "text-primary border-primary bg-[#4d55ed33]"}  rounded-4xl  text-xs leading-5 font-medium `}>{status ? status : isWorking.status}</div>
 
                         </div>

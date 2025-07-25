@@ -1,10 +1,8 @@
 "use client"
-
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
 import { updateFavourites } from "@/redux/authSlice";
 import { Restaurant } from "@/redux/reduxTypes";
 import { calculateStars } from "@/utils/rating";
-import { current } from "@reduxjs/toolkit";
 import axios from "axios";
 import { Clock, Globe, Heart, MapPin, Phone } from "lucide-react";
 import Link from "next/link";

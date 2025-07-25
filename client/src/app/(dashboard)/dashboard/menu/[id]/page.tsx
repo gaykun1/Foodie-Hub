@@ -20,7 +20,7 @@ const Page = () => {
     const [dishesLoading, setDishesLoading] = useState<boolean>(false);
     const [menu, setMenu] = useState<Dish[]>([]);
     const { id } = useParams() as { id: string };
-    const { register, handleSubmit, reset, formState: { errors } } = useForm<formFields>();
+    const { register, handleSubmit, reset } = useForm<formFields>();
     const [loading, setLoading] = useState<boolean>(false);
     const createDish: SubmitHandler<formFields> = async (data) => {
         console.log("hello");

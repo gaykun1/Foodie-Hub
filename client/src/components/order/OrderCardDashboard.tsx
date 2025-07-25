@@ -2,7 +2,7 @@
 
 import { Order } from "@/redux/reduxTypes"
 import axios from "axios";
-import { Check, ChevronsRight, ClipboardList, Clock, DollarSign } from "lucide-react";
+import {  ClipboardList, Clock, DollarSign } from "lucide-react";
 import { Dispatch, SetStateAction, useMemo } from "react";
 // order card specifically for restaurant deshboard
 const OrderCardDashboard = ({ order, setOrders }: { order: Order, setOrders: Dispatch<SetStateAction<Order[]>> }) => {
@@ -12,7 +12,7 @@ const OrderCardDashboard = ({ order, setOrders }: { order: Order, setOrders: Dis
     // func for toggling restaurant status from "Created" to "Preparing" = "Cooking"
     const toggleToPreparing = async () => {
         try {
-            const res = await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/api/order/orders/${order._id}/status`, {}, { withCredentials: true });
+            await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/api/order/orders/${order._id}/status`, {}, { withCredentials: true });
             setOrders((prev) => prev.filter(item => item._id !== order._id));
         } catch (err) {
             console.error(err);
@@ -52,7 +52,7 @@ const OrderCardDashboard = ({ order, setOrders }: { order: Order, setOrders: Dis
                 </div>
                 <div className="flex items-center justify-between">
 
-                    <button onClick={async () => await toggleToPreparing()} className="btn p-2 ">Toggle to "Preparing"</button>
+                    <button onClick={async () => await toggleToPreparing()} className="btn p-2 ">Toggle to Preparing</button>
 
 
                 </div>

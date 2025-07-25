@@ -5,8 +5,6 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import Providers from "../providers/Providers";
 import AuthClientUpload from "@/components/AuthClientUpload";
-import { useAppSelector } from "@/hooks/reduxHooks";
-import SideBar from "@/components/Dashboard/SideBar";
 import HeaderRestaurant from "@/components/Restaurant/HeaderRestaurant";
 import Footer from "@/components/Footer";
 

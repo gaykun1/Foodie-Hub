@@ -107,91 +107,93 @@ const Page = () => {
           <button onClick={() => setActiveSidebar(!activeSidebar)} className={`text-2xl  leading-8 font-bold flex gap-1 transition-all items-center  ${activeSidebar ? "text-primary" : ""} `}>Current Order Info <div className={`transition-all ${activeSidebar ? "rotate-180" : ""}`}><ChevronDown /></div></button>
         </div>
       </div>
-      {orders && orders.length > 0 ? (
-        <div className='flex flex-col gap-6 lg:border-b-0 border-b-[2px] border-borderColor'>
-          <div className="lg:hidden border-b-[2px] border-borderColor pb-3">
+      {loading ?  
+      orders && orders.length > 0 ? (
+      <div className='flex flex-col gap-6 lg:border-b-0 border-b-[2px] border-borderColor'>
+        <div className="lg:hidden border-b-[2px] border-borderColor pb-3">
 
-            <div className={` grow-1  flex-col gap-8  ${activeSidebar ? "h-auto flex" : "h-0 hidden"}`}>
-              {(viewDetails?.status !== "Delivered" && viewDetails?.courierId !== null) && (
-                <div className="shadow-xs border-[1px] border-borderColor rounded-lg p-[25px]">
-                  <div className="flex flex-col mb-8 gap-1.5">
-                    <div className="flex items-center gap-2">
-                      <Map className='text-primary' size={20} />
-                      <h2 className='text-xl leading-7 font-bold '>Live Tracking</h2>
-                    </div>
-
-                    <p className='text-sm leading-5 text-gray'>Your order is on its way to {viewDetails?.adress.houseNumber} {viewDetails?.adress.street}</p>
-                  </div>
-                  <div className="flex w-full justify-center">
-                    <div className="overflow-hidden h-[250px] w-[420px]  rounded-lg">
-                      <MapTracker courierLocation={courierLocation} socket={socket} isWorking={viewDetails} />
-
-                    </div>
+          <div className={` grow-1  flex-col gap-8  ${activeSidebar ? "h-auto flex" : "h-0 hidden"}`}>
+            {(viewDetails?.status !== "Delivered" && viewDetails?.courierId !== null) && (
+              <div className="shadow-xs border-[1px] border-borderColor rounded-lg p-[25px]">
+                <div className="flex flex-col mb-8 gap-1.5">
+                  <div className="flex items-center gap-2">
+                    <Map className='text-primary' size={20} />
+                    <h2 className='text-xl leading-7 font-bold '>Live Tracking</h2>
                   </div>
 
+                  <p className='text-sm leading-5 text-gray'>Your order is on its way to {viewDetails?.adress.houseNumber} {viewDetails?.adress.street}</p>
                 </div>
-              )}
-
-              <ViewDetailsSideBar viewDetails={viewDetails} />
-
-            </div>
-          </div>
-          <div className="flex relative gap-8">
-            <div className="lg:basis-[865px] w-full  pt-1">
-              {/* current orders */}
-              <div className="">
-                <h2 className="text-2xl leading-8 font-bold mb-4.5 ">Current Orders ( {currentOrders?.length} )</h2>
-                <div className="gap-4 grid  lg:grid-cols-2">
-                  {currentOrders && currentOrders.length > 0 ? currentOrders?.map((order, idx) => (
-                    <div className="" key={idx}>
-                      <OrderCard setViewDetails={setViewDetails} order={order} />
-
-                    </div>
-                  )) : <span className='text-lg leading-7 font-semibold'>No current orders yet!</span>}
-
-                </div>
-              </div>
-
-              {/* past orders */}
-              <div className="mt-9">
-                <h2 className="text-2xl leading-8 font-bold mb-4.5">Past Orders (  {pastOrders?.length} )</h2>
-                <div className="gap-4 grid  lg:grid-cols-2">
-                  {pastOrders && pastOrders.length > 0 ? pastOrders?.map((order, idx) => (
-                    <div className="" key={idx}>
-                      <OrderCard setViewDetails={setViewDetails} order={order} />
-
-                    </div>
-                  )) : <span className='text-lg leading-7 font-semibold'>No past orders yet!</span>}
-                </div>
-              </div>
-            </div>
-
-            <div className=" grow-1 lg:flex flex-col gap-8 hidden">
-              {(viewDetails?.status !== "Delivered" && viewDetails?.courierId !== null) && (
-                <div className="shadow-xs border-[1px] border-borderColor rounded-lg p-[25px]">
-                  <div className="flex flex-col mb-8 gap-1.5">
-                    <div className="flex items-center gap-2">
-                      <Map className='text-primary' size={20} />
-                      <h2 className='text-xl leading-7 font-bold '>Live Tracking</h2>
-                    </div>
-
-                    <p className='text-sm leading-5 text-gray'>Your order is on its way to {viewDetails?.adress.houseNumber} {viewDetails?.adress.street}</p>
-                  </div>
-                  <div className="overflow-hidden  rounded-lg h-[250px] w-[420px]">
+                <div className="flex w-full justify-center">
+                  <div className="overflow-hidden h-[250px] w-[420px]  rounded-lg">
                     <MapTracker courierLocation={courierLocation} socket={socket} isWorking={viewDetails} />
 
                   </div>
                 </div>
-              )}
 
-              <ViewDetailsSideBar viewDetails={viewDetails} />
+              </div>
+            )}
 
-            </div>
+            <ViewDetailsSideBar viewDetails={viewDetails} />
 
           </div>
         </div>
+        <div className="flex relative gap-8">
+          <div className="lg:basis-[865px] w-full  pt-1">
+            {/* current orders */}
+            <div className="">
+              <h2 className="text-2xl leading-8 font-bold mb-4.5 ">Current Orders ( {currentOrders?.length} )</h2>
+              <div className="gap-4 grid  lg:grid-cols-2">
+                {currentOrders && currentOrders.length > 0 ? currentOrders?.map((order, idx) => (
+                  <div className="" key={idx}>
+                    <OrderCard setViewDetails={setViewDetails} order={order} />
 
-      ) : (<span className='text-2xl leading-8 font-bold'>No orders yet!</span>)}
+                  </div>
+                )) : <span className='text-lg leading-7 font-semibold'>No current orders yet!</span>}
+
+              </div>
+            </div>
+
+            {/* past orders */}
+            <div className="mt-9">
+              <h2 className="text-2xl leading-8 font-bold mb-4.5">Past Orders (  {pastOrders?.length} )</h2>
+              <div className="gap-4 grid  lg:grid-cols-2">
+                {pastOrders && pastOrders.length > 0 ? pastOrders?.map((order, idx) => (
+                  <div className="" key={idx}>
+                    <OrderCard setViewDetails={setViewDetails} order={order} />
+
+                  </div>
+                )) : <span className='text-lg leading-7 font-semibold'>No past orders yet!</span>}
+              </div>
+            </div>
+          </div>
+
+          <div className=" grow-1 lg:flex flex-col gap-8 hidden">
+            {(viewDetails?.status !== "Delivered" && viewDetails?.courierId !== null) && (
+              <div className="shadow-xs border-[1px] border-borderColor rounded-lg p-[25px]">
+                <div className="flex flex-col mb-8 gap-1.5">
+                  <div className="flex items-center gap-2">
+                    <Map className='text-primary' size={20} />
+                    <h2 className='text-xl leading-7 font-bold '>Live Tracking</h2>
+                  </div>
+
+                  <p className='text-sm leading-5 text-gray'>Your order is on its way to {viewDetails?.adress.houseNumber} {viewDetails?.adress.street}</p>
+                </div>
+                <div className="overflow-hidden  rounded-lg h-[250px] w-[420px]">
+                  <MapTracker courierLocation={courierLocation} socket={socket} isWorking={viewDetails} />
+
+                </div>
+              </div>
+            )}
+
+            <ViewDetailsSideBar viewDetails={viewDetails} />
+
+          </div>
+
+        </div>
+      </div>
+
+      ) : (<span className='text-2xl leading-8 font-bold'>No orders yet!</span>): <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid mx-auto"></div>}
+
 
     </div>
   )

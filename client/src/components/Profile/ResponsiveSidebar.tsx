@@ -1,6 +1,5 @@
 "use client"
-
-import { ChevronDown, FileUser, Heart, Home, ListOrdered, Percent, Plus, SquareRoundCorner, User, Utensils, X } from "lucide-react"
+import { ChevronDown, FileUser, Heart, Home, ListOrdered, Percent, Plus, SquareRoundCorner, User, Utensils } from "lucide-react"
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useMemo, useState } from "react";

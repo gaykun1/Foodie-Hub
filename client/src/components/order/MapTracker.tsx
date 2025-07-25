@@ -4,7 +4,7 @@ import { courierIcon, receiverIcon, restaurantIcon } from '@/utils/iconMapObject
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { MapContainer, Marker, TileLayer } from 'react-leaflet';
-import { io, Socket } from 'socket.io-client';
+import {  Socket } from 'socket.io-client';
 import "leaflet/dist/leaflet.css";
 import { InvalidateMapSize } from '@/utils/InvalidateMapSize ';
 

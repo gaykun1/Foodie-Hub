@@ -1,5 +1,4 @@
 "use client";
-import { useAppSelector } from "@/hooks/reduxHooks";
 import { Restaurant } from "@/redux/reduxTypes";
 import axios from "axios";
 import { ArrowRight } from "lucide-react";
