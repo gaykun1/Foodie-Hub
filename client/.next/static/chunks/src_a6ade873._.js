@@ -458,7 +458,7 @@ const ViewDetailsSideBar = ({ viewDetails })=>{
                                                 className: "font-semibold text-secondary",
                                                 children: [
                                                     "№",
-                                                    viewDetails.adress.apartmentNumbr ? viewDetails.adress.apartmentNumbr : "...",
+                                                    viewDetails.adress.apartmentNumbr !== null ? viewDetails.adress.apartmentNumbr : "...",
                                                     ", ",
                                                     viewDetails.adress.houseNumber,
                                                     " ",

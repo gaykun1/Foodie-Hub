@@ -35,7 +35,7 @@ const ViewDetailsSideBar = ({ viewDetails }: { viewDetails: Order | null }) => {
                                     <MapPin size={20} />
                                     <div className="flex flex-col">
                                         <span>Delivery To:</span>
-                                        <span className='font-semibold text-secondary'>№{viewDetails.adress.apartmentNumbr ? viewDetails.adress.apartmentNumbr : "..."}, {viewDetails.adress.houseNumber} {viewDetails.adress.street}, {viewDetails.adress.city}, {viewDetails.adress.countryOrRegion}</span>
+                                        <span className='font-semibold text-secondary'>№{viewDetails.adress.apartmentNumbr !==null ? viewDetails.adress.apartmentNumbr : "..."}, {viewDetails.adress.houseNumber} {viewDetails.adress.street}, {viewDetails.adress.city}, {viewDetails.adress.countryOrRegion}</span>
                                     </div>
                                 </div>
                             </div>
