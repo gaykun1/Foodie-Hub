@@ -22,7 +22,7 @@ export default function Page() {
   const { restaurants } = useAppSelector(state => state.restaurants);
   const { category } = useParams() as { category: string };
   const [isActiveFilterMenu, setIsActiveFilterMenu] = useState<boolean>(false);
-  const entry = Object.entries(links).find(([_, val]) => val === category);
+  const entry = Object.entries(links).find(([, val]) => val === category);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const currentTitle = entry ? entry[0] : Category.All;
   // optimized func for fetching 

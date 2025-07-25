@@ -63,5 +63,5 @@ const OrderCard = React.memo(({ order, setViewDetails }: { order: Order, setView
         </div>
     )
 });
-
+OrderCard.displayName = "OrderCard";
 export default OrderCard
