@@ -18,11 +18,12 @@ export const signup = async (req: Request, res: Response): Promise<void> => {
         const token = jwt.sign({ userId: user._id, role: user.role }, process.env.JWT_SECRET!, { expiresIn: "1h" });
         // adding token to cookie field with name "token"
         res.cookie("token", token, {
-            maxAge: 60 * 60 * 1000, //life of token - 1hour
             httpOnly: true,
-            sameSite: 'lax',
-            path: '/',
-        })
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+            path: "/",
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+        });
         res.json({
             user: {
                 username: user.username,
@@ -60,11 +61,12 @@ export const login = async (req: Request, res: Response): Promise<void> => {
 
         const token = jwt.sign({ userId: user._id, role: user.role }, process.env.JWT_SECRET!, { expiresIn: "1h" });
         res.cookie("token", token, {
-            maxAge: 60 * 60 * 1000,
             httpOnly: true,
-            sameSite: 'lax',
-            path: '/',
-        })
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+            path: "/",
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+        });
         res.json({
             user: {
                 username: user.username,
@@ -82,10 +84,12 @@ export const login = async (req: Request, res: Response): Promise<void> => {
 
 export const logout = async (req: Request, res: Response): Promise<void> => {
     res.clearCookie("token", {
-        maxAge: 60 * 60 * 1000,
         httpOnly: true,
-        sameSite: 'lax',
-        path: '/',
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        path: "/",
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+
     });
     try {
 
@@ -116,7 +120,7 @@ export const profile = async (req: Request, res: Response): Promise<void> => {
 // Partly updating  profile fields  (including new password)
 export const updateProfile = async (req: Request, res: Response): Promise<void> => {
     const { payload } = req.body;
-    
+
     try {
         const user = await User.findOne({ _id: (req as AuthRequest).userId })
         if (user) {
@@ -156,7 +160,7 @@ export const updateProfile = async (req: Request, res: Response): Promise<void> 
 // for checking user role 
 export const checkRole = async (req: Request, res: Response): Promise<void> => {
     try {
-        
+
         res.json({ role: (req as AuthRequest).role });
         return;
     } catch (err) {
