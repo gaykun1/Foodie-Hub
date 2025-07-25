@@ -16,8 +16,14 @@ const Page = () => {
   const onSubmit: SubmitHandler<FormFiedsType> = async (data: FormFiedsType) => {
     try {
       // func api for signing up
-      await SignUp(data.password, data.username);
-      router.push("/");
+
+      const status = await SignUp(data.password, data.username);
+      if (status === 200) {
+        setTimeout(() => {
+
+          router.push("/");
+        }, 300);
+      }
     } catch (err) {
       console.error(err);
     }

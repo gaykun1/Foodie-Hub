@@ -2,22 +2,22 @@ import {  Restaurant, User } from "@/redux/reduxTypes";
 import axios, { isAxiosError } from "axios";
 
 
-export const SignUp = async (password: string, username: string): Promise<User | void> => {
+export const SignUp = async (password: string, username: string): Promise<number | void> => {
     try {
         const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/signup`, { username, password }, { withCredentials: true });
         if (!res) return;
-        return res.data;
+        return res.status;
     } catch (err) {
         if (isAxiosError(err) && err.response) {
             console.log(err.response.data.message);
         }
     }
 }
-export const LogIn = async (password: string, username: string): Promise<User | void> => {
+export const LogIn = async (password: string, username: string): Promise<number|void> => {
     try {
         const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`, { username, password }, { withCredentials: true });
         if (!res) return;
-        return res.data;
+        return res.status;
     } catch (err) {
         if (isAxiosError(err) && err.response) {
             console.log(err.response.data.message);

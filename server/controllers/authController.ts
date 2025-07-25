@@ -24,7 +24,7 @@ export const signup = async (req: Request, res: Response): Promise<void> => {
             maxAge: 60 * 60 * 1000,
             path: "/"
         });
-        res.json({
+        res.status(200).json({
             user: {
                 username: user.username,
                 favourites: user.favourites,
@@ -67,7 +67,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
             maxAge: 60 * 60 * 1000,
             path: "/"
         });
-        res.json({
+        res.status(200).json({
             user: {
                 username: user.username,
                 favourites: user.favourites,

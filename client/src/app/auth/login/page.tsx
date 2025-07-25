@@ -28,9 +28,13 @@ const Page = () => {
         </div>
         <div className="flex items-center justify-between">
           <button onClick={async () => {
-            const user = await LogIn(password, username);
-            if (user) dispatch(login(user));
-            router.push("/");
+            const status = await LogIn(password, username);
+            if (status===200){
+              setTimeout(()=>{
+
+                router.push("/");
+              },300);
+            }
           }} className='btn py-1 px-2 text-base!'>Log in</button>
           <Link className='underline' href='register'>Sign up</Link>
         </div>
