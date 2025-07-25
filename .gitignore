@@ -10,4 +10,6 @@
 # general
 .DS_Store
 build
+node_modules
 dist
+.env
