@@ -11,12 +11,13 @@ import cartRoute from "./routes/cartRoute";
 import orderRoute from "./routes/orderRoutes";
 import payRoute from "./routes/payRoutes";
 import courierRoute from "./routes/courierRoutes";
-import { Server, Socket } from "socket.io";
+const { Server }  = require('socket.io');
 import { authMiddleware } from "./middleware/authMiddleware";
 import User from "./models/User";
 import Promocode from "./models/Promocode";
 import nodeCron from "node-cron";
 import promocodeRoute from "./routes/promocodeRoutes";
+import { Socket } from "socket.io";
 dotenv.config();
 const app = express();
 
