@@ -31,7 +31,7 @@ const DishCard = ({ dish, toCart, onDeleted })=>{
     }["DishCard.useAppSelector"]);
     const deleteDish = async ()=>{
         try {
-            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].delete(`${("TURBOPACK compile-time value", "http://localhost:5200")}/api/restaurant/dishes/${dish._id}`);
+            await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].delete(`${("TURBOPACK compile-time value", "https://foodie-hub-b6a8.onrender.com")}/api/restaurant/dishes/${dish._id}`);
             if (onDeleted) onDeleted();
         } catch (err) {
             console.error(err);
@@ -39,7 +39,7 @@ const DishCard = ({ dish, toCart, onDeleted })=>{
     };
     const addToCart = async ()=>{
         try {
-            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].post(`${("TURBOPACK compile-time value", "http://localhost:5200")}/api/cart/items`, {
+            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].post(`${("TURBOPACK compile-time value", "https://foodie-hub-b6a8.onrender.com")}/api/cart/items`, {
                 id: dish._id
             }, {
                 withCredentials: true
@@ -240,7 +240,7 @@ const DishesNearYou = ()=>{
             if (user?.address?.city) {
                 const getDishesNearYou = {
                     "DishesNearYou.useEffect.getDishesNearYou": async ()=>{
-                        const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get(`${("TURBOPACK compile-time value", "http://localhost:5200")}/api/restaurant/dishes/nearby`, {
+                        const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get(`${("TURBOPACK compile-time value", "https://foodie-hub-b6a8.onrender.com")}/api/restaurant/dishes/nearby`, {
                             params: {
                                 city: user.address.city
                             }
@@ -320,8 +320,15 @@ if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelper
 var { g: global, __dirname, k: __turbopack_refresh__, m: module } = __turbopack_context__;
 {
 __turbopack_context__.s({
-    "Category": (()=>Category)
+    "Category": (()=>Category),
+    "Shipping": (()=>Shipping)
 });
+var Shipping = /*#__PURE__*/ function(Shipping) {
+    Shipping[Shipping["Economy"] = 2.2] = "Economy";
+    Shipping[Shipping["Standart"] = 3.2] = "Standart";
+    Shipping[Shipping["Express"] = 5.2] = "Express";
+    return Shipping;
+}({});
 var Category = /*#__PURE__*/ function(Category) {
     Category["All"] = "All Restaurants";
     Category["FastFood"] = "Fast Food";

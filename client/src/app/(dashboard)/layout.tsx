@@ -18,9 +18,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  //checking if loggined (`middleware`)
   const token = (await cookies()).get("token")?.value;
-  if (!token) redirect("/auth/login");
 
   try {
 

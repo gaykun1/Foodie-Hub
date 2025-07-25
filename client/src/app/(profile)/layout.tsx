@@ -17,9 +17,8 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // auth middleware
-  const token = await (await cookies()).get("token")?.value;
-  if (!token) redirect("/auth/login");
+
+
   return (
 
     <Providers>
