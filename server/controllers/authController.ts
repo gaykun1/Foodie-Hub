@@ -15,8 +15,10 @@ export const signup = async (req: Request, res: Response): Promise<void> => {
         const hashedPassword = await bcrypt.hash(password, 10);
         const user = await User.create({ username: username, password: hashedPassword });
         // creating token
+        console.log("1first");
         const token = jwt.sign({ userId: user._id, role: user.role }, process.env.JWT_SECRET!, { expiresIn: "1h" });
         // adding token to cookie field with name "token"
+        console.log("2second");
         res.cookie("token", token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",

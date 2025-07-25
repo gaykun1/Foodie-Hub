@@ -23,7 +23,7 @@ const app = express();
 
 const server = http.createServer(app);
 
-app.use(cookieParser())
+app.use(cookieParser());
 app.use(express.json());
 
 export const io = new Server(server, {
