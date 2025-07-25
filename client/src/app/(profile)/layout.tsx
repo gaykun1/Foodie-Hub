@@ -6,8 +6,6 @@ import AuthClientUpload from "@/components/AuthClientUpload";
 import SideBarProfile from "@/components/Profile/SideBar";
 import ResponsiveSidebar from "@/components/Profile/ResponsiveSidebar";
 import Footer from "@/components/Footer";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 
 
 

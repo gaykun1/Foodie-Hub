@@ -3,8 +3,6 @@ import "@/styles/globals.css";
 import Header from "@/components/Header";
 import Providers from "../providers/Providers";
 import AuthClientUpload from "@/components/AuthClientUpload";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 import Footer from "@/components/Footer";
 
 

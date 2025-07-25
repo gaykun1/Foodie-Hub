@@ -2,7 +2,6 @@
 import "@/styles/globals.css";
 import Header from "@/components/Header";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 import Providers from "../providers/Providers";
 import AuthClientUpload from "@/components/AuthClientUpload";
 import axios from "axios";
