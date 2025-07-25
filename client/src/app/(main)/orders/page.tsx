@@ -107,8 +107,8 @@ const Page = () => {
           <button onClick={() => setActiveSidebar(!activeSidebar)} className={`text-2xl  leading-8 font-bold flex gap-1 transition-all items-center  ${activeSidebar ? "text-primary" : ""} `}>Current Order Info <div className={`transition-all ${activeSidebar ? "rotate-180" : ""}`}><ChevronDown /></div></button>
         </div>
       </div>
-      {loading ?  
-      orders && orders.length > 0 ? (
+      {!loading ?  
+     ( orders && orders.length > 0 ? (
       <div className='flex flex-col gap-6 lg:border-b-0 border-b-[2px] border-borderColor'>
         <div className="lg:hidden border-b-[2px] border-borderColor pb-3">
 
@@ -192,7 +192,7 @@ const Page = () => {
         </div>
       </div>
 
-      ) : (<span className='text-2xl leading-8 font-bold'>No orders yet!</span>): <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid mx-auto"></div>}
+      ) : (<span className='text-xl leading-6 font-bold'>No orders yet!</span>)): <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid mx-auto"></div>}
 
 
     </div>

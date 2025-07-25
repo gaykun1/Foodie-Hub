@@ -1,7 +1,6 @@
 "use client"
 import { SignUp } from '@/api/api';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 // using useForm for better and easy validation 
@@ -11,7 +10,6 @@ type FormFiedsType = {
 }
 const Page = () => {
   const { register, handleSubmit, formState: { errors } } = useForm<FormFiedsType>();
-  const router = useRouter();
 
   const onSubmit: SubmitHandler<FormFiedsType> = async (data: FormFiedsType) => {
     try {
@@ -21,7 +19,8 @@ const Page = () => {
       if (status === 200) {
         setTimeout(() => {
 
-          router.push("/");
+          window.location.href = "/";
+
         }, 300);
       }
     } catch (err) {

@@ -127,7 +127,7 @@ const SignUp = async (password, username)=>{
             withCredentials: true
         });
         if (!res) return;
-        return res.data;
+        return res.status;
     } catch (err) {
         if ((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["isAxiosError"])(err) && err.response) {
             console.log(err.response.data.message);
@@ -143,7 +143,7 @@ const LogIn = async (password, username)=>{
             withCredentials: true
         });
         if (!res) return;
-        return res.data;
+        return res.status;
     } catch (err) {
         if ((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["isAxiosError"])(err) && err.response) {
             console.log(err.response.data.message);
@@ -260,7 +260,7 @@ const Header = ()=>{
                 amount: amount,
                 dishId: id
             }));
-            const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].patch(`${("TURBOPACK compile-time value", "http://localhost:5200")}/api/cart/items/${id}`, {
+            await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].patch(`${("TURBOPACK compile-time value", "http://localhost:5200")}/api/cart/items/${id}`, {
                 amount: amount,
                 title: title
             }, {
@@ -844,7 +844,7 @@ const Header = ()=>{
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                                     onClick: async ()=>{
-                                                        const data = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$api$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["LogOut"])();
+                                                        await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$api$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["LogOut"])();
                                                         dispatch((0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$redux$2f$authSlice$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["logout"])());
                                                         setActivePanel(null);
                                                         (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["redirect"])("/auth/login");
@@ -1169,7 +1169,7 @@ const ResponsiveSidebar = ({ type })=>{
                     size: 18
                 }, void 0, false, {
                     fileName: "[project]/src/components/Profile/ResponsiveSidebar.tsx",
-                    lineNumber: 15,
+                    lineNumber: 14,
                     columnNumber: 85
                 }, this)
             },
@@ -1180,7 +1180,7 @@ const ResponsiveSidebar = ({ type })=>{
                     size: 18
                 }, void 0, false, {
                     fileName: "[project]/src/components/Profile/ResponsiveSidebar.tsx",
-                    lineNumber: 16,
+                    lineNumber: 15,
                     columnNumber: 77
                 }, this)
             }
@@ -1193,7 +1193,7 @@ const ResponsiveSidebar = ({ type })=>{
                     size: 18
                 }, void 0, false, {
                     fileName: "[project]/src/components/Profile/ResponsiveSidebar.tsx",
-                    lineNumber: 19,
+                    lineNumber: 18,
                     columnNumber: 79
                 }, this)
             },
@@ -1204,7 +1204,7 @@ const ResponsiveSidebar = ({ type })=>{
                     size: 18
                 }, void 0, false, {
                     fileName: "[project]/src/components/Profile/ResponsiveSidebar.tsx",
-                    lineNumber: 20,
+                    lineNumber: 19,
                     columnNumber: 75
                 }, this)
             },
@@ -1215,7 +1215,7 @@ const ResponsiveSidebar = ({ type })=>{
                     size: 18
                 }, void 0, false, {
                     fileName: "[project]/src/components/Profile/ResponsiveSidebar.tsx",
-                    lineNumber: 21,
+                    lineNumber: 20,
                     columnNumber: 82
                 }, this)
             },
@@ -1226,7 +1226,7 @@ const ResponsiveSidebar = ({ type })=>{
                     size: 18
                 }, void 0, false, {
                     fileName: "[project]/src/components/Profile/ResponsiveSidebar.tsx",
-                    lineNumber: 22,
+                    lineNumber: 21,
                     columnNumber: 72
                 }, this)
             },
@@ -1237,7 +1237,7 @@ const ResponsiveSidebar = ({ type })=>{
                     size: 18
                 }, void 0, false, {
                     fileName: "[project]/src/components/Profile/ResponsiveSidebar.tsx",
-                    lineNumber: 23,
+                    lineNumber: 22,
                     columnNumber: 77
                 }, this)
             }
@@ -1250,7 +1250,7 @@ const ResponsiveSidebar = ({ type })=>{
                     size: 18
                 }, void 0, false, {
                     fileName: "[project]/src/components/Profile/ResponsiveSidebar.tsx",
-                    lineNumber: 26,
+                    lineNumber: 25,
                     columnNumber: 91
                 }, this)
             },
@@ -1261,7 +1261,7 @@ const ResponsiveSidebar = ({ type })=>{
                     size: 18
                 }, void 0, false, {
                     fileName: "[project]/src/components/Profile/ResponsiveSidebar.tsx",
-                    lineNumber: 27,
+                    lineNumber: 26,
                     columnNumber: 83
                 }, this)
             },
@@ -1272,7 +1272,7 @@ const ResponsiveSidebar = ({ type })=>{
                     size: 18
                 }, void 0, false, {
                     fileName: "[project]/src/components/Profile/ResponsiveSidebar.tsx",
-                    lineNumber: 28,
+                    lineNumber: 27,
                     columnNumber: 71
                 }, this)
             }
@@ -1290,17 +1290,17 @@ const ResponsiveSidebar = ({ type })=>{
                     className: `transition-transform  ${isOpen ? "rotate-180 " : ""}`,
                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$down$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronDown$3e$__["ChevronDown"], {}, void 0, false, {
                         fileName: "[project]/src/components/Profile/ResponsiveSidebar.tsx",
-                        lineNumber: 37,
+                        lineNumber: 36,
                         columnNumber: 21
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/components/Profile/ResponsiveSidebar.tsx",
-                    lineNumber: 36,
+                    lineNumber: 35,
                     columnNumber: 17
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/Profile/ResponsiveSidebar.tsx",
-                lineNumber: 35,
+                lineNumber: 34,
                 columnNumber: 13
             }, this),
             isOpen && links.map((link, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -1312,19 +1312,19 @@ const ResponsiveSidebar = ({ type })=>{
                             children: link.label
                         }, void 0, false, {
                             fileName: "[project]/src/components/Profile/ResponsiveSidebar.tsx",
-                            lineNumber: 45,
+                            lineNumber: 44,
                             columnNumber: 25
                         }, this)
                     ]
                 }, index, true, {
                     fileName: "[project]/src/components/Profile/ResponsiveSidebar.tsx",
-                    lineNumber: 43,
+                    lineNumber: 42,
                     columnNumber: 21
                 }, this))
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/Profile/ResponsiveSidebar.tsx",
-        lineNumber: 34,
+        lineNumber: 33,
         columnNumber: 9
     }, this);
 };

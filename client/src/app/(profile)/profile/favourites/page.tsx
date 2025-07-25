@@ -26,7 +26,7 @@ const Page = () => {
 
   return (
     <div className="min-h-[150px] border-borderColor rounded-md border-[2px] p-3 ">
-      {items ? (
+      {items && items.length>0 ? (
 
         <div className='grid md:grid-cols-2  xl:grid-cols-3 gap-4'>{
           items.map((item, index) => {
@@ -52,7 +52,7 @@ const Page = () => {
       )
 
         : (
-          <span>Not found!</span>
+          <span className="font-semibold text-lg ">Not found!</span>
         )}
     </div>
   );

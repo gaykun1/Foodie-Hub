@@ -180,8 +180,15 @@ if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelper
 var { g: global, __dirname, k: __turbopack_refresh__, m: module } = __turbopack_context__;
 {
 __turbopack_context__.s({
-    "Category": (()=>Category)
+    "Category": (()=>Category),
+    "Shipping": (()=>Shipping)
 });
+var Shipping = /*#__PURE__*/ function(Shipping) {
+    Shipping[Shipping["Economy"] = 2.2] = "Economy";
+    Shipping[Shipping["Standart"] = 3.2] = "Standart";
+    Shipping[Shipping["Express"] = 5.2] = "Express";
+    return Shipping;
+}({});
 var Category = /*#__PURE__*/ function(Category) {
     Category["All"] = "All Restaurants";
     Category["FastFood"] = "Fast Food";
@@ -200,7 +207,7 @@ if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelper
 var { g: global, __dirname, k: __turbopack_refresh__, m: module } = __turbopack_context__;
 {
 __turbopack_context__.s({
-    "default": (()=>Home)
+    "default": (()=>Page)
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$api$2f$api$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/api/api.ts [app-client] (ecmascript)");
@@ -231,20 +238,20 @@ const links = {
     [__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$redux$2f$reduxTypes$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Category"].FineDining]: "finedining",
     [__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$redux$2f$reduxTypes$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Category"].Healthy]: "healthy"
 };
-function Home() {
+function Page() {
     _s();
     const dispatch = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$hooks$2f$reduxHooks$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAppDispatch"])();
     const { restaurants } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$hooks$2f$reduxHooks$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAppSelector"])({
-        "Home.useAppSelector": (state)=>state.restaurants
-    }["Home.useAppSelector"]);
+        "Page.useAppSelector": (state)=>state.restaurants
+    }["Page.useAppSelector"]);
     const { category } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useParams"])();
     const [isActiveFilterMenu, setIsActiveFilterMenu] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
-    const entry = Object.entries(links).find(([key, val])=>val === category);
+    const entry = Object.entries(links).find(([, val])=>val === category);
     const [isLoading, setIsLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const currentTitle = entry ? entry[0] : __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$redux$2f$reduxTypes$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Category"].All;
     // optimized func for fetching 
     const fetchRestaurants = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
-        "Home.useCallback[fetchRestaurants]": async (category)=>{
+        "Page.useCallback[fetchRestaurants]": async (category)=>{
             try {
                 setIsLoading(true);
                 const info = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$api$2f$api$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getRestaurantsFiltered"])(category);
@@ -255,14 +262,14 @@ function Home() {
                 setIsLoading(false);
             }
         }
-    }["Home.useCallback[fetchRestaurants]"], [
+    }["Page.useCallback[fetchRestaurants]"], [
         dispatch
     ]);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
-        "Home.useEffect": ()=>{
+        "Page.useEffect": ()=>{
             fetchRestaurants(currentTitle);
         }
-    }["Home.useEffect"], [
+    }["Page.useEffect"], [
         currentTitle,
         fetchRestaurants
     ]);
@@ -385,16 +392,16 @@ function Home() {
         columnNumber: 5
     }, this);
 }
-_s(Home, "aWbGQKAE45/8xvW/s186WAsGpj4=", false, function() {
+_s(Page, "aWbGQKAE45/8xvW/s186WAsGpj4=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$hooks$2f$reduxHooks$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAppDispatch"],
         __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$hooks$2f$reduxHooks$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAppSelector"],
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useParams"]
     ];
 });
-_c = Home;
+_c = Page;
 var _c;
-__turbopack_context__.k.register(_c, "Home");
+__turbopack_context__.k.register(_c, "Page");
 if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
     __turbopack_context__.k.registerExports(module, globalThis.$RefreshHelpers$);
 }

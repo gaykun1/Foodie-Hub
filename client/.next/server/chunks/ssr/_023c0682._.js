@@ -173,8 +173,15 @@ const __TURBOPACK__default__export__ = /*#__PURE__*/ __TURBOPACK__imported__modu
 var { g: global, __dirname } = __turbopack_context__;
 {
 __turbopack_context__.s({
-    "Category": (()=>Category)
+    "Category": (()=>Category),
+    "Shipping": (()=>Shipping)
 });
+var Shipping = /*#__PURE__*/ function(Shipping) {
+    Shipping[Shipping["Economy"] = 2.2] = "Economy";
+    Shipping[Shipping["Standart"] = 3.2] = "Standart";
+    Shipping[Shipping["Express"] = 5.2] = "Express";
+    return Shipping;
+}({});
 var Category = /*#__PURE__*/ function(Category) {
     Category["All"] = "All Restaurants";
     Category["FastFood"] = "Fast Food";
@@ -190,7 +197,7 @@ var Category = /*#__PURE__*/ function(Category) {
 var { g: global, __dirname } = __turbopack_context__;
 {
 __turbopack_context__.s({
-    "default": (()=>Home)
+    "default": (()=>Page)
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react-jsx-dev-runtime.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$api$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/api/api.ts [app-ssr] (ecmascript)");
@@ -220,12 +227,12 @@ const links = {
     [__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$redux$2f$reduxTypes$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Category"].FineDining]: "finedining",
     [__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$redux$2f$reduxTypes$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Category"].Healthy]: "healthy"
 };
-function Home() {
+function Page() {
     const dispatch = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$hooks$2f$reduxHooks$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useAppDispatch"])();
     const { restaurants } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$hooks$2f$reduxHooks$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useAppSelector"])((state)=>state.restaurants);
     const { category } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useParams"])();
     const [isActiveFilterMenu, setIsActiveFilterMenu] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
-    const entry = Object.entries(links).find(([key, val])=>val === category);
+    const entry = Object.entries(links).find(([, val])=>val === category);
     const [isLoading, setIsLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
     const currentTitle = entry ? entry[0] : __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$redux$2f$reduxTypes$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Category"].All;
     // optimized func for fetching 

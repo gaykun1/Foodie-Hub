@@ -1,13 +1,11 @@
 "use client"
 import { LogIn } from '@/api/api';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
 
 const Page = () => {
   const [password, setPassword] = useState<string>("");
   const [username, setUsername] = useState<string>("");
-  const router = useRouter();
   return (
     <div className=" flex justify-center mt-[150px] mx-5 text-primary">
       <div className='max-w-[550px] w-full rounded-[25px] border-[2px] border-borderColor flex flex-col gap-4 p-6'>
@@ -26,11 +24,11 @@ const Page = () => {
         <div className="flex items-center justify-between">
           <button onClick={async () => {
             const status = await LogIn(password, username);
-            if (status===200){
-              setTimeout(()=>{
+            if (status === 200) {
+              setTimeout(() => {
 
-                router.push("/");
-              },300);
+                window.location.href = "/";
+              }, 300);
             }
           }} className='btn py-1 px-2 text-base!'>Log in</button>
           <Link className='underline' href='register'>Sign up</Link>

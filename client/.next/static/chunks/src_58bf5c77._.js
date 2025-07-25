@@ -10,24 +10,25 @@ __turbopack_context__.s({
     "receiverIcon": (()=>receiverIcon),
     "restaurantIcon": (()=>restaurantIcon)
 });
-"use client";
 // icons for leaflet map
-const L = __turbopack_context__.r("[project]/node_modules/leaflet/dist/leaflet-src.js [app-client] (ecmascript)");
-const receiverIcon = new L.Icon({
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$leaflet$2f$dist$2f$leaflet$2d$src$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/leaflet/dist/leaflet-src.js [app-client] (ecmascript)");
+"use client";
+;
+const receiverIcon = new __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$leaflet$2f$dist$2f$leaflet$2d$src$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].Icon({
     iconUrl: "/my-marker.png",
     iconSize: [
         25,
         25
     ]
 });
-const restaurantIcon = new L.Icon({
+const restaurantIcon = new __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$leaflet$2f$dist$2f$leaflet$2d$src$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].Icon({
     iconUrl: "/restaurant.png",
     iconSize: [
         25,
         25
     ]
 });
-const courierIcon = new L.Icon({
+const courierIcon = new __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$leaflet$2f$dist$2f$leaflet$2d$src$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].Icon({
     iconUrl: "/courier.png",
     iconSize: [
         25,

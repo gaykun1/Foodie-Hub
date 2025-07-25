@@ -31,17 +31,17 @@ const DishesNearYou = () => {
 
 
             </div>
-            <div className="grid md:grid-cols-3 sm:grid-cols-2 p-10 sm:p-0  lg:grid-cols-5 gap-6">
-                {dishes.length > 0 ?
 
-                    dishes.map((dish) => (
+            {dishes.length > 0 ?
+                <div className="grid md:grid-cols-3 sm:grid-cols-2 p-10 sm:p-0  lg:grid-cols-5 gap-6">
+                    {dishes.map((dish) => (
                         <DishCard toCart={true} dish={dish} key={dish._id} />
-                    ))
+                    ))}
+                </div>
+                : <div className=' w-full flex justify-center'><span className='text-xl font-semibold leading-8'>No dishes</span></div>}
 
-                    : <span className='text-xl font-semibold leading-8'>No dishes</span>}
 
 
-            </div>
 
 
         </section>
