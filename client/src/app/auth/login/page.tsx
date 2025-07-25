@@ -1,7 +1,6 @@
 "use client"
 import { LogIn } from '@/api/api';
 import { useAppDispatch } from '@/hooks/reduxHooks';
-import { login } from '@/redux/authSlice';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
@@ -10,7 +9,6 @@ const Page = () => {
   const [password, setPassword] = useState<string>("");
   const [username, setUsername] = useState<string>("");
   const router = useRouter();
-  const dispatch = useAppDispatch();
   return (
     <div className=" flex justify-center mt-[150px] mx-5 text-primary">
       <div className='max-w-[550px] w-full rounded-[25px] border-[2px] border-borderColor flex flex-col gap-4 p-6'>

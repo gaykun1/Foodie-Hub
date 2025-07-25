@@ -127,7 +127,7 @@ const SignUp = async (password, username)=>{
             withCredentials: true
         });
         if (!res) return;
-        return res.data;
+        return res.status;
     } catch (err) {
         if ((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["isAxiosError"])(err) && err.response) {
             console.log(err.response.data.message);
@@ -143,7 +143,7 @@ const LogIn = async (password, username)=>{
             withCredentials: true
         });
         if (!res) return;
-        return res.data;
+        return res.status;
     } catch (err) {
         if ((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["isAxiosError"])(err) && err.response) {
             console.log(err.response.data.message);
