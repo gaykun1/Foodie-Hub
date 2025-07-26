@@ -7,8 +7,8 @@ const authRoute = express.Router();
 authRoute.post("/signup", signup)
 authRoute.post("/login", login);
 authRoute.post("/logout", logout);
-authRoute.get("/profile", authMiddleware, profile);
 authRoute.get("/profile/roles", authMiddleware, checkRole);
+authRoute.get("/profile", authMiddleware, profile);
 authRoute.patch("/profile", authMiddleware, updateProfile);
 
 export default authRoute;

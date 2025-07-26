@@ -1,13 +1,18 @@
 
 import "@/styles/globals.css";
 import Header from "@/components/Header";
-import { cookies } from "next/headers";
 import Providers from "../providers/Providers";
 import AuthClientUpload from "@/components/AuthClientUpload";
 import axios from "axios";
 import SideBar from "@/components/Dashboard/SideBar";
 import Footer from "@/components/Footer";
 import ResponsiveSidebar from "@/components/Profile/ResponsiveSidebar";
+import { redirect } from "next/navigation";
+import { checkAuth } from "@/utils/auth";
+
+
+
+
 
 
 
@@ -17,14 +22,17 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const token = (await cookies()).get("token")?.value;
+  const user = await checkAuth();
+
+  if (!user) {
+    redirect("/auth/login");
+  }
+
 
   try {
 
     const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/profile/roles`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
+      withCredentials: true,
     });
     if (res.data.role === "admin" || res.data.role === "restaurant") {
       return (
