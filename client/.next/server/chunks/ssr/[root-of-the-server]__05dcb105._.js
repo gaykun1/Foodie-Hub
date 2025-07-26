@@ -479,7 +479,7 @@ const Header = ()=>{
                             className: "relative w-[270px] hidden lg:block ",
                             children: [
                                 activePanel === "search" ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                    className: "cursor-pointer flex items-center ",
+                                    className: `cursor-pointer flex items-center ${activePanel === "search" ? "text-primary" : ""} `,
                                     onClick: ()=>{
                                         setActivePanel(null);
                                         setWord("");
@@ -491,7 +491,7 @@ const Header = ()=>{
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/Header.tsx",
                                             lineNumber: 142,
-                                            columnNumber: 152
+                                            columnNumber: 204
                                         }, this)
                                     ]
                                 }, void 0, true, {
@@ -499,10 +499,10 @@ const Header = ()=>{
                                     lineNumber: 142,
                                     columnNumber: 42
                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                    className: "cursor-pointer flex items-center ",
+                                    className: `  cursor-pointer flex items-center    transition-all hover:text-primary  `,
                                     onClick: ()=>{},
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$search$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Search$3e$__["Search"], {
-                                        className: "absolute left-2.5 top-2"
+                                        className: "absolute left-2.5 top-2 "
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/Header.tsx",
                                         lineNumber: 146,
@@ -572,7 +572,7 @@ const Header = ()=>{
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: "lg:hidden   ",
                             children: activePanel === "search" || isSearchOpen ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                className: "cursor-pointer flex items-center ",
+                                className: `cursor-pointer flex items-center ${activePanel === "search" ? "text-primary" : ""}  `,
                                 onClick: ()=>{
                                     setActivePanel(null);
                                     setWord("");
@@ -585,7 +585,7 @@ const Header = ()=>{
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/Header.tsx",
                                         lineNumber: 180,
-                                        columnNumber: 191
+                                        columnNumber: 244
                                     }, this)
                                 ]
                             }, void 0, true, {
@@ -768,7 +768,7 @@ const Header = ()=>{
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                             onClick: ()=>setActivePanel(activePanel === "cart" ? null : "cart"),
-                            className: "relative cursor-pointer transition-colors hover:text-primary",
+                            className: `relative cursor-pointer transition-colors hover:text-primary  ${activePanel === "cart" ? "text-primary" : ""} `,
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shopping$2d$cart$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ShoppingCart$3e$__["ShoppingCart"], {
                                     size: 30
@@ -795,7 +795,7 @@ const Header = ()=>{
                             className: "rounded-full relative p-3 border-borderColor border-[2px] ",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                    className: "cursor-pointer transition-colors hover:text-primary flex items-center",
+                                    className: `cursor-pointer transition-colors hover:text-primary flex items-center ${activePanel === "avatarMenu" ? "text-primary" : ""}`,
                                     onClick: ()=>{
                                         setActivePanel(activePanel === "avatarMenu" ? null : "avatarMenu");
                                     },
@@ -879,7 +879,7 @@ const Header = ()=>{
                             className: "md:hidden",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                    className: "cursor-pointer transition-all hover:text-primary",
+                                    className: `cursor-pointer transition-all hover:text-primary ${activePanel === "navMenu" ? "text-primary" : ""}`,
                                     onClick: ()=>{
                                         setActivePanel(activePanel === "navMenu" ? null : "navMenu");
                                     },
@@ -889,7 +889,7 @@ const Header = ()=>{
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/Header.tsx",
                                         lineNumber: 262,
-                                        columnNumber: 163
+                                        columnNumber: 216
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/Header.tsx",

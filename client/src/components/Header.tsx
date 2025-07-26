@@ -18,7 +18,7 @@ const Header = () => {
   const { user } = useAppSelector(state => state.auth);
   const { cart } = useAppSelector(state => state.cart);
   const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
-  const [activePanel, setActivePanel] = useState<null | "cart" | "avatarMenu" | "navMenu" | "search">(null);
+  const [activePanel, setActivePanel] = useState<"search" | "cart" | "avatarMenu" | "navMenu" | null>(null);
   const [word, setWord] = useState<string>("");
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
 
@@ -82,7 +82,7 @@ const Header = () => {
       console.error(err);
     }
   }
-  
+
   return (
     <header className=" shadow-borderShadow border-b-[1px]  border-borderColor z-100 relative">
       <div className='py-2 flex items-center justify-between  _container'>
@@ -139,11 +139,11 @@ const Header = () => {
         <div className="flex gap-5 items-center relative">
           {/* search for lg> */}
           <div className="relative w-[270px] hidden lg:block ">
-            {activePanel === "search" ? (<button className='cursor-pointer flex items-center ' onClick={() => { setActivePanel(null); setWord(""); }}> <X className='absolute left-2.5 top-2' /></button>
-            ) : (<button className='cursor-pointer flex items-center ' onClick={() => {
+            {activePanel === "search" ? (<button className={`cursor-pointer flex items-center ${activePanel === "search" ? "text-primary" : ""} `} onClick={() => { setActivePanel(null); setWord(""); }}> <X className='absolute left-2.5 top-2' /></button>
+            ) : (<button className={`  cursor-pointer flex items-center    transition-all hover:text-primary  `} onClick={() => {
 
 
-            }}><Search className='absolute left-2.5 top-2' /></button>)}
+            }}><Search className='absolute left-2.5 top-2 ' /></button>)}
 
             <input value={word} onChange={async (e) => {
 
@@ -177,7 +177,7 @@ const Header = () => {
           {/* search for lg< */}
           <div className="lg:hidden   ">
 
-            {activePanel === "search" || isSearchOpen ? (<button className='cursor-pointer flex items-center ' onClick={() => { setActivePanel(null); setWord(""); setIsSearchOpen(false) }}> <X className='' /></button>
+            {activePanel === "search" || isSearchOpen ? (<button className={`cursor-pointer flex items-center ${activePanel === "search" ? "text-primary" : ""}  `} onClick={() => { setActivePanel(null); setWord(""); setIsSearchOpen(false) }}> <X className='' /></button>
             ) : (<button className='cursor-pointer flex items-center ' onClick={() => {
 
             }}><Search className='' onClick={() => setIsSearchOpen(true)} /></button>)}
@@ -226,7 +226,7 @@ const Header = () => {
           }
 
           {/* avatar touch menu */}
-          <button onClick={() => setActivePanel(activePanel === "cart" ? null : "cart")} className="relative cursor-pointer transition-colors hover:text-primary">
+          <button onClick={() => setActivePanel(activePanel === "cart" ? null : "cart")} className={`relative cursor-pointer transition-colors hover:text-primary  ${activePanel === "cart" ? "text-primary" : ""} `}>
             <ShoppingCart size={30} />
             <span className='rounded-full p-1 bg-primary absolute top-[55%] -left-[15%] text-white  font-semibold px-2 text-sm'>{cart?.items.length}</span>
 
@@ -236,7 +236,7 @@ const Header = () => {
 
 
 
-            <button className='cursor-pointer transition-colors hover:text-primary flex items-center' onClick={() => {
+            <button className={`cursor-pointer transition-colors hover:text-primary flex items-center ${activePanel === "avatarMenu" ? "text-primary" : ""}`} onClick={() => {
               setActivePanel(activePanel === "avatarMenu" ? null : "avatarMenu")
 
             }}>{activePanel === "avatarMenu" ? (<X />) : (<UserRound />)} </button>
@@ -259,7 +259,7 @@ const Header = () => {
 
           </div>
           <div className="md:hidden">
-            <button className='cursor-pointer transition-all hover:text-primary' onClick={() => { setActivePanel(activePanel === "navMenu" ? null : "navMenu") }}><Hamburger className='' size={30} /></button>
+            <button className={`cursor-pointer transition-all hover:text-primary ${activePanel === "navMenu" ? "text-primary" : ""}`} onClick={() => { setActivePanel(activePanel === "navMenu" ? null : "navMenu") }}><Hamburger className='' size={30} /></button>
 
             {activePanel === "navMenu" &&
               <div className="min-w-[200px] flex   flex-col top-full panel  right-0 absolute  border-borderColor mt-1  bg-primary  p-3 border-[1px] rounded-[6px]">
