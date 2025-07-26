@@ -21,12 +21,19 @@ export default async function RootLayout({
   const token = (await cookies()).get("token")?.value;
   console.log(token);
   try {
-    const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/profile/roles`, {
+     
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/profile/roles`, {
+      method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
-      }
+        "Content-Type": "application/json",
+      },
+      cache: "no-store",
     });
-    if (res.data.role === "admin" || res.data.role === "restaurant") {
+
+    const data = await res.json();
+
+    if (data.role === "admin" || data.role === "restaurant") {
       return (
 
         <Providers>
@@ -36,11 +43,11 @@ export default async function RootLayout({
             <Header />
             <div className="_container">
               <div className="border-[1px] mt-6 lg:hidden mb-8 rounded-lg w-fit border-borderColor p-4.5">
-                <ResponsiveSidebar type={res.data.role} />
+                <ResponsiveSidebar type={data.role} />
 
               </div>
               <div className="flex">
-                <SideBar role={res.data.role} />
+                <SideBar role={data.role} />
                 <div className="md:p-8 grow-1">
                   <div className="border-borderColor border-[1px] rounded-lg p-6 flex flex-col  ">
                     {children}
