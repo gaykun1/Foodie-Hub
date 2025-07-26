@@ -13,5 +13,5 @@ export async function checkAuth() {
     });
 
     const data = await res.json();
-    return data;
+    return data.user;
 }

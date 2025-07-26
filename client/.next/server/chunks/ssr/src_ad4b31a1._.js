@@ -127,7 +127,7 @@ async function checkAuth() {
         cache: "no-store"
     });
     const data = await res.json();
-    return data;
+    return data.user;
 }
 }}),
 "[project]/src/app/(main)/layout.tsx [app-rsc] (ecmascript)": ((__turbopack_context__) => {
