@@ -4,8 +4,7 @@ import Header from "@/components/Header";
 import Providers from "../providers/Providers";
 import AuthClientUpload from "@/components/AuthClientUpload";
 import Footer from "@/components/Footer";
-import { redirect } from "next/navigation";
-import { checkAuth } from "@/utils/auth";
+
 
 
 
@@ -15,11 +14,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const user = await checkAuth();
-  if (!user) {
-    redirect("/auth/login");
-  }
-  console.log(user);
+
   return (
 
     <Providers>
@@ -31,7 +26,7 @@ export default async function RootLayout({
           <div className="flex-1">
             {children}
           </div>
-        </div>
+        </div> 
         <Footer />
       </div>
     </Providers>

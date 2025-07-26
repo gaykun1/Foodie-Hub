@@ -21,6 +21,7 @@ export const LogIn = async (password: string, username: string): Promise<number|
     } catch (err) {
         if (isAxiosError(err) && err.response) {
             console.log(err.response.data.message);
+            return err.response.status;
         }
     }
 }

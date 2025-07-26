@@ -60,6 +60,7 @@ var { g: global, __dirname, k: __turbopack_refresh__, m: module } = __turbopack_
 __turbopack_context__.s({
     "default": (()=>__TURBOPACK__default__export__)
 });
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/axios/lib/axios.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$socket$2e$io$2d$client$2f$build$2f$esm$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$module__evaluation$3e$__ = __turbopack_context__.i("[project]/node_modules/socket.io-client/build/esm/index.js [app-client] (ecmascript) <module evaluation>");
@@ -80,11 +81,11 @@ var _s = __turbopack_context__.k.signature();
 ;
 ;
 ;
-const page = ()=>{
+const Page = ()=>{
     _s();
     const { user } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$hooks$2f$reduxHooks$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAppSelector"])({
-        "page.useAppSelector": (state)=>state.auth
-    }["page.useAppSelector"]);
+        "Page.useAppSelector": (state)=>state.auth
+    }["Page.useAppSelector"]);
     const [numOfOrders, setNumOfOrders] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
     const [totalRevenue, setTotalRevenue] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
     const [averageOrderValue, setAverageOrderValue] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
@@ -94,60 +95,12 @@ const page = ()=>{
     const [topDishes, setTopDishes] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
     const [accordion, setAccordion] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
-        "page.useEffect": ()=>{
-            const getLastSevenOrders = {
-                "page.useEffect.getLastSevenOrders": async ()=>{
-                    try {
-                        const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get("http://localhost:5200/api/order/orders/recent", {
-                            withCredentials: true
-                        });
-                        if (res) {
-                            setOrders(res.data);
-                        }
-                    } catch (err) {
-                        console.error(err);
-                    }
-                }
-            }["page.useEffect.getLastSevenOrders"];
-            const getLastSevenReviews = {
-                "page.useEffect.getLastSevenReviews": async ()=>{
-                    try {
-                        const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get("http://localhost:5200/api/restaurant/restaurants/reviews/recent", {
-                            withCredentials: true
-                        });
-                        if (res) {
-                            setReviews(res.data);
-                        }
-                    } catch (err) {
-                        console.error(err);
-                    }
-                }
-            }["page.useEffect.getLastSevenReviews"];
-            const getTopSevenDishes = {
-                "page.useEffect.getTopSevenDishes": async ()=>{
-                    try {
-                        const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get("http://localhost:5200/api/restaurant/restaurants/dishes/top", {
-                            withCredentials: true
-                        });
-                        if (res) {
-                            setTopDishes(res.data);
-                        }
-                    } catch (err) {
-                        console.error(err);
-                    }
-                }
-            }["page.useEffect.getTopSevenDishes"];
-            getTopSevenDishes();
-            getLastSevenReviews();
-            getLastSevenOrders();
-        }
-    }["page.useEffect"], []);
-    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
-        "page.useEffect": ()=>{
+        "Page.useEffect": ()=>{
+            // getting general numbers 
             const getNumbers = {
-                "page.useEffect.getNumbers": async ()=>{
+                "Page.useEffect.getNumbers": async ()=>{
                     try {
-                        const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get("http://localhost:5200/api/order/orders/statistics", {
+                        const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get(`${("TURBOPACK compile-time value", "http://localhost:5200")}/api/order/orders/statistics`, {
                             withCredentials: true
                         });
                         setNumOfOrders(res.data.numOfOrders);
@@ -157,36 +110,88 @@ const page = ()=>{
                         console.error(err);
                     }
                 }
-            }["page.useEffect.getNumbers"];
-            const sock = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$socket$2e$io$2d$client$2f$build$2f$esm$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["io"])("http://localhost:5200");
+            }["Page.useEffect.getNumbers"];
+            // creating io server
+            const sock = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$socket$2e$io$2d$client$2f$build$2f$esm$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["io"])(`${("TURBOPACK compile-time value", "http://localhost:5200")}`);
             setSocket(sock);
             getNumbers();
         }
-    }["page.useEffect"], []);
+    }["Page.useEffect"], []);
+    // funcs for getting recent orders and reviews data
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
-        "page.useEffect": ()=>{
+        "Page.useEffect": ()=>{
+            const getLastSevenOrders = {
+                "Page.useEffect.getLastSevenOrders": async ()=>{
+                    try {
+                        const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get(`${("TURBOPACK compile-time value", "http://localhost:5200")}/api/order/orders/recent`, {
+                            withCredentials: true
+                        });
+                        if (res) {
+                            setOrders(res.data);
+                        }
+                    } catch (err) {
+                        console.error(err);
+                    }
+                }
+            }["Page.useEffect.getLastSevenOrders"];
+            const getLastSevenReviews = {
+                "Page.useEffect.getLastSevenReviews": async ()=>{
+                    try {
+                        const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get(`${("TURBOPACK compile-time value", "http://localhost:5200")}/api/restaurant/restaurants/reviews/recent`, {
+                            withCredentials: true
+                        });
+                        if (res) {
+                            setReviews(res.data);
+                        }
+                    } catch (err) {
+                        console.error(err);
+                    }
+                }
+            }["Page.useEffect.getLastSevenReviews"];
+            const getTopSevenDishes = {
+                "Page.useEffect.getTopSevenDishes": async ()=>{
+                    try {
+                        const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get(`${("TURBOPACK compile-time value", "http://localhost:5200")}/api/restaurant/restaurants/dishes/top`, {
+                            withCredentials: true
+                        });
+                        if (res) {
+                            setTopDishes(res.data);
+                        }
+                    } catch (err) {
+                        console.error(err);
+                    }
+                }
+            }["Page.useEffect.getTopSevenDishes"];
+            getTopSevenDishes();
+            getLastSevenReviews();
+            getLastSevenOrders();
+        }
+    }["Page.useEffect"], []);
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "Page.useEffect": ()=>{
+            // connecting to the room and live listening new orders and new reviews (status or item)
             if (socket) {
                 socket.emit("joinDashboard", {
                     adminId: user?._id
                 });
                 socket.on("updateOrders", {
-                    "page.useEffect": (orders)=>{
+                    "Page.useEffect": (orders)=>{
                         setOrders(orders);
                     }
-                }["page.useEffect"]);
+                }["Page.useEffect"]);
                 socket.on("updateReviews", {
-                    "page.useEffect": (reviews)=>{
+                    "Page.useEffect": (reviews)=>{
                         setReviews(reviews);
                     }
-                }["page.useEffect"]);
+                }["Page.useEffect"]);
                 return ({
-                    "page.useEffect": ()=>{
+                    "Page.useEffect": ()=>{
                         socket.off();
                     }
-                })["page.useEffect"];
+                })["Page.useEffect"];
             }
         }
-    }["page.useEffect"], [
+    }["Page.useEffect"], [
         socket
     ]);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -806,12 +811,15 @@ const page = ()=>{
         columnNumber: 5
     }, this);
 };
-_s(page, "SuZOPoipTacJ9XU5fRj+NbG0D9Q=", false, function() {
+_s(Page, "SuZOPoipTacJ9XU5fRj+NbG0D9Q=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$hooks$2f$reduxHooks$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAppSelector"]
     ];
 });
-const __TURBOPACK__default__export__ = page;
+_c = Page;
+const __TURBOPACK__default__export__ = Page;
+var _c;
+__turbopack_context__.k.register(_c, "Page");
 if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
     __turbopack_context__.k.registerExports(module, globalThis.$RefreshHelpers$);
 }

@@ -5,8 +5,7 @@ import Providers from "../providers/Providers";
 import AuthClientUpload from "@/components/AuthClientUpload";
 import HeaderRestaurant from "@/components/Restaurant/HeaderRestaurant";
 import Footer from "@/components/Footer";
-import { redirect } from "next/navigation";
-import { checkAuth } from "@/utils/auth";
+
 
 
 
@@ -17,11 +16,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
 
-  const user = await checkAuth();
 
-  if (!user) {
-    redirect("/auth/login");
-  }
   return (
 
     <Providers>

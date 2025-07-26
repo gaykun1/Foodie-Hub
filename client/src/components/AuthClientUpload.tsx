@@ -4,10 +4,19 @@ import { login } from '@/redux/authSlice';
 import { getCart } from '@/redux/cartSlice';
 import { getInfo } from '@/redux/courierSlice';
 import axios, { isAxiosError } from 'axios';
+import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 // fetching data component every reload
 const AuthClientUpload = () => {
     const dispatch = useAppDispatch();
+    const router = useRouter();
+
+    useEffect(() => {
+        axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/profile`, { withCredentials: true })
+            .catch(() => {
+                router.push("/auth/login");
+            });
+    }, [router]);
 
 
     // func for fetching profile + courierPrfoile + cart

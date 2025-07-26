@@ -6,8 +6,7 @@ import AuthClientUpload from "@/components/AuthClientUpload";
 import SideBarProfile from "@/components/Profile/SideBar";
 import ResponsiveSidebar from "@/components/Profile/ResponsiveSidebar";
 import Footer from "@/components/Footer";
-import { redirect } from "next/navigation";
-import { checkAuth } from "@/utils/auth";
+
 
 
 
@@ -18,11 +17,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
 
- const user = await checkAuth();
 
-  if (!user) {
-    redirect("/auth/login");
-  }
   return (
 
     <Providers>

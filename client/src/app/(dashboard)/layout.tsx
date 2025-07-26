@@ -7,8 +7,8 @@ import axios from "axios";
 import SideBar from "@/components/Dashboard/SideBar";
 import Footer from "@/components/Footer";
 import ResponsiveSidebar from "@/components/Profile/ResponsiveSidebar";
-import { redirect } from "next/navigation";
-import { checkAuth } from "@/utils/auth";
+import { cookies } from "next/headers";
+
 
 
 
@@ -22,17 +22,15 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const user = await checkAuth();
-
-  if (!user) {
-    redirect("/auth/login");
-  }
 
 
+
+  const token = (await cookies()).get("token")?.value;
   try {
-
     const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/profile/roles`, {
-      withCredentials: true,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
     });
     if (res.data.role === "admin" || res.data.role === "restaurant") {
       return (
