@@ -3,7 +3,6 @@ import "@/styles/globals.css";
 import Header from "@/components/Header";
 import Providers from "../providers/Providers";
 import AuthClientUpload from "@/components/AuthClientUpload";
-import axios from "axios";
 import SideBar from "@/components/Dashboard/SideBar";
 import Footer from "@/components/Footer";
 import ResponsiveSidebar from "@/components/Profile/ResponsiveSidebar";
