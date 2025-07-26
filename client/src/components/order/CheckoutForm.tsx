@@ -100,7 +100,7 @@ const CheckoutForm = ({ order, shipping, setShipping }: { order: Order, shipping
                 elements,
                 clientSecret,
                 confirmParams: {
-                    return_url: `http://localhost:3000/orders/order/success/${((shipping + order.totalPrice) * ((100 - discount) / 100)).toFixed(2)}`,
+                    return_url: `${process.env.NEXT_PUBLIC_API_URL}/orders/order/success/${((shipping + order.totalPrice) * ((100 - discount) / 100)).toFixed(2)}`,
                 } //rediraction to success page
             })
             setLoading(false);
