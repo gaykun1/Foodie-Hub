@@ -1,5 +1,6 @@
 {
   "/(dashboard)/dashboard/applications/page": "app/(dashboard)/dashboard/applications/page.js",
+  "/(dashboard)/dashboard/create/page": "app/(dashboard)/dashboard/create/page.js",
   "/(dashboard)/dashboard/menu/page": "app/(dashboard)/dashboard/menu/page.js",
   "/(dashboard)/dashboard/overview/page": "app/(dashboard)/dashboard/overview/page.js",
   "/(dashboard)/dashboard/promocode/page": "app/(dashboard)/dashboard/promocode/page.js",

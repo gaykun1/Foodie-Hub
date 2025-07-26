@@ -1476,14 +1476,18 @@ var _s = __turbopack_context__.k.signature();
 function RootLayout({ children }) {
     _s();
     const [role, setRole] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
+    const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const checkRole = async ()=>{
         try {
+            setLoading(true);
             const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get(`${("TURBOPACK compile-time value", "http://localhost:5200")}/api/auth/profile/roles`, {
                 withCredentials: true
             });
             setRole(res.data.role);
         } catch (err) {
             console.error(err);
+        } finally{
+            setLoading(false);
         }
     };
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
@@ -1492,12 +1496,20 @@ function RootLayout({ children }) {
         }
     }["RootLayout.useEffect"], []);
     try {
-        if (role === "admin" || role === "restaurant") {
+        if (loading) {
+            return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "animate-spin rounded-full h-12 w-12 border-t-4 flex justify-center mt-20 border-blue-500 border-solid mx-auto"
+            }, void 0, false, {
+                fileName: "[project]/src/app/(dashboard)/layout.tsx",
+                lineNumber: 38,
+                columnNumber: 14
+            }, this);
+        } else if (role === "admin" || role === "restaurant") {
             return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$providers$2f$Providers$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$AuthClientUpload$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                         fileName: "[project]/src/app/(dashboard)/layout.tsx",
-                        lineNumber: 39,
+                        lineNumber: 44,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1505,7 +1517,7 @@ function RootLayout({ children }) {
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$Header$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                                 fileName: "[project]/src/app/(dashboard)/layout.tsx",
-                                lineNumber: 41,
+                                lineNumber: 46,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1517,12 +1529,12 @@ function RootLayout({ children }) {
                                             type: role
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(dashboard)/layout.tsx",
-                                            lineNumber: 44,
+                                            lineNumber: 49,
                                             columnNumber: 17
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(dashboard)/layout.tsx",
-                                        lineNumber: 43,
+                                        lineNumber: 48,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1532,7 +1544,7 @@ function RootLayout({ children }) {
                                                 role: role
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(dashboard)/layout.tsx",
-                                                lineNumber: 48,
+                                                lineNumber: 53,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1542,41 +1554,41 @@ function RootLayout({ children }) {
                                                     children: children
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(dashboard)/layout.tsx",
-                                                    lineNumber: 50,
+                                                    lineNumber: 55,
                                                     columnNumber: 19
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(dashboard)/layout.tsx",
-                                                lineNumber: 49,
+                                                lineNumber: 54,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(dashboard)/layout.tsx",
-                                        lineNumber: 47,
+                                        lineNumber: 52,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/(dashboard)/layout.tsx",
-                                lineNumber: 42,
+                                lineNumber: 47,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$Footer$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                                 fileName: "[project]/src/app/(dashboard)/layout.tsx",
-                                lineNumber: 56,
+                                lineNumber: 61,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/(dashboard)/layout.tsx",
-                        lineNumber: 40,
+                        lineNumber: 45,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/(dashboard)/layout.tsx",
-                lineNumber: 37,
+                lineNumber: 42,
                 columnNumber: 9
             }, this);
         } else {
@@ -1587,20 +1599,20 @@ function RootLayout({ children }) {
                         children: "Error"
                     }, void 0, false, {
                         fileName: "[project]/src/app/(dashboard)/layout.tsx",
-                        lineNumber: 64,
+                        lineNumber: 69,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                         children: "Access denied"
                     }, void 0, false, {
                         fileName: "[project]/src/app/(dashboard)/layout.tsx",
-                        lineNumber: 65,
+                        lineNumber: 70,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/(dashboard)/layout.tsx",
-                lineNumber: 63,
+                lineNumber: 68,
                 columnNumber: 9
             }, this);
         }
@@ -1613,25 +1625,25 @@ function RootLayout({ children }) {
                     children: "Error "
                 }, void 0, false, {
                     fileName: "[project]/src/app/(dashboard)/layout.tsx",
-                    lineNumber: 75,
+                    lineNumber: 80,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                     children: "Access denied"
                 }, void 0, false, {
                     fileName: "[project]/src/app/(dashboard)/layout.tsx",
-                    lineNumber: 77,
+                    lineNumber: 82,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/app/(dashboard)/layout.tsx",
-            lineNumber: 74,
+            lineNumber: 79,
             columnNumber: 7
         }, this);
     }
 }
-_s(RootLayout, "GMLvItH/JZBp/dwIzvmJB4jdCdo=");
+_s(RootLayout, "fDftvwWKRzydbQzA0qsxJUulZM8=");
 _c = RootLayout;
 var _c;
 __turbopack_context__.k.register(_c, "RootLayout");

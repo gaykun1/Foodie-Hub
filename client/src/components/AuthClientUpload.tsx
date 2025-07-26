@@ -3,10 +3,9 @@ import { useAppDispatch } from '@/hooks/reduxHooks';
 import { login } from '@/redux/authSlice';
 import { getCart } from '@/redux/cartSlice';
 import { getInfo } from '@/redux/courierSlice';
-import { User } from '@/redux/reduxTypes';
 import axios, { isAxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 // fetching data component every reload
 const AuthClientUpload = () => {
     const dispatch = useAppDispatch();

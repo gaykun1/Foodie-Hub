@@ -436,6 +436,10 @@
     margin-top: calc(var(--spacing) * 12);
   }
 
+  .mt-20 {
+    margin-top: calc(var(--spacing) * 20);
+  }
+
   .mt-\[5px\] {
     margin-top: 5px;
   }

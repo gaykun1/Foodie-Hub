@@ -17,12 +17,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const [role, setRole] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
   const checkRole = async () => {
     try {
+      setLoading(true);
       const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/profile/roles`, { withCredentials: true });
       setRole(res.data.role);
     } catch (err) {
       console.error(err);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -30,8 +34,9 @@ export default function RootLayout({
     checkRole();
   }, [])
   try {
-
-    if (role === "admin" || role === "restaurant") {
+    if (loading) {
+      return <div className="animate-spin rounded-full h-12 w-12 border-t-4 flex justify-center mt-20 border-blue-500 border-solid mx-auto"></div>;
+    }else if (role === "admin" || role === "restaurant") {
       return (
 
         <Providers>
