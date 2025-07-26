@@ -3,25 +3,16 @@ import { useAppDispatch } from '@/hooks/reduxHooks';
 import { login } from '@/redux/authSlice';
 import { getCart } from '@/redux/cartSlice';
 import { getInfo } from '@/redux/courierSlice';
+import { User } from '@/redux/reduxTypes';
 import axios, { isAxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 // fetching data component every reload
 const AuthClientUpload = () => {
     const dispatch = useAppDispatch();
     const router = useRouter();
-
     useEffect(() => {
-        axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/profile`, { withCredentials: true })
-            .catch(() => {
-                router.push("/auth/login");
-            });
-    }, [router]);
-
-
-    // func for fetching profile + courierPrfoile + cart
-    useEffect(() => {
-        const fetchData = async () => {
+        const getUser = async () => {
             try {
                 const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/profile`, {
                     withCredentials: true,
@@ -33,6 +24,20 @@ const AuthClientUpload = () => {
                         dispatch(getInfo(res.data));
                     }
                 }
+            } catch {
+                router.push("/auth/login");
+            }
+        }
+        getUser();
+
+    }, [router]);
+
+
+    // func for fetching profile + courierPrfoile + cart
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+
 
                 const cartRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/cart/`, {
                     withCredentials: true,

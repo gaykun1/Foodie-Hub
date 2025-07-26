@@ -967,24 +967,11 @@ const AuthClientUpload = ()=>{
     _s();
     const dispatch = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$hooks$2f$reduxHooks$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAppDispatch"])();
     const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"])();
+    const [user, setUser] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "AuthClientUpload.useEffect": ()=>{
-            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get(`${("TURBOPACK compile-time value", "http://localhost:5200")}/api/auth/profile`, {
-                withCredentials: true
-            }).catch({
-                "AuthClientUpload.useEffect": ()=>{
-                    router.push("/auth/login");
-                }
-            }["AuthClientUpload.useEffect"]);
-        }
-    }["AuthClientUpload.useEffect"], [
-        router
-    ]);
-    // func for fetching profile + courierPrfoile + cart
-    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
-        "AuthClientUpload.useEffect": ()=>{
-            const fetchData = {
-                "AuthClientUpload.useEffect.fetchData": async ()=>{
+            const getUser = {
+                "AuthClientUpload.useEffect.getUser": async ()=>{
                     try {
                         const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get(`${("TURBOPACK compile-time value", "http://localhost:5200")}/api/auth/profile`, {
                             withCredentials: true
@@ -998,6 +985,21 @@ const AuthClientUpload = ()=>{
                                 dispatch((0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$redux$2f$courierSlice$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getInfo"])(res.data));
                             }
                         }
+                    } catch  {
+                        router.push("/auth/login");
+                    }
+                }
+            }["AuthClientUpload.useEffect.getUser"];
+        }
+    }["AuthClientUpload.useEffect"], [
+        router
+    ]);
+    // func for fetching profile + courierPrfoile + cart
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "AuthClientUpload.useEffect": ()=>{
+            const fetchData = {
+                "AuthClientUpload.useEffect.fetchData": async ()=>{
+                    try {
                         const cartRes = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get(`${("TURBOPACK compile-time value", "http://localhost:5200")}/api/cart/`, {
                             withCredentials: true
                         });
@@ -1016,7 +1018,7 @@ const AuthClientUpload = ()=>{
     ]);
     return null;
 };
-_s(AuthClientUpload, "rlZc6FzN7VNE2SOG9apgb4NmA1k=", false, function() {
+_s(AuthClientUpload, "BOksAnUSYb5FhyP9AewUnCvh1do=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$hooks$2f$reduxHooks$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAppDispatch"],
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"]
