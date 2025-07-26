@@ -259,7 +259,7 @@ const Header = () => {
 
           </div>
           <div className="md:hidden">
-            <button onClick={() => { setActivePanel(activePanel === "navMenu" ? null : "navMenu") }}><Hamburger className='' size={30} /></button>
+            <button className='cursor-pointer transition-all hover:text-primary' onClick={() => { setActivePanel(activePanel === "navMenu" ? null : "navMenu") }}><Hamburger className='' size={30} /></button>
 
             {activePanel === "navMenu" &&
               <div className="min-w-[200px] flex   flex-col top-full panel  right-0 absolute  border-borderColor mt-1  bg-primary  p-3 border-[1px] rounded-[6px]">
@@ -272,7 +272,7 @@ const Header = () => {
                     )}
                   </>
 
-                  ) : (<Link className='default-link font-bold' href={`${user.role === "admin" ? "/dashboard/overview" : "/dashboard/restaurant-overview"}`}>Dashboard</Link>)}
+                  ) : (<Link className='transition-all text-white   font-bold leading-7 hover:opacity-65 ' href={`${user.role === "admin" ? "/dashboard/overview" : "/dashboard/restaurant-overview"}`}>Dashboard</Link>)}
                 </nav>
               </div>
 

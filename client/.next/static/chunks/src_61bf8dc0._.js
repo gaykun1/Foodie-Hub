@@ -34,7 +34,7 @@ const CourierOrderCard = ({ order, checkIfHasOrder, setViewDetails })=>{
     const takeOrder = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
         "CourierOrderCard.useCallback[takeOrder]": async (id, courierId)=>{
             try {
-                const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].post(`${("TURBOPACK compile-time value", "http://localhost:5200")}/api/courier/orders/${id}/take`, {
+                await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].post(`${("TURBOPACK compile-time value", "http://localhost:5200")}/api/courier/orders/${id}/take`, {
                     id,
                     courierId
                 }, {
@@ -633,6 +633,7 @@ const OrderCard = /*#__PURE__*/ _s(__TURBOPACK__imported__module__$5b$project$5d
     }, this);
 }, "/i5/KsEptyuA1SdhX3MWimUQvhU=")), "/i5/KsEptyuA1SdhX3MWimUQvhU=");
 _c1 = OrderCard;
+OrderCard.displayName = "OrderCard";
 const __TURBOPACK__default__export__ = OrderCard;
 var _c, _c1;
 __turbopack_context__.k.register(_c, "OrderCard$React.memo");
@@ -805,7 +806,7 @@ const ViewDetailsSideBar = ({ viewDetails })=>{
                                                 className: "font-semibold text-secondary",
                                                 children: [
                                                     "№",
-                                                    viewDetails.adress.apartmentNumbr ? viewDetails.adress.apartmentNumber : "...",
+                                                    viewDetails.adress.apartmentNumbr !== null ? viewDetails.adress.apartmentNumbr : "...",
                                                     ", ",
                                                     viewDetails.adress.houseNumber,
                                                     " ",
@@ -1416,9 +1417,9 @@ const Page = ()=>{
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
                                             className: "text-2xl leading-8 font-bold  ",
                                             children: [
-                                                'Taking Order ID: "',
+                                                "Taking Order ID: ",
                                                 isWorking._id,
-                                                '" '
+                                                " "
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/(main)/courier/page.tsx",

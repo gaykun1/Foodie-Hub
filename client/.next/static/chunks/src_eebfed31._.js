@@ -811,6 +811,7 @@ const Header = ()=>{
                             className: "md:hidden",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                    className: "cursor-pointer transition-all hover:text-primary",
                                     onClick: ()=>{
                                         setActivePanel(activePanel === "navMenu" ? null : "navMenu");
                                     },
@@ -820,7 +821,7 @@ const Header = ()=>{
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/Header.tsx",
                                         lineNumber: 262,
-                                        columnNumber: 102
+                                        columnNumber: 163
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/Header.tsx",
@@ -879,7 +880,7 @@ const Header = ()=>{
                                                 }, this)
                                             ]
                                         }, void 0, true) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                                            className: "default-link font-bold",
+                                            className: "transition-all text-white   font-bold leading-7 hover:opacity-65 ",
                                             href: `${user.role === "admin" ? "/dashboard/overview" : "/dashboard/restaurant-overview"}`,
                                             children: "Dashboard"
                                         }, void 0, false, {
