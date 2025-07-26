@@ -10,13 +10,6 @@ import ResponsiveSidebar from "@/components/Profile/ResponsiveSidebar";
 import { cookies } from "next/headers";
 
 
-
-
-
-
-
-
-
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -26,6 +19,7 @@ export default async function RootLayout({
 
 
   const token = (await cookies()).get("token")?.value;
+  console.log(token);
   try {
     const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/profile/roles`, {
       headers: {
