@@ -79,7 +79,7 @@ const RestaurantsByCategory = () => {
                     )
                 )
             }
-            {restaurants?.length == 0 && (<h2 className='text-xl font-semibold text-center'>No restaurants</h2>)}
+            {restaurants?.length == 0 && !isLoading && (<h2 className='text-xl font-semibold text-center'>No restaurants</h2>)}
 
         </section>
     )
