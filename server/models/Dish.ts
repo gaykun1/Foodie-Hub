@@ -1,6 +1,7 @@
-import mongoose, { mongo, Schema } from "mongoose";
+import mongoose, { Document, Schema } from "mongoose";
 
-export interface IDish {
+
+export interface IDish  {
   title: string,
   description: string,
   price: { type: Number, required: true },
@@ -9,8 +10,9 @@ export interface IDish {
   typeOfFood: "Appetizers" | "Main Courses" | "Desserts" | "Drinks",
   sold: number,
 }
+export interface IDishDocument extends IDish, Document<mongoose.Types.ObjectId>{ }
 
-const DishSchema = new Schema({
+const DishSchema = new Schema<IDish>({
   title: { type: String, required: true },
   description: { type: String, required: true },
   price: { type: Number, required: true },

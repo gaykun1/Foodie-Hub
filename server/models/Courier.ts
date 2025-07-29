@@ -1,7 +1,8 @@
-import mongoose, { mongo, Schema } from "mongoose";
+import mongoose, { Document, Schema } from "mongoose";
 
 
-interface ICourier {
+
+interface ICourier  {
     fullname: string,
     phoneNumber: string,
     email: string,
@@ -11,6 +12,7 @@ interface ICourier {
     status: "Working" | "Processing",//Working means -application has been approved and Processing - interviewing
     city: string,
 }
+export interface ICourierDocument extends ICourier, Document<mongoose.Types.ObjectId> { }
 
 
 const courierSchema = new mongoose.Schema<ICourier>({

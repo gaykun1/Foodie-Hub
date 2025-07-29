@@ -37,7 +37,23 @@ export const signup = async (req: Request, res: Response): Promise<void> => {
         return;
     }
 }
+// profile get func
+export const profile = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const user = await User.findById((req as AuthRequest).userId).populate({ path: "usualPromocode", select: "discountPercent" }).select("-password");
 
+        if (!user) {
+            res.status(404).json({ message: "User not found!" });
+            return;
+        }
+        res.json({
+            message: `Welcome, user ${user.username}`,
+            user
+        });
+    } catch (err) {
+        res.status(500).json({ message: "Server error" });
+    }
+};
 // Login func
 export const login = async (req: Request, res: Response): Promise<void> => {
     const { username, password } = req.body;
@@ -77,7 +93,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
         });
         return;
     } catch (err) {
-        res.status(500).json({ message: `Server Error` });
+        res.status(500).json({ message: `Server error` });
         return;
     }
 }
@@ -98,23 +114,7 @@ export const logout = async (req: Request, res: Response): Promise<void> => {
         res.status(500).json({ message: "Server error" });
     }
 };
-// profile get func
-export const profile = async (req: Request, res: Response): Promise<void> => {
-    try {
-        const user = await User.findById((req as AuthRequest).userId).populate({ path: "usualPromocode", select: "discountPercent" }).select("-password");
 
-        if (!user) {
-            res.status(404).json({ message: "User not found!" });
-            return;
-        }
-        res.json({
-            message: `Welcome, user ${user.username}`,
-            user
-        });
-    } catch (err) {
-        res.status(500).json({ message: "Server error" });
-    }
-};
 
 // Partly updating  profile fields  (including new password)
 export const updateProfile = async (req: Request, res: Response): Promise<void> => {

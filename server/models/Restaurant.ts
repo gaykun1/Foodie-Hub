@@ -1,4 +1,5 @@
-import mongoose, { mongo, Schema } from "mongoose";
+import mongoose, { Document, Schema } from "mongoose";
+
 
 export enum Category {
   All = "All Restaurants",
@@ -9,7 +10,7 @@ export enum Category {
 }
 
 
-export interface IRestaurant  {
+export interface IRestaurant   {
   title: string,
   description: String,
   adress: {
@@ -30,6 +31,7 @@ export interface IRestaurant  {
   reviews: mongoose.Types.ObjectId[],
   about: string,
 }
+export interface IRestaurantDocument extends IRestaurant, Document<mongoose.Types.ObjectId> { }
 
 const RestaurantSchema = new Schema<IRestaurant>({
   title: { type: String, required: true },

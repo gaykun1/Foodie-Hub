@@ -1,7 +1,7 @@
-import mongoose, { mongo, Schema } from "mongoose";
-import { createDecipheriv } from "node:crypto";
+import mongoose, { Document, Schema } from "mongoose";
 
-export interface IOrder {
+
+export interface IOrder  {
   userId: mongoose.Types.ObjectId,
   courierId: mongoose.Types.ObjectId,
   restaurantTitle: string,
@@ -27,6 +27,7 @@ export interface IOrder {
     apartmentNumbr?: number;
   }
 }
+export interface IOrderDocument extends IOrder, Document<mongoose.Types.ObjectId> { }
 
 const OrderSchema = new Schema<IOrder>({
   userId: { type: Schema.Types.ObjectId, required: true, ref: "User" },

@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { AuthRequest } from "../middleware/authMiddleware";
 import Order from "../models/Order";
 import Cart from "../models/Cart";
-import { restaurantsSocketsMap } from "../server";
+import { restaurantsSocketsMap } from "../socket";
 import Dish from "../models/Dish";
 import Restaurant from "../models/Restaurant";
 

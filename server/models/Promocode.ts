@@ -1,4 +1,5 @@
-import mongoose, {  Schema } from "mongoose";
+import mongoose, { Document, Schema } from "mongoose";
+
 
 
 export interface IPromocode {
@@ -8,6 +9,8 @@ export interface IPromocode {
   type: "Usual" | "Special",//usual-for weekend use and special for one time use
   isUsed?: boolean,
 }
+export interface IPromocodeDocument extends IPromocode, Document<mongoose.Types.ObjectId> { }
+
 const PromocodeSchema = new Schema<IPromocode>({
   code: { type: String, required: true },
   createdAt: { type: Date, default: Date.now(), expires: 3600 * 24 * 7 },

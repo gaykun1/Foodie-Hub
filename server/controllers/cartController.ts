@@ -17,12 +17,9 @@ export const getCart = async (req: Request, res: Response): Promise<void> => {
         }
         res.status(200).json(cart);
         return;
-    } catch (err) {
-
-
-        res.status(500).json(err);
+    } catch {
+        res.status(500).json(("Server error!"));
         return;
-
     }
 
 }
@@ -30,13 +27,12 @@ export const getCart = async (req: Request, res: Response): Promise<void> => {
 export const updateCartAmount = async (req: Request, res: Response): Promise<void> => {
     const { amount, title } = req.body;
     const id = req.params.id;
-    console.log(req.body,req.params);
     try {
         const order = await Order.findOne({ userId: (req as AuthRequest).userId, status: null });
         if (amount === 0) {
             const cart = await Cart.findOneAndUpdate({ userId: (req as AuthRequest).userId }, { $pull: { items: { dishId: id } } }, { new: true });
             if (cart?.items.length == 0) {
-                await Cart.findOneAndUpdate({ userId: (req as AuthRequest).userId },{$set:{restaurantId:null}});
+                await Cart.findOneAndUpdate({ userId: (req as AuthRequest).userId }, { $set: { restaurantId: null } });
             }
             if (order) {
                 order.items = order.items.filter((item) => item.title !== title); //deleting items out of the cart if amount equals 0
@@ -45,7 +41,7 @@ export const updateCartAmount = async (req: Request, res: Response): Promise<voi
                 }
                 await order.save();
             }
-            res.status(200);
+            res.status(200).json({});
 
             return;
         } else {
@@ -62,14 +58,14 @@ export const updateCartAmount = async (req: Request, res: Response): Promise<voi
                 order.totalPrice = sum;
                 await order.save();
             }
-            res.status(200);
+            res.status(200).json({});
 
             return;
         }
 
 
     } catch (err) {
-        res.status(500).json("Server error!");
+        res.status(500).json(("Server error!"));
         return;
     }
 
@@ -85,7 +81,7 @@ export const addToCart = async (req: Request, res: Response): Promise<void> => {
 
             const dish = await Dish.findById(id);
             if (!dish) {
-                res.status(404).json("Dish not found");
+                res.status(404).json("Dish is not found");
                 return;
             }
             //validation for checking if dish from other restaurant 
@@ -117,13 +113,12 @@ export const addToCart = async (req: Request, res: Response): Promise<void> => {
             res.status(201).json(updatedCart);
             return;
         }
-        res.status(401).json("Unauthorized");
-        return;
+
 
     } catch (err) {
 
 
-        res.status(500).json("Server error!");
+        res.status(500).json(("Server error!"));
         return;
 
     }

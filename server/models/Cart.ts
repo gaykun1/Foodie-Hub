@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Document, Schema } from "mongoose";
 
 export interface ICart {
   userId: mongoose.Types.ObjectId,
@@ -8,7 +8,7 @@ export interface ICart {
     amount: number,
   }[],
 }
-
+export interface ICartDocument extends ICart, Document<mongoose.Types.ObjectId> {}
 const CartSchema = new Schema<ICart>({
   userId: { type: Schema.Types.ObjectId, required: true, ref: "User" },
   restaurantId: {

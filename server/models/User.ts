@@ -1,7 +1,7 @@
-import mongoose, { mongo, Schema } from "mongoose";
+import mongoose, {  Schema,Document } from "mongoose";
 
 
-interface IUser {
+interface IUser  {
     username: string,
     password: string,
     phoneNumber?: string,
@@ -19,7 +19,7 @@ interface IUser {
     restaurantId?: mongoose.Types.ObjectId,
 }
 
-
+export interface IUserDocument extends IUser, Document<mongoose.Types.ObjectId> { }
 const userSchema = new mongoose.Schema<IUser>({
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true, },

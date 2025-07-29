@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import Order from "../models/Order";
 import Courier from "../models/Courier";
 import User from "../models/User";
-import { activeAdmins, io, restaurantsSocketsMap, socketsMap } from "../server";
+import { activeAdmins, io, restaurantsSocketsMap, socketsMap } from "../socket";
 import Restaurant from "../models/Restaurant";
 import { AuthRequest } from "../middleware/authMiddleware";
 

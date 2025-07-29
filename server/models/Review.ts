@@ -1,12 +1,15 @@
-import mongoose, { mongo, Schema } from "mongoose";
+import mongoose, { Document, Schema } from "mongoose";
 
 
-export interface IReview  {
+
+export interface IReview   {
   sender: mongoose.Types.ObjectId,
   text: string,
   rating: number,
   restaurantId: mongoose.Types.ObjectId,
 }
+export interface IReviewDocument extends IReview, Document<mongoose.Types.ObjectId> { }
+
 const ReviewSchema = new Schema<IReview>({
   sender: { type: Schema.Types.ObjectId, required: true, ref: "User" },
   text: { type: String, required: true },

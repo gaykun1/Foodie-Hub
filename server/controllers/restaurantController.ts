@@ -4,7 +4,7 @@ import User from "../models/User";
 import { AuthRequest } from "../middleware/authMiddleware";
 import Dish, { IDish } from "../models/Dish";
 import Review, { IReview } from "../models/Review";
-import { activeAdmins, io, restaurantsSocketsMap } from "../server";
+import { activeAdmins, io, restaurantsSocketsMap } from "../socket";
 
 
 
