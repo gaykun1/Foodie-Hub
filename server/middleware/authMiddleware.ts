@@ -10,13 +10,12 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction):
     const token = req.cookies?.token || req.headers.authorization?.split(' ')[1];
     // checking auth token in cookies and headers
 
-    console.log(`${req.method} ${req.originalUrl}`);
     if (!token) {
         res.status(401).json({ message: 'Unauthorized (no token)' });
         return;
     }
 
-    try {
+    try { 
         const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { userId: string, role: string };
         (req as AuthRequest).userId = decoded.userId;
         (req as AuthRequest).role = decoded.role;

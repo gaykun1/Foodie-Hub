@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -32,6 +32,11 @@ app.use("/api/order", orderRoute);
 app.use("/api/payment", payRoute);
 app.use("/api/courier", courierRoute);
 app.use("/api/promocode", promocodeRoute);
+
+//route for testing auth middleware 
+app.get("/api/protected",authMiddleware, async (req: Request, res: Response) => {
+    return res.status(200).json("Route is protected");
+})
 
 // ти можеш сюди також винести cron або винести окремо
 

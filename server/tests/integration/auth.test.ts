@@ -4,12 +4,18 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { app } from "../../app";
 import mongoose from "mongoose";
+import { MongoMemoryServer } from 'mongodb-memory-server';
+let mongo: MongoMemoryServer;
+
 beforeAll(async () => {
-  await mongoose.connect(process.env.MONGO_URI!);
+  mongo = await MongoMemoryServer.create();
+  const uri = mongo.getUri();
+  await mongoose.connect(uri);
 });
 
 afterAll(async () => {
   await mongoose.connection.close();
+  await mongo.stop();
 });
 describe("auth api", () => {
 
@@ -31,7 +37,7 @@ describe("auth api", () => {
 
     describe("login", () => {
         beforeAll(async () => {
-            await User.create({ username: "testUser", password: await bcrypt.hash("12345678Dd", 10) });
+            await User.create({ username: "testuser1", password: await bcrypt.hash("12345678Dd", 10) });
         })
         afterAll(async () => { 
             await User.deleteMany({});
@@ -40,7 +46,7 @@ describe("auth api", () => {
 
         it("Log in successfully", async () => {
             const res = await request(app).post("/api/auth/login")
-                .send({ username: "testUser", password: "12345678Dd" });
+                .send({ username: "testuser1", password: "12345678Dd" });
             expect(res.status).toBe(200);
             expect(res.body).toHaveProperty("user");
             expect(res.headers["set-cookie"]).toBeDefined();
@@ -53,7 +59,7 @@ describe("auth api", () => {
         })
         it("Wrong password", async () => {
             const res = await request(app).post("/api/auth/login")
-                .send({ username: "testUser", password: "wrongpassword" });
+                .send({ username: "testuser1", password: "wrongpassword" });
             expect(res.status).toBe(401);
             expect(res.body).toBe("Wrong password!");
         });
@@ -62,7 +68,7 @@ describe("auth api", () => {
                 throw new Error("DB error");
             });
             const res = await request(app).post("/api/auth/login")
-                .send({ username: "testUser", password: "12345678Dd" });
+                .send({ username: "testuser1", password: "12345678Dd" });
             expect(res.status).toBe(500);
             expect(res.body).toEqual({ message: "Server error" });
             jest.restoreAllMocks();
@@ -72,7 +78,7 @@ describe("auth api", () => {
     describe("profile", () => {
         let validToken: string;
         beforeAll(async () => {
-            const user = await User.create({ username: "testuser", password: "12345678Aa" });
+            const user = await User.create({ username: "testuser1", password: "12345678Aa" });
             validToken = await jwt.sign({ userId: user._id, role: "user" }, process.env.JWT_SECRET!, { expiresIn: '1h' });
 
         })
@@ -88,7 +94,7 @@ describe("auth api", () => {
 
             expect(res.status).toBe(200);
             expect(res.body).toHaveProperty("user");
-            expect(res.body.user.username).toBe("testuser");
+            expect(res.body.user.username).toBe("testuser1");
         })
 
         it("Not found user!", async () => {
@@ -110,7 +116,7 @@ describe("auth api", () => {
                 throw new Error("DB error");
             });
             const res = await request(app).get("/api/auth/profile")
-                .send({ username: "testuser", password: "12345678Dd" }).set("Cookie", `token=${validToken}`);
+                .send({ username: "testuser1", password: "12345678Dd" }).set("Cookie", `token=${validToken}`);
             expect(res.status).toBe(500);
             expect(res.body).toEqual({ message: "Server error" });
             jest.restoreAllMocks();

@@ -8,20 +8,24 @@ import Cart, { ICartDocument } from "../../models/Cart";
 import Restaurant, { IRestaurantDocument } from "../../models/Restaurant";
 import Dish, { IDishDocument } from "../../models/Dish";
 import mongoose from "mongoose";
+import { MongoMemoryServer } from 'mongodb-memory-server';
+let mongo: MongoMemoryServer;
 
 beforeAll(async () => {
-    await mongoose.connect(process.env.MONGO_URI!);
+  mongo = await MongoMemoryServer.create();
+  const uri = mongo.getUri();
+  await mongoose.connect(uri);
 });
 
 afterAll(async () => {
-    await mongoose.connection.close();
-    jest.clearAllMocks();
+  await mongoose.connection.close();
+  await mongo.stop();
 });
 describe("cart api", () => {
     let validToken: string;
     let user: IUserDocument;
     beforeAll(async () => {
-        user = await User.create({ username: "testuser", password: "12345678Aa" });
+        user = await User.create({ username: "testuser2", password: "12345678Aa" });
         validToken = await jwt.sign({ userId: user._id, role: "user" }, process.env.JWT_SECRET!, { expiresIn: '1h' });
     })
     afterAll(async () => {

@@ -85,7 +85,7 @@ export const getOrder = async (req: Request, res: Response): Promise<void> => {
 export const getOrders = async (req: Request, res: Response): Promise<void> => {
     try {
         const orders = await Order.find({ userId: (req as AuthRequest).userId });
-        if (!orders) {
+        if (orders.length === 0) {
             res.status(404).json("Not found!");
             return;
         }
@@ -110,7 +110,7 @@ export const getOrdersCreated = async (req: Request, res: Response): Promise<voi
     try {
         const restaurant = await Restaurant.findById(id);
         const orders = await Order.find({ restaurantTitle: restaurant?.title, status: "Created" });
-        if (!orders) {
+        if (orders.length === 0) {
             res.status(404).json("Not found!");
             return;
         }
@@ -134,7 +134,7 @@ export const getLastSevenOrders = async (req: Request, res: Response): Promise<v
     try {
         if (id == null) {
             const orders = await Order.find({ status: { $ne: null } }).sort({ updatedAt: -1 }).limit(7);
-            if (!orders) {
+            if (orders.length===0) {
                 res.status(404).json("Not found!");
                 return;
             }
@@ -143,7 +143,7 @@ export const getLastSevenOrders = async (req: Request, res: Response): Promise<v
         } else {
             const restaurant = await Restaurant.findById(id);
             const orders = await Order.find({ status: { $nin: [null, "Created"] }, restaurantTitle: restaurant?.title }).sort({ updatedAt: -1 }).limit(7);
-            if (!orders) {
+            if (orders.length===0) {
                 res.status(404).json("Not found!");
                 return;
             }
@@ -263,7 +263,7 @@ export const getOrdersCourier = async (req: Request, res: Response): Promise<voi
     const id = req.params.id;
     try {
         const orders = await Order.find({ courierId: id });
-        if (!orders) {
+        if (orders.length===0) {
             res.status(404).json("Not found!");
             return;
         }
@@ -347,7 +347,7 @@ export const getFreeOrders = async (req: Request, res: Response): Promise<void> 
     const city = req.params.city;
     try {
         const orders = await Order.find({ status: { $in: ["Preparing"] }, "adress.city": city, courierId: null });
-        if (!orders) {
+        if (orders.length===0) {
             res.status(404).json("Not found!");
             return;
         }

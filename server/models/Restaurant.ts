@@ -16,7 +16,7 @@ export interface IRestaurant   {
   adress: {
     city: string,
     street: string,
-    houseNumber: string,
+    houseNumber: number,
   },
   phone: string,
   websiteUrl: String,

@@ -17,14 +17,14 @@ export const getRestaurantsFiltered = async (req: Request, res: Response): Promi
             return;
         }
         const restaurants = await Restaurant.find({ categories: categorie });
-        if (!restaurants) {
+        if (restaurants.length === 0) {
             res.status(404).json({ message: "Not Found!" });
             return;
         }
         res.status(200).json(restaurants);
         return;
     } catch (err) {
-        res.status(500).json({ message: "Server error" });
+        res.status(500).json({ error: "Server error" });
     }
 };
 
@@ -33,7 +33,7 @@ export const createItem = async (req: Request, res: Response) => {
     try {
 
 
-        const newRestaurant = new Restaurant({
+        const newRestaurant = await Restaurant.create({
             title: restaurantData.title,
             description: restaurantData.description,
             adress: {
@@ -50,8 +50,6 @@ export const createItem = async (req: Request, res: Response) => {
             startHour: restaurantData.startHour,
             endHour: restaurantData.endHour,
         });
-
-        await newRestaurant.save();
         res.status(201).json(newRestaurant);
         return;
 
@@ -227,11 +225,15 @@ export const createDish = async (req: Request, res: Response) => {
         await newDish.save();
         if (newDish) {
             const restaurant = await Restaurant.findById(id);
-            if (restaurant) {
-                restaurant.dishes.push(newDish._id);
-
-                await restaurant.save();
+            if (!restaurant) {
+                res.status(404).json("Not found!");
+                return;
             }
+
+            restaurant.dishes.push(newDish._id);
+
+            await restaurant.save();
+
             res.status(201).json(newDish);
             return;
         }
@@ -248,7 +250,7 @@ export const createDish = async (req: Request, res: Response) => {
 export const getRestaurantById = async (req: Request, res: Response): Promise<void> => {
     const id = req.params.id;
     try {
-        const restaurant = await Restaurant.findOne({ _id: id }).select("-_id");
+        const restaurant = await Restaurant.findOne({ _id: id });
         if (!restaurant) {
             res.status(404).json({
                 message: "Not found!",
@@ -286,7 +288,7 @@ export const getRestaurantAddress = async (req: Request, res: Response): Promise
     }
 }
 export const toggleFavourite = async (req: Request, res: Response): Promise<void> => {
-    const  restaurantId  = req.params.id;
+    const restaurantId = req.params.id;
     try {
         const user = await User.findById((req as AuthRequest).userId);
         if (user) {
@@ -306,7 +308,6 @@ export const toggleFavourite = async (req: Request, res: Response): Promise<void
         res.status(404).json("Not found!");
         return;
     } catch (err) {
-        console.error(err);
         res.status(500).json({
             error: "Server error",
         });
@@ -320,7 +321,7 @@ export const searchRestaurants = async (req: Request, res: Response): Promise<vo
     try {
 
         const restaurants = await Restaurant.find({ title: { $regex: chars, $options: 'i' } }).limit(5);
-        res.json(restaurants);
+        res.status(200).json(restaurants);
         return;
     } catch (err) {
         res.status(500).json({ error: 'Search error!' });
@@ -333,7 +334,7 @@ export const getDishes = async (req: Request, res: Response): Promise<void> => {
     const id = req.params.id;
     try {
         const dishes = await Restaurant.findById(id).populate({ path: "dishes" }).select("dishes");
-        res.json(dishes);
+        res.status(200).json(dishes);
         return;
     } catch (err) {
         res.status(500).json({ error: 'Search error!' });
@@ -346,12 +347,12 @@ export const deleteDish = async (req: Request, res: Response): Promise<void> => 
     try {
         const dish = await Dish.findByIdAndDelete(id);
         if (!dish) {
-            res.status(404).json({ error: "Dish not found" });
+            res.status(404).json({ message: "Dish not found" });
             return;
         }
         const restaurant = await Restaurant.findById(dish?.restaurantId);
         if (!restaurant) {
-            res.status(404).json({ error: "Dish not found" });
+            res.status(404).json({ message: "Dish not found" });
             return;
         }
         restaurant.dishes = restaurant.dishes.filter(d => !d.equals(dish._id));
