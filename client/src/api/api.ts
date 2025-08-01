@@ -26,15 +26,7 @@ export const LogIn = async (password: string, username: string): Promise<number|
     }
 }
 
-export const LogOut = async (): Promise<void> => {
-    try {
-        const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/logout`, {}, { withCredentials: true });
-        if (!res) return;
-        return res.data;
-    } catch (err) {
-        console.error(err);
-    }
-}
+
 export const getRestaurantsFiltered = async (categorie: string): Promise<void | Restaurant[]> => {
     try {
         if (!categorie) return;

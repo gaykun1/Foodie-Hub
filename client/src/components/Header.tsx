@@ -1,16 +1,14 @@
 "use client"
-
-import { LogOut } from '@/api/api'
-import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks'
-import { logout } from '@/redux/authSlice'
-import { deleteItem, updateAmount } from '@/redux/cartSlice'
-import { Restaurant } from '@/redux/reduxTypes'
-import axios from 'axios'
-import { Hamburger, Minus, Plus, Search, ShoppingCart, UserRound, X } from 'lucide-react'
-import Image from 'next/image'
-import Link from 'next/link'
-import { redirect } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks"
+import { logout } from "@/redux/authSlice"
+import { deleteItem, updateAmount } from "@/redux/cartSlice"
+import { Restaurant } from "@/redux/reduxTypes"
+import axios from "axios"
+import { Hamburger, Minus, Plus, Search, ShoppingCart, UserRound, X } from "lucide-react"
+import Image from "next/image"
+import Link from "next/link"
+import { redirect } from "next/navigation"
+import React, { useEffect, useState } from "react"
 
 const Header = () => {
 
@@ -83,28 +81,38 @@ const Header = () => {
     }
   }
 
+  const LogOut = async (): Promise<void> => {
+    try {
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/logout`, {}, { withCredentials: true });
+      if (!res) return;
+      dispatch(logout());
+      return res.data;
+    } catch (err) {
+      console.error(err);
+    }
+  }
   return (
     <header className=" shadow-borderShadow border-b-[1px]  border-borderColor z-100 relative">
-      <div className='py-2 flex items-center justify-between  _container'>
+      <div className="py-2 flex items-center justify-between  _container">
         <div className="basis-[650px] flex justify-between">
           {/* Logo */}
-          <div className='md:basis-[200px] lg:basis-[250px] '>
-            <Link className='  flex gap-2 items-center group font-bold w-fit' href={"/"}>
-              <Image className='transition-transform group-hover:rotate-90' width={40} height={40} src={"/logo.svg"} alt='logo' />
-              <span className='default-link group-hover:!text-primary text-xl'>Foodie Hub</span>
+          <div className="md:basis-[200px] lg:basis-[250px] ">
+            <Link className="  flex gap-2 items-center group font-bold w-fit" href={"/"}>
+              <Image className="transition-transform group-hover:rotate-90" width={40} height={40} src={"/logo.svg"} alt="logo" />
+              <span className="default-link group-hover:!text-primary text-xl">Foodie Hub</span>
             </Link>
           </div>
           {/* Nav menu */}
-          <nav className='basis-[250px] grow-1 lg:none hidden md:flex gap-[18px] items-center'>
-            {!(user?.role === "admin" || user?.role === "restaurant") ? (<><Link className='default-link font-bold' href={"/"}>Home</Link>
-              <Link className='default-link font-bold ' href={"/restaurants/category/all-restaurants"}>Restaurants</Link>
-              <Link className='default-link font-bold' href={"/orders"}>Orders</Link>
-              {user?.role === "courier" ? (<Link className='default-link font-bold' href={"/courier"}>Courier page</Link>
-              ) : (<Link className='default-link font-bold' href={"/job"}>Get a job</Link>
+          <nav className="basis-[250px] grow-1 lg:none hidden md:flex gap-[18px] items-center">
+            {!(user?.role === "admin" || user?.role === "restaurant") ? (<><Link className="default-link font-bold" href={"/"}>Home</Link>
+              <Link className="default-link font-bold " href={"/restaurants/category/all-restaurants"}>Restaurants</Link>
+              <Link className="default-link font-bold" href={"/orders"}>Orders</Link>
+              {user?.role === "courier" ? (<Link className="default-link font-bold" href={"/courier"}>Courier page</Link>
+              ) : (<Link className="default-link font-bold" href={"/job"}>Get a job</Link>
               )}
             </>
 
-            ) : (<Link className='default-link font-bold' href={`${user.role === "admin" ? "/dashboard/overview" : "/dashboard/restaurant-overview"}`}>Dashboard</Link>)}
+            ) : (<Link className="default-link font-bold" href={`${user.role === "admin" ? "/dashboard/overview" : "/dashboard/restaurant-overview"}`}>Dashboard</Link>)}
           </nav>
 
         </div>
@@ -120,7 +128,7 @@ const Header = () => {
 
             }
 
-          }} placeholder='Search for restaurants...'
+          }} placeholder="Search for restaurants..."
             type="text"
             className={`leading-[22px]  pl-[38px] h-[40px] pr-3   text-sm input`}
           />
@@ -128,9 +136,9 @@ const Header = () => {
             <div className="flex flex-col gap-2 items-start text-sm font-semibold">
               {restaurants.length > 0 ? restaurants.map((restaurant, index) => {
                 return (
-                  <Link className='btn p-2  ' href={`/restaurant/menu/${restaurant._id}`} key={index}>{restaurant.title}</Link>
+                  <Link className="btn p-2  " href={`/restaurant/menu/${restaurant._id}`} key={index}>{restaurant.title}</Link>
                 )
-              }) : (<span className=''>Not found!</span>)}
+              }) : (<span className="">Not found!</span>)}
             </div>
           </div>
             : ""}
@@ -139,11 +147,11 @@ const Header = () => {
         <div className="flex gap-5 items-center relative">
           {/* search for lg> */}
           <div className="relative w-[270px] hidden lg:block ">
-            {activePanel === "search" ? (<button className={`cursor-pointer flex items-center ${activePanel === "search" ? "text-primary" : ""} `} onClick={() => { setActivePanel(null); setWord(""); }}> <X className='absolute left-2.5 top-2' /></button>
-            ) : (<button className={`  cursor-pointer flex items-center    transition-all hover:text-primary  `} onClick={() => {
+            {activePanel === "search" ? (<button  className={`cursor-pointer flex items-center ${activePanel === "search" ? "text-primary" : ""} `} onClick={() => { setActivePanel(null); setWord(""); }}> <X className="absolute left-2.5 top-2" /></button>
+            ) : (<button  className={`  cursor-pointer flex items-center    transition-all hover:text-primary  `} onClick={() => {
 
 
-            }}><Search className='absolute left-2.5 top-2 ' /></button>)}
+            }}><Search className="absolute left-2.5 top-2 " /></button>)}
 
             <input value={word} onChange={async (e) => {
 
@@ -155,18 +163,18 @@ const Header = () => {
 
               }
 
-            }} placeholder='Search for restaurants...'
+            }} placeholder="Search for restaurants..."
               type="text"
-              className='leading-[22px] pl-[38px] h-[40px] pr-3  text-sm input'
+              className="leading-[22px] pl-[38px] h-[40px] pr-3  text-sm input"
             />
 
             {activePanel === "search" ? <div className="min-w-[250px] flex flex-col top-full panel  left-0 absolute border-borderColor mt-1  bg-primary  p-3 border-[1px] rounded-[6px]">
               <div className="flex flex-col gap-2 items-start text-sm font-semibold">
                 {restaurants.length > 0 ? restaurants.map((restaurant, index) => {
                   return (
-                    <Link className='btn p-2 w-full ' href={`/restaurant/menu/${restaurant._id}`} key={index}>{restaurant.title}</Link>
+                    <Link className="btn p-2 w-full " href={`/restaurant/menu/${restaurant._id}`} key={index}>{restaurant.title}</Link>
                   )
-                }) : (<span className=''>Not found!</span>)}
+                }) : (<span className="">Not found!</span>)}
               </div>
             </div>
               : ""}
@@ -177,23 +185,23 @@ const Header = () => {
           {/* search for lg< */}
           <div className="lg:hidden   ">
 
-            {activePanel === "search" || isSearchOpen ? (<button className={`cursor-pointer flex items-center ${activePanel === "search" ? "text-primary" : ""}  `} onClick={() => { setActivePanel(null); setWord(""); setIsSearchOpen(false) }}> <X className='' /></button>
-            ) : (<button className='cursor-pointer flex items-center ' onClick={() => {
+            {activePanel === "search" || isSearchOpen ? (<button className={`cursor-pointer flex items-center ${activePanel === "search" ? "text-primary" : ""}  `} onClick={() => { setActivePanel(null); setWord(""); setIsSearchOpen(false) }}> <X className="" /></button>
+            ) : (<button className="cursor-pointer flex items-center " onClick={() => {
 
-            }}><Search className='' onClick={() => setIsSearchOpen(true)} /></button>)}
+            }}><Search className="" onClick={() => setIsSearchOpen(true)} /></button>)}
           </div>
 
           {/* cart */}
           {activePanel === "cart" &&
             <div className="absolute flex flex-col gap-3 text-left border-borderColor panel border-[2px] rounded-lg p-3 top-[150%] right-0 bg-primary  min-w-[300px]">
-              <h2 className='text-lg font-bold pb-1 border-borderColor text-white border-b-[1px] '>Cart</h2>
+              <h2 className="text-lg font-bold pb-1 border-borderColor text-white border-b-[1px] ">Cart</h2>
               {cart?.items.length ? (<> <div className="flex flex-col gap-2 ">
                 {cart
                   ? cart.items.map((item, idx) => {
 
 
                     return (
-                      <div className='rounded-lg p-2 border-borderColor border-[1px]' key={idx}>
+                      <div className="rounded-lg p-2 border-borderColor border-[1px]" key={idx}>
                         <div className="flex  justify-between ">
                           <div className="flex gap-4 items-center ">
                             <img className="size-16 object-cover rounded-lg border-[1px] border-borderColor" src={item.dishId.imageUrl} alt="" />
@@ -204,9 +212,9 @@ const Header = () => {
                           </div>
                           <div className="flex flex-col gap-1">
 
-                            <button onClick={async () => updateCount(item.amount + 1, item.dishId._id, item.dishId.title)} className='btn p-1 border-[1px] border-borderColor'><Plus /></button>
+                            <button data-testid="moreAmount" onClick={async () => updateCount(item.amount + 1, item.dishId._id, item.dishId.title)} className="btn p-1 border-[1px] border-borderColor"><Plus /></button>
 
-                            <button onClick={async () => updateCount(item.amount - 1, item.dishId._id, item.dishId.title)} className={`btn p-1 border-[1px] border-borderColor disabled:bg-gray! `}><Minus /></button>
+                            <button data-testid="lessAmount" onClick={async () => updateCount(item.amount - 1, item.dishId._id, item.dishId.title)} className={`btn p-1 border-[1px] border-borderColor disabled:bg-gray! `}><Minus /></button>
 
                           </div>
                         </div>
@@ -220,15 +228,15 @@ const Header = () => {
                 <button onClick={async () => {
                   const id = await createOrder();
                   redirect(`/orders/order/${id}`)
-                }} className='btn border-borderColor border-[1px]! font-medium text-lg p-3 '>Place order</button> </>) : (<span>Cart is clear</span>)}
+                }} className="btn border-borderColor border-[1px]! font-medium text-lg p-3 ">Place order</button> </>) : (<span>Cart is clear</span>)}
 
             </div>
           }
 
           {/* avatar touch menu */}
-          <button onClick={() => setActivePanel(activePanel === "cart" ? null : "cart")} className={`relative cursor-pointer transition-colors hover:text-primary  ${activePanel === "cart" ? "text-primary" : ""} `}>
+          <button aria-label="cart" onClick={() => setActivePanel(activePanel === "cart" ? null : "cart")} className={`relative cursor-pointer transition-colors hover:text-primary  ${activePanel === "cart" ? "text-primary" : ""} `}>
             <ShoppingCart size={30} />
-            <span className='rounded-full p-1 bg-primary absolute top-[55%] -left-[15%] text-white  font-semibold px-2 text-sm'>{cart?.items.length}</span>
+            <span data-testid="cartLength" className="rounded-full p-1 bg-primary absolute top-[55%] -left-[15%] text-white  font-semibold px-2 text-sm">{cart?.items.length}</span>
 
           </button>
           {/* menu panel */}
@@ -236,20 +244,19 @@ const Header = () => {
 
 
 
-            <button className={`cursor-pointer transition-colors hover:text-primary flex items-center ${activePanel === "avatarMenu" ? "text-primary" : ""}`} onClick={() => {
+            <button aria-label="user" className={`cursor-pointer transition-colors hover:text-primary flex items-center ${activePanel === "avatarMenu" ? "text-primary" : ""}`} onClick={() => {
               setActivePanel(activePanel === "avatarMenu" ? null : "avatarMenu")
 
             }}>{activePanel === "avatarMenu" ? (<X />) : (<UserRound />)} </button>
 
             {/* menu */}
             {activePanel === "avatarMenu" ? (<div className="min-w-[200px] flex flex-col top-full panel  right-0 absolute  border-borderColor mt-1  bg-primary  p-3 border-[1px] rounded-[6px]">
-              <span className='text-white text-base font-bold border-b-[1px] border-borderColor pb-1 mb-2'>Welcome back {user?.username}!</span>
+              <span className="text-white text-base font-bold border-b-[1px] border-borderColor pb-1 mb-2">Welcome back {user?.username}!</span>
               <div className="flex flex-col gap-2 items-start">
                 <Link href="/profile" className=" text-sm font-semibold text-white transition-all hover:opacity-65">Profile</Link>
 
-                <button onClick={async () => {
+                <button aria-label="log out" onClick={async () => {
                   await LogOut();
-                  dispatch(logout());
                   setActivePanel(null);
                   redirect("/auth/login");
                 }} className="text-white text-sm font-semibold transition-all hover:opacity-65 cursor-pointer">Log out</button>
@@ -259,20 +266,20 @@ const Header = () => {
 
           </div>
           <div className="md:hidden">
-            <button className={`cursor-pointer transition-all hover:text-primary ${activePanel === "navMenu" ? "text-primary" : ""}`} onClick={() => { setActivePanel(activePanel === "navMenu" ? null : "navMenu") }}><Hamburger className='' size={30} /></button>
+            <button className={`cursor-pointer transition-all hover:text-primary ${activePanel === "navMenu" ? "text-primary" : ""}`} onClick={() => { setActivePanel(activePanel === "navMenu" ? null : "navMenu") }}><Hamburger className="" size={30} /></button>
 
             {activePanel === "navMenu" &&
               <div className="min-w-[200px] flex   flex-col top-full panel  right-0 absolute  border-borderColor mt-1  bg-primary  p-3 border-[1px] rounded-[6px]">
-                <nav className='flex flex-col   '>
-                  {!(user?.role === "admin" || user?.role === "restaurant") ? (<><Link className='transition-all text-white   leading-7 hover:opacity-65  font-bold' href={"/"}>Home</Link>
-                    <Link className='transition-all text-white   font-bold leading-7 hover:opacity-65   ' href={"/restaurants/category/all-restaurants"}>Restaurants</Link>
-                    <Link className='transition-all text-white   font-bold leading-7 hover:opacity-65  ' href={"/orders"}>Orders</Link>
-                    {user?.role === "courier" ? (<Link className='transition-all text-white    leading-7 hover:opacity-65  font-bold' href={"/courier"}>Courier page</Link>
-                    ) : (<Link className='transition-all text-white   font-bold leading-7 hover:opacity-65  ' href={"/job"}>Get a job</Link>
+                <nav className="flex flex-col   ">
+                  {!(user?.role === "admin" || user?.role === "restaurant") ? (<><Link className="transition-all text-white   leading-7 hover:opacity-65  font-bold" href={"/"}>Home</Link>
+                    <Link className="transition-all text-white   font-bold leading-7 hover:opacity-65   " href={"/restaurants/category/all-restaurants"}>Restaurants</Link>
+                    <Link className="transition-all text-white   font-bold leading-7 hover:opacity-65  " href={"/orders"}>Orders</Link>
+                    {user?.role === "courier" ? (<Link className="transition-all text-white    leading-7 hover:opacity-65  font-bold" href={"/courier"}>Courier page</Link>
+                    ) : (<Link className="transition-all text-white   font-bold leading-7 hover:opacity-65  " href={"/job"}>Get a job</Link>
                     )}
                   </>
 
-                  ) : (<Link className='transition-all text-white   font-bold leading-7 hover:opacity-65 ' href={`${user.role === "admin" ? "/dashboard/overview" : "/dashboard/restaurant-overview"}`}>Dashboard</Link>)}
+                  ) : (<Link className="transition-all text-white   font-bold leading-7 hover:opacity-65 " href={`${user.role === "admin" ? "/dashboard/overview" : "/dashboard/restaurant-overview"}`}>Dashboard</Link>)}
                 </nav>
               </div>
 

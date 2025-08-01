@@ -12,7 +12,7 @@ const DishCard = ({ dish, toCart, onDeleted }: { dish: Dish, toCart: boolean, on
 
     const deleteDish = async () => {
         try {
-             await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/dishes/${dish._id}`);
+            await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/dishes/${dish._id}`);
 
             if (onDeleted) onDeleted();
         } catch (err) {
