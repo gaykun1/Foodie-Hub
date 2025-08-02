@@ -81,6 +81,23 @@ describe("auth components tests", () => {
         }
         )
 
+        it("Checking if username is already taken", async () => {
+            render(<SignUpPage />);
+            fireEvent.change(screen.getByLabelText("Username"), { target: { value: "testuser" } });
+            fireEvent.change(screen.getByLabelText("Password"), { target: { value: "12345678Bb" } });
+            (SignUp as jest.Mock).mockResolvedValue(403);
+            await act(async () => {
+                fireEvent.click(screen.getByRole("button", { name: "Sign up" }));
+            });
+            await waitFor(() => {
+                expect(SignUp).toHaveBeenCalledTimes(1);
+                expect(screen.getByTestId("error2")).toBeInTheDocument();
+
+            })
+
+        }
+        )
+
         it("200 if routing to /", async () => {
             render(<SignUpPage />);
             fireEvent.change(screen.getByLabelText("Username"), { target: { value: "testuser" } });

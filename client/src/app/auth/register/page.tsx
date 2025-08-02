@@ -2,6 +2,7 @@
 import { SignUp } from '@/api/api';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 // using useForm for better and easy validation 
@@ -12,7 +13,7 @@ type FormFiedsType = {
 const Page = () => {
   const { register, handleSubmit, formState: { errors } } = useForm<FormFiedsType>();
   const router = useRouter();
-
+  const [error, setError] = useState<boolean>(false);
   const onSubmit: SubmitHandler<FormFiedsType> = async (data: FormFiedsType) => {
     try {
       // func api for signing up
@@ -24,6 +25,9 @@ const Page = () => {
           router.push("/");
 
         }, 300);
+      }
+      if (status === 403) {
+        setError(true);
       }
     } catch (err) {
       console.error(err);
@@ -39,7 +43,7 @@ const Page = () => {
             <input id='label1' {...register("username")} placeholder='Type in your username...' type="text" className=' ml-2 input h-[40px] px-2' />
           </div>
           <div className="flex flex-col gap-1 ">
-            <label htmlFor='label2'  className='text-[18px]'>Password</label>
+            <label htmlFor='label2' className='text-[18px]'>Password</label>
             <input id='label2' {...register("password", {
               validate: {
                 // validating password for safety 
@@ -52,6 +56,10 @@ const Page = () => {
               </span>
             )}
           </div>
+          {
+            error && 
+            <span data-testid="error2" className='text-red-500 font-medium'>Username is already taken!</span>
+          }
           <div className="flex items-center justify-between">
             <button className='btn py-1 px-2 text-base!'>Sign up</button>
             <Link className='underline' href='login'>Log in</Link>

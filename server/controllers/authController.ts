@@ -12,6 +12,11 @@ dotenv.config();
 export const signup = async (req: Request, res: Response): Promise<void> => {
     const { username, password } = req.body;
     try {
+        const usedUsername = await User.findOne({ username: username });
+        if (usedUsername) {
+            res.status(403).json({ message: `Username is already taken!` });
+            return;
+        }
         const hashedPassword = await bcrypt.hash(password, 10);
         const user = await User.create({ username: username, password: hashedPassword });
         // creating token
