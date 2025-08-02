@@ -73,7 +73,6 @@ export const updateCartAmount = async (req: Request, res: Response): Promise<voi
 // add to cart func with validation "if in cart already"
 export const addToCart = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.body;
-    console.log(id);
 
     try {
         const cart = await Cart.findOne({ userId: (req as AuthRequest).userId });

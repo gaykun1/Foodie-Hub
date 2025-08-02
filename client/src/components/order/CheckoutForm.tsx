@@ -26,7 +26,7 @@ type FormFields = {
     houseNumber: number,
     apartmentNumbr: number,
 }
-const CheckoutForm = ({ order, shipping, setShipping }: { order: Order, shipping: Shipping, setShipping:Dispatch<SetStateAction<Shipping>> }) => {
+const CheckoutForm = ({ order, shipping, setShipping }: { order: Order, shipping: Shipping, setShipping: Dispatch<SetStateAction<Shipping>> }) => {
     const { register, getValues, formState: { errors } } = useForm<FormFields>()
     const { user } = useAppSelector(state => state.auth);
     const [clientSecret, setClientSecret] = useState<string>("");
@@ -41,7 +41,7 @@ const CheckoutForm = ({ order, shipping, setShipping }: { order: Order, shipping
     // func for using promocode
     const usePromocode = useCallback(async () => {
         try {
-            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/promocodes/${promocode}/use`, {}, { withCredentials: true });
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/promocode/promocodes/${promocode}/use`, {}, { withCredentials: true });
             if (res.data) {
                 setDiscount(res.data.discount + discount);
                 setPromocode("");
@@ -49,8 +49,10 @@ const CheckoutForm = ({ order, shipping, setShipping }: { order: Order, shipping
             }
         } catch (err) {
             console.error(err);
-            if (axios.isAxiosError(err) && err.response)
+            if (axios.isAxiosError(err) && err.response) {
                 setError(err.response.data);
+                console.log(err.response.data);
+            }
         }
     }, [promocode]);
     // getting client secret after acreating payment intent to make background for transaction
@@ -70,7 +72,7 @@ const CheckoutForm = ({ order, shipping, setShipping }: { order: Order, shipping
     useEffect(() => {
 
         getClientSecret();
-        console.log(cart);
+      
 
     }, [discount, shipping]);
 
@@ -87,7 +89,7 @@ const CheckoutForm = ({ order, shipping, setShipping }: { order: Order, shipping
         setLoading(true);
         // getting values of useForm form
         const formData = getValues();
-        console.log(formData, "yes");
+       
         if (!stripe || !elements) return;
         const { error: submitError } = await elements.submit();//stripe error handler
         if (submitError && submitError.message) {
@@ -95,7 +97,7 @@ const CheckoutForm = ({ order, shipping, setShipping }: { order: Order, shipping
             setLoading(false);
         }
         if (order) {
-          await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/api/order/orders`, { formData, percent: discount, shipping, cartId: cart?._id, totalPrice: parseFloat(((shipping + order.totalPrice) * ((100 - discount) / 100)).toFixed(2)) }, { withCredentials: true });
+            await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/api/order/orders`, { formData, percent: discount, shipping, cartId: cart?._id, totalPrice: parseFloat(((shipping + order.totalPrice) * ((100 - discount) / 100)).toFixed(2)) }, { withCredentials: true });
             const { error } = await stripe.confirmPayment({ //creating transaction
                 elements,
                 clientSecret,
@@ -292,7 +294,7 @@ const CheckoutForm = ({ order, shipping, setShipping }: { order: Order, shipping
                     <button onClick={placeOrder} type="submit" className="btn py-3   mt-6      px-2 max-w-[328px] w-full">{loading ? (<span>Processing...</span>) : (<span>Place Order</span>)}</button>
 
                     <p className="text-xs  leading-4 text-gray flex items-center justify-center gap-1" ><Lock size={12} /> All transactions are secure and encrypted.</p>
-                    {error != null && (<span>{error}</span>)}
+                    {error && (<span>{error}</span>)}
                 </div>
             </div>
         </section>

@@ -181,14 +181,13 @@ export const getTopSevenDishes = async (req: Request, res: Response): Promise<vo
     }
 }
 export const getDishesNearYou = async (req: Request, res: Response): Promise<void> => {
-    console.log("[getDishesNearYou] start");
+
 
     const city = req.query.city;
-    console.log("[getDishesNearYou] city:", city);
+
 
     try {
         const restaurants = await Restaurant.find({ "adress.city": city }).populate<{ dishes: IDish[] }>("dishes");
-        console.log("[getDishesNearYou] restaurants:", restaurants);
 
         let dishes: IDish[] = [];
         restaurants.forEach((item) => {
@@ -196,7 +195,7 @@ export const getDishesNearYou = async (req: Request, res: Response): Promise<voi
         })
 
         const newDishes = dishes.sort((a, b) => b.sold - a.sold).slice(0, 5);
-        console.log("[getDishesNearYou] newDishes:", newDishes);
+
 
         res.status(200).json(newDishes);
     } catch (err) {
@@ -370,7 +369,7 @@ export const deleteDish = async (req: Request, res: Response): Promise<void> => 
 // creating review and recalculating rating of Restaurant
 export const createReview = async (req: Request, res: Response) => {
     const { id, text, rating } = req.body;
-    console.log(req.body);
+
     try {
         const newReview = new Review({
             sender: (req as AuthRequest).userId,

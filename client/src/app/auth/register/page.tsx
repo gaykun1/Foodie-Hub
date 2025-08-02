@@ -1,8 +1,9 @@
 "use client"
 import { SignUp } from '@/api/api';
+import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 // using useForm for better and easy validation 
@@ -33,6 +34,25 @@ const Page = () => {
       console.error(err);
     }
   }
+
+  useEffect(() => {
+    const getUser = async () => {
+      try {
+
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/profile`, {
+          withCredentials: true,
+        });
+        if (res.data) {
+          router.push("/");
+        }
+      } catch {
+        console.log("Not authorized!");
+      }
+
+    }
+    getUser();
+
+  }, [router]);
   return (
     <div className=" flex justify-center mt-[150px] mx-5  text-primary">
       <div className='max-w-[550px] w-full rounded-[25px] border-[2px] border-borderColor flex flex-col gap-4 p-6'>
@@ -57,7 +77,7 @@ const Page = () => {
             )}
           </div>
           {
-            error && 
+            error &&
             <span data-testid="error2" className='text-red-500 font-medium'>Username is already taken!</span>
           }
           <div className="flex items-center justify-between">

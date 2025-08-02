@@ -124,10 +124,10 @@ export const logout = async (req: Request, res: Response): Promise<void> => {
 // Partly updating  profile fields  (including new password)
 export const updateProfile = async (req: Request, res: Response): Promise<void> => {
     const { payload } = req.body;
-
     try {
-        const user = await User.findOne({ _id: (req as AuthRequest).userId })
+        const user = await User.findById((req as AuthRequest).userId)
         if (user) {
+
             if (payload.username) user.username = payload.username;
             if (payload.email) user.email = payload.email;
             if (payload.phoneNumber) user.phoneNumber = payload.phoneNumber;
@@ -149,9 +149,10 @@ export const updateProfile = async (req: Request, res: Response): Promise<void> 
                 user.password = hashedPassword;
             }
 
-            await user?.save();
+            await user.save();
             res.status(200).json(user);
             return;
+
         }
         res.status(404).json("Not Found");
         return;

@@ -107,11 +107,11 @@ export const changeOrderStatus = async (req: Request, res: Response): Promise<vo
         }
         //emitting order status
         const socketUser = socketsMap.get(order.userId.toString());
-        console.log(socketUser);
+    
 
         if (socketUser) {
             socketUser.emit("updateOrderStatus", { status, id: order._id });
-            console.log("ok");
+          
         }
         res.status(200).json(status);
         return;
@@ -128,7 +128,7 @@ export const toggleApplication = async (req: Request, res: Response): Promise<vo
 
     const { status } = req.body;
     const id = req.params.id;
-    console.log(status, id);
+    
     try {
         const application = await Courier.findById(id);
         if (!application) {

@@ -109,8 +109,10 @@ const Page = () => {
               {...register("email", {
                 validate: {
                   // validating email format with regex
-                  isUAFormat: (value) =>
-                    /^\w+@\w+\.\w{2,3}$/.test(value) || "Wrong email format",
+                  isValidEmailForm: (value) => {
+                    if (!value) return true;
+                    /^\w+@\w+\.\w{2,3}$/.test(value) || "Wrong email format";
+                  },
                 }
               })}
               disabled={!isEditing}
@@ -127,8 +129,10 @@ const Page = () => {
               {...register("phoneNumber", {
                 validate: {
                   // validating phone number format with regex
-                  isUAFormat: (value) =>
-                    /^\+380\d{9}$/.test(value) || "Phone must be in +380XXXXXXXXX format",
+                  isUAFormat: (value) => {
+                    if (!value) return true;
+                    /^\+380\d{9}$/.test(value) || "Phone must be in +380XXXXXXXXX format";
+                  }
                 }
               })}
               disabled={!isEditing}

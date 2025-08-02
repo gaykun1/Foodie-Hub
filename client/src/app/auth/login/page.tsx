@@ -1,14 +1,33 @@
 "use client"
 import { LogIn } from '@/api/api';
+import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 const Page = () => {
   const [password, setPassword] = useState<string>("");
   const [username, setUsername] = useState<string>("");
   const [error, setError] = useState<boolean>(false);
-  const  router = useRouter();
+  const router = useRouter();
+  useEffect(() => {
+    const getUser = async () => {
+      try {
+
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/profile`, {
+          withCredentials: true,
+        });
+        if (res.data) {
+          router.push("/");
+        }
+      } catch {
+        console.log("Not authorized!");
+      }
+
+    }
+    getUser();
+
+  }, [router]);
   return (
     <div className=" flex justify-center mt-[150px] mx-5 text-primary">
       <div className='max-w-[550px] w-full rounded-[25px] border-[2px] border-borderColor flex flex-col gap-4 p-6'>

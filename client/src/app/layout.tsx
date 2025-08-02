@@ -21,6 +21,7 @@ export default async function RootLayout({
       <body
 
       >
+        
         {/* PROVIDERS  CONTAINER for redux using */}
         <Providers>
           {children}

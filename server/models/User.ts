@@ -27,16 +27,16 @@ const userSchema = new mongoose.Schema<IUser>({
     phoneNumber: { type: String, unique: true, sparse: true, },
     email: { type: String, unique: true, sparse: true, },
     address: {
-        type: {
-            street: { type: String },
-            city: { type: String },
-            houseNumber: { type: Number },
-        }, default: null
+    
+            street: { type: String, default: null },
+            city: { type: String, default: null },
+            houseNumber: { type: Number , default: null},
+        
     },
     role: { type: String, enum: ["user", "admin", "courier", "restaurant"], default: "user" },
     cart: { type: Schema.Types.ObjectId, ref: "Cart" },
     promocodes: [{ type: Schema.Types.ObjectId, ref: "Promocode" }],
-    usualPromocode: { type: Schema.Types.ObjectId, ref: "Promocode" },
+    usualPromocode: { type: Schema.Types.ObjectId, ref: "Promocode",default:null },
     restaurantId: { type: Schema.Types.ObjectId, ref: "Restaurant" },
 
 

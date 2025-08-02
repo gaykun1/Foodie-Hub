@@ -152,7 +152,10 @@ const Page = ()=>{
                                         ...register("email", {
                                             validate: {
                                                 // validating email format with regex
-                                                isUAFormat: (value)=>/^\w+@\w+\.\w{2,3}$/.test(value) || "Wrong email format"
+                                                isValidEmailForm: (value)=>{
+                                                    if (!value) return true;
+                                                    /^\w+@\w+\.\w{2,3}$/.test(value) || "Wrong email format";
+                                                }
                                             }
                                         }),
                                         disabled: !isEditing
@@ -166,7 +169,7 @@ const Page = ()=>{
                                         children: errors.email.message
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(profile)/profile/page.tsx",
-                                        lineNumber: 119,
+                                        lineNumber: 121,
                                         columnNumber: 15
                                     }, this)
                                 ]
@@ -183,7 +186,7 @@ const Page = ()=>{
                                         children: "Phone Number"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(profile)/profile/page.tsx",
-                                        lineNumber: 123,
+                                        lineNumber: 125,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -193,13 +196,16 @@ const Page = ()=>{
                                         ...register("phoneNumber", {
                                             validate: {
                                                 // validating phone number format with regex
-                                                isUAFormat: (value)=>/^\+380\d{9}$/.test(value) || "Phone must be in +380XXXXXXXXX format"
+                                                isUAFormat: (value)=>{
+                                                    if (!value) return true;
+                                                    /^\+380\d{9}$/.test(value) || "Phone must be in +380XXXXXXXXX format";
+                                                }
                                             }
                                         }),
                                         disabled: !isEditing
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(profile)/profile/page.tsx",
-                                        lineNumber: 124,
+                                        lineNumber: 126,
                                         columnNumber: 13
                                     }, this),
                                     errors.phoneNumber && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -207,13 +213,13 @@ const Page = ()=>{
                                         children: errors.phoneNumber.message
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(profile)/profile/page.tsx",
-                                        lineNumber: 137,
+                                        lineNumber: 141,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/(profile)/profile/page.tsx",
-                                lineNumber: 122,
+                                lineNumber: 124,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -224,7 +230,7 @@ const Page = ()=>{
                                         children: "City"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(profile)/profile/page.tsx",
-                                        lineNumber: 142,
+                                        lineNumber: 146,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -234,13 +240,13 @@ const Page = ()=>{
                                         disabled: !isEditing
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(profile)/profile/page.tsx",
-                                        lineNumber: 143,
+                                        lineNumber: 147,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/(profile)/profile/page.tsx",
-                                lineNumber: 141,
+                                lineNumber: 145,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -251,7 +257,7 @@ const Page = ()=>{
                                         children: "Street"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(profile)/profile/page.tsx",
-                                        lineNumber: 155,
+                                        lineNumber: 159,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -261,13 +267,13 @@ const Page = ()=>{
                                         disabled: !isEditing
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(profile)/profile/page.tsx",
-                                        lineNumber: 156,
+                                        lineNumber: 160,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/(profile)/profile/page.tsx",
-                                lineNumber: 154,
+                                lineNumber: 158,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -278,7 +284,7 @@ const Page = ()=>{
                                         children: "houseNumber"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(profile)/profile/page.tsx",
-                                        lineNumber: 168,
+                                        lineNumber: 172,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -288,13 +294,13 @@ const Page = ()=>{
                                         disabled: !isEditing
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(profile)/profile/page.tsx",
-                                        lineNumber: 169,
+                                        lineNumber: 173,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/(profile)/profile/page.tsx",
-                                lineNumber: 167,
+                                lineNumber: 171,
                                 columnNumber: 11
                             }, this)
                         ]
@@ -311,7 +317,7 @@ const Page = ()=>{
                                 children: "Password Management"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(profile)/profile/page.tsx",
-                                lineNumber: 182,
+                                lineNumber: 186,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -325,7 +331,7 @@ const Page = ()=>{
                                                 children: "Current Password"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(profile)/profile/page.tsx",
-                                                lineNumber: 185,
+                                                lineNumber: 189,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -335,13 +341,13 @@ const Page = ()=>{
                                                 disabled: !isEditing
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(profile)/profile/page.tsx",
-                                                lineNumber: 186,
+                                                lineNumber: 190,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(profile)/profile/page.tsx",
-                                        lineNumber: 184,
+                                        lineNumber: 188,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -352,7 +358,7 @@ const Page = ()=>{
                                                 children: "New Password"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(profile)/profile/page.tsx",
-                                                lineNumber: 194,
+                                                lineNumber: 198,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -362,13 +368,13 @@ const Page = ()=>{
                                                 disabled: !isEditing
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(profile)/profile/page.tsx",
-                                                lineNumber: 195,
+                                                lineNumber: 199,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(profile)/profile/page.tsx",
-                                        lineNumber: 193,
+                                        lineNumber: 197,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -379,7 +385,7 @@ const Page = ()=>{
                                                 children: "Confirm New Password"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(profile)/profile/page.tsx",
-                                                lineNumber: 202,
+                                                lineNumber: 206,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -389,25 +395,25 @@ const Page = ()=>{
                                                 disabled: !isEditing
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(profile)/profile/page.tsx",
-                                                lineNumber: 203,
+                                                lineNumber: 207,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(profile)/profile/page.tsx",
-                                        lineNumber: 201,
+                                        lineNumber: 205,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/(profile)/profile/page.tsx",
-                                lineNumber: 183,
+                                lineNumber: 187,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/(profile)/profile/page.tsx",
-                        lineNumber: 181,
+                        lineNumber: 185,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -420,7 +426,7 @@ const Page = ()=>{
                                 children: "Save Changes"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(profile)/profile/page.tsx",
-                                lineNumber: 217,
+                                lineNumber: 221,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -434,13 +440,13 @@ const Page = ()=>{
                                 children: "Edit"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(profile)/profile/page.tsx",
-                                lineNumber: 224,
+                                lineNumber: 228,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/(profile)/profile/page.tsx",
-                        lineNumber: 215,
+                        lineNumber: 219,
                         columnNumber: 9
                     }, this)
                 ]

@@ -5,7 +5,6 @@ import User from "../models/User";
 
 export const getPromocode = async (req: Request, res: Response): Promise<void> => {
    const code = req.params.code;
-
     try {
         const promocode = await Promocode.findOne({ code: code });
         const user = await User.findById((req as AuthRequest).userId);
@@ -39,7 +38,7 @@ export const getPromocode = async (req: Request, res: Response): Promise<void> =
 };
 export const createPromocode = async (req: Request, res: Response): Promise<void> => {
     const { data } = req.body;
-    console.log(data);
+    (data);
     try {
         if (data.type === "Special") {
             const promocode = await Promocode.create({ code: data.code, discountPercent: data.percent, type: data.type, isUsed: false });
@@ -60,7 +59,7 @@ export const usePromocode = async (req: Request, res: Response): Promise<void> =
     const code = req.params.code;
     try {
         const promocode = await Promocode.findOne({ code: code });
-        console.log(promocode);
+        (promocode);
         if (promocode && promocode.type === "Special") {
             const user = await User.findById((req as AuthRequest).userId);
             if (!promocode.isUsed) {
