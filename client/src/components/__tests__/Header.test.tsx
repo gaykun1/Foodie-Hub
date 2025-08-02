@@ -37,7 +37,7 @@ describe("Header component", () => {
     });
 
     it("showing username in the menu", () => {
-        const { store } = renderWithReduxState(<Header />, {
+     renderWithReduxState(<Header />, {
             auth: { user: { username: "TestUser", role: "user" } },
             cart: { cart: { items: [] } },
         });

@@ -1,20 +1,10 @@
-import { configureStore } from "@reduxjs/toolkit";
-import authReducer from "@/redux/authSlice"
-import { Provider } from "react-redux";
+
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import LoginPage from "@/app/auth/login/page"
 import SignUpPage from "@/app/auth/register/page"
-
-import axios from "axios";
 import { LogIn, SignUp } from "@/api/api";
-import { useRouter } from "next/navigation";
 jest.mock("axios");
 const mockPush = jest.fn();
-
-
-
-const mockedAxios = axios as jest.Mocked<typeof axios>
-
 jest.mock("@/src/api/api", () => ({
     LogIn: jest.fn(),
     SignUp: jest.fn(),
