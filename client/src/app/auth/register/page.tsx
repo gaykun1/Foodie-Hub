@@ -35,19 +35,19 @@ const Page = () => {
         <h2 className="text-3xl font-bold">Sign up</h2>
         <form onSubmit={handleSubmit(onSubmit)} className=" flex flex-col gap-2">
           <div className="flex flex-col gap-1 ">
-            <label className='text-[18px]'>Username</label>
-            <input {...register("username")} placeholder='Type in your username...' type="text" className=' ml-2 input h-[40px] px-2' />
+            <label htmlFor='label1' className='text-[18px]'>Username</label>
+            <input id='label1' {...register("username")} placeholder='Type in your username...' type="text" className=' ml-2 input h-[40px] px-2' />
           </div>
           <div className="flex flex-col gap-1 ">
-            <label className='text-[18px]'>Password</label>
-            <input {...register("password", {
+            <label htmlFor='label2'  className='text-[18px]'>Password</label>
+            <input id='label2' {...register("password", {
               validate: {
                 // validating password for safety 
                 password: (value) => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/.test(value) || "Password must have at least one lowercase, one uppercase, one digit and minimum 8 characters",
               }
             })} placeholder='Type in your password...' type="password" className=' ml-2 input h-[40px] px-2' />
             {errors.password && (
-              <span className="text-red-500 font-medium ">
+              <span data-testid='error' className="text-red-500 font-medium ">
                 {errors.password.message}
               </span>
             )}

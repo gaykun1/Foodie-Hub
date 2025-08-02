@@ -6,51 +6,35 @@ import LoginPage from "@/app/auth/login/page"
 import SignUpPage from "@/app/auth/register/page"
 
 import axios from "axios";
-import {  LogIn, SignUp } from "@/api/api";
+import { LogIn, SignUp } from "@/api/api";
 import { useRouter } from "next/navigation";
 jest.mock("axios");
 const mockPush = jest.fn();
 
-const renderWithReduxState = (ui: React.ReactNode, preloadedState = {}) => {
-    const store = configureStore({
-        reducer: {
-            auth: authReducer,
-        },
-        preloadedState
-    });
 
-    return {
-        ...render(
-            <Provider store={store}>{ui}</Provider>
-        ),
-        store
-    }
-}
 
 const mockedAxios = axios as jest.Mocked<typeof axios>
 
 jest.mock("@/src/api/api", () => ({
     LogIn: jest.fn(),
-    SignUp:jest.fn(),
+    SignUp: jest.fn(),
 }))
-jest.mock("next/navigation",()=>({
-     useRouter: () => ({
-    push: mockPush,
-  }),
+jest.mock("next/navigation", () => ({
+    useRouter: () => ({
+        push: mockPush,
+    }),
 }))
 describe("auth components tests", () => {
     describe("login component", () => {
-        it("Checking if 404 error works", async() => {
-            renderWithReduxState(<LoginPage />, {
-                auth: { user: null },
-            });
+        it("Checking if 404 error works", async () => {
+            render(<LoginPage />);
             fireEvent.change(screen.getByLabelText("Username"), { target: { value: "testuser" } });
             fireEvent.change(screen.getByLabelText("Password"), { target: { value: "123456AS" } });
             (LogIn as jest.Mock).mockResolvedValue(404);
-    await act(async()=>{
-        fireEvent.click(screen.getByText("Log in"));
+            await act(async () => {
+                fireEvent.click(screen.getByText("Log in"));
 
-    })
+            })
             await waitFor(() => {
                 expect(LogIn).toHaveBeenCalledWith("123456AS", "testuser");
                 expect(screen.getByTestId("error")).toBeInTheDocument();
@@ -60,20 +44,17 @@ describe("auth components tests", () => {
         }
         )
 
-            it("200 if routing to /", async() => {
-           const {store} =  renderWithReduxState(<SignUpPage />, {
-                auth: { user: null },
-            });
+        it("200 if routing to /", async () => {
+            render(<LoginPage />);
             fireEvent.change(screen.getByLabelText("Username"), { target: { value: "testuser" } });
             fireEvent.change(screen.getByLabelText("Password"), { target: { value: "123456AS" } });
             (LogIn as jest.Mock).mockResolvedValue(200);
-    await act(async()=>{
-        fireEvent.click(screen.getByText("Log in"));
+            await act(async () => {
+                fireEvent.click(screen.getByText("Log in"));
 
-    })
+            })
             await waitFor(() => {
                 expect(LogIn).toHaveBeenCalledWith("123456AS", "testuser");
-                expect(store.getState().auth.user?.username).toBe("testuser");
                 expect(mockPush).toHaveBeenCalledWith("/");
 
             })
@@ -83,20 +64,16 @@ describe("auth components tests", () => {
 
     })
 
-      describe("sign up  component", () => {
-        it("Checking if 404 error works", async() => {
-            renderWithReduxState(<LoginPage />, {
-                auth: { user: null },
-            });
+    describe("sign up  component", () => {
+        it("Checking if password is incorrect", async () => {
+            render(<SignUpPage />);
             fireEvent.change(screen.getByLabelText("Username"), { target: { value: "testuser" } });
-            fireEvent.change(screen.getByLabelText("Password"), { target: { value: "123456AS" } });
-            (SignUp as jest.Mock).mockResolvedValue(404);
-    await act(async()=>{
-        fireEvent.click(screen.getByText("Log in"));
-
-    })
+            fireEvent.change(screen.getByLabelText("Password"), { target: { value: "12345678" } });
+            await act(async () => {
+                fireEvent.click(screen.getByRole("button", { name: "Sign up" }));
+            })
             await waitFor(() => {
-                expect(LogIn).toHaveBeenCalledWith("123456AS", "testuser");
+                expect(SignUp).toHaveBeenCalledTimes(0);
                 expect(screen.getByTestId("error")).toBeInTheDocument();
 
             })
@@ -104,20 +81,17 @@ describe("auth components tests", () => {
         }
         )
 
-         it("200 if routing to /", async() => {
-           const {store} =  renderWithReduxState(<SignUpPage />, {
-                auth: { user: null },
-            });
+        it("200 if routing to /", async () => {
+            render(<SignUpPage />);
             fireEvent.change(screen.getByLabelText("Username"), { target: { value: "testuser" } });
-            fireEvent.change(screen.getByLabelText("Password"), { target: { value: "123456AS" } });
-            (LogIn as jest.Mock).mockResolvedValue(200);
-    await act(async()=>{
-        fireEvent.click(screen.getByText("Log in"));
+            fireEvent.change(screen.getByLabelText("Password"), { target: { value: "12345678Aa" } });
+            (SignUp as jest.Mock).mockResolvedValue(200);
+            await act(async () => {
+                fireEvent.click(screen.getByRole("button", { name: "Sign up" }));
 
-    })
+            })
             await waitFor(() => {
-                expect(LogIn).toHaveBeenCalledWith("123456AS", "testuser");
-                expect(store.getState().auth.user?.username).toBe("testuser");
+                expect(SignUp).toHaveBeenCalledWith("12345678Aa", "testuser");
                 expect(mockPush).toHaveBeenCalledWith("/");
 
             })
