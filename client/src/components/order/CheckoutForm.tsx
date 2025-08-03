@@ -9,7 +9,6 @@ import { Dispatch, SetStateAction, useCallback, useEffect, useState } from "reac
 import { convertToSubcurrency } from "@/utils/payment";
 import { useForm } from "react-hook-form";
 import { Order } from "@/redux/reduxTypes";
-import { useRouter } from "next/navigation";
 
 // shipping prices
 enum Shipping {
@@ -38,7 +37,6 @@ const CheckoutForm = ({ order, shipping, setShipping }: { order: Order, shipping
     const [promocode, setPromocode] = useState<string>("");
     const [discount, setDiscount] = useState<number>(0);
     const [error, setError] = useState<string | null>(null);
-    const router = useRouter();
     // func for using promocode
     const usePromocode = useCallback(async () => {
         try {
