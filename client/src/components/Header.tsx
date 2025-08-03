@@ -234,7 +234,7 @@ const Header = () => {
           }
 
           {/* avatar touch menu */}
-          <button aria-label="cart" onClick={() => setActivePanel(activePanel === "cart" ? null : "cart")} className={`relative cursor-pointer transition-colors hover:text-primary  ${activePanel === "cart" ? "text-primary" : ""} `}>
+          <button data-testid="cart" onClick={() => setActivePanel(activePanel === "cart" ? null : "cart")} className={`relative cursor-pointer transition-colors hover:text-primary  ${activePanel === "cart" ? "text-primary" : ""} `}>
             <ShoppingCart size={30} />
             <span data-testid="cartLength" className="rounded-full p-1 bg-primary absolute top-[55%] -left-[15%] text-white  font-semibold px-2 text-sm">{cart?.items.length}</span>
 

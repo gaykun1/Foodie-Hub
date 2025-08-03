@@ -102,7 +102,7 @@ describe("Header component", () => {
         });
 
 
-        fireEvent.click(screen.getByRole("button", { name: /cart/i }));
+        fireEvent.click(screen.getByTestId("cart"));
 
         expect(screen.getByText("Cart")).toBeInTheDocument();
         expect(screen.getByText("Pizza")).toBeInTheDocument();

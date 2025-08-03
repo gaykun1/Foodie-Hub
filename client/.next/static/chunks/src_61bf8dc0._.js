@@ -1313,7 +1313,7 @@ const Page = ()=>{
                                             className: "text-2xl leading-8 font-bold mb-4.5 ",
                                             children: [
                                                 "Free orders ( ",
-                                                freeOrders?.length,
+                                                freeOrders?.length ?? 0,
                                                 " )"
                                             ]
                                         }, void 0, true, {

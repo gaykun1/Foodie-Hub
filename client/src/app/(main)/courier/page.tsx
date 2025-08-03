@@ -160,7 +160,7 @@ const Page = () => {
                     {!loading ? !isWorking ? (<>
                         <div className="shadow-xs border-[1px] border-borderColor rounded-lg p-[25px]">
 
-                            <h2 className="text-2xl leading-8 font-bold mb-4.5 ">Free orders ( {freeOrders?.length} )</h2>
+                            <h2 className="text-2xl leading-8 font-bold mb-4.5 ">Free orders ( {freeOrders?.length ?? 0} )</h2>
 
                             <div className="gap-4 grid lg:grid-cols-2">
                                 {freeOrders && freeOrders.length > 0 ? freeOrders?.map((order, idx) => (

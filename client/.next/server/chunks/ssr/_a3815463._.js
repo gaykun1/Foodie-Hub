@@ -154,7 +154,7 @@ const Page = ()=>{
                                                 // validating email format with regex
                                                 isValidEmailForm: (value)=>{
                                                     if (!value) return true;
-                                                    /^\w+@\w+\.\w{2,3}$/.test(value) || "Wrong email format";
+                                                    return /^\w+@\w+\.\w{2,3}$/.test(value) || "Wrong email format";
                                                 }
                                             }
                                         }),
@@ -198,7 +198,7 @@ const Page = ()=>{
                                                 // validating phone number format with regex
                                                 isUAFormat: (value)=>{
                                                     if (!value) return true;
-                                                    /^\+380\d{9}$/.test(value) || "Phone must be in +380XXXXXXXXX format";
+                                                    return /^\+380\d{9}$/.test(value) || "Phone must be in +380XXXXXXXXX format";
                                                 }
                                             }
                                         }),

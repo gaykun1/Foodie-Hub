@@ -90,7 +90,7 @@ describe("testing cart", () => {
                 },
                 auth: { user: null },
             });
-            fireEvent.click(screen.getByLabelText("cart"));
+            fireEvent.click(screen.getByTestId("cart"));
             mockedAxios.patch.mockResolvedValue({
                 data: {},
             });
@@ -139,7 +139,7 @@ describe("testing cart", () => {
                 },
                 auth: { user: null },
             });
-            fireEvent.click(screen.getByLabelText("cart"));
+            fireEvent.click(screen.getByTestId("cart"));
             mockedAxios.patch.mockResolvedValue({
                 data: {},
             });
@@ -188,7 +188,7 @@ describe("testing cart", () => {
                 },
                 auth: { user: null },
             });
-            fireEvent.click(screen.getByLabelText("cart"));
+            fireEvent.click(screen.getByTestId("cart"));
             mockedAxios.patch.mockResolvedValue({
                 data: {},
             });

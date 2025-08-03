@@ -9,6 +9,7 @@ import { Dispatch, SetStateAction, useCallback, useEffect, useState } from "reac
 import { convertToSubcurrency } from "@/utils/payment";
 import { useForm } from "react-hook-form";
 import { Order } from "@/redux/reduxTypes";
+import { useRouter } from "next/navigation";
 
 // shipping prices
 enum Shipping {
@@ -37,7 +38,7 @@ const CheckoutForm = ({ order, shipping, setShipping }: { order: Order, shipping
     const [promocode, setPromocode] = useState<string>("");
     const [discount, setDiscount] = useState<number>(0);
     const [error, setError] = useState<string | null>(null);
-
+    const router = useRouter();
     // func for using promocode
     const usePromocode = useCallback(async () => {
         try {
@@ -72,7 +73,7 @@ const CheckoutForm = ({ order, shipping, setShipping }: { order: Order, shipping
     useEffect(() => {
 
         getClientSecret();
-      
+
 
     }, [discount, shipping]);
 
@@ -89,7 +90,7 @@ const CheckoutForm = ({ order, shipping, setShipping }: { order: Order, shipping
         setLoading(true);
         // getting values of useForm form
         const formData = getValues();
-       
+
         if (!stripe || !elements) return;
         const { error: submitError } = await elements.submit();//stripe error handler
         if (submitError && submitError.message) {
@@ -102,14 +103,16 @@ const CheckoutForm = ({ order, shipping, setShipping }: { order: Order, shipping
                 elements,
                 clientSecret,
                 confirmParams: {
-                    return_url: `${process.env.NEXT_PUBLIC_API_URL}/orders/order/success/${((shipping + order.totalPrice) * ((100 - discount) / 100)).toFixed(2)}`,
-                } //rediraction to success page
-            })
+                    return_url: `${window.location.origin}/orders/order/success/${((shipping + order.totalPrice) * ((100 - discount) / 100)).toFixed(2)}`
+
+                }
+            });
+
             setLoading(false);
-            if (error.message && error) {
+            if (error && error.message) {
                 setError(error.message);
             }
-
+        
 
         }
 
@@ -130,7 +133,7 @@ const CheckoutForm = ({ order, shipping, setShipping }: { order: Order, shipping
                         <div className="grid lg:grid-cols-2  gap-4">
                             <div className="flex flex-col w-[50%] lg:col-span-2 gap-1">
                                 <label className="text-gray text-base! leading-7 ">Country/Region</label>
-                                <select {...register("countryOrRegion", { required: true })} className="input py-2 px-3 ">
+                                <select id="selectCountry" {...register("countryOrRegion", { required: true })} className="input py-2 px-3 ">
                                     <option value="Ukraine">Ukraine</option>
                                     <option value="Poland">Poland</option>
                                     <option value="Germany">Germany</option>
@@ -139,7 +142,7 @@ const CheckoutForm = ({ order, shipping, setShipping }: { order: Order, shipping
                             <div className="flex flex-col gap-1">
                                 <label className="text-gray text-base! leading-7 ">Name</label>
 
-                                <input type="text" {...register("name", {
+                                <input aria-label="name" type="text" {...register("name", {
                                     required: "Required!", pattern: {
                                         value: /^[A-Za-z]+$/,
                                         message: "Only letters"
@@ -150,7 +153,7 @@ const CheckoutForm = ({ order, shipping, setShipping }: { order: Order, shipping
                             <div className="flex flex-col gap-1">
                                 <label className="text-gray text-base! leading-7 ">Surname</label>
 
-                                <input type="text" {...register("surname", {
+                                <input aria-label="surname" type="text" {...register("surname", {
                                     required: "Required!", pattern: {
                                         value: /^[A-Za-z]+$/,
                                         message: "Only letters"
@@ -162,7 +165,7 @@ const CheckoutForm = ({ order, shipping, setShipping }: { order: Order, shipping
                             <div className="flex flex-col gap-1">
                                 <label className="text-gray text-base! leading-7 ">City </label>
 
-                                <input type="text" {...register("city", {
+                                <input aria-label="city" type="text" {...register("city", {
                                     required: "Required!", pattern: {
                                         value: /^[A-Za-z]+$/,
                                         message: "Only letters"
@@ -172,9 +175,9 @@ const CheckoutForm = ({ order, shipping, setShipping }: { order: Order, shipping
 
                             </div>
                             <div className="flex flex-col gap-1">
-                                <label className="text-gray text-base! leading-7 ">Street</label>
+                                <label  className="text-gray text-base! leading-7 ">Street</label>
 
-                                <input type="text" {...register("street", {
+                                <input aria-label="street" type="text" {...register("street", {
                                     required: "Required!", pattern: {
                                         value: /^[A-Za-z]+$/,
                                         message: "Only letters"
@@ -186,7 +189,7 @@ const CheckoutForm = ({ order, shipping, setShipping }: { order: Order, shipping
                             <div className="flex flex-col gap-1">
                                 <label className="text-gray text-base! leading-7 ">House number</label>
 
-                                <input {...register("houseNumber", { required: "Required!" })} className="input py-2 px-3 " />
+                                <input aria-label="house-number" {...register("houseNumber", { required: "Required!" })} className="input py-2 px-3 " />
                                 <div className="text-red-500">{errors.name?.message}</div>
 
                             </div>
@@ -194,7 +197,7 @@ const CheckoutForm = ({ order, shipping, setShipping }: { order: Order, shipping
                                 <label className="text-gray text-base! leading-7 ">
                                     Apartment number (optionally)</label>
 
-                                <input {...register("apartmentNumbr", { required: true, })} className="input py-2 px-3 " />
+                                <input aria-label="apartment-number"  {...register("apartmentNumbr", { required: true, })} className="input py-2 px-3 " />
 
                             </div>
                         </div>
@@ -207,7 +210,7 @@ const CheckoutForm = ({ order, shipping, setShipping }: { order: Order, shipping
                         <div className="flex flex-col gap-6 w-full">
                             <div className="py-[15px] px-[17px] border-[1px] border-borderColor rounded-md flex items-center justify-between">
                                 <div className="flex items-center gap-3">
-                                    <input checked={shipping === Shipping.Economy} onChange={() => setShipping(Shipping.Economy)} type="radio" className="accent-primary cursor-pointer" />
+                                    <input aria-label="economy" checked={shipping === Shipping.Economy} onChange={() => setShipping(Shipping.Economy)} type="radio" className="accent-primary cursor-pointer" />
                                     <div className="leading-[14px] flex flex-col gap-1 text-sm font-medium">
                                         <span className="text-secondary">Economy Shipping</span>
                                         <span className="text-gray">~50+ minutes</span>
@@ -218,7 +221,7 @@ const CheckoutForm = ({ order, shipping, setShipping }: { order: Order, shipping
                             </div>
                             <div className="py-[15px] px-[17px] border-[1px] border-borderColor rounded-md flex items-center justify-between">
                                 <div className="flex items-center gap-3">
-                                    <input checked={shipping === Shipping.Standart} onChange={() => setShipping(Shipping.Standart)} type="radio" className="accent-primary cursor-pointer" />
+                                    <input aria-label="standart" checked={shipping === Shipping.Standart} onChange={() => setShipping(Shipping.Standart)} type="radio" className="accent-primary cursor-pointer" />
                                     <div className="leading-[14px] flex flex-col gap-1 text-sm font-medium">
                                         <span className="text-secondary">Standart Shipping</span>
                                         <span className="text-gray">~30-50 minutes</span>
@@ -229,7 +232,7 @@ const CheckoutForm = ({ order, shipping, setShipping }: { order: Order, shipping
                             </div>
                             <div className="py-[15px] px-[17px] border-[1px] border-borderColor rounded-md flex items-center justify-between">
                                 <div className="flex items-center gap-3">
-                                    <input checked={shipping === Shipping.Express} onChange={() => setShipping(Shipping.Express)} type="radio" className="accent-primary cursor-pointer" />
+                                    <input aria-label="express" checked={shipping === Shipping.Express} onChange={() => setShipping(Shipping.Express)} type="radio" className="accent-primary cursor-pointer" />
                                     <div className="leading-[14px] flex flex-col gap-1 text-sm font-medium">
                                         <span className="text-secondary">Express Shipping</span>
                                         <span className="text-gray">~15-30 minutes</span>
@@ -291,7 +294,7 @@ const CheckoutForm = ({ order, shipping, setShipping }: { order: Order, shipping
                     <button onClick={usePromocode} className="btn absolute right-0 px-2 py-1"><Send /></button>
                 </div>
                 <div className="w-full items-center flex flex-col gap-4">
-                    <button onClick={placeOrder} type="submit" className="btn py-3   mt-6      px-2 max-w-[328px] w-full">{loading ? (<span>Processing...</span>) : (<span>Place Order</span>)}</button>
+                    <button aria-label="place-order" onClick={placeOrder} type="submit" className="btn py-3   mt-6      px-2 max-w-[328px] w-full">{loading ? (<span>Processing...</span>) : (<span>Place Order</span>)}</button>
 
                     <p className="text-xs  leading-4 text-gray flex items-center justify-center gap-1" ><Lock size={12} /> All transactions are secure and encrypted.</p>
                     {error && (<span>{error}</span>)}
