@@ -3,7 +3,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 
-// імпорт роутів
+// route import
 import authRoute from "./routes/authRoutes";
 import restaurantRoute from "./routes/restaurantRoute";
 import cartRoute from "./routes/cartRoute";
