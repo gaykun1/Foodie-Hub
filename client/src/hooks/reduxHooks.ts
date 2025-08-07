@@ -7,4 +7,3 @@ export const useAppDispatch = () => useDispatch<AppDispatch>();
 export const useAppSelector : TypedUseSelectorHook<RootState> = useSelector;
 
 
-//!! check why so sintax!!!

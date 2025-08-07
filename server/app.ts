@@ -24,7 +24,7 @@ app.use(cors({
     credentials: true
 }));
 
-// роутинг
+// routing
 app.use("/api/auth", authRoute);
 app.use("/api/restaurant", restaurantRoute);
 app.use("/api/cart", authMiddleware, cartRoute);
@@ -38,6 +38,4 @@ app.get("/api/protected",authMiddleware, async (req: Request, res: Response) => 
     return res.status(200).json("Route is protected");
 })
 
-// ти можеш сюди також винести cron або винести окремо
 
-// просто експорт app (жодного server.listen)

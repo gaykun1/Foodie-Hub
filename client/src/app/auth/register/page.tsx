@@ -66,7 +66,6 @@ const Page = () => {
             <label htmlFor='label2' className='text-[18px]'>Password</label>
             <input id='label2' {...register("password", {
               validate: {
-                // validating password for safety 
                 password: (value) => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/.test(value) || "Password must have at least one lowercase, one uppercase, one digit and minimum 8 characters",
               }
             })} placeholder='Type in your password...' type="password" className=' ml-2 input h-[40px] px-2' />
