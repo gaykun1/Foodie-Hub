@@ -2,7 +2,6 @@
 import PaymentCard from "@/components/order/PaymentCard";
 import { useAppSelector } from "@/hooks/reduxHooks"
 import { useElements, useStripe } from "@stripe/react-stripe-js";
-import { } from "@stripe/stripe-js";
 import axios, { } from "axios";
 import { Lock, Send } from "lucide-react";
 import { Dispatch, SetStateAction, useCallback, useEffect, useState } from "react";

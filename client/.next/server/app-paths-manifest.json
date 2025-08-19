@@ -1,6 +1,4 @@
 {
-  "/(main)/orders/order/[id]/page": "app/(main)/orders/order/[id]/page.js",
   "/(main)/page": "app/(main)/page.js",
-  "/(restaurant)/restaurant/menu/[id]/page": "app/(restaurant)/restaurant/menu/[id]/page.js",
   "/auth/login/page": "app/auth/login/page.js"
 }

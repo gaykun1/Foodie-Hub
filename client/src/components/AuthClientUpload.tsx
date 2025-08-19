@@ -16,6 +16,7 @@ const AuthClientUpload = () => {
                 const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/profile`, {
                     withCredentials: true,
                 });
+                if(!res)router.push("/auth/login");
                 dispatch(login(res.data.user));
                 if (res.data.user.role === `courier`) {
                     const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/courier/profile`, { withCredentials: true });
