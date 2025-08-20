@@ -4,6 +4,7 @@ import Header from "@/components/Header";
 import Providers from "../providers/Providers";
 import AuthClientUpload from "@/components/AuthClientUpload";
 import Footer from "@/components/Footer";
+import Ping from "@/components/Ping";
 
 
 
@@ -15,10 +16,13 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
 
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/ping`);
+
   return (
 
     <Providers>
       {/* starter info component  */}
+      <Ping/>
       <AuthClientUpload />
       <div className="h-screen flex flex-col">
         <Header />
@@ -26,7 +30,7 @@ export default async function RootLayout({
           <div className="flex-1">
             {children}
           </div>
-        </div> 
+        </div>
         <Footer />
       </div>
     </Providers>
