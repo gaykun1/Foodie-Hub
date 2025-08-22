@@ -1,6 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 7, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/User/Desktop/pet%20projects/FoodieHub/client/src/app/providers/Providers.tsx"],"sourcesContent":["\"use client\"\r\nimport { store } from \"@/redux/store\"\r\nimport { Provider } from \"react-redux\"\r\n\r\n// redux container \r\nexport default function Providers({ children }: { children: React.ReactNode }) {\r\n    return <Provider store={store}>{children}</Provider>\r\n}"],"names":[],"mappings":";;;;;;;;;AAEA;AAFA;;;;AAKe,SAAS,UAAU,EAAE,QAAQ,EAAiC;IACzE,qBAAO,6LAAC,4JAAA,CAAA,WAAQ;QAAC,OAAO;kBAAQ;;;;;;AACpC;KAFwB","debugId":null}}]
-}
