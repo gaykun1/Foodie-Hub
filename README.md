@@ -6,6 +6,7 @@ Built to practice modern web development: from frontend UI to backend APIs and s
 ---
 
 ## 🚀 Live Demo
+!There`s cold start for 3 minutes because of using free render server
 [👉 View Live Demo](https://foodie-hub-9n96.vercel.app/)
 
 ---
