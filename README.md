@@ -100,13 +100,6 @@ This project is licensed under the [GNU GPL v3](LICENSE).
 
 ---
 
-## 🤝 Contributing
-
-Pull requests and issues are welcome!  
-See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
-
----
-
 ## 💡 Credits
 
-Made with ❤️ by [yourusername](https://github.com/yourusername)
+Made with ❤️ by [gaykun1](https://github.com/gaykun1)
