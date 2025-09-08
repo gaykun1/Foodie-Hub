@@ -1,6 +1,6 @@
 # 🍔 FoodieHub — Food Delivery Service
 
-FoodieHub is a full-stack web application for online food ordering, featuring a shopping cart, order management, and Stripe payment integration.  
+FoodieHub is a full-stack web application for online food ordering, featuring real-time navigating map of courier and product, a shopping cart, order management, and Stripe payment integration.  
 Built to practice modern web development: from frontend UI to backend APIs and secure payments.
 
 ---
