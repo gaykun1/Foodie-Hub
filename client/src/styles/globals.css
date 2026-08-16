@@ -1,53 +1,312 @@
-@import url(https://fonts.googleapis.com/css?family=Inter:100,200,300,regular,500,600,700,800,900,100italic,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic);
-@import url(https://fonts.googleapis.com/css?family=Archivo:100,200,300,regular,500,600,700,800,900,100italic,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic);
 @import "tailwindcss";
 
+/* =========================================================================
+   FoodieHub design tokens
+   -------------------------------------------------------------------------
+   Warm, appetite-first palette. Every semantic token below was checked
+   against WCAG 2.1 contrast math (not eyeballed):
+     - --color-brand (#D43C0A light / #FF7A45 dark) is tuned to sit right at
+       the edge of AA-for-normal-text (~4.5:1) against its paired surface,
+       so it is safe to use as text/icon color AND as a solid button/badge
+       fill with --color-on-brand text, in both directions, in both themes.
+     - --color-on-brand deliberately FLIPS between themes (white in light
+       mode, near-black ink in dark mode) because the lighter, more vivid
+       accent needed for a dark canvas (#FF7A45) does not clear 4.5:1 against
+       white text, but does against dark ink. Components should always read
+       --color-on-brand rather than hardcoding white.
+     - --color-ink-muted (sand-600, ~7.4:1 on cream) replaces the old
+       --color-gray (#8c8d8b, ~3.3:1 — failed AA) used for every description/
+       timestamp/helper string in the app.
+     - Status colors use the tinted-background + deep-text badge pattern
+       (e.g. teal-100 bg / teal-800 text) rather than solid-fill + white,
+       since that pattern clears AA trivially and reads as a proper badge.
+   ========================================================================= */
+
 :root {
-  --background: #fff;
-  --color-primary: #636ae8ff;
-  --color-secondary: #242524ff;
-  --color-gray: #8c8d8bff;
-  --font-sans: "Inter", sans-serif;
-  --font-archivo: "Archivo", sans-serif;
-  --custom-shadow-light: 0px 0px 1px #171a1f12, 0px 0px 2px #171a1f1f;
+  /* ---- Ember (brand) ramp ---- */
+  --ember-50: #fff4ed;
+  --ember-100: #ffe6d5;
+  --ember-200: #ffc9a8;
+  --ember-300: #ffa36d;
+  --ember-400: #ff7a45;
+  --ember-500: #ff5a1f;
+  --ember-600: #f0430a;
+  --ember-700: #d43c0a;
+  --ember-800: #9e2d0f;
+  --ember-900: #7f2a10;
+  --ember-950: #451206;
+
+  /* ---- Teal (accent / fresh / delivered) ramp ---- */
+  --teal-50: #f0fdfa;
+  --teal-100: #ccfbf1;
+  --teal-200: #99f6e4;
+  --teal-300: #5eead4;
+  --teal-400: #2dd4bf;
+  --teal-500: #14b8a6;
+  --teal-600: #0d9488;
+  --teal-700: #0f766e;
+  --teal-800: #115e59;
+  --teal-900: #134e4a;
+
+  /* ---- Sand (warm neutral) ramp ---- */
+  --sand-50: #fafaf9;
+  --sand-100: #f5f5f4;
+  --sand-200: #e7e5e4;
+  --sand-300: #d6d3d1;
+  --sand-400: #a8a29e;
+  --sand-500: #78716c;
+  --sand-600: #57534e;
+  --sand-700: #44403c;
+  --sand-800: #292524;
+  --sand-900: #1c1917;
+  --sand-950: #0c0a09;
+
+  /* ---- Status ramps ---- */
+  --success-100: #d1fae5;
+  --success-700: #047857;
+  --success-800: #065f46;
+  --warning-100: #fef3c7;
+  --warning-700: #b45309;
+  --warning-800: #92400e;
+  --danger-100: #fee2e2;
+  --danger-600: #dc2626;
+  --danger-700: #b91c1c;
+  --info-100: #dbeafe;
+  --info-700: #1d4ed8;
+  --info-800: #1e40af;
+
+  /* ---- Semantic tokens (light theme, default) ---- */
+  --color-bg: #fffbf7;
+  --color-surface: #ffffff;
+  --color-surface-raised: #fffefc;
+  --color-overlay: #fffbf7cc;
+  --color-border: var(--sand-200);
+  --color-border-strong: var(--sand-300);
+  --color-ink: var(--sand-900);
+  --color-ink-muted: var(--sand-600);
+  --color-ink-subtle: var(--sand-500);
+  --color-brand: var(--ember-700);
+  --color-brand-vivid: var(--ember-500);
+  --color-brand-hover: var(--ember-800);
+  --color-on-brand: #ffffff;
+  --color-accent: var(--teal-700);
+  --color-danger: var(--danger-700);
+  --color-danger-hover: #991b1b;
+  --color-focus-ring: var(--ember-600);
+  --color-skeleton: var(--sand-200);
+
+  --font-sans: var(--font-inter, "Inter", sans-serif);
+  --font-display: var(--font-inter-tight, "Inter Tight", sans-serif);
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+
+  --shadow-1: 0 1px 2px 0 rgb(28 25 23 / 0.06);
+  --shadow-2: 0 2px 8px -2px rgb(28 25 23 / 0.10), 0 1px 2px -1px rgb(28 25 23 / 0.06);
+  --shadow-3: 0 8px 24px -4px rgb(28 25 23 / 0.14), 0 2px 6px -2px rgb(28 25 23 / 0.08);
+  --shadow-4: 0 16px 48px -8px rgb(28 25 23 / 0.20), 0 4px 12px -4px rgb(28 25 23 / 0.10);
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ---- Dark theme: system preference ---- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-bg: #14110f;
+    --color-surface: #1c1917;
+    --color-surface-raised: #241f1c;
+    --color-overlay: #14110fcc;
+    --color-border: var(--sand-800);
+    --color-border-strong: var(--sand-700);
+    --color-ink: var(--sand-50);
+    --color-ink-muted: var(--sand-400);
+    --color-ink-subtle: var(--sand-500);
+    --color-brand: var(--ember-400);
+    --color-brand-vivid: var(--ember-400);
+    --color-brand-hover: var(--ember-300);
+    --color-on-brand: var(--sand-950);
+    --color-accent: var(--teal-400);
+    --color-danger: #f87171;
+    --color-danger-hover: #fca5a5;
+    --color-focus-ring: var(--ember-400);
+    --color-skeleton: var(--sand-800);
+
+    --shadow-1: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+    --shadow-2: 0 2px 8px -2px rgb(0 0 0 / 0.4), 0 1px 2px -1px rgb(0 0 0 / 0.3);
+    --shadow-3: 0 8px 24px -4px rgb(0 0 0 / 0.5), 0 2px 6px -2px rgb(0 0 0 / 0.3);
+    --shadow-4: 0 16px 48px -8px rgb(0 0 0 / 0.6), 0 4px 12px -4px rgb(0 0 0 / 0.4);
+  }
+}
+
+/* ---- Dark theme: manual toggle (wins in both directions) ---- */
+:root[data-theme="dark"] {
+  --color-bg: #14110f;
+  --color-surface: #1c1917;
+  --color-surface-raised: #241f1c;
+  --color-overlay: #14110fcc;
+  --color-border: var(--sand-800);
+  --color-border-strong: var(--sand-700);
+  --color-ink: var(--sand-50);
+  --color-ink-muted: var(--sand-400);
+  --color-ink-subtle: var(--sand-500);
+  --color-brand: var(--ember-400);
+  --color-brand-vivid: var(--ember-400);
+  --color-brand-hover: var(--ember-300);
+  --color-on-brand: var(--sand-950);
+  --color-accent: var(--teal-400);
+  --color-danger: #f87171;
+  --color-danger-hover: #fca5a5;
+  --color-focus-ring: var(--ember-400);
+  --color-skeleton: var(--sand-800);
+
+  --shadow-1: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+  --shadow-2: 0 2px 8px -2px rgb(0 0 0 / 0.4), 0 1px 2px -1px rgb(0 0 0 / 0.3);
+  --shadow-3: 0 8px 24px -4px rgb(0 0 0 / 0.5), 0 2px 6px -2px rgb(0 0 0 / 0.3);
+  --shadow-4: 0 16px 48px -8px rgb(0 0 0 / 0.6), 0 4px 12px -4px rgb(0 0 0 / 0.4);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-primary: var(--color-primary);
-  --color-gray: var(--color-gray);
-  --color-secondary: var(--color-secondary);
+  --color-bg: var(--color-bg);
+  --color-surface: var(--color-surface);
+  --color-surfaceRaised: var(--color-surface-raised);
+  --color-border: var(--color-border);
+  --color-borderStrong: var(--color-border-strong);
+  --color-ink: var(--color-ink);
+  --color-inkMuted: var(--color-ink-muted);
+  --color-inkSubtle: var(--color-ink-subtle);
+  --color-brand: var(--color-brand);
+  --color-brandVivid: var(--color-brand-vivid);
+  --color-brandHover: var(--color-brand-hover);
+  --color-onBrand: var(--color-on-brand);
+  --color-accent: var(--color-accent);
+  --color-danger: var(--color-danger);
+  --color-dangerHover: var(--color-danger-hover);
+  --color-focusRing: var(--color-focus-ring);
+  --color-overlay: var(--color-overlay);
+  --color-skeleton: var(--color-skeleton);
+
+  --color-success100: var(--success-100);
+  --color-success700: var(--success-700);
+  --color-success800: var(--success-800);
+  --color-warning100: var(--warning-100);
+  --color-warning700: var(--warning-700);
+  --color-warning800: var(--warning-800);
+  --color-danger100: var(--danger-100);
+  --color-info100: var(--info-100);
+  --color-info700: var(--info-700);
+  --color-info800: var(--info-800);
+
+  --color-ember-50: var(--ember-50);
+  --color-ember-100: var(--ember-100);
+  --color-ember-200: var(--ember-200);
+  --color-ember-300: var(--ember-300);
+  --color-ember-400: var(--ember-400);
+  --color-ember-500: var(--ember-500);
+  --color-ember-600: var(--ember-600);
+  --color-ember-700: var(--ember-700);
+  --color-ember-800: var(--ember-800);
+  --color-ember-900: var(--ember-900);
+  --color-teal-50: var(--teal-50);
+  --color-teal-100: var(--teal-100);
+  --color-teal-200: var(--teal-200);
+  --color-teal-400: var(--teal-400);
+  --color-teal-500: var(--teal-500);
+  --color-teal-600: var(--teal-600);
+  --color-teal-700: var(--teal-700);
+  --color-teal-800: var(--teal-800);
+  --color-sand-50: var(--sand-50);
+  --color-sand-100: var(--sand-100);
+  --color-sand-200: var(--sand-200);
+  --color-sand-300: var(--sand-300);
+  --color-sand-400: var(--sand-400);
+  --color-sand-500: var(--sand-500);
+  --color-sand-600: var(--sand-600);
+  --color-sand-700: var(--sand-700);
+  --color-sand-800: var(--sand-800);
+  --color-sand-900: var(--sand-900);
+
   --font-sans: var(--font-sans);
-  --font-archivo: var(--font-archivo);
-  --color-borderColor: #ebebeaff;
-  --shadow-borderShadow: var(--custom-shadow-light);
-}
-.section-title {
-  @apply text-[30px] leading-9 font-bold;
-}
-.default-link {
-  @apply transition-colors hover:text-primary   font-bold leading-7 group-hover:text-secondary;
-}
-html,
-body {
-  @apply bg-background text-secondary font-sans transition-all text-base;
+  --font-display: var(--font-display);
+
+  --shadow-elevation1: var(--shadow-1);
+  --shadow-elevation2: var(--shadow-2);
+  --shadow-elevation3: var(--shadow-3);
+  --shadow-elevation4: var(--shadow-4);
+
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+
+  --breakpoint-xs: 22.5rem;
 }
 
-.btn {
-  @apply px-3 inline-flex items-center justify-center  text-white text-sm leading-[22px] font-medium bg-primary outline-none rounded-[6px] hover:bg-[#4850E4FF] transition-colors cursor-pointer;
+/* ---- Base ---- */
+* {
+  border-color: var(--color-border);
 }
-.btn-transparent {
-  @apply px-3 inline-flex items-center justify-center  text-primary text-sm leading-[22px] font-medium bg-transparent outline-none rounded-[6px] border-[1px] border-borderColor cursor-pointer  transition-colors hover:text-secondary;
+
+html,
+body {
+  @apply bg-bg text-ink font-sans text-base;
+  background: var(--color-bg);
+  color: var(--color-ink);
+}
+
+body {
+  transition: background-color 0.2s var(--ease-out), color 0.2s var(--ease-out);
+}
+
+::selection {
+  background: var(--color-brand-vivid);
+  color: var(--color-on-brand);
+}
+
+/* Visible focus ring app-wide — replaces the old blanket outline-none */
+:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---- Shared utility classes ---- */
+.section-title {
+  @apply text-2xl sm:text-[30px] leading-tight sm:leading-9 font-bold font-display;
 }
 
 ._container {
-  @apply max-w-[1400px] px-[13px] mx-auto w-full;
+  @apply max-w-[1400px] px-4 sm:px-6 mx-auto w-full;
 }
 
 .custom-gradient {
   background: linear-gradient(0deg, #000000cc 0%, #00000000 100%);
 }
 
+/* Lightweight .btn / .btn-transparent / .input utility classes for call
+   sites that don't need the full <Button>/<Field> component API (e.g. a
+   single Link styled as a button). */
+.btn {
+  @apply px-4 h-10 inline-flex items-center justify-center text-[var(--color-on-brand)] text-sm leading-[22px] font-semibold bg-brand rounded-[var(--radius-sm)] transition-colors cursor-pointer hover:bg-brandHover disabled:opacity-50 disabled:pointer-events-none;
+}
+
+.btn-transparent {
+  @apply px-4 h-10 inline-flex items-center justify-center text-brand text-sm leading-[22px] font-semibold bg-transparent rounded-[var(--radius-sm)] border border-border cursor-pointer transition-colors hover:bg-surfaceRaised;
+}
+
 .input {
-  @apply w-full   rounded-[6px] border-[1px] border-borderColor outline-0;
+  @apply w-full rounded-[var(--radius-sm)] border border-border bg-surface text-ink placeholder:text-inkSubtle transition-colors focus-visible:border-brand;
 }
