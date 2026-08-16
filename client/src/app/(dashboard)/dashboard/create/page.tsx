@@ -4,7 +4,9 @@ import { uploadImageToCloudinary } from "@/utils/uploadImageToCloudinary";
 import axios from "axios";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-
+import { Input, Textarea, Select } from "@/components/ui/Field";
+import { Button } from "@/components/ui/Button";
+import { AlertCircle } from "lucide-react";
 
 type formFields = {
   title: string;
@@ -22,6 +24,9 @@ type formFields = {
   endHour: string,
 };
 
+const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+const HOURS = ["6:00", "7:00", "8:00", "9:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00"];
+
 const Page = () => {
   const { register, handleSubmit, reset } = useForm<formFields>();
   const [serverError, setServerError] = useState<string | null>(null);
@@ -31,10 +36,8 @@ const Page = () => {
     setLoading(true);
     try {
       const imageFile = data.image[0];
-
       const imageUrl = await uploadImageToCloudinary(imageFile);
 
-      // restaurant info
       const restaurantData = {
         title: data.title,
         description: data.description,
@@ -51,22 +54,17 @@ const Page = () => {
         endHour: data.endHour,
       };
 
-
       await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/restaurants`,
         restaurantData,
-        {
-
-          withCredentials: true,
-        }
+        { withCredentials: true }
       );
 
       setServerError(null);
-      // reseting all the input fields after successful request
       reset();
     } catch (err) {
       if (axios.isAxiosError(err)) {
-        const msg = err.response?.data?.message || err.message || "Axios error";
+        const msg = err.response?.data?.message || err.message || "Something went wrong";
         setServerError(msg);
       }
     } finally {
@@ -75,146 +73,82 @@ const Page = () => {
   };
 
   return (
-
-    <>
-      <div className="mb-2">
-        <h1 className="text-2xl font-semibold border-b-[1px] pb-1 border-borderColor inline-block">
-          Add a new restaurant
-        </h1>
-      </div>
+    <div className="flex flex-col gap-6">
+      <h1 className="section-title border-b border-border pb-3">Add a new restaurant</h1>
 
       {serverError && (
-        <div className="mb-4 p-2 bg-red-100 text-red-700 rounded">
-          Error: {serverError}
+        <div className="flex items-center gap-2 p-3 rounded-md bg-danger100 text-danger text-sm font-medium">
+          <AlertCircle size={16} />
+          {serverError}
         </div>
       )}
 
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="grid sm:grid-cols-2 mb-4">
-          <div className="p-2 flex flex-col gap-3">
-            <div className="flex flex-col gap-2">
-              <label htmlFor="title" className="text-lg font-medium">
-                Title
-              </label>
-              <input {...register("title", { required: true })} className="input p-1" />
-            </div>
-            <div className="flex flex-col gap-2">
-              <label htmlFor="description" className="text-lg font-medium">
-                Description
-              </label>
-              <textarea {...register("description")} className="input p-1 h-[100px] resize-none" />
-            </div>
-            <div className="flex flex-col gap-2">
-
-              <label htmlFor="adress" className="text-lg font-medium">Street</label>
-              <input {...register("street", { required: true })} className="input p-1" />
-              <label htmlFor="adress" className="text-lg font-medium">House Number</label>
-              <input {...register("houseNumber", { required: true })} className="input p-1" />
-              <label htmlFor="adress" className="text-lg font-medium">City</label>
-              <input {...register("city", { required: true })} className="input p-1" />
-
-            </div>
-            <div className="flex flex-col gap-3">
-              <label htmlFor="mySelect">First working day of the week:</label>
-              <div className="flex  gap-3 w-full">
-                <select className="border-[1px] rounded-sm " id="mySelect" {...register("startDay")}>
-                  <option value="Monday">Monday</option>
-                  <option value="Tuesday">Tuesday</option>
-                  <option value="Wednesday">Wednesday</option>
-                  <option value="Thursday">Thursday</option>
-                  <option value="Friday">Friday</option>
-                </select>
-                <select className="border-[1px] rounded-sm " id="mySelect" {...register("startHour")}>
-                  <option value="6:00">6:00</option>
-                  <option value="7:00">7:00</option>
-                  <option value="8:00">8:00</option>
-                  <option value="9:00">9:00</option>
-                  <option value="10:00">10:00</option>
-                  <option value="11:00">11:00</option>
-                  <option value="12:00">12:00</option>
-                  <option value="13:00">13:00</option>
-                  <option value="14:00">14:00</option>
-                  <option value="15:00">15:00</option>
-                  <option value="16:00">16:00</option>
-                </select>
-              </div>
-            </div>
-            <div className="flex flex-col gap-3">
-              <label htmlFor="mySelect">Last working day of the week:</label>
-              <div className="flex  gap-3 lg:w-[350px]">
-                <select className="border-[1px] rounded-sm " id="mySelect" {...register("endDay")}>
-                  <option value="Monday">Monday</option>
-                  <option value="Tuesday">Tuesday</option>
-                  <option value="Wednesday">Wednesday</option>
-                  <option value="Thursday">Thursday</option>
-                  <option value="Friday">Friday</option>
-                </select>
-                <select className="border-[1px] rounded-sm " id="mySelect" {...register("endHour")}>
-                  <option value="6:00">6:00</option>
-                  <option value="7:00">7:00</option>
-                  <option value="8:00">8:00</option>
-                  <option value="9:00">9:00</option>
-                  <option value="10:00">10:00</option>
-                  <option value="11:00">11:00</option>
-                  <option value="12:00">12:00</option>
-                  <option value="13:00">13:00</option>
-                  <option value="14:00">14:00</option>
-                  <option value="15:00">15:00</option>
-                  <option value="16:00">16:00</option>
-                </select>
-              </div>
-            </div>
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
+        <div className="grid sm:grid-cols-2 gap-6">
+          <div className="flex flex-col gap-4">
+            <Input id="create-title" label="Title" {...register("title", { required: true })} />
+            <Textarea id="create-description" label="Description" className="h-[100px] resize-none" {...register("description")} />
+            <Input id="create-street" label="Street" {...register("street", { required: true })} />
+            <Input id="create-house-number" label="House Number" {...register("houseNumber", { required: true })} />
+            <Input id="create-city" label="City" {...register("city", { required: true })} />
           </div>
 
-          <div className="p-2 flex flex-col gap-3">
+          <div className="flex flex-col gap-4">
+            <Input id="create-phone" label="Phone" type="tel" {...register("phone", { required: true })} />
+            <Input id="create-website" label="Website Link" type="url" {...register("websiteUrl", { required: true })} />
+            <Input id="create-image" label="Image" type="file" accept="image/*" {...register("image", { required: true })} />
             <div className="flex flex-col gap-2">
-              <div className="">
-                <label htmlFor="phone" className="text-lg font-medium">
-                  Phone
-                </label>
-                <input {...register("phone", { required: true })} type="tel" className="input p-1" />
+              <label className="text-sm font-medium text-ink">Categories</label>
+              <div className="flex flex-col gap-2">
+                {Object.values(Category)
+                  .filter((cat) => cat !== "All Restaurants")
+                  .map((category, index) => (
+                    <div key={index} className="flex items-center gap-2">
+                      <input
+                        {...register("categories")}
+                        type="checkbox"
+                        value={category}
+                        id={`category-${index}`}
+                        className="size-4 accent-brand"
+                      />
+                      <label htmlFor={`category-${index}`} className="text-sm text-ink">{category}</label>
+                    </div>
+                  ))}
               </div>
-              <div className="">
-                <label htmlFor="websiteUrl" className="text-lg font-medium">
-                  Website Link
-                </label>
-                <input {...register("websiteUrl", { required: true })} type="url" className="input p-1" />
-              </div>
-            </div>
-            <div className="flex flex-col gap-2">
-              <label htmlFor="image" className="text-lg font-medium">
-                Image
-              </label>
-              <input {...register("image", { required: true })} type="file" accept="image/*" className="input p-1" />
-            </div>
-            <div className="flex flex-col gap-2">
-              <label htmlFor="categories" className="text-lg font-medium">
-                Categories
-              </label>
-              {Object.values(Category)
-                .filter((cat) => cat !== "All Restaurants")
-                .map((category, index) => (
-                  <div key={index} className="flex items-center gap-2">
-                    <input
-                      {...register("categories")}
-                      type="checkbox"
-                      value={category}
-                      id={`category-${index}`}
-                      className="h-4 w-4"
-                    />
-                    <label htmlFor={`category-${index}`}>{category}</label>
-                  </div>
-                ))}
             </div>
           </div>
         </div>
 
-        <button type="submit" className="btn ml-2 p-3 text-lg w-[100px]" disabled={loading}>
-          {loading ? "Creating..." : "Create"}
-        </button>
-      </form>
-    </>
+        <div className="grid sm:grid-cols-2 gap-6">
+          <div className="flex flex-col gap-2">
+            <span className="text-sm font-medium text-ink">First working day of the week</span>
+            <div className="flex gap-3">
+              <Select id="create-start-day" label="Day" wrapperClassName="flex-1" {...register("startDay")}>
+                {DAYS.map((d) => <option key={d} value={d}>{d}</option>)}
+              </Select>
+              <Select id="create-start-hour" label="Hour" wrapperClassName="flex-1" {...register("startHour")}>
+                {HOURS.map((h) => <option key={h} value={h}>{h}</option>)}
+              </Select>
+            </div>
+          </div>
+          <div className="flex flex-col gap-2">
+            <span className="text-sm font-medium text-ink">Last working day of the week</span>
+            <div className="flex gap-3">
+              <Select id="create-end-day" label="Day" wrapperClassName="flex-1" {...register("endDay")}>
+                {DAYS.map((d) => <option key={d} value={d}>{d}</option>)}
+              </Select>
+              <Select id="create-end-hour" label="Hour" wrapperClassName="flex-1" {...register("endHour")}>
+                {HOURS.map((h) => <option key={h} value={h}>{h}</option>)}
+              </Select>
+            </div>
+          </div>
+        </div>
 
+        <Button type="submit" loading={loading} className="w-fit">
+          Create
+        </Button>
+      </form>
+    </div>
   );
 };
 

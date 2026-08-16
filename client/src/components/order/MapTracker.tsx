@@ -7,6 +7,7 @@ import { MapContainer, Marker, TileLayer } from 'react-leaflet';
 import {  Socket } from 'socket.io-client';
 import "leaflet/dist/leaflet.css";
 import { InvalidateMapSize } from '@/utils/InvalidateMapSize ';
+import { PageSpinner } from '@/components/ui/Spinner';
 
 
 
@@ -66,7 +67,6 @@ const MapTracker = ({ isWorking, socket, courierLocation }: { isWorking: Order |
                 const address = `${isWorking.adress.street} ${isWorking.adress.houseNumber}, ${isWorking.adress.city}`;
                 const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/geocode?q=${address}`)
                 const data = await res.json();
-                console.log(data);
                 const lat = data[0].lat;
                 const lng = data[0].lon;
                 setReceiverLocation([lat, lng]);
@@ -81,9 +81,9 @@ const MapTracker = ({ isWorking, socket, courierLocation }: { isWorking: Order |
     return (<>
 
         {
-            !isReady ? (<div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid mx-auto"></div>) : courierLocation != null && receiverLocation != null && restaurantLocation != null &&
+            !isReady ? <PageSpinner /> : courierLocation != null && receiverLocation != null && restaurantLocation != null &&
                 // container
-                <MapContainer className='h-full w-full' zoom={15} center={receiverLocation} >
+                <MapContainer className='h-full w-full rounded-lg' zoom={15} center={receiverLocation} >
                     <InvalidateMapSize /> {/* for prerendered map size  */}
                     <TileLayer attribution='copy& Copyright openStreetMap ' url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' />
                     <Marker position={receiverLocation} icon={receiverIcon} /> {/*Marker for receiver*/}

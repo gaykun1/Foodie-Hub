@@ -1,44 +1,77 @@
 "use client"
 import axios, { isAxiosError } from 'axios'
-import {  useState } from 'react'
+import { useState } from 'react'
+import { Ticket, CheckCircle2 } from 'lucide-react'
+import { Card } from '@/components/ui/Card'
+import { Input } from '@/components/ui/Field'
+import { Button } from '@/components/ui/Button'
 
 const Page = () => {
     const [promocode, setPromocode] = useState<string>("");
     const [error, setError] = useState<string | null>(null);
+    const [success, setSuccess] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
-    // func for using promocode and checking if it`s used
+
     const checkPromo = async () => {
-        // validating input 
         if (!promocode.trim()) {
             setError("Please enter a promocode");
+            setSuccess(false);
             return;
         }
         try {
             setLoading(true);
+            setError(null);
             const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/promocode/promocodes/${promocode}`, {}, { withCredentials: true });
             if (res.data) {
-                setError("Used");
+                setSuccess(true);
                 setPromocode("");
             }
         } catch (err) {
+            setSuccess(false);
             if (isAxiosError(err) && err.response) {
-                setError(err.response.data);
+                setError(typeof err.response.data === "string" ? err.response.data : "That promocode isn't valid.");
+            } else {
+                setError("Something went wrong. Please try again.");
             }
         } finally {
             setLoading(false);
         }
     }
 
-    return (<div className="flex items-center justify-center pt-30  flex-col">
-        <div className='flex flex-col gap-6 items-center py-4 px-8 border-borderColor rounded-lg  border-[1px] max-w-[500px] h-[300px] justify-center '>
-            <h1 className='section-title '>Enter your Promocode</h1>
-            <div className='flex gap-3 items-center' >
-                <input value={promocode} onChange={(e) => setPromocode(e.target.value)} type="text" className=' py-2 px-1 input ' />
-                <button onClick={checkPromo} className={`btn py-2 px-1 ${loading ? "bg-gray" : ""} `}>Use</button>
-            </div>
-            {error != null && (<span className={error === "Used" ? "text-green-500" : "text-red-500"}>{error}</span>)}
+    return (
+        <div className="flex items-center justify-center py-20 px-4">
+            <Card className="max-w-[440px] w-full flex flex-col items-center gap-5 text-center py-10">
+                <div className="flex items-center justify-center size-12 rounded-full bg-ember-100 text-brand">
+                    <Ticket size={22} />
+                </div>
+                <div>
+                    <h1 className="section-title">Enter your Promocode</h1>
+                    <p className="text-sm text-inkMuted mt-1">Unlock a discount on your next order.</p>
+                </div>
+                <form
+                    onSubmit={(e) => { e.preventDefault(); checkPromo(); }}
+                    className="flex gap-2 items-end w-full max-w-[320px]"
+                >
+                    <Input
+                        id="promocode"
+                        label="Promocode"
+                        wrapperClassName="flex-1"
+                        value={promocode}
+                        onChange={(e) => setPromocode(e.target.value)}
+                        placeholder="FEAST20"
+                        autoComplete="off"
+                    />
+                    <Button type="submit" loading={loading}>Use</Button>
+                </form>
+                {success && (
+                    <span className="flex items-center gap-1.5 text-sm font-medium text-success700">
+                        <CheckCircle2 size={16} />
+                        Promocode applied!
+                    </span>
+                )}
+                {error && <span className="text-sm font-medium text-danger">{error}</span>}
+            </Card>
         </div>
-    </div>
     )
 }
 

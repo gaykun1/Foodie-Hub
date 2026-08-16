@@ -3,8 +3,10 @@
 import axios, { isAxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form"
+import { Input, Select } from "@/components/ui/Field"
+import { Button } from "@/components/ui/Button"
+import { CheckCircle2 } from "lucide-react"
 
-// application form type 
 type formFields = {
     name: string,
     surname: string,
@@ -19,134 +21,93 @@ const ApplicationForm = () => {
     const { register, handleSubmit, reset, formState: { errors } } = useForm<formFields>();
     const [loading, setLoading] = useState<boolean>(false);
     const [alreadySent, setAlreadySent] = useState<boolean>(false);
-    const onSubmit: SubmitHandler<formFields> = async (data: formFields) => {
 
+    const onSubmit: SubmitHandler<formFields> = async (data: formFields) => {
         try {
             setLoading(true);
             const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/courier/applications`, { data }, { withCredentials: true });
-            // giving status sent to disable button while checking on admin side 
             setAlreadySent(res.data.status);
-
             reset();
-
         } catch (err) {
             if (isAxiosError(err) && err.response) {
-                if (axios.isAxiosError(err) && err.response)
-                    console.log(err.response.data);
+                console.error(err.response.data);
             }
-        }
-        finally {
+        } finally {
             setLoading(false);
         }
     }
 
-    // getting status of ur application every render
     useEffect(() => {
         const checkIfSent = async () => {
             try {
-
-
                 const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/courier/applications/status`, { withCredentials: true })
-
                 setAlreadySent(res.data.status);
-
             } catch (err) {
                 console.error(err);
             }
         }
         checkIfSent()
     }, [])
+
+    if (alreadySent) {
+        return (
+            <div className="flex flex-col items-center gap-2 py-8 text-center">
+                <CheckCircle2 size={28} className="text-success700" />
+                <p className="font-semibold text-ink">Application sent!</p>
+                <p className="text-sm text-inkMuted">We&apos;ll reach out once it&apos;s been reviewed.</p>
+            </div>
+        )
+    }
+
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="grid sm:grid-cols-2 mb-4">
-                <div className="p-2 flex flex-col gap-3">
-                    <div className="flex flex-col gap-2">
-                        <label className="text-lg font-medium">
-                            Name
-                        </label>
-                        <input {...register("name", { required: "Name is required" })} className="input p-1" />
-                        <span className="text-red-500">{errors.name?.message}</span>
-                    </div>
-                    <div className="flex flex-col gap-2">
-                        <label className="text-lg font-medium">
-                            Surname
-                        </label>
-                        <input {...register("surname", { required: "Surname is required" })} className="input p-1" />
-                        <span className="text-red-500">{errors.surname?.message}</span>
-
-                    </div>
-
-                    <div className="flex flex-col gap-2">
-                        <label className="text-lg font-medium">
-                            Age
-                        </label>
-                        <input type="text" {...register("age", {
-                            required: "Age is required", validate: {
-                                // validating if is number
-                                isNumber: (value) => /^\d+$/.test(value) || "Must be number!",
-                                min: (value) =>
-                                    +value >= 18 || "Must be at least 18",
-                                max: (value) =>
-                                    +value <= 99 || "Must be at most 99",
-
-                            }
-                        })} className="input p-1" />
-                        <span className="text-red-500">{errors.age?.message}</span>
-
-                    </div>
-                    <div className="flex flex-col gap-2">
-                        <label className="text-lg font-medium">
-                            City
-                        </label>
-                        <select defaultValue={"Lviv"} {...register("city", { required: true })} className="input py-2 px-3 ">
-                            <option value="Lviv">Lviv</option>
-                            <option value="Warsaw">Warsaw</option>
-                            <option value="Berlin">Berlin</option>
-                        </select>
-
-                    </div>
-                </div>
-
-                <div className="p-2 flex flex-col gap-3">
-
-                    <div className="flex flex-col gap-2">
-                        <label className="text-lg font-medium">
-                            Email
-                        </label>
-                        <input {...register("email", {
-                            required: "Email is required", validate: {
-                                // validating if is email format
-                                validEmail: (value) => /^\w+@\w+\.\w{2,3}$/.test(value) || "Wrong email format!"
-
-                            }
-                        })} className="input p-1" />
-                        <span className="text-red-500">{errors.email?.message}</span>
-
-                    </div>
-                    <div className="flex flex-col gap-2">
-                        <label className="text-lg font-medium">
-                            Phone Number
-                        </label>
-                        <input {...register("phoneNumber", { required: "Phone number is required" })} type="tel" className="input p-1" />
-                        <span className="text-red-500">{errors.phoneNumber?.message}</span>
-
-                    </div>
-                    <div className="flex flex-col gap-2">
-                        <label className="text-lg font-medium">
-                            Transport
-                        </label>
-                        <input {...register("transport")} type="text" className="input p-1" />
-
-                    </div>
-
-
-
-                </div>
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+            <div className="grid sm:grid-cols-2 gap-4">
+                <Input id="app-name" label="Name" autoComplete="given-name" error={errors.name?.message} {...register("name", { required: "Name is required" })} />
+                <Input id="app-surname" label="Surname" autoComplete="family-name" error={errors.surname?.message} {...register("surname", { required: "Surname is required" })} />
+                <Input
+                    id="app-age"
+                    label="Age"
+                    inputMode="numeric"
+                    error={errors.age?.message}
+                    {...register("age", {
+                        required: "Age is required",
+                        validate: {
+                            isNumber: (value) => /^\d+$/.test(value) || "Must be a number",
+                            min: (value) => +value >= 18 || "Must be at least 18",
+                            max: (value) => +value <= 99 || "Must be at most 99",
+                        },
+                    })}
+                />
+                <Select id="app-city" label="City" defaultValue="Lviv" {...register("city", { required: true })}>
+                    <option value="Lviv">Lviv</option>
+                    <option value="Warsaw">Warsaw</option>
+                    <option value="Berlin">Berlin</option>
+                </Select>
+                <Input
+                    id="app-email"
+                    label="Email"
+                    type="email"
+                    autoComplete="email"
+                    error={errors.email?.message}
+                    {...register("email", {
+                        required: "Email is required",
+                        validate: { validEmail: (value) => /^\w+@\w+\.\w{2,3}$/.test(value) || "Wrong email format" },
+                    })}
+                />
+                <Input
+                    id="app-phone"
+                    label="Phone Number"
+                    type="tel"
+                    autoComplete="tel"
+                    error={errors.phoneNumber?.message}
+                    {...register("phoneNumber", { required: "Phone number is required" })}
+                />
+                <Input id="app-transport" label="Transport" hint="Optional — e.g. bicycle, car" {...register("transport")} />
             </div>
 
-            <button type="submit" className="btn ml-2 p-3 text-lg w-[100px] disabled:!bg-gray disabled:!cursor-auto " disabled={loading || alreadySent}>
-                {alreadySent ? "Sent" : loading ? "Sending..." : "Send"}
-            </button>
+            <Button type="submit" loading={loading} className="w-fit">
+                Send application
+            </Button>
         </form>
     )
 }

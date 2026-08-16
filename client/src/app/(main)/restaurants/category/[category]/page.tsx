@@ -4,10 +4,15 @@ import RestaurantCard from "@/components/mainPage/RestaurantCard";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
 import { Category } from "@/redux/reduxTypes";
 import { getRestaurants } from "@/redux/restaurantSlice";
-import { SlidersHorizontal } from "lucide-react";
+import { SlidersHorizontal, Store } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
+import { useDisclosure } from "@/hooks/useDisclosure";
+import { DropdownMenu } from "@/components/ui/DropdownMenu";
+import { CardGridSkeleton } from "@/components/ui/Skeleton";
+import { EmptyState } from "@/components/ui/EmptyState";
+import { cn } from "@/lib/cn";
 
 const links: Record<Category, string> = {
   [Category.All]: "all-restaurants",
@@ -21,74 +26,70 @@ export default function Page() {
   const dispatch = useAppDispatch();
   const { restaurants } = useAppSelector(state => state.restaurants);
   const { category } = useParams() as { category: string };
-  const [isActiveFilterMenu, setIsActiveFilterMenu] = useState<boolean>(false);
+  const filterMenu = useDisclosure();
+  const filterWrapperRef = useRef<HTMLDivElement>(null);
   const entry = Object.entries(links).find(([, val]) => val === category);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const currentTitle = entry ? entry[0] : Category.All;
-  // optimized func for fetching 
+
   const fetchRestaurants = useCallback(async (category: string) => {
     try {
-      setIsLoading(true);
-
       const info = await getRestaurantsFiltered(category);
       if (info) dispatch(getRestaurants(info));
-
     } catch (err) {
-
       console.error(err);
-    } finally {
-      setIsLoading(false);
     }
   }, [dispatch])
 
-  
   useEffect(() => {
     fetchRestaurants(currentTitle);
   }, [currentTitle, fetchRestaurants])
 
+  const isLoading = restaurants === undefined;
+
   return (
-    <section className="mx-5 my-10 border-[2px] border-borderColor rounded-lg sm:p-8 p-6 ">
-      <div className="border-b-[1px] border-gray  mb-6 h-10 pb-4 flex justify-between gap-4 items-center">
+    <section className="mx-5 my-10 border border-border rounded-lg sm:p-8 p-6">
+      <div className="border-b border-border mb-6 pb-4 flex justify-between gap-4 items-center">
         <h1 className="section-title">{currentTitle}</h1>
-        <div
-          onMouseEnter={() => setIsActiveFilterMenu(true)}
-          onMouseLeave={() => setIsActiveFilterMenu(false)}
-          className="relative "
-        >
-          <button onClick={() => setIsActiveFilterMenu(!isActiveFilterMenu)} className={`text-xl relative  flex items-center gap-2 cursor-pointer group ${isActiveFilterMenu ? "text-primary" : ""}`}>
-            <span className="group-hover:text-primary font-semibold transition-colors hidden sm:block ">Filter</span>
-            <SlidersHorizontal className={`group-hover:text-primary  transition-all ${isActiveFilterMenu ? "rotate-90 " : ""}`} size={18} />
-
-
+        <div ref={filterWrapperRef} className="relative">
+          <button
+            onClick={filterMenu.toggle}
+            aria-expanded={filterMenu.isOpen}
+            aria-haspopup="menu"
+            className={cn(
+              "text-lg flex items-center gap-2 cursor-pointer transition-colors",
+              filterMenu.isOpen ? "text-brand" : "text-ink hover:text-brand"
+            )}
+          >
+            <span className="font-semibold hidden sm:block">Filter</span>
+            <SlidersHorizontal className={cn("transition-transform", filterMenu.isOpen && "rotate-90")} size={18} />
           </button>
-          {isActiveFilterMenu && (
-            <div className="absolute w-[200px] top-full right-0">
-              <div className=" mt-3  p-3 w-full  bg-primary  rounded-md border-gray items-start font-medium text-white border-[1px] text-base flex flex-col gap-1 ">
-                {Object.entries(links).map(([key, value], index) => {
-                  return (
-                    <Link className="transition-opacity hover:opacity-65" key={index} href={`${value}`}>{key}</Link>
-                  )
-                })}
-              </div>
-            </div>
-
-          )}
+          <DropdownMenu open={filterMenu.isOpen} onClose={filterMenu.close} anchorRef={filterWrapperRef} align="right" className="w-[200px]">
+            {Object.entries(links).map(([key, value]) => (
+              <Link
+                key={value}
+                href={value}
+                onClick={filterMenu.close}
+                role="menuitem"
+                className="w-full flex items-center gap-2 text-left px-3 py-2 rounded-md text-sm font-medium text-ink hover:bg-surfaceRaised transition-colors"
+              >
+                {key}
+              </Link>
+            ))}
+          </DropdownMenu>
         </div>
       </div>
-      {
-        isLoading
-          ?
-          (<div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid mx-auto"></div>) :
-          (<div className="grid  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mb-6 gap-6 ">
-            {restaurants?.map((restaurant, index) => {
-              return (
-                <RestaurantCard key={index} restaurant={restaurant} />
-              )
-            })}
-          </div>)
-      }
 
-      {restaurants?.length == 0 && (<h2 className='text-xl font-semibold text-center mb-6'>No restaurants</h2>)}
-    </section >
+      {isLoading ? (
+        <CardGridSkeleton count={8} />
+      ) : restaurants && restaurants.length > 0 ? (
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {restaurants.map((restaurant) => (
+            <RestaurantCard key={restaurant._id} restaurant={restaurant} />
+          ))}
+        </div>
+      ) : (
+        <EmptyState icon={<Store size={22} />} title="No restaurants found" description="Try a different category." />
+      )}
+    </section>
   );
 }

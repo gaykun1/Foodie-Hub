@@ -1,10 +1,25 @@
 "use client"
 import { Review } from '@/redux/reduxTypes';
-import { calculateStars } from '@/utils/rating';
+import { Rating } from '@/components/ui/Rating';
 import axios from 'axios';
-import { Pen, Star, X } from 'lucide-react';
+import { MessageSquareText, Pen, Star, X } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import React, { useCallback, useEffect, useState } from 'react'
+import { Textarea } from '@/components/ui/Field';
+import { Button } from '@/components/ui/Button';
+import { Card } from '@/components/ui/Card';
+import { CardGridSkeleton } from '@/components/ui/Skeleton';
+import { EmptyState } from '@/components/ui/EmptyState';
+import { useToast } from '@/components/ui/Toast';
+import { cn } from '@/lib/cn';
+
+const ReviewCardSkeleton = () => (
+    <div className="rounded-lg border border-border p-4 flex flex-col gap-2">
+        <div className="h-5 w-1/3 bg-skeleton animate-pulse rounded" />
+        <div className="h-4 w-full bg-skeleton animate-pulse rounded" />
+        <div className="h-4 w-2/3 bg-skeleton animate-pulse rounded" />
+    </div>
+);
 
 const Page = () => {
     const { id } = useParams() as { id: string }
@@ -15,119 +30,130 @@ const Page = () => {
     const [rating, setRating] = useState<number>(0);
     const [page, setPage] = useState<number>(1);
     const [pagesAmount, setPagesAmount] = useState<number>(1);
+    const [submitting, setSubmitting] = useState<boolean>(false);
+    const toast = useToast();
 
-    // optimized depending on id and page 
     const getReviews = useCallback(async () => {
         try {
             setLoading(true);
             const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/restaurants/${id}/reviews?page=${page}`);
-            if (res.data)
-                setReviews(res.data.reviews);
+            if (res.data) setReviews(res.data.reviews);
             setPagesAmount(res.data.length);
         } catch (err) {
             console.error(err);
         } finally {
             setLoading(false);
-
         }
     }, [page, id]);
 
-
     const createReview = async () => {
         try {
-            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/reviews`, { id: id, text: text, rating: rating }, { withCredentials: true });
-            if (res.data)
-                getReviews();
+            setSubmitting(true);
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/reviews`, { id, text, rating }, { withCredentials: true });
+            if (res.data) {
+                await getReviews();
+                setText("");
+                setRating(0);
+                toast.success("Review posted");
+            }
         } catch (err) {
             console.error(err);
+            toast.error("Couldn't post your review. Please try again.");
         } finally {
-            setLoading(false);
-
+            setSubmitting(false);
         }
     }
+
     useEffect(() => {
         getReviews();
-    }, [page])
-    console.log(pagesAmount);
+    }, [getReviews])
+
     return (
-        <div className='flex flex-col gap-9 pb-8'>
+        <div className="flex flex-col gap-9 pb-8">
             <div className="flex items-center justify-between">
-
-                <h1 className='section-title'>Reviews</h1>
-
-                {active ? (<button onClick={() => {
-                    setActive(false);
-
-                }} className='p-3 rounded-md btn  '><X size={16} /></button>) : (<button onClick={() => {
-                    setActive(true);
-
-                }} className='p-3 rounded-md btn '><Pen size={16} /></button>)}
-
+                <h1 className="section-title">Reviews</h1>
+                <Button
+                    size="sm"
+                    variant="secondary"
+                    aria-label={active ? "Cancel review" : "Write a review"}
+                    icon={active ? <X size={16} /> : <Pen size={16} />}
+                    onClick={() => setActive(!active)}
+                />
             </div>
-            {active &&
-                (
 
-                    <div className='flex items-start gap-2 border-b-[1px] border-borderColor pb-6'>
-                        <textarea onChange={(e) => setText(e.target.value)} placeholder='Type in your text...' className='input p-3 resize-none h-[220px]  max-w-[600px] w-full'></textarea>
-                        <div className="flex flex-col gap-2">
-                            <button onClick={async () => {
-                                setActive(false);
-                                await createReview();
-
-                            }} className='btn p-2  bottom-[7px] right-0'>Create</button>
-                            <div className="flex flex-col gap-1">
-                                <div className="flex gap-1">
-
-                                    {Array.from({ length: 5 }).map((_, i) => (
-                                        <Star
-                                            key={i}
-
-                                            onClick={() => { setRating(i + 1) }}
-                                            size={20}
-                                            className={
-                                                i < rating
-                                                    ? "text-primary fill-primary"
-                                                    : "text-primary"
-                                            }
-                                        />
-                                    ))}
-                                </div>
-                                <div className="flex gap-2 text-base font-medium">
-                                    <span>Rating:</span>
-                                    {rating}
-                                </div>
-
+            {active && (
+                <div className="flex flex-col sm:flex-row items-start gap-4 border-b border-border pb-6">
+                    <Textarea
+                        id="review-text"
+                        label="Your review"
+                        value={text}
+                        onChange={(e) => setText(e.target.value)}
+                        placeholder="Type in your text..."
+                        className="h-[180px] resize-none"
+                        wrapperClassName="w-full sm:max-w-[600px]"
+                    />
+                    <div className="flex flex-col gap-3 shrink-0">
+                        <div className="flex flex-col gap-1">
+                            <div className="flex gap-1" role="radiogroup" aria-label="Rating">
+                                {Array.from({ length: 5 }).map((_, i) => (
+                                    <button
+                                        key={i}
+                                        type="button"
+                                        role="radio"
+                                        aria-checked={i < rating}
+                                        aria-label={`${i + 1} star${i === 0 ? "" : "s"}`}
+                                        onClick={() => setRating(i + 1)}
+                                        className="cursor-pointer text-brand"
+                                    >
+                                        <Star size={20} className={cn(i < rating && "fill-brand")} />
+                                    </button>
+                                ))}
                             </div>
+                            <span className="text-sm font-medium text-inkMuted">Rating: {rating}</span>
                         </div>
+                        <Button loading={submitting} disabled={!text.trim() || rating === 0} onClick={createReview}>
+                            Post review
+                        </Button>
                     </div>
+                </div>
+            )}
 
+            <div className="grid md:grid-cols-2 gap-5">
+                {loading ? (
+                    <CardGridSkeleton count={4} item={ReviewCardSkeleton} />
+                ) : reviews.length > 0 ? reviews.map((review) => (
+                    <Card key={review._id} padding="sm" className="flex flex-col gap-1.5">
+                        <h2 className="text-lg font-medium text-ink border-b border-border pb-1.5">{review.sender.username}</h2>
+                        <p className="leading-6 text-ink/90 break-words">{review.text}</p>
+                        <div className="flex gap-2 items-center">
+                            <Rating value={review.rating} size={16} />
+                            <span className="text-sm font-medium text-inkMuted">{review.rating}</span>
+                        </div>
+                    </Card>
+                )) : (
+                    <div className="md:col-span-2">
+                        <EmptyState icon={<MessageSquareText size={22} />} title="No reviews yet" description="Be the first to share your experience." />
+                    </div>
                 )}
-            <div className='grid md:grid-cols-2 gap-5'>
-                {
-                    loading ? (<div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid mx-auto"></div>) :
-                        reviews.length > 0 ? reviews.map((review, idx) => {
-                            // func that returns array of stars icons depending on review.rating prop
-                            const starRating = calculateStars(review.rating || 0);
-                            return (
-                                <div key={idx} className=" flex flex-col gap-1 border-borderColor border-[1px] p-2 rounded-lg">
-                                    <h2 className="mb-1 text-lg leading-7 font-medium border-b-[1px] border-borderColor pb-0.5">{review.sender.username}</h2>
-                                    <p className='leading-7 text-base break-all'>{review.text}</p>
-                                    <div className="flex  gap-2 items-center">
-                                        <div className="flex items-center gap-3 ">{starRating}</div>
-                                        <span className='text-lg font-medium'>{review.rating}</span> </div>
-
-                                </div>
-                            )
-                        }) : (<span className='text-lg leading-5 font-medium text-center col-span-2 mt-6'>No info yet!</span>)
-
-                }
             </div>
-            <div className='mt-6 flex items-center gap-5 justify-center'>
-                {/* creating array with length of pages to make length iterations  */}
-                {pagesAmount > 1 && Array.from({ length: pagesAmount }).map((_, idx) => (
-                    <button onClick={() => setPage(idx + 1)} key={idx} className={`w-[40px] aspect-square flex items-center justify-center rounded-lg border-borderColor transition-colors hover:bg-primary cursor-pointer border-[1px] font-semibold text-lg  ${page === (idx + 1) ? "bg-primary" : ""}  `}>{idx + 1}</button>
-                ))}
-            </div>
+
+            {pagesAmount > 1 && (
+                <div className="flex items-center gap-3 justify-center flex-wrap">
+                    {Array.from({ length: pagesAmount }).map((_, idx) => (
+                        <button
+                            key={idx}
+                            onClick={() => setPage(idx + 1)}
+                            aria-current={page === idx + 1 ? "page" : undefined}
+                            className={cn(
+                                "w-10 aspect-square flex items-center justify-center rounded-lg border transition-colors cursor-pointer font-semibold",
+                                page === idx + 1 ? "bg-brand text-onBrand border-brand" : "border-border text-ink hover:bg-surfaceRaised"
+                            )}
+                        >
+                            {idx + 1}
+                        </button>
+                    ))}
+                </div>
+            )}
         </div>
     )
 }

@@ -4,8 +4,11 @@ import { login } from "@/redux/authSlice";
 import axios from "axios";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { Input } from "@/components/ui/Field";
+import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
+import { useToast } from "@/components/ui/Toast";
 
-// form type for profile data
 type formType = {
   username: string,
   password: string,
@@ -16,7 +19,6 @@ type formType = {
   city: string,
   street: string,
   houseNumber: number,
-
 }
 
 const Page = () => {
@@ -24,218 +26,145 @@ const Page = () => {
   const dispatch = useAppDispatch();
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [isEquals, setIsEquals] = useState<boolean>(true);
-
+  const [saving, setSaving] = useState<boolean>(false);
+  const toast = useToast();
+  const { register, handleSubmit, formState: { errors } } = useForm<formType>();
 
   const handleSave: SubmitHandler<formType> = async (data) => {
-    // Partial - for unnessasary fields
     const payload: Partial<formType> = {};
 
-    // checking if (changed)
-    if (data.username && data.username !== user?.username) {
-      payload.username = data.username;
-    }
+    if (data.username && data.username !== user?.username) payload.username = data.username;
+    if (data.email && data.email !== user?.email) payload.email = data.email;
+    if (data.phoneNumber && data.phoneNumber !== user?.phoneNumber) payload.phoneNumber = data.phoneNumber;
+    if (data.city && data.city !== user?.address?.city) payload.city = data.city;
+    if (data.street && data.street !== user?.address?.street) payload.street = data.street;
+    if (data.houseNumber && data.houseNumber !== user?.address?.houseNumber) payload.houseNumber = data.houseNumber;
 
-    if (data.email && data.email !== user?.email) {
-      payload.email = data.email;
-    }
-
-    if (data.phoneNumber && data.phoneNumber !== user?.phoneNumber) {
-      payload.phoneNumber = data.phoneNumber;
-
-    }
-    if (data.city && data.city !== user?.address?.city) {
-      payload.city = data.city;
-
-    }
-    if (data.street && data.street !== user?.address?.street) {
-      payload.street = data.street;
-
-    }
-    if (data.houseNumber && data.houseNumber !== user?.address?.houseNumber) {
-      payload.houseNumber = data.houseNumber;
-
-    }
-
-    if (data.newPassword && data.newPassword === data.newPasswordAgain && data.password) {
-      payload.password = data.password;
-      payload.newPassword = data.newPassword;
-      payload.newPasswordAgain = data.newPasswordAgain;
-      if (payload.newPassword !== payload.newPasswordAgain) {
-        setIsEquals(false)
+    if (data.newPassword || data.newPasswordAgain) {
+      if (data.newPassword !== data.newPasswordAgain) {
+        setIsEquals(false);
         return;
-      };
+      }
+      setIsEquals(true);
+      if (data.newPassword && data.password) {
+        payload.password = data.password;
+        payload.newPassword = data.newPassword;
+        payload.newPasswordAgain = data.newPasswordAgain;
+      }
     }
-    // if nothing has changed returning;
-    if (Object.keys(payload).length === 0) return;
+
+    if (Object.keys(payload).length === 0) {
+      setIsEditing(false);
+      return;
+    }
 
     try {
-      const res = await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/profile`, {
-        payload
-      }, { withCredentials: true });
-      if (res.data)
-        dispatch(login(res.data));
+      setSaving(true);
+      const res = await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/profile`, { payload }, { withCredentials: true });
+      if (res.data) dispatch(login(res.data));
       setIsEditing(false);
+      toast.success("Profile updated");
     } catch (err) {
       console.error(err);
+      toast.error("Couldn't save changes. Please try again.");
+    } finally {
+      setSaving(false);
     }
-    setIsEditing(false);
   };
 
-  const { register, handleSubmit, formState: { errors } } = useForm<formType>({
-  });
-
   return (
-    <div className="border-borderColor border-[1px] rounded-lg p-6 flex flex-col">
-      <div className="mb-5 flex flex-col gap-2">
-        <h1 className="leading-7 text-2xl font-semibold">Account Settings</h1>
-        <p className="text-gray leading-5">Manage your personal information and password.</p>
+    <Card>
+      <div className="mb-5 flex flex-col gap-1">
+        <h1 className="leading-7 text-2xl font-semibold text-ink">Account Settings</h1>
+        <p className="text-inkMuted leading-5">Manage your personal information and password.</p>
       </div>
       <form onSubmit={handleSubmit(handleSave)}>
-        <div className="grid  sm:grid-cols-2 gap-x-4  gap-y-3.5 border-b-[1px] border-borderColor text-sm pb-6 mb-[30px]">
-          <div className="flex flex-col gap-[10px]">
-            <label className="leading-3.5 font-medium">Full Name</label>
-            <input className="input px-3 py-2"
-
-              defaultValue={user?.username}
-              {...register("username", {})}
-              disabled={!isEditing}
-            />
-          </div>
-          <div className="flex flex-col gap-[10px]">
-            <label className="leading-3.5 font-medium">Email Address</label>
-            <input className="input px-3 py-2"
-
-              defaultValue={user?.email || ""}
-              {...register("email", {
-                validate: {
-                  // validating email format with regex
-                  isValidEmailForm: (value) => {
-                    if (!value) return true;
-                    return /^\w+@\w+\.\w{2,3}$/.test(value) || "Wrong email format";
-                  },
-                }
-              })}
-              disabled={!isEditing}
-            />
-            {errors.email && (
-              <div className="">{errors.email.message}</div>
-            )}
-          </div>
-          <div className="flex flex-col gap-[10px]">
-            <label className="leading-3.5 font-medium">Phone Number</label>
-            <input type="tel" className="input px-3 py-2"
-
-              defaultValue={user?.phoneNumber || ""}
-              {...register("phoneNumber", {
-                validate: {
-                  // validating phone number format with regex
-                  isUAFormat: (value) => {
-                    if (!value) return true;
-                    return /^\+380\d{9}$/.test(value) || "Phone must be in +380XXXXXXXXX format";
-                  }
-                }
-              })}
-              disabled={!isEditing}
-            />
-            {errors.phoneNumber && (
-              <div className="">{errors.phoneNumber.message}</div>
-            )}
-          </div>
-          {/* dsad */}
-          <div className="flex flex-col gap-[10px]">
-            <label className="leading-3.5 font-medium">City</label>
-            <input className="input px-3 py-2"
-
-              defaultValue={user?.address?.city || ""}
-              {...register("city", {
-
-              })}
-              disabled={!isEditing}
-            />
-
-          </div>
-
-          <div className="flex flex-col gap-[10px]">
-            <label className="leading-3.5 font-medium">Street</label>
-            <input className="input px-3 py-2"
-
-              defaultValue={user?.address?.street || ""}
-              {...register("street", {
-
-              })}
-              disabled={!isEditing}
-            />
-
-          </div>
-
-          <div className="flex flex-col gap-[10px]">
-            <label className="leading-3.5 font-medium">houseNumber</label>
-            <input className="input px-3 py-2"
-
-              defaultValue={user?.address?.houseNumber || ""}
-              {...register("houseNumber", {
-
-              })}
-              disabled={!isEditing}
-            />
-
-          </div>
-          {/* "dasdasdd" */}
+        <div className="grid sm:grid-cols-2 gap-x-4 gap-y-4 border-b border-border pb-6 mb-8">
+          <Input
+            id="profile-username" label="Full Name"
+            defaultValue={user?.username}
+            disabled={!isEditing}
+            {...register("username")}
+          />
+          <Input
+            id="profile-email" label="Email Address" type="email"
+            defaultValue={user?.email || ""}
+            disabled={!isEditing}
+            error={errors.email?.message}
+            {...register("email", {
+              validate: {
+                isValidEmailForm: (value) => !value || /^\w+@\w+\.\w{2,3}$/.test(value) || "Wrong email format",
+              }
+            })}
+          />
+          <Input
+            id="profile-phone" label="Phone Number" type="tel"
+            defaultValue={user?.phoneNumber || ""}
+            disabled={!isEditing}
+            error={errors.phoneNumber?.message}
+            {...register("phoneNumber", {
+              validate: {
+                isUAFormat: (value) => !value || /^\+380\d{9}$/.test(value) || "Phone must be in +380XXXXXXXXX format",
+              }
+            })}
+          />
+          <Input
+            id="profile-city" label="City"
+            defaultValue={user?.address?.city || ""}
+            disabled={!isEditing}
+            {...register("city")}
+          />
+          <Input
+            id="profile-street" label="Street"
+            defaultValue={user?.address?.street || ""}
+            disabled={!isEditing}
+            {...register("street")}
+          />
+          <Input
+            id="profile-house-number" label="House number"
+            defaultValue={user?.address?.houseNumber || ""}
+            disabled={!isEditing}
+            {...register("houseNumber")}
+          />
         </div>
-        <div className="">
-          <h2 className="text-[18px] leading-7 font-medium mb-2.5">Password Management</h2>
-          <div className="grid sm:grid-cols-2 gap-x-4  gap-y-3.5 text-sm">
-            <div className="flex flex-col gap-[10px]">
-              <label className="leading-3.5 font-medium">Current Password</label>
-              <input className="input px-3 py-2"
-                type="password"
-                {...register("password", {})}
-
-                disabled={!isEditing}
-              />
-            </div>
-            <div className="flex flex-col gap-[10px]">
-              <label className={`leading-3.5 font-medium `}>New Password</label>
-              <input className={`input px-3 py-2 ${isEquals ? "" : "border-red-500!"}  `}
-                type="password"
-                {...register("newPassword", {})}
-                disabled={!isEditing}
-              />
-            </div>
-            <div className="flex flex-col gap-[10px] ">
-              <label className={`leading-3.5 font-medium `}>Confirm New Password</label>
-              <input className={`input px-3 py-2 ${isEquals ? "" : "border-red-500!"}`}
-                type="password"
-                {...register("newPasswordAgain", {})}
-                disabled={!isEditing}
-              />
-            </div>
-
-
-
+        <div>
+          <h2 className="text-lg leading-7 font-medium mb-3 text-ink">Password Management</h2>
+          <div className="grid sm:grid-cols-2 gap-x-4 gap-y-4">
+            <Input
+              id="profile-current-password" label="Current Password" type="password"
+              disabled={!isEditing}
+              {...register("password")}
+            />
+            <Input
+              id="profile-new-password" label="New Password" type="password"
+              disabled={!isEditing}
+              error={!isEquals ? "Passwords don't match" : undefined}
+              {...register("newPassword")}
+            />
+            <Input
+              id="profile-confirm-password" label="Confirm New Password" type="password"
+              disabled={!isEditing}
+              error={!isEquals ? "Passwords don't match" : undefined}
+              {...register("newPasswordAgain")}
+            />
           </div>
         </div>
 
-        <div className="flex gap-4 mt-4">
-
-          <button disabled={!isEditing}
-            type="submit"
-            className={`btn p-2 disabled:bg-gray! disabled:cursor-auto! `}
-          >
+        <div className="flex gap-4 mt-6">
+          <Button type="submit" disabled={!isEditing} loading={saving}>
             Save Changes
-          </button>
-
-          <button disabled={isEditing}
+          </Button>
+          <Button
             type="button"
+            variant="secondary"
+            disabled={isEditing}
             onClick={() => { setIsEditing(true); setIsEquals(true); }}
-            className="btn p-2 disabled:bg-gray! disabled:cursor-auto!"
           >
             Edit
-          </button>
-
+          </Button>
         </div>
       </form>
-    </div>
+    </Card>
   );
 };
 

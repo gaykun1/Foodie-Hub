@@ -1,14 +1,7 @@
-
-import "@/styles/globals.css";
 import Header from "@/components/Header";
-import Providers from "../providers/Providers";
 import AuthClientUpload from "@/components/AuthClientUpload";
 import HeaderRestaurant from "@/components/Restaurant/HeaderRestaurant";
 import Footer from "@/components/Footer";
-
-
-
-
 
 export default async function RootLayout({
   children,
@@ -18,21 +11,16 @@ export default async function RootLayout({
 
 
   return (
-
-    <Providers>
-      {/* starter info component  */}
-
+    <>
       <AuthClientUpload />
-      <div className="h-screen flex flex-col">
+      <div className="min-h-screen flex flex-col">
         <Header />
         <HeaderRestaurant />
-        <div className="_container mt-[34px]">
-
+        <div className="_container flex-1 mt-8">
           {children}
         </div>
         <Footer />
       </div>
-    </Providers>
-
+    </>
   );
 }
