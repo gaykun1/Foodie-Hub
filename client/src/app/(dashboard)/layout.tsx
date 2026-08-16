@@ -1,15 +1,14 @@
-
 "use client"
-import "@/styles/globals.css";
 import Header from "@/components/Header";
-import Providers from "../providers/Providers";
 import AuthClientUpload from "@/components/AuthClientUpload";
-import SideBar from "@/components/Dashboard/SideBar";
 import Footer from "@/components/Footer";
-import ResponsiveSidebar from "@/components/Profile/ResponsiveSidebar";
+import { SideNav, adminNavItems, restaurantNavItems } from "@/components/SideNav";
+import { PageSpinner } from "@/components/ui/Spinner";
+import { EmptyState } from "@/components/ui/EmptyState";
+import { ButtonLink } from "@/components/ui/Button";
+import { ShieldAlert } from "lucide-react";
 import axios from "axios";
 import { useEffect, useState } from "react";
-
 
 export default function RootLayout({
   children,
@@ -17,71 +16,65 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const [role, setRole] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
-  const checkRole = async () => {
-    try {
-      setLoading(true);
-      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/profile/roles`, { withCredentials: true });
-      setRole(res.data.role);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  }
+  // Starts true: without it, the very first render (before checkRole
+  // resolves) sees loading=false and role=null and briefly flashes
+  // "Access denied" on every load.
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
+    const checkRole = async () => {
+      try {
+        setLoading(true);
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/profile/roles`, { withCredentials: true });
+        setRole(res.data.role);
+      } catch (err) {
+        console.error(err);
+        setRole(null);
+      } finally {
+        setLoading(false);
+      }
+    }
     checkRole();
   }, [])
-  try {
-    if (loading) {
-      return <div className="animate-spin rounded-full h-12 w-12 border-t-4 flex justify-center mt-20 border-blue-500 border-solid mx-auto"></div>;
-    }else if (role === "admin" || role === "restaurant") {
-      return (
 
-        <Providers>
-          {/* auth starter component */}
-          <AuthClientUpload />
-          <div className="h-screen flex flex-col">
-            <Header />
-            <div className="_container">
-              <div className="border-[1px] mt-6 lg:hidden mb-8 rounded-lg w-fit border-borderColor p-4.5">
-                <ResponsiveSidebar type={role} />
+  if (loading) {
+    return <PageSpinner />;
+  }
 
-              </div>
-              <div className="flex">
-                <SideBar role={role} />
-                <div className="md:p-8 grow-1">
-                  <div className="border-borderColor border-[1px] rounded-lg p-6 flex flex-col  ">
-                    {children}
-                  </div>
-                </div>
-              </div>
-            </div>
-            <Footer />
-          </div>
-        </Providers>
-
-      );
-    } else {
-      return (
-        <div className="">
-          <h1>Error</h1>
-          <p>Access denied</p>
-        </div>
-      )
-    }
-
-
-  } catch (err) {
-    console.log(err);
+  if (role !== "admin" && role !== "restaurant") {
     return (
-      <div className="">
-        <h1>Error </h1>
-
-        <p>Access denied</p>
+      <div className="min-h-screen flex flex-col">
+        <Header />
+        <div className="_container flex-1 flex items-center justify-center py-16">
+          <EmptyState
+            icon={<ShieldAlert size={22} />}
+            title="Access denied"
+            description="You need an admin or restaurant account to view this page."
+            action={<ButtonLink href="/">Back to home</ButtonLink>}
+          />
+        </div>
+        <Footer />
       </div>
     )
   }
 
+  return (
+    <>
+      <AuthClientUpload />
+      <div className="min-h-screen flex flex-col">
+        <Header />
+        <div className="_container flex-1">
+          <div className="flex gap-6 py-6">
+            <SideNav items={role === "admin" ? adminNavItems : restaurantNavItems} />
+            <div className="grow min-w-0">
+              <div className="border border-border rounded-lg p-6 flex flex-col bg-surface">
+                {children}
+              </div>
+            </div>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    </>
+  );
 }

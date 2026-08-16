@@ -2,296 +2,253 @@
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks"
 import { logout } from "@/redux/authSlice"
 import { deleteItem, updateAmount } from "@/redux/cartSlice"
-import { Restaurant } from "@/redux/reduxTypes"
+import { User } from "@/redux/reduxTypes"
 import axios from "axios"
-import { Hamburger, Minus, Plus, Search, ShoppingCart, UserRound, X } from "lucide-react"
+import { Menu, Minus, Plus, ShoppingCart, ShoppingBag, UserRound, LogOut } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { redirect } from "next/navigation"
-import React, { useEffect, useState } from "react"
+import React, { useRef } from "react"
+import { SearchCommand } from "./SearchCommand"
+import { ThemeToggle } from "./ui/ThemeToggle"
+import { Drawer } from "./ui/Drawer"
+import { DropdownMenu, DropdownItem } from "./ui/DropdownMenu"
+import { Button } from "./ui/Button"
+import { EmptyState } from "./ui/EmptyState"
+import { useDisclosure } from "@/hooks/useDisclosure"
+import { useToast } from "./ui/Toast"
+import { cn } from "@/lib/cn"
+
+interface NavItem { href: string; label: string }
+
+const getNavItems = (user: User | null): NavItem[] => {
+  if (user?.role === "admin") return [{ href: "/dashboard/overview", label: "Dashboard" }];
+  if (user?.role === "restaurant") return [{ href: "/dashboard/restaurant-overview", label: "Dashboard" }];
+  return [
+    { href: "/", label: "Home" },
+    { href: "/restaurants/category/all-restaurants", label: "Restaurants" },
+    { href: "/orders", label: "Orders" },
+    user?.role === "courier" ? { href: "/courier", label: "Courier page" } : { href: "/job", label: "Get a job" },
+  ];
+};
 
 const Header = () => {
-
   const dispatch = useAppDispatch();
   const { user } = useAppSelector(state => state.auth);
   const { cart } = useAppSelector(state => state.cart);
-  const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
-  const [activePanel, setActivePanel] = useState<"search" | "cart" | "avatarMenu" | "navMenu" | null>(null);
-  const [word, setWord] = useState<string>("");
-  const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
+  const toast = useToast();
 
-  // func for searching restaurant with words (+2letters)
-  const searchRestaurants = async (word: string): Promise<void | Restaurant[]> => {
-    if (word === "" || word.length < 2) {
-      setActivePanel(null);
-      setRestaurants([]);
-      return;
-    }
-    if (word.length >= 2) {
-      try {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/restaurants/search?chars=${word}`);
-        if (!res) return;
-        return res.data;
-      } catch (err) {
-        console.error(err);
-      }
-    }
-  }
+  const cartDisclosure = useDisclosure();
+  const avatarDisclosure = useDisclosure();
+  const mobileNavDisclosure = useDisclosure();
+  const avatarWrapperRef = useRef<HTMLDivElement>(null);
 
-  // func for updating cart item count
+  const navItems = getNavItems(user);
+  const cartCount = cart?.items.length ?? 0;
+
   const updateCount = async (amount: number, id: string, title: string) => {
     try {
-      //deleting on front item if length ==0
       if (amount === 0) {
         dispatch(deleteItem(title));
       }
-      dispatch(updateAmount({ amount: amount, dishId: id }));
-      await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/api/cart/items/${id}`, { amount: amount, title: title }, { withCredentials: true });
+      dispatch(updateAmount({ amount, dishId: id }));
+      await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/api/cart/items/${id}`, { amount, title }, { withCredentials: true });
     } catch (err) {
       console.error(err);
+      toast.error("Couldn't update the cart. Please try again.");
     }
   }
-
-  // func for closing active panel if e.target.value !== that active panel
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-
-      if (!target.closest(".panel")) {
-        setActivePanel(null);
-      }
-    };
-
-    if (activePanel) {
-      document.addEventListener("click", handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, [activePanel]);
 
   const createOrder = async () => {
     try {
       const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/order/orders`, { cart }, { withCredentials: true });
-      if (res.data)
-        return res.data;
+      if (res.data) return res.data;
     } catch (err) {
       console.error(err);
+      toast.error("Couldn't place the order. Please try again.");
     }
   }
 
-  const LogOut = async (): Promise<void> => {
+  const handleLogOut = async () => {
     try {
-      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/logout`, {}, { withCredentials: true });
-      if (!res) return;
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/logout`, {}, { withCredentials: true });
       dispatch(logout());
-      return res.data;
+      avatarDisclosure.close();
+      redirect("/auth/login");
     } catch (err) {
       console.error(err);
+      toast.error("Couldn't log out. Please try again.");
     }
   }
+
   return (
-    <header className=" shadow-borderShadow border-b-[1px]  border-borderColor z-100 relative">
-      <div className="py-2 flex items-center justify-between  _container">
-        <div className="basis-[650px] flex justify-between">
-          {/* Logo */}
-          <div className="md:basis-[200px] lg:basis-[250px] ">
-            <Link className="  flex gap-2 items-center group font-bold w-fit" href={"/"}>
-              <Image className="transition-transform group-hover:rotate-90" width={40} height={40} src={"/logo.svg"} alt="logo" />
-              <span className="default-link group-hover:!text-primary text-xl">Foodie Hub</span>
+    <header className="sticky top-0 z-40 bg-surface/90 backdrop-blur-sm border-b border-border shadow-elevation1">
+      <div className="_container flex items-center justify-between gap-4 h-16">
+        <Link href="/" className="flex gap-2 items-center group font-bold shrink-0">
+          <Image className="transition-transform group-hover:rotate-90" width={36} height={36} src="/logo.svg" alt="logo" />
+          <span className="text-lg font-display font-bold text-ink group-hover:text-brand transition-colors hidden sm:inline">Foodie Hub</span>
+        </Link>
+
+        <nav aria-label="Main navigation" className="hidden md:flex items-center gap-6">
+          {navItems.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="text-sm font-semibold text-inkMuted hover:text-ink transition-colors"
+            >
+              {item.label}
             </Link>
-          </div>
-          {/* Nav menu */}
-          <nav className="basis-[250px] grow-1 lg:none hidden md:flex gap-[18px] items-center">
-            {!(user?.role === "admin" || user?.role === "restaurant") ? (<><Link className="default-link font-bold" href={"/"}>Home</Link>
-              <Link className="default-link font-bold " href={"/restaurants/category/all-restaurants"}>Restaurants</Link>
-              <Link className="default-link font-bold" href={"/orders"}>Orders</Link>
-              {user?.role === "courier" ? (<Link className="default-link font-bold" href={"/courier"}>Courier page</Link>
-              ) : (<Link className="default-link font-bold" href={"/job"}>Get a job</Link>
-              )}
-            </>
+          ))}
+        </nav>
 
-            ) : (<Link className="default-link font-bold" href={`${user.role === "admin" ? "/dashboard/overview" : "/dashboard/restaurant-overview"}`}>Dashboard</Link>)}
-          </nav>
+        <div className="flex items-center gap-1 sm:gap-2">
+          <SearchCommand />
+          <ThemeToggle />
 
-        </div>
-        {/* search input for lg< */}
-        <div className={`absolute top-[74px] bg-white ${isSearchOpen ? "" : "hidden"} lg:hidden p-4 left-0  w-full`}>
-          <input value={word} onChange={async (e) => {
-
-            setWord(e.target.value);
-            const info = await searchRestaurants(word);
-            if (info && word.length >= 1) {
-              setRestaurants(info);
-              setActivePanel("search");
-
-            }
-
-          }} placeholder="Search for restaurants..."
-            type="text"
-            className={`leading-[22px]  pl-[38px] h-[40px] pr-3   text-sm input`}
-          />
-          {activePanel === "search" ? <div className="sm:min-w-[450px] flex flex-col min-w-[320px] top-full panel  left-4 absolute border-borderColor mt-1  bg-primary  p-3 border-[1px] rounded-[6px]">
-            <div className="flex flex-col gap-2 items-start text-sm font-semibold">
-              {restaurants.length > 0 ? restaurants.map((restaurant, index) => {
-                return (
-                  <Link className="btn p-2  " href={`/restaurant/menu/${restaurant._id}`} key={index}>{restaurant.title}</Link>
-                )
-              }) : (<span className="">Not found!</span>)}
-            </div>
-          </div>
-            : ""}
-        </div>
-
-        <div className="flex gap-5 items-center relative">
-          {/* search for lg> */}
-          <div className="relative w-[270px] hidden lg:block ">
-            {activePanel === "search" ? (<button  className={`cursor-pointer flex items-center ${activePanel === "search" ? "text-primary" : ""} `} onClick={() => { setActivePanel(null); setWord(""); }}> <X className="absolute left-2.5 top-2" /></button>
-            ) : (<button  className={`  cursor-pointer flex items-center    transition-all hover:text-primary  `} onClick={() => {
-
-
-            }}><Search className="absolute left-2.5 top-2 " /></button>)}
-
-            <input value={word} onChange={async (e) => {
-
-              setWord(e.target.value);
-              const info = await searchRestaurants(word);
-              if (info && word.length >= 1) {
-                setRestaurants(info);
-                setActivePanel("search");
-
-              }
-
-            }} placeholder="Search for restaurants..."
-              type="text"
-              className="leading-[22px] pl-[38px] h-[40px] pr-3  text-sm input"
-            />
-
-            {activePanel === "search" ? <div className="min-w-[250px] flex flex-col top-full panel  left-0 absolute border-borderColor mt-1  bg-primary  p-3 border-[1px] rounded-[6px]">
-              <div className="flex flex-col gap-2 items-start text-sm font-semibold">
-                {restaurants.length > 0 ? restaurants.map((restaurant, index) => {
-                  return (
-                    <Link className="btn p-2 w-full " href={`/restaurant/menu/${restaurant._id}`} key={index}>{restaurant.title}</Link>
-                  )
-                }) : (<span className="">Not found!</span>)}
-              </div>
-            </div>
-              : ""}
-
-
-
-          </div>
-          {/* search for lg< */}
-          <div className="lg:hidden   ">
-
-            {activePanel === "search" || isSearchOpen ? (<button className={`cursor-pointer flex items-center ${activePanel === "search" ? "text-primary" : ""}  `} onClick={() => { setActivePanel(null); setWord(""); setIsSearchOpen(false) }}> <X className="" /></button>
-            ) : (<button className="cursor-pointer flex items-center " onClick={() => {
-
-            }}><Search className="" onClick={() => setIsSearchOpen(true)} /></button>)}
-          </div>
-
-          {/* cart */}
-          {activePanel === "cart" &&
-            <div className="absolute flex flex-col gap-3 text-left border-borderColor panel border-[2px] rounded-lg p-3 top-[150%] right-0 bg-primary  min-w-[300px]">
-              <h2 className="text-lg font-bold pb-1 border-borderColor text-white border-b-[1px] ">Cart</h2>
-              {cart?.items.length ? (<> <div className="flex flex-col gap-2 ">
-                {cart
-                  ? cart.items.map((item, idx) => {
-
-
-                    return (
-                      <div className="rounded-lg p-2 border-borderColor border-[1px]" key={idx}>
-                        <div className="flex  justify-between ">
-                          <div className="flex gap-4 items-center ">
-                            <img className="size-16 object-cover rounded-lg border-[1px] border-borderColor" src={item.dishId.imageUrl} alt="" />
-                            <div className="text-white">
-                              <h3 className="font-medium ">{item.dishId.title}</h3>
-                              <p className="text-sm leading-5  ">Quantity: {item.amount}</p>
-                            </div>
-                          </div>
-                          <div className="flex flex-col gap-1">
-
-                            <button data-testid="moreAmount" onClick={async () => updateCount(item.amount + 1, item.dishId._id, item.dishId.title)} className="btn p-1 border-[1px] border-borderColor"><Plus /></button>
-
-                            <button data-testid="lessAmount" onClick={async () => updateCount(item.amount - 1, item.dishId._id, item.dishId.title)} className={`btn p-1 border-[1px] border-borderColor disabled:bg-gray! `}><Minus /></button>
-
-                          </div>
-                        </div>
-                      </div>
-                    )
-                  })
-                  : <span>Loading cart...</span>}
-
-
-              </div>
-                <button onClick={async () => {
-                  const id = await createOrder();
-                  redirect(`/orders/order/${id}`)
-                }} className="btn border-borderColor border-[1px]! font-medium text-lg p-3 ">Place order</button> </>) : (<span>Cart is clear</span>)}
-
-            </div>
-          }
-
-          {/* avatar touch menu */}
-          <button data-testid="cart" onClick={() => setActivePanel(activePanel === "cart" ? null : "cart")} className={`relative cursor-pointer transition-colors hover:text-primary  ${activePanel === "cart" ? "text-primary" : ""} `}>
-            <ShoppingCart size={30} />
-            <span data-testid="cartLength" className="rounded-full p-1 bg-primary absolute top-[55%] -left-[15%] text-white  font-semibold px-2 text-sm">{cart?.items.length}</span>
-
+          <button
+            data-testid="cart"
+            onClick={cartDisclosure.open}
+            aria-label={`Cart, ${cartCount} item${cartCount === 1 ? "" : "s"}`}
+            className="relative flex items-center justify-center size-10 rounded-full text-inkMuted hover:text-ink hover:bg-surfaceRaised transition-colors cursor-pointer"
+          >
+            <ShoppingCart size={20} />
+            {cartCount > 0 && (
+              <span
+                data-testid="cartLength"
+                className="absolute -top-0.5 -right-0.5 min-w-4 h-4 px-1 rounded-full bg-brand text-onBrand text-[10px] font-bold leading-4 text-center"
+              >
+                {cartCount}
+              </span>
+            )}
           </button>
-          {/* menu panel */}
-          <div className="rounded-full relative p-3 border-borderColor border-[2px] ">
 
-
-
-            <button aria-label="user" className={`cursor-pointer transition-colors hover:text-primary flex items-center ${activePanel === "avatarMenu" ? "text-primary" : ""}`} onClick={() => {
-              setActivePanel(activePanel === "avatarMenu" ? null : "avatarMenu")
-
-            }}>{activePanel === "avatarMenu" ? (<X />) : (<UserRound />)} </button>
-
-            {/* menu */}
-            {activePanel === "avatarMenu" ? (<div className="min-w-[200px] flex flex-col top-full panel  right-0 absolute  border-borderColor mt-1  bg-primary  p-3 border-[1px] rounded-[6px]">
-              <span className="text-white text-base font-bold border-b-[1px] border-borderColor pb-1 mb-2">Welcome back {user?.username}!</span>
-              <div className="flex flex-col gap-2 items-start">
-                <Link href="/profile" className=" text-sm font-semibold text-white transition-all hover:opacity-65">Profile</Link>
-
-                <button aria-label="log out" onClick={async () => {
-                  await LogOut();
-                  setActivePanel(null);
-                  redirect("/auth/login");
-                }} className="text-white text-sm font-semibold transition-all hover:opacity-65 cursor-pointer">Log out</button>
-              </div>
-            </div>) : ""}
-
-
-          </div>
-          <div className="md:hidden">
-            <button className={`cursor-pointer transition-all hover:text-primary ${activePanel === "navMenu" ? "text-primary" : ""}`} onClick={() => { setActivePanel(activePanel === "navMenu" ? null : "navMenu") }}><Hamburger className="" size={30} /></button>
-
-            {activePanel === "navMenu" &&
-              <div className="min-w-[200px] flex   flex-col top-full panel  right-0 absolute  border-borderColor mt-1  bg-primary  p-3 border-[1px] rounded-[6px]">
-                <nav className="flex flex-col   ">
-                  {!(user?.role === "admin" || user?.role === "restaurant") ? (<><Link className="transition-all text-white   leading-7 hover:opacity-65  font-bold" href={"/"}>Home</Link>
-                    <Link className="transition-all text-white   font-bold leading-7 hover:opacity-65   " href={"/restaurants/category/all-restaurants"}>Restaurants</Link>
-                    <Link className="transition-all text-white   font-bold leading-7 hover:opacity-65  " href={"/orders"}>Orders</Link>
-                    {user?.role === "courier" ? (<Link className="transition-all text-white    leading-7 hover:opacity-65  font-bold" href={"/courier"}>Courier page</Link>
-                    ) : (<Link className="transition-all text-white   font-bold leading-7 hover:opacity-65  " href={"/job"}>Get a job</Link>
-                    )}
-                  </>
-
-                  ) : (<Link className="transition-all text-white   font-bold leading-7 hover:opacity-65 " href={`${user.role === "admin" ? "/dashboard/overview" : "/dashboard/restaurant-overview"}`}>Dashboard</Link>)}
-                </nav>
-              </div>
-
-            }
+          <div ref={avatarWrapperRef} className="relative">
+            <button
+              aria-label="user"
+              aria-haspopup="menu"
+              aria-expanded={avatarDisclosure.isOpen}
+              onClick={avatarDisclosure.toggle}
+              className={cn(
+                "flex items-center justify-center size-10 rounded-full border border-border transition-colors cursor-pointer",
+                avatarDisclosure.isOpen ? "text-brand border-brand" : "text-inkMuted hover:text-ink"
+              )}
+            >
+              <UserRound size={20} />
+            </button>
+            <DropdownMenu open={avatarDisclosure.isOpen} onClose={avatarDisclosure.close} anchorRef={avatarWrapperRef} align="right" className="min-w-[220px]">
+              {user ? (
+                <>
+                  <div className="px-3 py-2 border-b border-border mb-1">
+                    <span className="text-sm font-bold text-ink">Welcome back {user.username}!</span>
+                  </div>
+                  <DropdownItem onClick={() => { avatarDisclosure.close(); redirect("/profile"); }}>
+                    Profile
+                  </DropdownItem>
+                  <DropdownItem aria-label="log out" onClick={handleLogOut} className="text-danger">
+                    <LogOut size={16} />
+                    Log out
+                  </DropdownItem>
+                </>
+              ) : (
+                <>
+                  <DropdownItem onClick={() => { avatarDisclosure.close(); redirect("/auth/login"); }}>
+                    Log in
+                  </DropdownItem>
+                  <DropdownItem onClick={() => { avatarDisclosure.close(); redirect("/auth/register"); }}>
+                    Sign up
+                  </DropdownItem>
+                </>
+              )}
+            </DropdownMenu>
           </div>
 
-
+          <button
+            aria-label="Open menu"
+            aria-haspopup="menu"
+            aria-expanded={mobileNavDisclosure.isOpen}
+            onClick={mobileNavDisclosure.open}
+            className="md:hidden flex items-center justify-center size-10 rounded-full text-inkMuted hover:text-ink hover:bg-surfaceRaised transition-colors cursor-pointer"
+          >
+            <Menu size={20} />
+          </button>
         </div>
       </div>
 
-    </header >
-  )
+      <Drawer open={mobileNavDisclosure.isOpen} onClose={mobileNavDisclosure.close} title="Menu">
+        <nav aria-label="Main navigation" className="flex flex-col gap-1">
+          {navItems.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              onClick={mobileNavDisclosure.close}
+              className="px-3 py-2.5 rounded-md text-sm font-semibold text-ink hover:bg-surfaceRaised transition-colors"
+            >
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+      </Drawer>
 
+      <Drawer
+        open={cartDisclosure.isOpen}
+        onClose={cartDisclosure.close}
+        title="Cart"
+        footer={
+          cart?.items.length ? (
+            <Button
+              fullWidth
+              size="lg"
+              onClick={async () => {
+                const id = await createOrder();
+                if (id) {
+                  cartDisclosure.close();
+                  redirect(`/orders/order/${id}`);
+                }
+              }}
+            >
+              Place order
+            </Button>
+          ) : undefined
+        }
+      >
+        {cart?.items.length ? (
+          <div className="flex flex-col gap-3">
+            {cart.items.map((item, idx) => (
+              <div key={idx} className="flex gap-3 rounded-lg border border-border p-3">
+                <div className="relative size-16 shrink-0 rounded-md overflow-hidden border border-border bg-sand-100">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={item.dishId.imageUrl} alt={item.dishId.title} className="absolute inset-0 w-full h-full object-cover" />
+                </div>
+                <div className="flex-1 min-w-0 flex flex-col justify-between">
+                  <h3 className="font-medium text-ink truncate">{item.dishId.title}</h3>
+                  <div className="flex items-center gap-3">
+                    <button
+                      data-testid="lessAmount"
+                      aria-label={`Decrease quantity of ${item.dishId.title}`}
+                      onClick={() => updateCount(item.amount - 1, item.dishId._id, item.dishId.title)}
+                      className="flex items-center justify-center size-8 rounded-md border border-border text-ink hover:bg-surfaceRaised transition-colors cursor-pointer"
+                    >
+                      <Minus size={14} />
+                    </button>
+                    <span className="text-sm font-medium text-ink w-4 text-center">{item.amount}</span>
+                    <button
+                      data-testid="moreAmount"
+                      aria-label={`Increase quantity of ${item.dishId.title}`}
+                      onClick={() => updateCount(item.amount + 1, item.dishId._id, item.dishId.title)}
+                      className="flex items-center justify-center size-8 rounded-md border border-border text-ink hover:bg-surfaceRaised transition-colors cursor-pointer"
+                    >
+                      <Plus size={14} />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <EmptyState icon={<ShoppingBag size={22} />} title="Cart is clear" description="Add a dish from any restaurant to get started." />
+        )}
+      </Drawer>
+    </header>
+  )
 }
 export default Header;
