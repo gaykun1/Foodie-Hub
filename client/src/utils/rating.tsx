@@ -6,14 +6,11 @@ export const calculateStars = (rating: number, size?: number) => {
 
   for (let i = 0; i < 5; i++) {
     if (i + 1 <= rating) {
-      // повна зірка
-      stars.push(<Star className="text-[#636AE8FF]  fill-[#636AE8FF]" size={size ?? 20} key={i} />);
+      stars.push(<Star className="text-brand fill-brand" size={size ?? 20} key={i} />);
     } else if (i < rating) {
-
-      stars.push(<StarHalf className="text-[#636AE8FF]  fill-[#636AE8FF]" size={size ?? 20} key={i} />);
+      stars.push(<StarHalf className="text-brand fill-brand" size={size ?? 20} key={i} />);
     } else {
-      stars.push(<Star className="text-[#636AE8FF]  " size={size ?? 20} key={i} />);
-
+      stars.push(<Star className="text-border" size={size ?? 20} key={i} />);
     }
   }
 
