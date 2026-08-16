@@ -7,10 +7,15 @@ import ViewDetailsSideBar from '@/components/ViewDetailsSideBar';
 import { useAppSelector } from '@/hooks/reduxHooks';
 import { Order } from '@/redux/reduxTypes'
 import axios from 'axios';
-import { ChevronDown, Map, } from 'lucide-react';
+import { ChevronDown, ChevronsRight, Map, PackageSearch } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import { useEffect, useMemo, useState } from 'react'
 import { io, Socket } from 'socket.io-client';
+import { Button } from '@/components/ui/Button';
+import { Card } from '@/components/ui/Card';
+import { PageSpinner } from '@/components/ui/Spinner';
+import { EmptyState } from '@/components/ui/EmptyState';
+import { cn } from '@/lib/cn';
 
 const Page = () => {
   const [orders, setOrders] = useState<Order[] | null>();
@@ -20,14 +25,13 @@ const Page = () => {
   const [courierLocation, setCourierLocation] = useState<[number, number] | null>(null);
   const { user } = useAppSelector((state) => state.auth);
   const [activeSidebar, setActiveSidebar] = useState<boolean>(false);
-  // creating a socket connection
+
   useEffect(() => {
     const sock = io(`${process.env.NEXT_PUBLIC_API_URL}`);
     setSocket(sock);
     return () => { sock.disconnect(); }
   }, []);
 
-  // scroll to top 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [viewDetails]);
@@ -47,13 +51,9 @@ const Page = () => {
     getOrders();
   }, [])
 
-
-
-  // socket using for dynamic tracking courier every 5sec(interval)
   useEffect(() => {
     if (!socket) return;
     if (orders) {
-
       const activeOrders = orders.filter(
         order => order.status === "Preparing" || order.status === "Delivering"
       );
@@ -62,17 +62,14 @@ const Page = () => {
         socket.emit("joinOrder", { orderId: order._id, userId: user?._id });
       });
 
-
       const handleLocationUpdate = ({ lat, lng }: { lat: number; lng: number }) => {
         setCourierLocation([lat, lng]);
-        console.log("locationUpdate:", lat, lng);
       };
       socket.on("locationUpdate", handleLocationUpdate);
       socket.on("updateOrderStatus", ({ status, id }) => {
         const order = orders?.find(order => order._id === id);
         if (order) {
           setOrders((prev) => prev?.map(order => order._id === id ? { ...order, status } : order));
-          console.log(status);
         }
       });
 
@@ -81,120 +78,111 @@ const Page = () => {
         socket.off("updateOrderStatus");
       };
     }
-
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socket, orders])
 
-
-  // getting default value for viewDetails if having Preparing Order
   useEffect(() => {
     if (orders) {
-
       const item = orders?.find(order => order.status === "Preparing") || orders[0];
       setViewDetails(item);
-
     }
-
   }, [orders])
-  // Optimized filtered orders
+
   const currentOrders = useMemo(() => orders?.filter(order => order.status !== "Delivered"), [orders])
   const pastOrders = useMemo(() => orders?.filter(order => order.status === "Delivered"), [orders])
 
+  const orderActions = (order: Order) => (
+    <>
+      {order.status === "Delivering" && (
+        <Button variant="outline" size="sm">Track order</Button>
+      )}
+      <Button variant="secondary" size="sm" icon={<ChevronsRight size={16} />} onClick={() => setViewDetails(order)}>
+        View Details
+      </Button>
+    </>
+  );
+
+  const trackingPanel = (viewDetails?.status !== "Delivered" && viewDetails?.courierId !== null) && (
+    <Card>
+      <div className="flex flex-col mb-6 gap-1.5">
+        <div className="flex items-center gap-2">
+          <Map className="text-brand" size={20} />
+          <h2 className="text-xl leading-7 font-bold text-ink">Live Tracking</h2>
+        </div>
+        <p className="text-sm leading-5 text-inkMuted">
+          Your order is on its way to {viewDetails?.adress.houseNumber} {viewDetails?.adress.street}
+        </p>
+      </div>
+      <div className="w-full overflow-hidden rounded-lg h-[250px]">
+        <MapTracker courierLocation={courierLocation} socket={socket} isWorking={viewDetails} />
+      </div>
+    </Card>
+  );
+
   return (
-    <div className='py-8 '>
-      <div className={`flex sm:items-center gap-4  sm:justify-between sm:mb-9 flex-col ${activeSidebar ? "mb-6" : ""} sm:flex-row`}>
-        <h1 className='text-[36px] font-extrabold leading-10 '>Your Orders</h1>
+    <div className="py-8">
+      <div className={cn("flex sm:items-center gap-4 sm:justify-between sm:mb-9 flex-col sm:flex-row", activeSidebar && "mb-6")}>
+        <h1 className="text-3xl sm:text-[36px] font-extrabold leading-10 text-ink">Your Orders</h1>
         <div className="lg:hidden">
-          <button onClick={() => setActiveSidebar(!activeSidebar)} className={`text-2xl  leading-8 font-bold flex gap-1 transition-all items-center  ${activeSidebar ? "text-primary" : ""} `}>Current Order Info <div className={`transition-all ${activeSidebar ? "rotate-180" : ""}`}><ChevronDown /></div></button>
-        </div>
-      </div>
-      {!loading ?  
-     ( orders && orders.length > 0 ? (
-      <div className='flex flex-col gap-6 lg:border-b-0 border-b-[2px] border-borderColor'>
-        <div className="lg:hidden border-b-[2px] border-borderColor pb-3">
-
-          <div className={` grow-1  flex-col gap-8  ${activeSidebar ? "h-auto flex" : "h-0 hidden"}`}>
-            {(viewDetails?.status !== "Delivered" && viewDetails?.courierId !== null) && (
-              <div className="shadow-xs border-[1px] border-borderColor rounded-lg p-[25px]">
-                <div className="flex flex-col mb-8 gap-1.5">
-                  <div className="flex items-center gap-2">
-                    <Map className='text-primary' size={20} />
-                    <h2 className='text-xl leading-7 font-bold '>Live Tracking</h2>
-                  </div>
-
-                  <p className='text-sm leading-5 text-gray'>Your order is on its way to {viewDetails?.adress.houseNumber} {viewDetails?.adress.street}</p>
-                </div>
-                <div className="flex w-full justify-center">
-                  <div className="overflow-hidden h-[250px] w-[420px]  rounded-lg">
-                    <MapTracker courierLocation={courierLocation} socket={socket} isWorking={viewDetails} />
-
-                  </div>
-                </div>
-
-              </div>
-            )}
-
-            <ViewDetailsSideBar viewDetails={viewDetails} />
-
-          </div>
-        </div>
-        <div className="flex relative gap-8">
-          <div className="lg:basis-[865px] w-full  pt-1">
-            {/* current orders */}
-            <div className="">
-              <h2 className="text-2xl leading-8 font-bold mb-4.5 ">Current Orders ( {currentOrders?.length} )</h2>
-              <div className="gap-4 grid  lg:grid-cols-2">
-                {currentOrders && currentOrders.length > 0 ? currentOrders?.map((order, idx) => (
-                  <div className="" key={idx}>
-                    <OrderCard setViewDetails={setViewDetails} order={order} />
-
-                  </div>
-                )) : <span className='text-lg leading-7 font-semibold'>No current orders yet!</span>}
-
-              </div>
-            </div>
-
-            {/* past orders */}
-            <div className="mt-9">
-              <h2 className="text-2xl leading-8 font-bold mb-4.5">Past Orders (  {pastOrders?.length} )</h2>
-              <div className="gap-4 grid  lg:grid-cols-2">
-                {pastOrders && pastOrders.length > 0 ? pastOrders?.map((order, idx) => (
-                  <div className="" key={idx}>
-                    <OrderCard setViewDetails={setViewDetails} order={order} />
-
-                  </div>
-                )) : <span className='text-lg leading-7 font-semibold'>No past orders yet!</span>}
-              </div>
-            </div>
-          </div>
-
-          <div className=" grow-1 lg:flex flex-col gap-8 hidden">
-            {(viewDetails?.status !== "Delivered" && viewDetails?.courierId !== null) && (
-              <div className="shadow-xs border-[1px] border-borderColor rounded-lg p-[25px]">
-                <div className="flex flex-col mb-8 gap-1.5">
-                  <div className="flex items-center gap-2">
-                    <Map className='text-primary' size={20} />
-                    <h2 className='text-xl leading-7 font-bold '>Live Tracking</h2>
-                  </div>
-
-                  <p className='text-sm leading-5 text-gray'>Your order is on its way to {viewDetails?.adress.houseNumber} {viewDetails?.adress.street}</p>
-                </div>
-                <div className="overflow-hidden  rounded-lg h-[250px] w-[420px]">
-                  <MapTracker courierLocation={courierLocation} socket={socket} isWorking={viewDetails} />
-
-                </div>
-              </div>
-            )}
-
-            <ViewDetailsSideBar viewDetails={viewDetails} />
-
-          </div>
-
+          <button
+            onClick={() => setActiveSidebar(!activeSidebar)}
+            aria-expanded={activeSidebar}
+            className={cn("text-lg font-bold flex gap-1 transition-colors items-center cursor-pointer", activeSidebar ? "text-brand" : "text-ink")}
+          >
+            Current Order Info
+            <ChevronDown className={cn("transition-transform", activeSidebar && "rotate-180")} />
+          </button>
         </div>
       </div>
 
-      ) : (<span className='text-xl leading-6 font-bold'>No orders yet!</span>)): <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid mx-auto"></div>}
+      {loading ? (
+        <PageSpinner />
+      ) : orders && orders.length > 0 ? (
+        <div className="flex flex-col gap-6 lg:border-b-0 border-b-2 border-border">
+          {activeSidebar && (
+            <div className="lg:hidden border-b-2 border-border pb-6 flex flex-col gap-6">
+              {trackingPanel}
+              <ViewDetailsSideBar viewDetails={viewDetails} />
+            </div>
+          )}
+          <div className="flex relative gap-8">
+            <div className="lg:basis-[865px] w-full pt-1">
+              <div>
+                <h2 className="text-2xl leading-8 font-bold mb-4 text-ink">Current Orders ({currentOrders?.length ?? 0})</h2>
+                <div className="gap-4 grid lg:grid-cols-2">
+                  {currentOrders && currentOrders.length > 0 ? currentOrders.map((order) => (
+                    <OrderCard key={order._id} order={order} actions={orderActions(order)} />
+                  )) : (
+                    <div className="lg:col-span-2">
+                      <EmptyState icon={<PackageSearch size={22} />} title="No current orders yet" description="Place an order to see it show up here." />
+                    </div>
+                  )}
+                </div>
+              </div>
 
+              <div className="mt-9">
+                <h2 className="text-2xl leading-8 font-bold mb-4 text-ink">Past Orders ({pastOrders?.length ?? 0})</h2>
+                <div className="gap-4 grid lg:grid-cols-2">
+                  {pastOrders && pastOrders.length > 0 ? pastOrders.map((order) => (
+                    <OrderCard key={order._id} order={order} actions={orderActions(order)} />
+                  )) : (
+                    <div className="lg:col-span-2">
+                      <EmptyState icon={<PackageSearch size={22} />} title="No past orders yet" description="Your delivered orders will appear here." />
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
 
+            <div className="grow lg:flex flex-col gap-6 hidden">
+              {trackingPanel}
+              <ViewDetailsSideBar viewDetails={viewDetails} />
+            </div>
+          </div>
+        </div>
+      ) : (
+        <EmptyState icon={<PackageSearch size={22} />} title="No orders yet" description="Browse restaurants to place your first order." />
+      )}
     </div>
   )
 }

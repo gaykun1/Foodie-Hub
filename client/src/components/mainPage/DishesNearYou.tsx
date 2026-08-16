@@ -2,48 +2,65 @@
 import { useAppSelector } from '@/hooks/reduxHooks';
 import { Dish } from '@/redux/reduxTypes';
 import axios from 'axios';
+import { MapPinned } from 'lucide-react';
 import React, { useEffect, useState } from 'react'
 import DishCard from '../Dashboard/DishCard';
+import { DishCardSkeleton } from '@/components/ui/Skeleton';
+import { EmptyState } from '@/components/ui/EmptyState';
+import { ButtonLink } from '@/components/ui/Button';
 
 const DishesNearYou = () => {
     const [dishes, setDishes] = useState<Dish[]>([]);
+    const [loading, setLoading] = useState(false);
+    const [loaded, setLoaded] = useState(false);
     const { user } = useAppSelector((state) => state.auth);
 
-    // func for getting dishes after every render (provided if user added City in profile settings form)
     useEffect(() => {
         if (user?.address?.city) {
             const getDishesNearYou = async () => {
-                const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/dishes/nearby`, { params: { city: user.address.city } });
-                if (res.data)
-                    setDishes(res.data);
+                try {
+                    setLoading(true);
+                    const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/dishes/nearby`, { params: { city: user.address.city } });
+                    if (res.data) setDishes(res.data);
+                } catch (err) {
+                    console.error(err);
+                } finally {
+                    setLoading(false);
+                    setLoaded(true);
+                }
             };
             getDishesNearYou();
+        } else {
+            setLoaded(true);
         }
-
     }, [user?.address?.city])
 
-
     return (
-        <section className='mb-16'>
-            <div className="flex justify-between items-center">
+        <section className="mb-16">
+            <h2 className="section-title mb-5">Trending Dishes Near You</h2>
 
-                <h1 className='section-title mb-[22px]  '>Trending Dishes Near You</h1>
-
-
-            </div>
-
-            {dishes.length > 0 ?
-                <div className="grid md:grid-cols-3 sm:grid-cols-2 p-10 sm:p-0  lg:grid-cols-5 gap-6">
-                    {dishes.map((dish) => (
-                        <DishCard toCart={true} dish={dish} key={dish._id} />
+            {loading ? (
+                <div className="flex gap-6 overflow-x-hidden">
+                    {Array.from({ length: 4 }).map((_, i) => (
+                        <div key={i} className="w-[260px] shrink-0"><DishCardSkeleton /></div>
                     ))}
                 </div>
-                : <div className=' w-full flex justify-center'><span className='text-xl font-semibold leading-8'>No dishes</span></div>}
-
-
-
-
-
+            ) : dishes.length > 0 ? (
+                <div className="flex gap-6 overflow-x-auto snap-x snap-mandatory pb-2 -mx-1 px-1">
+                    {dishes.map((dish) => (
+                        <div key={dish._id} className="w-[260px] shrink-0 snap-start">
+                            <DishCard toCart={true} dish={dish} />
+                        </div>
+                    ))}
+                </div>
+            ) : loaded ? (
+                <EmptyState
+                    icon={<MapPinned size={22} />}
+                    title={user ? "Add your city to see trending dishes" : "Sign in to see dishes near you"}
+                    description={user ? "Save your address in your profile so we can find what's popular nearby." : "Trending dishes are personalized to your saved delivery city."}
+                    action={user ? <ButtonLink href="/profile" size="sm">Update profile</ButtonLink> : <ButtonLink href="/auth/login" size="sm">Log in</ButtonLink>}
+                />
+            ) : null}
         </section>
     )
 }
