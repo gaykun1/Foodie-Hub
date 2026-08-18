@@ -1,14 +1,19 @@
-import dotenv from "dotenv";
 import { Request, Response } from "express";
-import Stripe from "stripe";
-dotenv.config();
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-    apiVersion: "2025-06-30.basil",
-});
+import { AuthRequest } from "../middleware/authMiddleware";
+import { computeOrderPricing } from "../utils/pricing";
+import { stripe } from "../utils/stripeClient";
+// Amount is derived server-side from the caller's own pending order, never
+// taken from the client, so a tampered request can't buy a real order for cents.
 export const createPaymentIntent = async (req: Request, res: Response): Promise<void> => {
-    const { amount } = req.body;
-   
+    const { shipping, percent } = req.body;
+
     try {
+        const pricing = await computeOrderPricing((req as AuthRequest).userId, shipping, percent);
+        if (!pricing) {
+            res.status(404).json({ message: "No pending order found" });
+            return;
+        }
+        const amount = Math.round(pricing.totalPrice * 100);
         const paymentIntent = await stripe.paymentIntents.create({
             amount,
             currency: "usd",

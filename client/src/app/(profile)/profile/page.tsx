@@ -138,8 +138,12 @@ const Page = () => {
             <Input
               id="profile-new-password" label="New Password" type="password"
               disabled={!isEditing}
-              error={!isEquals ? "Passwords don't match" : undefined}
-              {...register("newPassword")}
+              error={!isEquals ? "Passwords don't match" : errors.newPassword?.message}
+              {...register("newPassword", {
+                validate: {
+                  password: (value) => !value || /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(value) || "Password must have at least one lowercase, one uppercase, one digit and minimum 8 characters",
+                }
+              })}
             />
             <Input
               id="profile-confirm-password" label="Confirm New Password" type="password"

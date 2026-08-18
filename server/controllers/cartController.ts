@@ -75,44 +75,48 @@ export const addToCart = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.body;
 
     try {
-        const cart = await Cart.findOne({ userId: (req as AuthRequest).userId });
-        if (cart) {
-
-            const dish = await Dish.findById(id);
-            if (!dish) {
-                res.status(404).json("Dish is not found");
-                return;
-            }
-            //validation for checking if dish from other restaurant 
-            if (!cart.restaurantId?.equals(dish.restaurantId) && cart.restaurantId !== null) {
-                res.status(400).json("Not allowed other restaurants!");
-                return;
-            }
-            if (dish.restaurantId)
-                cart.restaurantId = dish.restaurantId;
-
-
-            const item = cart.items.find(item => item.dishId.equals(id));
-
-            if (item) {
-                item.amount += 1;
-
-            } else {
-
-
-                cart?.items.push({ dishId: id, amount: 1 });
-
-            }
-            await cart.save();
-
-            const updatedCart = await Cart.findOne({ userId: (req as AuthRequest).userId })
-                .populate("items.dishId").populate({ path: "restaurantId", select: "title imageUrl" });
-
-
-            res.status(201).json(updatedCart);
-            return;
+        // Falls back to creating the cart here too — getCart normally does this
+        // first, but relying on that order-of-operations meant a user who reached
+        // "Add to cart" before their cart was ever fetched got a response-less
+        // hang (the function returned without calling res.json at all).
+        let cart = await Cart.findOne({ userId: (req as AuthRequest).userId });
+        if (!cart) {
+            cart = await Cart.create({ userId: (req as AuthRequest).userId, items: [], restaurantId: null });
         }
 
+        const dish = await Dish.findById(id);
+        if (!dish) {
+            res.status(404).json("Dish is not found");
+            return;
+        }
+        //validation for checking if dish from other restaurant
+        if (!cart.restaurantId?.equals(dish.restaurantId) && cart.restaurantId !== null) {
+            res.status(400).json("Not allowed other restaurants!");
+            return;
+        }
+        if (dish.restaurantId)
+            cart.restaurantId = dish.restaurantId;
+
+
+        const item = cart.items.find(item => item.dishId.equals(id));
+
+        if (item) {
+            item.amount += 1;
+
+        } else {
+
+
+            cart.items.push({ dishId: id, amount: 1 });
+
+        }
+        await cart.save();
+
+        const updatedCart = await Cart.findOne({ userId: (req as AuthRequest).userId })
+            .populate("items.dishId").populate({ path: "restaurantId", select: "title imageUrl" });
+
+
+        res.status(201).json(updatedCart);
+        return;
 
     } catch (err) {
 

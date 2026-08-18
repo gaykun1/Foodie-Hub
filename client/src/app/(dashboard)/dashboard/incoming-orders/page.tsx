@@ -23,7 +23,7 @@ const Page = () => {
     }, [user?.restaurantId])
 
     useEffect(() => {
-        const sock = io(`${process.env.NEXT_PUBLIC_API_URL}`);
+        const sock = io(`${process.env.NEXT_PUBLIC_API_URL}`, { withCredentials: true });
         setSocket(sock);
         return () => { sock.disconnect(); }
     }, []);

@@ -5,6 +5,7 @@ import { AuthRequest } from "../middleware/authMiddleware";
 import Dish, { IDish } from "../models/Dish";
 import Review, { IReview } from "../models/Review";
 import { activeAdmins, io, restaurantsSocketsMap } from "../socket";
+import { escapeRegExp } from "../utils/regex";
 
 
 
@@ -26,6 +27,17 @@ export const getRestaurantsFiltered = async (req: Request, res: Response): Promi
     } catch (err) {
         res.status(500).json({ error: "Server error" });
     }
+};
+
+// True if the acting user may manage the given restaurant: an admin, or the
+// restaurant account that owns it. Restaurant-management routes are shared
+// between the admin's per-restaurant dashboard and the owner's own dashboard
+// (see client AddDishPanel), so both need to pass this, not just "is logged in".
+const canManageRestaurant = async (userId: string, restaurantId: string): Promise<boolean> => {
+    const actingUser = await User.findById(userId);
+    if (!actingUser) return false;
+    if (actingUser.role === "admin") return true;
+    return actingUser.role === "restaurant" && actingUser.restaurantId?.toString() === restaurantId;
 };
 
 export const createItem = async (req: Request, res: Response) => {
@@ -50,6 +62,12 @@ export const createItem = async (req: Request, res: Response) => {
             startHour: restaurantData.startHour,
             endHour: restaurantData.endHour,
         });
+        // Link the creator to their new restaurant — nothing else in the app ever
+        // sets User.restaurantId, which left every owner-scoped dashboard route dead.
+        await User.findByIdAndUpdate((req as AuthRequest).userId, {
+            role: "restaurant",
+            restaurantId: newRestaurant._id,
+        });
         res.status(201).json(newRestaurant);
         return;
 
@@ -66,6 +84,10 @@ export const handleAbout = async (req: Request, res: Response) => {
     const { info } = req.body;
     const id = req.params.id;
     try {
+        if (!(await canManageRestaurant((req as AuthRequest).userId, id))) {
+            res.status(403).json("Access denied");
+            return;
+        }
 
         const restaurant = await Restaurant.findById(id);
         if (restaurant) {
@@ -209,8 +231,14 @@ export const getDishesNearYou = async (req: Request, res: Response): Promise<voi
 export const createDish = async (req: Request, res: Response) => {
     const { dish, id } = req.body;
     try {
-
-
+        if (!(await canManageRestaurant((req as AuthRequest).userId, id))) {
+            res.status(403).json("Access denied");
+            return;
+        }
+        if (typeof dish?.price !== "number" || !Number.isFinite(dish.price) || dish.price < 0) {
+            res.status(400).json("Price must be a non-negative number");
+            return;
+        }
 
         const newDish = new Dish({
             title: dish.title,
@@ -318,8 +346,9 @@ export const searchRestaurants = async (req: Request, res: Response): Promise<vo
 
     const { chars } = req.query;
     try {
-
-        const restaurants = await Restaurant.find({ title: { $regex: chars, $options: 'i' } }).limit(5);
+        // Unauthenticated endpoint taking raw regex from the query string was a
+        // ReDoS vector (e.g. "(a+)+$") — escape it so it's matched literally.
+        const restaurants = await Restaurant.find({ title: { $regex: escapeRegExp(String(chars ?? "")), $options: 'i' } }).limit(5);
         res.status(200).json(restaurants);
         return;
     } catch (err) {
@@ -344,6 +373,16 @@ export const getDishes = async (req: Request, res: Response): Promise<void> => {
 export const deleteDish = async (req: Request, res: Response): Promise<void> => {
     const id = req.params.id;
     try {
+        const existingDish = await Dish.findById(id);
+        if (!existingDish) {
+            res.status(404).json({ message: "Dish not found" });
+            return;
+        }
+        if (!(await canManageRestaurant((req as AuthRequest).userId, existingDish.restaurantId.toString()))) {
+            res.status(403).json("Access denied");
+            return;
+        }
+
         const dish = await Dish.findByIdAndDelete(id);
         if (!dish) {
             res.status(404).json({ message: "Dish not found" });

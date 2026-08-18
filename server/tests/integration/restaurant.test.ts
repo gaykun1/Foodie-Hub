@@ -24,6 +24,8 @@ describe("restaurant api", () => {
     let dish: IDishDocument;
     let user: IUserDocument;
     let userToken: string;
+    let admin: IUserDocument;
+    let adminToken: string;
     beforeEach(async () => {
         user = await User.create({ password: "12312331232Ff", username: "testuser3" });
         restaurant1 = await Restaurant.create({
@@ -74,6 +76,8 @@ describe("restaurant api", () => {
             phone: "+312421412"
         })
         userToken = await jwt.sign({ userId: user._id, role: "user" }, process.env.JWT_SECRET!, { expiresIn: '1h' });
+        admin = await User.create({ password: "12312331232Ff", username: "testadmin3", role: "admin" });
+        adminToken = await jwt.sign({ userId: admin._id, role: "admin" }, process.env.JWT_SECRET!, { expiresIn: '1h' });
 
 
     })
@@ -89,6 +93,7 @@ describe("restaurant api", () => {
                 throw new Error("DB error");
             })
             const res = await request(app).post("/api/restaurant/restaurants")
+                .set("Cookie", `token=${userToken}`)
                 .send({
                     title: "title",
                     description: "description",
@@ -115,6 +120,7 @@ describe("restaurant api", () => {
                 throw new Error("DB error");
             })
             const res = await request(app).post("/api/restaurant/restaurants")
+                .set("Cookie", `token=${userToken}`)
                 .send({
                     title: "title",
                     description: "description",
@@ -136,7 +142,12 @@ describe("restaurant api", () => {
             expect(res.body.error).toBe("Server error");
             jest.restoreAllMocks();
         })
-        it("Created restaurant", async () => {
+        it("401 unauthenticated", async () => {
+            const res = await request(app).post("/api/restaurant/restaurants")
+                .send({ title: "title" });
+            expect(res.status).toBe(401);
+        })
+        it("Created restaurant, and links the creator to it", async () => {
             const restaurantData = {
                 title: "Some title",
                 description: "Some desc",
@@ -153,9 +164,14 @@ describe("restaurant api", () => {
                 endHour: "20:00",
             };
             const res = await request(app).post("/api/restaurant/restaurants")
+                .set("Cookie", `token=${userToken}`)
                 .send(restaurantData);
             expect(res.status).toBe(201);
             expect(res.body.title).toBe("Some title");
+
+            const updatedUser = await User.findById(user._id);
+            expect(updatedUser?.role).toBe("restaurant");
+            expect(updatedUser?.restaurantId?.toString()).toBe(res.body._id);
         })
     })
     describe("get filtered restaurants", () => {
@@ -206,6 +222,15 @@ describe("restaurant api", () => {
         it("200(404 actually) -- (return value [])", async () => {
             const res = await request(app).get("/api/restaurant/restaurants/search")
                 .query({ chars: "hamburger" });
+            expect(res.status).toBe(200);
+            expect(res.body).toEqual([]);
+        });
+
+        it("treats regex metacharacters as literal text, not a pattern (regex-injection guard)", async () => {
+            // ".*" would match every title if interpolated into $regex unescaped;
+            // it doesn't literally appear in either restaurant's title.
+            const res = await request(app).get("/api/restaurant/restaurants/search")
+                .query({ chars: ".*" });
             expect(res.status).toBe(200);
             expect(res.body).toEqual([]);
         });
@@ -292,24 +317,50 @@ describe("restaurant api", () => {
         }
 
         it("200 deleted ", async () => {
-            const res = await request(app).post(`/api/restaurant/dishes`).send({ dish: newDish, id: restaurant1._id });
+            const res = await request(app).post(`/api/restaurant/dishes`)
+                .set("Cookie", `token=${adminToken}`)
+                .send({ dish: newDish, id: restaurant1._id });
 
             expect(res.status).toBe(201);
             expect(res.body.title).toBe("newBurger");
         });
         it("404 not found", async () => {
-            const res = await request(app).post(`/api/restaurant/dishes`).send({ dish: newDish, id: new mongoose.Types.ObjectId });
+            const res = await request(app).post(`/api/restaurant/dishes`)
+                .set("Cookie", `token=${adminToken}`)
+                .send({ dish: newDish, id: new mongoose.Types.ObjectId });
             expect(res.status).toBe(404);
             expect(res.body).toBe("Not found!");
         });
 
+        it("401 unauthenticated", async () => {
+            const res = await request(app).post(`/api/restaurant/dishes`).send({ dish: newDish, id: restaurant1._id });
+            expect(res.status).toBe(401);
+        });
+
+        it("403 restaurant account managing a restaurant it doesn't own", async () => {
+            const otherOwner = await User.create({ username: "otherOwner", password: "x", role: "restaurant", restaurantId: restaurant2._id });
+            const otherOwnerToken = await jwt.sign({ userId: otherOwner._id, role: "restaurant" }, process.env.JWT_SECRET!, { expiresIn: '1h' });
+            const res = await request(app).post(`/api/restaurant/dishes`)
+                .set("Cookie", `token=${otherOwnerToken}`)
+                .send({ dish: newDish, id: restaurant1._id });
+            expect(res.status).toBe(403);
+        });
+
+        it("400s a negative price", async () => {
+            const res = await request(app).post(`/api/restaurant/dishes`)
+                .set("Cookie", `token=${adminToken}`)
+                .send({ dish: { ...newDish, price: -5 }, id: restaurant1._id });
+            expect(res.status).toBe(400);
+        });
 
         it("500 server error", async () => {
 
             jest.spyOn(Restaurant, "findById").mockImplementationOnce(() => {
                 throw new Error("DB error");
             })
-            const res = await request(app).post(`/api/restaurant/dishes`).send({ dish: newDish, id: restaurant2._id });
+            const res = await request(app).post(`/api/restaurant/dishes`)
+                .set("Cookie", `token=${adminToken}`)
+                .send({ dish: newDish, id: restaurant2._id });
 
             expect(res.status).toBe(500);
             expect(res.body.error).toBe("Server error");
@@ -349,24 +400,39 @@ describe("restaurant api", () => {
     describe("delete  dish by id ", () => {
 
         it("200 deleted ", async () => {
-            const res = await request(app).delete(`/api/restaurant/dishes/${restaurant1.dishes[0]._id.toString()}`);
+            const res = await request(app).delete(`/api/restaurant/dishes/${restaurant1.dishes[0]._id.toString()}`)
+                .set("Cookie", `token=${adminToken}`);
 
             expect(res.status).toBe(200);
             expect(res.body).toBe("Deleted!");
         });
         it("404 not found", async () => {
-            const res = await request(app).delete(`/api/restaurant/dishes/${new mongoose.Types.ObjectId}`);
+            const res = await request(app).delete(`/api/restaurant/dishes/${new mongoose.Types.ObjectId}`)
+                .set("Cookie", `token=${adminToken}`);
             expect(res.status).toBe(404);
             expect(res.body.message).toBe("Dish not found");
         });
 
+        it("401 unauthenticated", async () => {
+            const res = await request(app).delete(`/api/restaurant/dishes/${restaurant1.dishes[0]._id.toString()}`);
+            expect(res.status).toBe(401);
+        });
+
+        it("403 restaurant account deleting a dish it doesn't own", async () => {
+            const otherOwner = await User.create({ username: "otherOwner2", password: "x", role: "restaurant", restaurantId: restaurant2._id });
+            const otherOwnerToken = await jwt.sign({ userId: otherOwner._id, role: "restaurant" }, process.env.JWT_SECRET!, { expiresIn: '1h' });
+            const res = await request(app).delete(`/api/restaurant/dishes/${restaurant1.dishes[0]._id.toString()}`)
+                .set("Cookie", `token=${otherOwnerToken}`);
+            expect(res.status).toBe(403);
+        });
 
         it("500 server error", async () => {
 
             jest.spyOn(Dish, "findByIdAndDelete").mockImplementationOnce(() => {
                 throw new Error("DB error");
             })
-            const res = await request(app).delete(`/api/restaurant/dishes/${restaurant1._id}`);
+            const res = await request(app).delete(`/api/restaurant/dishes/${restaurant1.dishes[0]._id.toString()}`)
+                .set("Cookie", `token=${adminToken}`);
 
             expect(res.status).toBe(500);
             expect(res.body.error).toBe("Search error!");

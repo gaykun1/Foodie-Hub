@@ -11,7 +11,10 @@ courierRoute.get("/applications/status", authMiddleware, checkIfSentApplication)
 courierRoute.get("/applications",adminMiddleware, getApplications);
 courierRoute.get("/profile", courierMiddleware, profile);
 courierRoute.post("/orders/:id/take", courierMiddleware, takeOrder);
-courierRoute.get("/orders/:id/status", checkIfHasOrder);
+// Scoped to the caller's own courier profile — no id needed in the URL.
+courierRoute.get("/orders/status", courierMiddleware, checkIfHasOrder);
 courierRoute.patch("/orders/:id/status", courierMiddleware, changeOrderStatus);
-courierRoute.post("/applications/:id", toggleApplication);
+// Accepting/declining grants the "courier" role — admin-only, matching the
+// applications list route (this action previously had no auth at all).
+courierRoute.post("/applications/:id", adminMiddleware, toggleApplication);
 export default courierRoute;

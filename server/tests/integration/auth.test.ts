@@ -1,6 +1,6 @@
 import User from "../../models/User";
 import request from "supertest"
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { app } from "../../app";
 import mongoose from "mongoose";
@@ -121,5 +121,55 @@ describe("auth api", () => {
             expect(res.body).toEqual({ message: "Server error" });
             jest.restoreAllMocks();
         });
+    })
+
+    describe("update profile (password change)", () => {
+        let user: any;
+        let validToken: string;
+        beforeEach(async () => {
+            user = await User.create({ username: "passwordChangeUser", password: await bcrypt.hash("12345678Aa", 10) });
+            validToken = await jwt.sign({ userId: user._id, role: "user" }, process.env.JWT_SECRET!, { expiresIn: '1h' });
+        })
+        afterEach(async () => {
+            await User.deleteMany({});
+        })
+
+        it("rejects a new password that fails the strength policy, even called directly (bypassing client validation)", async () => {
+            const res = await request(app).patch("/api/auth/profile")
+                .set("Cookie", `token=${validToken}`)
+                .send({ payload: { password: "12345678Aa", newPassword: "short", newPasswordAgain: "short" } });
+
+            expect(res.status).toBe(400);
+            const stored = await User.findById(user._id);
+            expect(await bcrypt.compare("12345678Aa", stored!.password)).toBe(true);
+        })
+
+        it("accepts a new password meeting the policy", async () => {
+            const res = await request(app).patch("/api/auth/profile")
+                .set("Cookie", `token=${validToken}`)
+                .send({ payload: { password: "12345678Aa", newPassword: "NewPassw0rd", newPasswordAgain: "NewPassw0rd" } });
+
+            expect(res.status).toBe(200);
+            const stored = await User.findById(user._id);
+            expect(await bcrypt.compare("NewPassw0rd", stored!.password)).toBe(true);
+        })
+
+        it("rejects the wrong current password", async () => {
+            const res = await request(app).patch("/api/auth/profile")
+                .set("Cookie", `token=${validToken}`)
+                .send({ payload: { password: "wrongCurrent1", newPassword: "NewPassw0rd", newPasswordAgain: "NewPassw0rd" } });
+
+            expect(res.status).toBe(400);
+            expect(res.body).toBe("Wrong password!");
+        })
+
+        it("rejects mismatched new-password confirmation", async () => {
+            const res = await request(app).patch("/api/auth/profile")
+                .set("Cookie", `token=${validToken}`)
+                .send({ payload: { password: "12345678Aa", newPassword: "NewPassw0rd", newPasswordAgain: "Different0rd" } });
+
+            expect(res.status).toBe(400);
+            expect(res.body).toBe("Wrong password!");
+        })
     })
 })

@@ -6,7 +6,15 @@ import { activeAdmins, io, restaurantsSocketsMap, socketsMap } from "../socket";
 import Restaurant from "../models/Restaurant";
 import { AuthRequest } from "../middleware/authMiddleware";
 
-
+// Order.courierId stores the courier's Courier-application document id (not
+// their User id) — that's the established convention this whole feature (and
+// its pre-existing tests) already used. Every handler that assigns or checks
+// courier ownership needs to resolve that id from the authenticated user
+// itself, never from a client-supplied id.
+const getOwnCourierId = async (userId: string): Promise<string | null> => {
+    const courier = await Courier.findOne({ userId });
+    return courier ? courier._id.toString() : null;
+};
 
 export const getApplications = async (req: Request, res: Response): Promise<void> => {
 
@@ -31,6 +39,15 @@ export const getApplications = async (req: Request, res: Response): Promise<void
 export const createApplication = async (req: Request, res: Response): Promise<void> => {
     const { data } = req.body;
     try {
+        // The client only checks this via a separate call before showing the
+        // form (checkIfSentApplication) — a direct call, or just a fast double
+        // submit, could otherwise create duplicate application records for the
+        // same user with no unique constraint stopping it.
+        const existing = await Courier.findOne({ userId: (req as AuthRequest).userId });
+        if (existing) {
+            res.status(409).json("You already have an application on file");
+            return;
+        }
 
         // creating initial model for courier
         const newCourier = await Courier.create({
@@ -82,12 +99,20 @@ export const changeOrderStatus = async (req: Request, res: Response): Promise<vo
     const id = req.params.id;
     try {
 
-
-        const order = await Order.findByIdAndUpdate(id, { $set: { status: status } });
+        // Only the courier already assigned to this order may update its status —
+        // courierMiddleware only proves "some courier", not "this order's courier".
+        const order = await Order.findOne({ _id: id });
         if (!order) {
             res.status(404).json("Not found!");
             return;
         }
+        const ownCourierId = await getOwnCourierId((req as AuthRequest).userId);
+        if (!ownCourierId || order.courierId?.toString() !== ownCourierId) {
+            res.status(403).json("Access denied");
+            return;
+        }
+        order.status = status;
+        await order.save();
         // taking last 7 updated and emitting it through socket for admin panel
         const orders = await Order.find().sort({ updatedAt: -1 }).limit(7);
         activeAdmins.forEach(adminId => {
@@ -172,10 +197,20 @@ export const profile = async (req: Request, res: Response): Promise<void> => {
 }
 
 export const takeOrder = async (req: Request, res: Response): Promise<void> => {
-    const { courierId } = req.body;
     const id = req.params.id;
     try {
-        const order = await Order.findOneAndUpdate({ _id: id }, { $set: { courierId: courierId } });
+        // A courier can only take an order for themselves, and only if it's still
+        // free — the courierId used to come straight from the request body, so any
+        // courier could assign any order to any other courier (or steal one already taken).
+        const ownCourierId = await getOwnCourierId((req as AuthRequest).userId);
+        if (!ownCourierId) {
+            res.status(404).json("Not found!");
+            return;
+        }
+        const order = await Order.findOneAndUpdate(
+            { _id: id, courierId: null },
+            { $set: { courierId: ownCourierId } }
+        );
         if (!order) {
             res.status(404).json("Not found!");
             return;
@@ -189,9 +224,16 @@ export const takeOrder = async (req: Request, res: Response): Promise<void> => {
 }
 
 export const checkIfHasOrder = async (req: Request, res: Response): Promise<void> => {
-    const id = req.params.id;
     try {
-        const order = await Order.findOne({ courierId: id, status: { $in: ["Delivering", "Preparing", "Created"] } });
+        // Was unauthenticated and trusted whatever courier id was in the URL —
+        // anyone could check (or, combined with the old takeOrder body-trust bug,
+        // infer) any courier's current delivery. Now scoped to the caller's own.
+        const ownCourierId = await getOwnCourierId((req as AuthRequest).userId);
+        if (!ownCourierId) {
+            res.status(200).json(null);
+            return;
+        }
+        const order = await Order.findOne({ courierId: ownCourierId, status: { $in: ["Delivering", "Preparing", "Created"] } });
         res.status(200).json(order);
         return;
     } catch {

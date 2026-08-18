@@ -112,8 +112,12 @@ const Page = () => {
                 placeholder="Type in your password..."
                 autoComplete="new-password"
                 {...register("password", {
+                  // Requires the mix below but otherwise allows any character —
+                  // the previous [A-Za-z\d] class silently barred symbols (and any
+                  // non-ASCII letters) from passwords entirely, which is backwards
+                  // for password strength, not a security measure.
                   validate: {
-                    password: (value) => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/.test(value) || "Password must have at least one lowercase, one uppercase, one digit and minimum 8 characters",
+                    password: (value) => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(value) || "Password must have at least one lowercase, one uppercase, one digit and minimum 8 characters",
                   }
                 })}
                 rightSlot={

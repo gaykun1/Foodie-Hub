@@ -19,7 +19,7 @@ const MapTracker = dynamic(() => import('@/components/order/MapTracker'), {
 import ViewDetailsSideBar from '@/components/ViewDetailsSideBar';
 import dynamic from 'next/dynamic';
 
-const KNOWN_STATUSES: OrderStatus[] = ["Processing", "Preparing", "Delivering", "Delivered"];
+const KNOWN_STATUSES: OrderStatus[] = ["Created", "Preparing", "Delivering", "Delivered"];
 
 const Page = () => {
     const [freeOrders, setFreeOrders] = useState<Order[] | null>(null);
@@ -34,7 +34,7 @@ const Page = () => {
     const [activeSidebar, setActiveSidebar] = useState<boolean>(false);
 
     useEffect(() => {
-        const sock = io(`${process.env.NEXT_PUBLIC_API_URL}`);
+        const sock = io(`${process.env.NEXT_PUBLIC_API_URL}`, { withCredentials: true });
         setSocket(sock);
         return () => { sock.disconnect(); }
     }, []);
@@ -52,7 +52,7 @@ const Page = () => {
     const getYourOrders = async () => {
         try {
             if (courier) {
-                const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/order/couriers/${courier._id}/orders`, { withCredentials: true });
+                const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/order/couriers/orders`, { withCredentials: true });
                 if (res.data) {
                     setCourierOrders(res.data);
                 }
@@ -65,7 +65,7 @@ const Page = () => {
     const checkIfHasOrder = async () => {
         try {
             if (courier) {
-                const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/courier/orders/${courier._id}/status`);
+                const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/courier/orders/status`, { withCredentials: true });
                 setIsWorking(res.data);
                 setViewDetails(res.data);
                 return res.data;

@@ -3,12 +3,10 @@
 import axios from 'axios'
 import { io, Socket } from 'socket.io-client';
 import { useEffect, useState } from 'react'
-import { useAppSelector } from '@/hooks/reduxHooks';
 import { Dish, Order, Review } from '@/redux/reduxTypes';
 import { DashboardOverviewView } from '@/components/Dashboard/DashboardOverviewView';
 
 const Page = () => {
-  const { user } = useAppSelector((state) => state.auth)
   const [numOfOrders, setNumOfOrders] = useState<{ number: number, percent: number } | null>(null);
   const [totalRevenue, setTotalRevenue] = useState<{ number: number, percent: number } | null>(null);
   const [averageOrderValue, setAverageOrderValue] = useState<{ number: number, percent: number } | null>(null);
@@ -29,7 +27,7 @@ const Page = () => {
         console.error(err);
       }
     }
-    const sock = io(`${process.env.NEXT_PUBLIC_API_URL}`);
+    const sock = io(`${process.env.NEXT_PUBLIC_API_URL}`, { withCredentials: true });
     setSocket(sock);
     getNumbers();
   }, [])
@@ -66,7 +64,10 @@ const Page = () => {
 
   useEffect(() => {
     if (socket) {
-      socket.emit("joinDashboard", { adminId: user?._id });
+      // Server derives the admin's own id from their auth cookie now — it no
+      // longer trusts a client-supplied adminId (and this call previously sent
+      // the wrong shape anyway: the handler expected a bare string, not an object).
+      socket.emit("joinDashboard");
       socket.on("updateOrders", (orders) => {
         setOrders(orders);
       })

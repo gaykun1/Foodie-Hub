@@ -5,7 +5,7 @@ export default defineConfig({
     testDir: './tests/e2e',
     use: {
         baseURL: 'http://localhost:3000',
-        headless: false,
+        headless: true,
     },
     webServer: {
         command: 'npm run dev',

@@ -1,4 +1,3 @@
-import { Request, Response } from "express"
 import http from "http"
 
 import dotenv from "dotenv";
@@ -18,21 +17,13 @@ const server = http.createServer(app);
 // initting socket with all logic and maps,sets
 initSocket(server);
 
-// api for geocoding
-app.get("/api/geocode", async (req: Request, res: Response) => {
-    const q = (req.query.q ?? '') as string;
-
-    const response = await fetch(
-        `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json`
-    );
-    const data = await response.json();
-    res.json(data);
-})
-
-
 // cron for deleting all caching promocodes in users every week
 nodeCron.schedule("0 0 * * 1", async () => {
-    await User.updateOne({}, { $set: { promocodes: null, usualPromocode: null } });
+    // updateOne only ever touches a single matching document — with an empty
+    // filter that meant one arbitrary user got cleared each week while every
+    // other user kept stale (and, once Promocode's TTL index deletes the
+    // underlying docs, dangling) promocode references indefinitely.
+    await User.updateMany({}, { $set: { promocodes: null, usualPromocode: null } });
     await Promocode.deleteMany({});
 })
 

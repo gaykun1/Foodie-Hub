@@ -27,7 +27,7 @@ type formFields = {
 export const AddDishPanel = ({ restaurantId }: { restaurantId: string | undefined }) => {
     const [dishesLoading, setDishesLoading] = useState<boolean>(false);
     const [menu, setMenu] = useState<Dish[]>([]);
-    const { register, handleSubmit, reset } = useForm<formFields>();
+    const { register, handleSubmit, reset, formState: { errors } } = useForm<formFields>();
     const [loading, setLoading] = useState<boolean>(false);
 
     const createDish: SubmitHandler<formFields> = async (data) => {
@@ -42,7 +42,7 @@ export const AddDishPanel = ({ restaurantId }: { restaurantId: string | undefine
                 typeOfFood: data.typeOfFood,
             }
 
-            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/dishes`, { dish, id: restaurantId });
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/dishes`, { dish, id: restaurantId }, { withCredentials: true });
             reset();
             setMenu([...menu, res.data]);
         } catch (err) {
@@ -84,7 +84,11 @@ export const AddDishPanel = ({ restaurantId }: { restaurantId: string | undefine
                         </Select>
                     </div>
                     <div className="flex flex-col gap-4">
-                        <Input id="dish-price" label="Price" type="number" step="0.01" {...register("price", { valueAsNumber: true })} />
+                        <Input
+                            id="dish-price" label="Price" type="number" step="0.01"
+                            error={errors.price?.message}
+                            {...register("price", { valueAsNumber: true, min: { value: 0, message: "Price can't be negative" } })}
+                        />
                         <Input id="dish-image" label="Image" type="file" accept="image/*" {...register("image")} />
                     </div>
 

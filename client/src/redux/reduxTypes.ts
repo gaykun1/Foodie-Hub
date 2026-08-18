@@ -87,7 +87,7 @@ export type Order = {
     totalPrice: number,
     createdAt: Date,
     courierId: string,
-    status: "Delivering" | "Delivered" | "Processing" | "Preparing",
+    status: "Delivering" | "Delivered" | "Created" | "Preparing",
     approxTime: number,
     fullName: string,
     adress: {

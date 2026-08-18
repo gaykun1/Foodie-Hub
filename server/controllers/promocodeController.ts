@@ -38,19 +38,37 @@ export const getPromocode = async (req: Request, res: Response): Promise<void> =
 };
 export const createPromocode = async (req: Request, res: Response): Promise<void> => {
     const { data } = req.body;
-    (data);
     try {
+        // The dashboard form already bounds this client-side, but nothing
+        // previously stopped a direct API call from creating a promocode with,
+        // say, a 500% or negative discount.
+        if (!data?.code || typeof data.code !== "string") {
+            res.status(400).json("Code is required");
+            return;
+        }
+        if (data.type !== "Usual" && data.type !== "Special") {
+            res.status(400).json("Invalid promocode type");
+            return;
+        }
+        const percent = Number(data.percent);
+        if (!Number.isFinite(percent) || percent < 1 || percent > 100) {
+            res.status(400).json("Percent must be between 1 and 100");
+            return;
+        }
+
         if (data.type === "Special") {
-            const promocode = await Promocode.create({ code: data.code, discountPercent: data.percent, type: data.type, isUsed: false });
-
+            await Promocode.create({ code: data.code, discountPercent: percent, type: data.type, isUsed: false });
         } else {
-            const promocode = await Promocode.create({ code: data.code, discountPercent: data.percent, type: data.type, });
-
+            await Promocode.create({ code: data.code, discountPercent: percent, type: data.type });
         }
         res.status(200).json("Successfully created");
         return;
 
-    } catch (err) {
+    } catch (err: any) {
+        if (err?.code === 11000) {
+            res.status(409).json("That code already exists");
+            return;
+        }
         res.status(500).json("Server error");
     }
 }
