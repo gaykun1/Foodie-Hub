@@ -5,6 +5,7 @@ import User from "../models/User";
 import { activeAdmins, io, restaurantsSocketsMap, socketsMap } from "../socket";
 import Restaurant from "../models/Restaurant";
 import { AuthRequest } from "../middleware/authMiddleware";
+import { sendOrderStatusEmail } from "../utils/sendOrderEmail";
 
 // Order.courierId stores the courier's Courier-application document id (not
 // their User id) — that's the established convention this whole feature (and
@@ -136,8 +137,15 @@ export const changeOrderStatus = async (req: Request, res: Response): Promise<vo
 
         if (socketUser) {
             socketUser.emit("updateOrderStatus", { status, id: order._id });
-          
+
         }
+
+        // Unawaited on purpose — see sendOrderStatusEmail's own comment.
+        if (["Preparing", "Delivering", "Delivered"].includes(status)) {
+            const orderUser = await User.findById(order.userId).select("email username");
+            sendOrderStatusEmail(order, orderUser, "statusUpdate");
+        }
+
         res.status(200).json(status);
         return;
 

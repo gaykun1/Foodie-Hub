@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { Order } from "@/redux/reduxTypes"
-import { Calendar, MapPin, ReceiptText, User } from "lucide-react"
+import { Ban, Calendar, MapPin, ReceiptText, User } from "lucide-react"
 import { Card } from "@/components/ui/Card";
 import { EmptyState } from "@/components/ui/EmptyState";
 
@@ -22,6 +22,22 @@ const ViewDetailsSideBar = ({ viewDetails }: { viewDetails: Order | null }) => {
                 <h2 className='text-2xl leading-8 font-bold flex items-center gap-2 text-ink'>Order Details <ReceiptText /></h2>
                 <p className='text-sm leading-5 text-inkMuted'>ID: {viewDetails._id}</p>
             </div>
+            {viewDetails.status === "Cancelled" && (
+                <div className="pb-4 mb-6 border-b border-border flex items-start gap-4 text-base leading-6 font-medium">
+                    <Ban size={20} className="text-danger shrink-0" />
+                    <div className="flex flex-col">
+                        <span className="font-semibold text-danger">
+                            Cancelled{viewDetails.cancelledBy ? ` by ${viewDetails.cancelledBy}` : ""}
+                        </span>
+                        {viewDetails.cancelReason && (
+                            <span className="text-inkMuted text-sm">Reason: {viewDetails.cancelReason}</span>
+                        )}
+                        {viewDetails.refundedAt && (
+                            <span className="text-inkMuted text-sm">Refunded {new Date(viewDetails.refundedAt).toDateString()}</span>
+                        )}
+                    </div>
+                </div>
+            )}
             <div className="pb-4 mb-6 border-b border-border flex flex-col gap-3">
                 <div className="flex items-start gap-4 text-inkMuted text-base leading-6 font-medium">
                     <Calendar size={20} />

@@ -1,13 +1,15 @@
 import { Request, Response } from "express";
 import { AuthRequest } from "../middleware/authMiddleware";
-import Order from "../models/Order";
+import Order, { IOrderDocument } from "../models/Order";
 import Cart from "../models/Cart";
-import { restaurantsSocketsMap } from "../socket";
+import { activeAdmins, io, restaurantsSocketsMap, socketsMap } from "../socket";
 import Dish from "../models/Dish";
 import Restaurant from "../models/Restaurant";
 import Courier from "../models/Courier";
+import User from "../models/User";
 import { computeOrderPricing } from "../utils/pricing";
 import { stripe } from "../utils/stripeClient";
+import { sendOrderStatusEmail } from "../utils/sendOrderEmail";
 
 interface CartItem {
     dishId: {
@@ -187,15 +189,18 @@ export const getNumbers = async (req: Request, res: Response): Promise<void> => 
     try {
         const id = req.query.id;
         let orders = [];
+        // "Created" is excluded because it's the placed-but-not-yet-fulfilled
+        // state, not revenue-worthy yet; "Cancelled" is excluded because it was
+        // refunded — counting it would inflate revenue by money that went back out.
         if (id == null) {
-            orders = await Order.find({ status: { $ne: "Created" } });
+            orders = await Order.find({ status: { $nin: ["Created", "Cancelled"] } });
             if (!orders.length) {
                 res.status(404).json({ message: "No orders found!" });
                 return;
             }
         } else {
             const restaurant = await Restaurant.findById(id);
-            orders = await Order.find({ restaurantTitle: restaurant?.title, status: { $ne: "Created" } });
+            orders = await Order.find({ restaurantTitle: restaurant?.title, status: { $nin: ["Created", "Cancelled"] } });
             if (!orders.length) {
                 res.status(404).json({ message: "No orders found!" });
                 return;
@@ -218,9 +223,12 @@ export const getNumbers = async (req: Request, res: Response): Promise<void> => 
         const endOfLastWeek = new Date(startOfLastWeek);
         endOfLastWeek.setDate(startOfLastWeek.getDate() + 6);
         // func that making x promises at one time
+        // Same revenue-relevant status filter as the totals above — otherwise a
+        // cancelled/refunded order (or an abandoned checkout draft, status null)
+        // would still count toward this week's revenue comparison.
         const [ordersThisWeek, ordersLastWeek] = await Promise.all([
-            Order.find({ createdAt: { $gte: startOfThisWeek, $lte: endOfThisWeek } }),
-            Order.find({ createdAt: { $gte: startOfLastWeek, $lte: endOfLastWeek } })
+            Order.find({ createdAt: { $gte: startOfThisWeek, $lte: endOfThisWeek }, status: { $nin: ["Created", "Cancelled", null] } }),
+            Order.find({ createdAt: { $gte: startOfLastWeek, $lte: endOfLastWeek }, status: { $nin: ["Created", "Cancelled", null] } })
         ]);
         const totalOrdersThisWeek = ordersThisWeek.length;
         const totalOrdersLastWeek = ordersLastWeek.length;
@@ -350,6 +358,7 @@ export const updateOrder = async (req: Request, res: Response): Promise<void> =>
                     "adress.apartmentNumbr": formData.apartmentNumbr,
                     "adress.street": formData.street,
                     totalPrice: pricing.totalPrice,
+                    paymentIntentId,
                 }
             }, { new: true });
             const cart = await Cart.findOneAndUpdate({ userId: (req as AuthRequest).userId, _id: cartId }, { $set: { restaurantId: null, items: [] } });
@@ -368,6 +377,12 @@ export const updateOrder = async (req: Request, res: Response): Promise<void> =>
                     const orders = await Order.find({ status: "Created", restaurantTitle: restaurant.title });
                     socket.emit("incomingOrders", orders);
                 }
+            }
+
+            // Unawaited on purpose — see sendOrderStatusEmail's own comment.
+            if (order) {
+                const orderUser = await User.findById((req as AuthRequest).userId).select("email username");
+                sendOrderStatusEmail(order, orderUser, "confirmation");
             }
 
             res.status(200).json("Created!");
@@ -412,6 +427,160 @@ export const toggleToPreparing = async (req: Request, res: Response): Promise<vo
     try {
         await Order.findByIdAndUpdate(id, { $set: { status: "Preparing" } });
         res.status(200).json("Toggled status to Preparing");
+        return;
+    } catch (err) {
+        res.status(500).json("Server error!");
+        return;
+    }
+}
+
+// Shared by every cancellation path: a real Stripe refund of whatever was
+// actually charged (never a client-supplied amount — there isn't one), then
+// the same post-cancellation bookkeeping regardless of who initiated it. If
+// the refund call fails, the order is left completely untouched — no partial
+// "cancelled but not refunded" state.
+const performCancellation = async (
+    order: IOrderDocument,
+    { cancelledBy, reason }: { cancelledBy: "customer" | "restaurant" | "admin"; reason?: string }
+): Promise<{ ok: true } | { ok: false }> => {
+    if (!order.paymentIntentId) {
+        return { ok: false };
+    }
+    let refund;
+    try {
+        refund = await stripe.refunds.create({ payment_intent: order.paymentIntentId });
+    } catch (err) {
+        return { ok: false };
+    }
+
+    order.status = "Cancelled";
+    order.cancelledAt = new Date();
+    order.cancelledBy = cancelledBy;
+    order.cancelReason = reason || null;
+    order.refundedAt = new Date();
+    order.refundId = refund.id;
+    await order.save();
+
+    // Reverse the sold-count increments made at checkout — otherwise a
+    // cancelled order still inflates a dish's "sold" total forever.
+    for (const item of order.items) {
+        await Dish.findOneAndUpdate({ title: item.title }, { $inc: { sold: -item.amount } });
+    }
+
+    // Same notification fan-out updateOrder/changeOrderStatus already do for
+    // other status changes: restaurant dashboard, admin dashboards, customer.
+    const restaurant = await Restaurant.findOne({ title: order.restaurantTitle });
+    if (restaurant) {
+        for (const [id, socket] of restaurantsSocketsMap.entries()) {
+            if (id === restaurant.id) {
+                const incoming = await Order.find({ status: "Created", restaurantTitle: restaurant.title });
+                socket.emit("incomingOrders", incoming);
+                const recent = await Order.find({ restaurantTitle: restaurant.title }).sort({ updatedAt: -1 }).limit(7);
+                socket.emit("updateRestaurantOrders", recent);
+            }
+        }
+    }
+    const recentOrders = await Order.find().sort({ updatedAt: -1 }).limit(7);
+    activeAdmins.forEach(adminId => {
+        io.to(adminId.toString()).emit("updateOrders", recentOrders);
+    });
+    const socketUser = socketsMap.get(order.userId.toString());
+    if (socketUser) {
+        socketUser.emit("updateOrderStatus", { status: "Cancelled", id: order._id });
+    }
+
+    const orderUser = await User.findById(order.userId).select("email username");
+    sendOrderStatusEmail(order, orderUser, "cancelled");
+
+    return { ok: true };
+};
+
+// Customer can only cancel their own order, and only before the restaurant
+// has started preparing it.
+export const cancelOrderCustomer = async (req: Request, res: Response): Promise<void> => {
+    const id = req.params.id;
+    const { reason } = req.body;
+    try {
+        const order = await Order.findOne({ _id: id, userId: (req as AuthRequest).userId });
+        if (!order) {
+            res.status(404).json("Not found!");
+            return;
+        }
+        if (order.status !== "Created") {
+            res.status(409).json("This order can no longer be cancelled");
+            return;
+        }
+        const result = await performCancellation(order, { cancelledBy: "customer", reason });
+        if (!result.ok) {
+            res.status(502).json("Refund failed");
+            return;
+        }
+        res.status(200).json("Order cancelled");
+        return;
+    } catch (err) {
+        res.status(500).json("Server error!");
+        return;
+    }
+}
+
+// Restaurant can cancel its own orders ("can't fulfill this") up through
+// Preparing — resolved from the caller's own restaurant, never a client id.
+export const cancelOrderRestaurant = async (req: Request, res: Response): Promise<void> => {
+    const id = req.params.id;
+    const { reason } = req.body;
+    try {
+        const actingUser = await User.findById((req as AuthRequest).userId);
+        if (!actingUser?.restaurantId) {
+            res.status(404).json("Not found!");
+            return;
+        }
+        const restaurant = await Restaurant.findById(actingUser.restaurantId);
+        if (!restaurant) {
+            res.status(404).json("Not found!");
+            return;
+        }
+        const order = await Order.findOne({ _id: id, restaurantTitle: restaurant.title });
+        if (!order) {
+            res.status(404).json("Not found!");
+            return;
+        }
+        if (!["Created", "Preparing"].includes(order.status)) {
+            res.status(409).json("This order can no longer be cancelled");
+            return;
+        }
+        const result = await performCancellation(order, { cancelledBy: "restaurant", reason });
+        if (!result.ok) {
+            res.status(502).json("Refund failed");
+            return;
+        }
+        res.status(200).json("Order cancelled");
+        return;
+    } catch (err) {
+        res.status(500).json("Server error!");
+        return;
+    }
+}
+
+// Admin override — can cancel anything short of already-delivered/cancelled.
+export const cancelOrderAdmin = async (req: Request, res: Response): Promise<void> => {
+    const id = req.params.id;
+    const { reason } = req.body;
+    try {
+        const order = await Order.findById(id);
+        if (!order) {
+            res.status(404).json("Not found!");
+            return;
+        }
+        if (!["Created", "Preparing", "Delivering"].includes(order.status)) {
+            res.status(409).json("This order can no longer be cancelled");
+            return;
+        }
+        const result = await performCancellation(order, { cancelledBy: "admin", reason });
+        if (!result.ok) {
+            res.status(502).json("Refund failed");
+            return;
+        }
+        res.status(200).json("Order cancelled");
         return;
     } catch (err) {
         res.status(500).json("Server error!");
