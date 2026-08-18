@@ -16,7 +16,7 @@ export interface IOrder  {
   totalPrice: number,
   createdAt: Date,
   shippingPrice: number,
-  status: "Delivering" | "Delivered" | "Created" | "Preparing",//Preparing-Cooking Created - created but not taken by the restaurant to cook
+  status: "Delivering" | "Delivered" | "Created" | "Preparing" | "Cancelled",//Preparing-Cooking Created - created but not taken by the restaurant to cook
   discountPercent: number,
   fullName: string,
   adress: {
@@ -25,7 +25,15 @@ export interface IOrder  {
     houseNumber: number,
     street: string,
     apartmentNumbr?: number;
-  }
+  },
+  // The PaymentIntent this order was actually paid with — needed to issue a
+  // real Stripe refund on cancellation (previously never stored post-checkout).
+  paymentIntentId?: string | null,
+  cancelledAt?: Date | null,
+  cancelledBy?: "customer" | "restaurant" | "admin" | null,
+  cancelReason?: string | null,
+  refundedAt?: Date | null,
+  refundId?: string | null,
 }
 export interface IOrderDocument extends IOrder, Document<mongoose.Types.ObjectId> { }
 
@@ -44,7 +52,7 @@ const OrderSchema = new Schema<IOrder>({
   totalPrice: { type: Number, required: true },
   discountPercent: { type: Number, def: 0 },
   shippingPrice: { type: Number },
-  status: { type: String, enum: ["Delivering", "Delivered", "Preparing", "Created"], default: null },
+  status: { type: String, enum: ["Delivering", "Delivered", "Preparing", "Created", "Cancelled"], default: null },
   fullName: { type: String },
   adress: {
     city: { type: String },
@@ -53,7 +61,13 @@ const OrderSchema = new Schema<IOrder>({
     apartmentNumbr: { type: Number },
     street: { type: String },
 
-  }
+  },
+  paymentIntentId: { type: String, default: null },
+  cancelledAt: { type: Date, default: null },
+  cancelledBy: { type: String, enum: ["customer", "restaurant", "admin"], default: null },
+  cancelReason: { type: String, default: null },
+  refundedAt: { type: Date, default: null },
+  refundId: { type: String, default: null },
 
 }, { timestamps: true });
 

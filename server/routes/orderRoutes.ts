@@ -1,6 +1,6 @@
 import express from "express"
 import { authMiddleware } from "../middleware/authMiddleware";
-import { createOrder, getFreeOrders, getLastSevenOrders, getNumbers, getOrder, getOrders, getOrdersCourier, getOrdersCreated, toggleToPreparing, updateOrder } from "../controllers/orderController";
+import { cancelOrderAdmin, cancelOrderCustomer, cancelOrderRestaurant, createOrder, getFreeOrders, getLastSevenOrders, getNumbers, getOrder, getOrders, getOrdersCourier, getOrdersCreated, toggleToPreparing, updateOrder } from "../controllers/orderController";
 import { courierMiddleware } from "../middleware/courierMiddleware";
 import { adminMiddleware } from "../middleware/adminMiddleware";
 import { restaurantMiddleware } from "../middleware/restaurantMiddleware";
@@ -20,6 +20,9 @@ orderRoute.get("/orders/:id/created", restaurantMiddleware, getOrdersCreated);
 orderRoute.get("/couriers/orders", courierMiddleware, getOrdersCourier);
 orderRoute.get("/free-orders/:city", courierMiddleware, getFreeOrders);
 orderRoute.get("/orders/:id", authMiddleware, getOrder);
+orderRoute.patch("/orders/:id/cancel", authMiddleware, cancelOrderCustomer);
+orderRoute.patch("/orders/:id/cancel/restaurant", restaurantMiddleware, cancelOrderRestaurant);
+orderRoute.patch("/orders/:id/cancel/admin", adminMiddleware, cancelOrderAdmin);
 
 
 

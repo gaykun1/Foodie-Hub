@@ -46,7 +46,7 @@ interface DashboardOverviewViewProps {
 }
 
 const isKnownStatus = (status: string): status is OrderStatus =>
-    ["Created", "Preparing", "Delivering", "Delivered"].includes(status);
+    ["Created", "Preparing", "Delivering", "Delivered", "Cancelled"].includes(status);
 
 export const DashboardOverviewView = ({
     title, numOfOrders, totalRevenue, averageOrderValue, orders, reviews, topDishes, accordion, setAccordion,

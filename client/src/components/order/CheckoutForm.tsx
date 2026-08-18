@@ -3,7 +3,7 @@ import PaymentCard from "@/components/order/PaymentCard";
 import { useAppSelector } from "@/hooks/reduxHooks"
 import { useElements, useStripe } from "@stripe/react-stripe-js";
 import axios from "axios";
-import { Lock, Send, Bike, Zap, Clock3 } from "lucide-react";
+import { Lock, Send, Bike, Zap, Clock3, MapPin } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Dispatch, SetStateAction, useCallback, useEffect, useState } from "react";
@@ -14,6 +14,8 @@ import { Input, Select } from "@/components/ui/Field";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/cn";
 import { savePendingCheckout } from "@/utils/pendingCheckout";
+import AddressPicker from "@/components/order/AddressPicker";
+import { Address } from "@/redux/reduxTypes";
 
 // Letters plus spaces/hyphens/apostrophes/accents — the original
 // /^[A-Za-z]+$/ rejected "New York", "Ivano-Frankivsk" and "O'Brien" in an
@@ -39,7 +41,7 @@ const SHIPPING_OPTIONS: { value: Shipping; label: string; eta: string; icon: typ
 ];
 
 const CheckoutForm = ({ order, shipping, setShipping }: { order: Order, shipping: Shipping, setShipping: Dispatch<SetStateAction<Shipping>> }) => {
-    const { register, handleSubmit, formState: { errors } } = useForm<FormFields>()
+    const { register, handleSubmit, setValue, formState: { errors } } = useForm<FormFields>()
     const router = useRouter();
     const { user } = useAppSelector(state => state.auth);
     const [clientSecret, setClientSecret] = useState<string>("");
@@ -51,6 +53,53 @@ const CheckoutForm = ({ order, shipping, setShipping }: { order: Order, shipping
     const [discount, setDiscount] = useState<number>(0);
     const [error, setError] = useState<string | null>(null);
     const [promoError, setPromoError] = useState<string | null>(null);
+    const [addresses, setAddresses] = useState<Address[]>([]);
+    const [selectedAddressId, setSelectedAddressId] = useState<string | null>(null);
+    const [useManualAddress, setUseManualAddress] = useState<boolean>(false);
+
+    const applyAddress = useCallback((address: Address) => {
+        setValue("countryOrRegion", address.countryOrRegion);
+        setValue("city", address.city);
+        setValue("street", address.street);
+        setValue("houseNumber", String(address.houseNumber));
+        setValue("apartmentNumbr", address.apartmentNumbr ? String(address.apartmentNumbr) : "");
+    }, [setValue]);
+
+    useEffect(() => {
+        const getAddresses = async () => {
+            try {
+                const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/address/addresses`, { withCredentials: true });
+                const saved: Address[] = res.data ?? [];
+                setAddresses(saved);
+                if (saved.length > 0) {
+                    const initial = saved.find(a => a.isDefault) ?? saved[0];
+                    setSelectedAddressId(initial._id);
+                    applyAddress(initial);
+                } else if (user?.address?.city || user?.address?.street) {
+                    // No saved addresses yet — prefill from the legacy single
+                    // address on the profile as a starting point (no countryOrRegion
+                    // there, so that field is left for the user to pick).
+                    setValue("city", user.address.city ?? "");
+                    setValue("street", user.address.street ?? "");
+                    if (user.address.houseNumber) setValue("houseNumber", String(user.address.houseNumber));
+                    setUseManualAddress(true);
+                } else {
+                    setUseManualAddress(true);
+                }
+            } catch (err) {
+                console.error(err);
+                setUseManualAddress(true);
+            }
+        }
+        getAddresses();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    const selectAddress = (id: string) => {
+        setSelectedAddressId(id);
+        const address = addresses.find(a => a._id === id);
+        if (address) applyAddress(address);
+    };
 
     const usePromocode = useCallback(async () => {
         try {
@@ -150,12 +199,7 @@ const CheckoutForm = ({ order, shipping, setShipping }: { order: Order, shipping
 
                 <Card>
                     <h2 className="text-2xl leading-8 font-bold text-ink mb-4">Delivery Information</h2>
-                    <div className="grid sm:grid-cols-2 gap-4">
-                        <Select id="selectCountry" label="Country/Region" wrapperClassName="sm:col-span-2" {...register("countryOrRegion", { required: true })}>
-                            <option value="Ukraine">Ukraine</option>
-                            <option value="Poland">Poland</option>
-                            <option value="Germany">Germany</option>
-                        </Select>
+                    <div className="grid sm:grid-cols-2 gap-4 mb-4">
                         <Input
                             id="checkout-name" label="Name" autoComplete="given-name" aria-label="name"
                             error={errors.name?.message}
@@ -166,26 +210,54 @@ const CheckoutForm = ({ order, shipping, setShipping }: { order: Order, shipping
                             error={errors.surname?.message}
                             {...register("surname", { required: "Required", pattern: { value: NAME_PATTERN, message: "Please enter a valid surname" } })}
                         />
-                        <Input
-                            id="checkout-city" label="City" autoComplete="address-level2" aria-label="city"
-                            error={errors.city?.message}
-                            {...register("city", { required: "Required", pattern: { value: NAME_PATTERN, message: "Please enter a valid city" } })}
-                        />
-                        <Input
-                            id="checkout-street" label="Street" autoComplete="address-line1" aria-label="street"
-                            error={errors.street?.message}
-                            {...register("street", { required: "Required", pattern: { value: NAME_PATTERN, message: "Please enter a valid street" } })}
-                        />
-                        <Input
-                            id="checkout-house-number" label="House number" autoComplete="off" aria-label="house-number"
-                            error={errors.houseNumber?.message}
-                            {...register("houseNumber", { required: "Required" })}
-                        />
-                        <Input
-                            id="checkout-apartment" label="Apartment number" hint="Optional" autoComplete="off" aria-label="apartment-number"
-                            {...register("apartmentNumbr")}
-                        />
                     </div>
+
+                    {!useManualAddress && addresses.length > 0 ? (
+                        <AddressPicker
+                            addresses={addresses}
+                            selectedId={selectedAddressId}
+                            onSelect={selectAddress}
+                            onUseManual={() => setUseManualAddress(true)}
+                        />
+                    ) : (
+                        <div className="flex flex-col gap-4">
+                            {addresses.length > 0 && (
+                                <button
+                                    type="button"
+                                    onClick={() => setUseManualAddress(false)}
+                                    className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand hover:underline w-fit cursor-pointer"
+                                >
+                                    <MapPin size={14} /> Use a saved address
+                                </button>
+                            )}
+                            <div className="grid sm:grid-cols-2 gap-4">
+                                <Select id="selectCountry" label="Country/Region" wrapperClassName="sm:col-span-2" {...register("countryOrRegion", { required: true })}>
+                                    <option value="Ukraine">Ukraine</option>
+                                    <option value="Poland">Poland</option>
+                                    <option value="Germany">Germany</option>
+                                </Select>
+                                <Input
+                                    id="checkout-city" label="City" autoComplete="address-level2" aria-label="city"
+                                    error={errors.city?.message}
+                                    {...register("city", { required: "Required", pattern: { value: NAME_PATTERN, message: "Please enter a valid city" } })}
+                                />
+                                <Input
+                                    id="checkout-street" label="Street" autoComplete="address-line1" aria-label="street"
+                                    error={errors.street?.message}
+                                    {...register("street", { required: "Required", pattern: { value: NAME_PATTERN, message: "Please enter a valid street" } })}
+                                />
+                                <Input
+                                    id="checkout-house-number" label="House number" autoComplete="off" aria-label="house-number"
+                                    error={errors.houseNumber?.message}
+                                    {...register("houseNumber", { required: "Required" })}
+                                />
+                                <Input
+                                    id="checkout-apartment" label="Apartment number" hint="Optional" autoComplete="off" aria-label="apartment-number"
+                                    {...register("apartmentNumbr")}
+                                />
+                            </div>
+                        </div>
+                    )}
                 </Card>
 
                 <Card>

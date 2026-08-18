@@ -32,13 +32,14 @@ export const Badge = ({ tone = "neutral", className, children, ...rest }: BadgeP
 // Must match the server's Order.status enum (server/models/Order.ts) — "Created"
 // is the real just-placed state; "Processing" was never a value the backend
 // actually sets for orders (that's a Courier application status).
-export type OrderStatus = "Delivering" | "Delivered" | "Created" | "Preparing";
+export type OrderStatus = "Delivering" | "Delivered" | "Created" | "Preparing" | "Cancelled";
 
 const orderStatusTone: Record<OrderStatus, BadgeTone> = {
   Created: "neutral",
   Preparing: "warning",
   Delivering: "info",
   Delivered: "success",
+  Cancelled: "danger",
 };
 
 export const OrderStatusBadge = ({ status }: { status: OrderStatus }) => (

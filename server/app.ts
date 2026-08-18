@@ -13,6 +13,8 @@ import orderRoute from "./routes/orderRoutes";
 import payRoute from "./routes/payRoutes";
 import courierRoute from "./routes/courierRoutes";
 import promocodeRoute from "./routes/promocodeRoutes";
+import ratingRoute from "./routes/ratingRoutes";
+import addressRoute from "./routes/addressRoutes";
 
 import { authMiddleware } from "./middleware/authMiddleware";
 
@@ -47,6 +49,8 @@ app.use("/api/order", orderRoute);
 app.use("/api/payment", payRoute);
 app.use("/api/courier", courierRoute);
 app.use("/api/promocode", promocodeRoute);
+app.use("/api/rating", ratingRoute);
+app.use("/api/address", authMiddleware, addressRoute);
 
 //route for testing auth middleware
 app.get("/api/protected",authMiddleware, async (req: Request, res: Response) => {
