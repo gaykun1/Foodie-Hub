@@ -5,6 +5,9 @@ import Cart from "../models/Cart";
 import { restaurantsSocketsMap } from "../socket";
 import Dish from "../models/Dish";
 import Restaurant from "../models/Restaurant";
+import Courier from "../models/Courier";
+import { computeOrderPricing } from "../utils/pricing";
+import { stripe } from "../utils/stripeClient";
 
 interface CartItem {
     dishId: {
@@ -84,7 +87,11 @@ export const getOrder = async (req: Request, res: Response): Promise<void> => {
 
 export const getOrders = async (req: Request, res: Response): Promise<void> => {
     try {
-        const orders = await Order.find({ userId: (req as AuthRequest).userId });
+        // status: null is an in-progress checkout draft (created but never
+        // confirmed — no address/shipping/payment yet), not a real order the
+        // user has placed. Including it here crashed the client's order-details
+        // view, which assumes every order it's given already has an address.
+        const orders = await Order.find({ userId: (req as AuthRequest).userId, status: { $ne: null } });
         if (orders.length === 0) {
             res.status(404).json("Not found!");
             return;
@@ -260,9 +267,17 @@ export const getNumbers = async (req: Request, res: Response): Promise<void> => 
 
 
 export const getOrdersCourier = async (req: Request, res: Response): Promise<void> => {
-    const id = req.params.id;
     try {
-        const orders = await Order.find({ courierId: id });
+        // Was trusting an :id from the URL despite already being behind
+        // courierMiddleware — any courier could read any other courier's order
+        // history. Order.courierId stores the Courier-application doc id, not
+        // the User id, so it has to be resolved from the authenticated user.
+        const ownCourier = await Courier.findOne({ userId: (req as AuthRequest).userId });
+        if (!ownCourier) {
+            res.status(404).json("Not found!");
+            return;
+        }
+        const orders = await Order.find({ courierId: ownCourier._id });
         if (orders.length === 0) {
             res.status(404).json("Not found!");
             return;
@@ -284,24 +299,57 @@ export const getOrdersCourier = async (req: Request, res: Response): Promise<voi
 
 
 export const updateOrder = async (req: Request, res: Response): Promise<void> => {
-    const { formData, shipping, cartId, totalPrice, percent } = req.body;
+    const { formData, shipping, cartId, percent, paymentIntentId } = req.body;
 
     try {
         if (formData.city && formData.countryOrRegion && formData.houseNumber && formData.street) {
+
+            // totalPrice/discountPercent are recomputed server-side (never trust the
+            // client's numbers — they were previously forwarded straight to the DB
+            // and to Stripe, letting anyone pay whatever they liked for a real order).
+            const pricing = await computeOrderPricing((req as AuthRequest).userId, shipping, percent);
+            if (!pricing) {
+                res.status(404).json("Not found!");
+                return;
+            }
+
+            // The order used to get finalized (sent to the kitchen, sold counts
+            // incremented) as soon as this endpoint was called — BEFORE the client
+            // even attempted stripe.confirmPayment. A declined card, a closed tab,
+            // or a failed 3D Secure challenge still produced a fully "Created",
+            // unpaid order. Now this independently re-checks with Stripe that the
+            // referenced PaymentIntent actually succeeded, and for the exact amount
+            // this order comes to, before touching the order at all.
+            if (!paymentIntentId) {
+                res.status(402).json("Payment not completed");
+                return;
+            }
+            let paymentIntent;
+            try {
+                paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+            } catch {
+                res.status(402).json("Payment not completed");
+                return;
+            }
+            const expectedAmount = Math.round(pricing.totalPrice * 100);
+            if (paymentIntent.status !== "succeeded" || paymentIntent.amount !== expectedAmount) {
+                res.status(402).json("Payment not completed");
+                return;
+            }
 
             const order = await Order.findOneAndUpdate({ status: null, userId: (req as AuthRequest).userId }, {
                 $set: {
                     status: "Created",
                     approxTime: shipping == 2.2 ? 50 : shipping == 3.2 ? 30 : 15,
-                    shippingPrice: shipping,
-                    discountPercent: percent,
+                    shippingPrice: pricing.shippingPrice,
+                    discountPercent: pricing.discountPercent,
                     fullName: (formData.name + " " + formData.surname),
                     "adress.city": formData.city,
                     "adress.countryOrRegion": formData.countryOrRegion,
                     "adress.houseNumber": formData.houseNumber,
                     "adress.apartmentNumbr": formData.apartmentNumbr,
                     "adress.street": formData.street,
-                    totalPrice: totalPrice,
+                    totalPrice: pricing.totalPrice,
                 }
             }, { new: true });
             const cart = await Cart.findOneAndUpdate({ userId: (req as AuthRequest).userId, _id: cartId }, { $set: { restaurantId: null, items: [] } });

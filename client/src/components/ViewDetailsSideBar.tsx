@@ -42,7 +42,12 @@ const ViewDetailsSideBar = ({ viewDetails }: { viewDetails: Order | null }) => {
                     <MapPin size={20} />
                     <div className="flex flex-col">
                         <span>Delivery To:</span>
-                        <span className='font-semibold text-ink'>№{viewDetails.adress.apartmentNumbr != null ? viewDetails.adress.apartmentNumbr : "..."}, {viewDetails.adress.houseNumber} {viewDetails.adress.street}, {viewDetails.adress.city}, {viewDetails.adress.countryOrRegion}</span>
+                        {/* Orders created but not yet checked out have no address yet. */}
+                        <span className='font-semibold text-ink'>
+                            {viewDetails.adress
+                                ? `№${viewDetails.adress.apartmentNumbr != null ? viewDetails.adress.apartmentNumbr : "..."}, ${viewDetails.adress.houseNumber} ${viewDetails.adress.street}, ${viewDetails.adress.city}, ${viewDetails.adress.countryOrRegion}`
+                                : "Not provided yet"}
+                        </span>
                     </div>
                 </div>
             </div>

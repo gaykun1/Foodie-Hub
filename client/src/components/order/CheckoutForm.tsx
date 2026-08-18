@@ -5,14 +5,15 @@ import { useElements, useStripe } from "@stripe/react-stripe-js";
 import axios from "axios";
 import { Lock, Send, Bike, Zap, Clock3 } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { Dispatch, SetStateAction, useCallback, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { convertToSubcurrency } from "@/utils/payment";
 import { Order, Shipping } from "@/redux/reduxTypes";
 import { Card } from "@/components/ui/Card";
 import { Input, Select } from "@/components/ui/Field";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/cn";
+import { savePendingCheckout } from "@/utils/pendingCheckout";
 
 // Letters plus spaces/hyphens/apostrophes/accents — the original
 // /^[A-Za-z]+$/ rejected "New York", "Ivano-Frankivsk" and "O'Brien" in an
@@ -39,6 +40,7 @@ const SHIPPING_OPTIONS: { value: Shipping; label: string; eta: string; icon: typ
 
 const CheckoutForm = ({ order, shipping, setShipping }: { order: Order, shipping: Shipping, setShipping: Dispatch<SetStateAction<Shipping>> }) => {
     const { register, handleSubmit, formState: { errors } } = useForm<FormFields>()
+    const router = useRouter();
     const { user } = useAppSelector(state => state.auth);
     const [clientSecret, setClientSecret] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
@@ -70,7 +72,9 @@ const CheckoutForm = ({ order, shipping, setShipping }: { order: Order, shipping
     const getClientSecret = useCallback(async () => {
         try {
             if (order) {
-                const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/payment/payment-intent`, { amount: convertToSubcurrency((shipping + order.totalPrice) * ((100 - discount) / 100)) });
+                // Server derives the charge amount from the pending order itself — it
+                // won't trust a client-computed total (see server/utils/pricing.ts).
+                const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/payment/payment-intent`, { shipping, percent: discount }, { withCredentials: true });
                 setClientSecret(res.data.clientSecret);
             }
         } catch (err) {
@@ -105,19 +109,32 @@ const CheckoutForm = ({ order, shipping, setShipping }: { order: Order, shipping
             return;
         }
         if (order) {
-            await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/api/order/orders`, { formData, percent: discount, shipping, cartId: cart?._id, totalPrice: parseFloat(((shipping + order.totalPrice) * ((100 - discount) / 100)).toFixed(2)) }, { withCredentials: true });
-            const { error: confirmError } = await stripe.confirmPayment({
+            // The order is only finalized (sent to the kitchen) once the success
+            // page confirms this PaymentIntent actually succeeded — previously it
+            // was finalized right here, before payment was even attempted, so a
+            // declined card or an abandoned 3D Secure challenge still produced a
+            // fully placed, unpaid order. Persisted so the success page can still
+            // finalize it if Stripe has to redirect the browser away for that
+            // challenge (a full navigation loses this component's state).
+            savePendingCheckout(order._id, { formData, shipping, percent: discount, cartId: cart?._id });
+
+            const { error: confirmError, paymentIntent } = await stripe.confirmPayment({
                 elements,
                 clientSecret,
                 confirmParams: {
-                    return_url: `${window.location.origin}/orders/order/success/${((shipping + order.totalPrice) * ((100 - discount) / 100)).toFixed(2)}`
-                }
+                    return_url: `${window.location.origin}/orders/order/success/${order._id}`
+                },
+                redirect: "if_required",
             });
 
             setLoading(false);
-            if (confirmError && confirmError.message) {
-                setError(confirmError.message);
+            if (confirmError) {
+                if (confirmError.message) setError(confirmError.message);
+                return;
             }
+
+            // No redirect was needed (the common case for a plain card) — go finalize.
+            router.push(`/orders/order/success/${order._id}?payment_intent=${paymentIntent?.id ?? ""}`);
         }
     }
 

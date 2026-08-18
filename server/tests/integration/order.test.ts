@@ -9,6 +9,7 @@ import Order, { IOrder, IOrderDocument } from '../../models/Order';
 import Restaurant, { Category, IRestaurantDocument } from '../../models/Restaurant';
 import Dish, { IDishDocument } from '../../models/Dish';
 import Courier, { ICourierDocument } from '../../models/Courier';
+import { stripe } from '../../utils/stripeClient';
 let mongo: MongoMemoryServer;
 
 beforeAll(async () => {
@@ -210,6 +211,23 @@ describe("order api", () => {
             expect(res.body).toBe("Not found!");
         })
 
+        it("excludes in-progress checkout drafts (status: null) — they have no address yet and aren't a real order", async () => {
+            await Order.deleteMany({});
+            await Order.create({
+                userId: user._id,
+                items: [{ title: dish.title, imageUrl: dish.imageUrl, price: dish.price, amount: 1 }],
+                restaurantTitle: restaurant1.title,
+                restaurantImage: restaurant1.imageUrl,
+                approxTime: 0,
+                totalPrice: dish.price,
+                status: null,
+            });
+
+            const res = await request(app).get("/api/order/orders")
+                .set("Cookie", `token=${userToken}`);
+
+            expect(res.status).toBe(404);
+        })
 
         it("500 server error order find", async () => {
             jest.spyOn(Order, "find").mockImplementationOnce(() => {
@@ -223,6 +241,87 @@ describe("order api", () => {
             jest.restoreAllMocks();
         })
 
+    })
+    describe("update order (checkout)", () => {
+        const validFormData = { city: "Kyiv", countryOrRegion: "Ukraine", houseNumber: "3", street: "Shevchenko", name: "A", surname: "B" };
+
+        beforeEach(async () => {
+            await Order.create({
+                userId: user._id,
+                items: [{ title: dish.title, imageUrl: dish.imageUrl, price: dish.price, amount: 3 }],
+                restaurantTitle: restaurant1.title,
+                restaurantImage: restaurant1.imageUrl,
+                approxTime: 0,
+                totalPrice: 96,
+                status: null,
+                courierId: null,
+            });
+        });
+
+        afterEach(() => {
+            jest.restoreAllMocks();
+        });
+
+        it("recomputes totalPrice/discount from the order's own items, ignoring a tampered client total and discount", async () => {
+            // subtotal (32 * 3 = 96) + shipping 2.2 = 98.2 -> 9820 cents; the mocked
+            // PaymentIntent must match that exactly, mirroring what Stripe would
+            // actually report for a real successful charge of this order.
+            jest.spyOn(stripe.paymentIntents, "retrieve").mockResolvedValueOnce({ status: "succeeded", amount: 9820 } as any);
+
+            const res = await request(app).patch("/api/order/orders")
+                .set("Cookie", `token=${userToken}`)
+                .send({ formData: validFormData, shipping: 2.2, cartId: cart._id, percent: 90, totalPrice: 0.01, paymentIntentId: "pi_test_ok" });
+
+            expect(res.status).toBe(200);
+            const saved = await Order.findOne({ userId: user._id, status: "Created" });
+            // subtotal (32 * 3 = 96) + shipping 2.2, discount clamped to 0 since this user holds no promocode
+            expect(saved?.totalPrice).toBeCloseTo(98.2, 2);
+            expect(saved?.discountPercent).toBe(0);
+        });
+
+        it("won't finalize the order without a paymentIntentId at all", async () => {
+            const res = await request(app).patch("/api/order/orders")
+                .set("Cookie", `token=${userToken}`)
+                .send({ formData: validFormData, shipping: 2.2, cartId: cart._id, percent: 0 });
+
+            expect(res.status).toBe(402);
+            const saved = await Order.findOne({ userId: user._id, status: "Created" });
+            expect(saved).toBeNull();
+        });
+
+        it("won't finalize the order if the PaymentIntent hasn't actually succeeded (declined card, abandoned 3DS, etc.)", async () => {
+            jest.spyOn(stripe.paymentIntents, "retrieve").mockResolvedValueOnce({ status: "requires_payment_method", amount: 9820 } as any);
+
+            const res = await request(app).patch("/api/order/orders")
+                .set("Cookie", `token=${userToken}`)
+                .send({ formData: validFormData, shipping: 2.2, cartId: cart._id, percent: 0, paymentIntentId: "pi_test_declined" });
+
+            expect(res.status).toBe(402);
+            const saved = await Order.findOne({ userId: user._id, status: "Created" });
+            expect(saved).toBeNull();
+        });
+
+        it("won't finalize the order if the PaymentIntent's paid amount doesn't match this order's real total (stale/mismatched intent)", async () => {
+            jest.spyOn(stripe.paymentIntents, "retrieve").mockResolvedValueOnce({ status: "succeeded", amount: 1 } as any);
+
+            const res = await request(app).patch("/api/order/orders")
+                .set("Cookie", `token=${userToken}`)
+                .send({ formData: validFormData, shipping: 2.2, cartId: cart._id, percent: 0, paymentIntentId: "pi_test_mismatch" });
+
+            expect(res.status).toBe(402);
+            const saved = await Order.findOne({ userId: user._id, status: "Created" });
+            expect(saved).toBeNull();
+        });
+
+        it("rejects a shipping price outside the whitelisted options", async () => {
+            const res = await request(app).patch("/api/order/orders")
+                .set("Cookie", `token=${userToken}`)
+                .send({ formData: validFormData, shipping: 0.01, cartId: cart._id, percent: 0 });
+
+            expect(res.status).not.toBe(200);
+            const saved = await Order.findOne({ userId: user._id, status: "Created" });
+            expect(saved).toBeNull();
+        });
     })
     describe("get order by id", () => {
 
@@ -427,7 +526,7 @@ describe("order api", () => {
         })
 
         it("200 getting", async () => {
-            const res = await request(app).get(`/api/order/couriers/${courier._id}/orders`)
+            const res = await request(app).get(`/api/order/couriers/orders`)
                 .set("Cookie", `token=${courierToken}`);
 
             expect(res.status).toBe(200);
@@ -435,7 +534,7 @@ describe("order api", () => {
         });
         it("404 not found", async () => {
             await Order.deleteMany({});
-            const res = await request(app).get(`/api/order/couriers/${courier._id}/orders`)
+            const res = await request(app).get(`/api/order/couriers/orders`)
                 .set("Cookie", `token=${courierToken}`);
 
             expect(res.status).toBe(404);
@@ -447,7 +546,7 @@ describe("order api", () => {
             jest.spyOn(Order, "find").mockImplementationOnce(() => {
                 throw new Error("DB error");
             });
-            const res = await request(app).get(`/api/order/couriers/${courier._id}/orders`)
+            const res = await request(app).get(`/api/order/couriers/orders`)
                 .set("Cookie", `token=${courierToken}`);
 
             expect(res.status).toBe(500);

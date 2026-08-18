@@ -16,7 +16,8 @@ orderRoute.get("/orders/statistics", dashboardMiddleware, getNumbers);
 orderRoute.get("/restaurants/:id/orders/recent", restaurantMiddleware, getLastSevenOrders);
 orderRoute.patch("/orders/:id/status", restaurantMiddleware, toggleToPreparing);
 orderRoute.get("/orders/:id/created", restaurantMiddleware, getOrdersCreated);
-orderRoute.get("/couriers/:id/orders", courierMiddleware, getOrdersCourier);
+// Scoped to the caller's own courier profile — no id needed in the URL.
+orderRoute.get("/couriers/orders", courierMiddleware, getOrdersCourier);
 orderRoute.get("/free-orders/:city", courierMiddleware, getFreeOrders);
 orderRoute.get("/orders/:id", authMiddleware, getOrder);
 
