@@ -7,7 +7,10 @@ test('Login if not and add food to cart and go to order page', async ({ page }) 
         await page.fill("#label1", "user2");
         await page.fill("#label2", "12345678Bb");
 
-        await page.getByText("Log in").click();
+        // getByText("Log in") became ambiguous after the auth-screen redesign
+        // added marketing copy ("Log in to track orders...") and a heading
+        // ("Log in to your account") that both also match that substring.
+        await page.getByRole("button", { name: "Log in", exact: true }).click();
         await page.waitForURL("**/");
     }
     await page.getByTestId("cart").click();
@@ -18,6 +21,11 @@ test('Login if not and add food to cart and go to order page', async ({ page }) 
         await cartItems.nth(i).click();
 
     }
+    // The cart drawer redesign added a modal backdrop that intercepts clicks to
+    // the page behind it — emptying the cart doesn't auto-close the drawer, so
+    // this has to dismiss it explicitly (Escape, per useDismissable) before
+    // interacting with anything else on the page.
+    await page.keyboard.press("Escape");
     await page.getByText("View Menu").click();
     const addToCartButton = page.getByText("Add to cart").first();
     await addToCartButton.click();
