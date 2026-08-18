@@ -4,7 +4,6 @@ const MapTracker = dynamic(() => import('@/components/order/MapTracker'), {
 })
 import OrderCard from '@/components/order/OrderCard';
 import ViewDetailsSideBar from '@/components/ViewDetailsSideBar';
-import { useAppSelector } from '@/hooks/reduxHooks';
 import { Order } from '@/redux/reduxTypes'
 import axios from 'axios';
 import { ChevronDown, ChevronsRight, Map, PackageSearch } from 'lucide-react';
@@ -23,11 +22,10 @@ const Page = () => {
   const [socket, setSocket] = useState<Socket | null>(null);
   const [viewDetails, setViewDetails] = useState<Order | null>(null);
   const [courierLocation, setCourierLocation] = useState<[number, number] | null>(null);
-  const { user } = useAppSelector((state) => state.auth);
   const [activeSidebar, setActiveSidebar] = useState<boolean>(false);
 
   useEffect(() => {
-    const sock = io(`${process.env.NEXT_PUBLIC_API_URL}`);
+    const sock = io(`${process.env.NEXT_PUBLIC_API_URL}`, { withCredentials: true });
     setSocket(sock);
     return () => { sock.disconnect(); }
   }, []);
@@ -59,7 +57,8 @@ const Page = () => {
       );
 
       activeOrders.forEach(order => {
-        socket.emit("joinOrder", { orderId: order._id, userId: user?._id });
+        // Server now identifies the joiner from their auth cookie, not this userId.
+        socket.emit("joinOrder", { orderId: order._id });
       });
 
       const handleLocationUpdate = ({ lat, lng }: { lat: number; lng: number }) => {
