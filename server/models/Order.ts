@@ -57,4 +57,12 @@ const OrderSchema = new Schema<IOrder>({
 
 }, { timestamps: true });
 
+// The "does this user already have a pending order" lookup runs on nearly
+// every cart/checkout request.
+OrderSchema.index({ userId: 1, status: 1 });
+// Restaurant dashboards (incoming/recent orders, weekly stats) filter by title
+// + status; couriers filter free/assigned orders by courierId + status.
+OrderSchema.index({ restaurantTitle: 1, status: 1 });
+OrderSchema.index({ courierId: 1, status: 1 });
+
 export default mongoose.model('Order', OrderSchema);

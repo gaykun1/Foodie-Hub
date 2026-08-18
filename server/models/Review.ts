@@ -17,4 +17,8 @@ const ReviewSchema = new Schema<IReview>({
   restaurantId: { type: Schema.Types.ObjectId, required: true, ref: "Restaurant" }
 }, { timestamps: true });
 
+// Backs the paginated/recent per-restaurant review listings, which filter by
+// restaurantId and sort by updatedAt.
+ReviewSchema.index({ restaurantId: 1, updatedAt: -1 });
+
 export default mongoose.model('Review', ReviewSchema);
