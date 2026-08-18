@@ -1,6 +1,6 @@
 "use client"
 import React from "react";
-import { ChevronDown, FileUser, Heart, Home, ListOrdered, Percent, Plus, SquareRoundCorner, User, Utensils } from "lucide-react"
+import { ChevronDown, FileUser, Heart, Home, ListOrdered, MapPin, Percent, Plus, SquareRoundCorner, User, Utensils } from "lucide-react"
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useDisclosure } from "@/hooks/useDisclosure";
@@ -28,6 +28,7 @@ export const restaurantNavItems: SideNavItem[] = [
 
 export const profileNavItems: SideNavItem[] = [
     { href: '/profile', label: 'Profile', icon: <User size={18} /> },
+    { href: '/profile/addresses', label: 'Saved Addresses', icon: <MapPin size={18} /> },
     { href: '/profile/favourites', label: 'Favorite Restaurants', icon: <Heart size={18} /> },
 ];
 
