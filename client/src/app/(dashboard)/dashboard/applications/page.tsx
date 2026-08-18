@@ -42,7 +42,7 @@ const Page = () => {
     const toggleApplication = async (status: string, id: string) => {
         try {
             setActingId(id);
-            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/courier/applications/${id}`, { status });
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/courier/applications/${id}`, { status }, { withCredentials: true });
             if (res) {
                 setApplications((prev) => prev?.filter((item) => item._id !== id) || []);
             }

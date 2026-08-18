@@ -35,7 +35,7 @@ const Page = () => {
     const handleTextAbout = async () => {
         try {
             setSaving(true);
-            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/restaurants/${id}/about`, { id, info: draft });
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/restaurants/${id}/about`, { id, info: draft }, { withCredentials: true });
             setInfo(res.data);
             setActive(false);
             toast.success("About info saved");

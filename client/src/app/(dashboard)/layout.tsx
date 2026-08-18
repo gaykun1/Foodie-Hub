@@ -9,12 +9,18 @@ import { ButtonLink } from "@/components/ui/Button";
 import { ShieldAlert } from "lucide-react";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const pathname = usePathname();
+  // The only way a plain logged-in user ever becomes a "restaurant" account is
+  // by submitting this page (it's what links them to a new restaurant) — so it
+  // can't require the role it's the one thing that grants.
+  const isOnboardingRoute = pathname === "/dashboard/create";
   const [role, setRole] = useState<string | null>(null);
   // Starts true: without it, the very first render (before checkRole
   // resolves) sees loading=false and role=null and briefly flashes
@@ -41,7 +47,10 @@ export default function RootLayout({
     return <PageSpinner />;
   }
 
-  if (role !== "admin" && role !== "restaurant") {
+  const isManagedRole = role === "admin" || role === "restaurant";
+  const isAuthorized = isOnboardingRoute ? role !== null : isManagedRole;
+
+  if (!isAuthorized) {
     return (
       <div className="min-h-screen flex flex-col">
         <Header />
@@ -49,7 +58,7 @@ export default function RootLayout({
           <EmptyState
             icon={<ShieldAlert size={22} />}
             title="Access denied"
-            description="You need an admin or restaurant account to view this page."
+            description={role === null ? "Please log in to continue." : "You need an admin or restaurant account to view this page."}
             action={<ButtonLink href="/">Back to home</ButtonLink>}
           />
         </div>
@@ -65,7 +74,7 @@ export default function RootLayout({
         <Header />
         <div className="_container flex-1">
           <div className="flex gap-6 py-6">
-            <SideNav items={role === "admin" ? adminNavItems : restaurantNavItems} />
+            {isManagedRole && <SideNav items={role === "admin" ? adminNavItems : restaurantNavItems} />}
             <div className="grow min-w-0">
               <div className="border border-border rounded-lg p-6 flex flex-col bg-surface">
                 {children}
