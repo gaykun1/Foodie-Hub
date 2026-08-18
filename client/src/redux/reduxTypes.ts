@@ -87,7 +87,7 @@ export type Order = {
     totalPrice: number,
     createdAt: Date,
     courierId: string,
-    status: "Delivering" | "Delivered" | "Created" | "Preparing",
+    status: "Delivering" | "Delivered" | "Created" | "Preparing" | "Cancelled",
     approxTime: number,
     fullName: string,
     adress: {
@@ -96,7 +96,32 @@ export type Order = {
         houseNumber: number,
         street: string,
         apartmentNumbr?: number;
-    }
+    },
+    cancelledAt?: string | null,
+    cancelledBy?: "customer" | "restaurant" | "admin" | null,
+    cancelReason?: string | null,
+    refundedAt?: string | null,
+}
+
+export type Address = {
+    _id: string,
+    label: string,
+    street: string,
+    houseNumber: number,
+    apartmentNumbr?: number | null,
+    city: string,
+    countryOrRegion: string,
+    isDefault: boolean,
+}
+
+export type OrderRating = {
+    _id: string,
+    orderId: string,
+    sender: string,
+    restaurantRating: number,
+    courierRating?: number | null,
+    comment?: string | null,
+    courierId?: string | null,
 }
 
 

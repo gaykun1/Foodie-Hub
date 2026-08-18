@@ -4,9 +4,10 @@ const MapTracker = dynamic(() => import('@/components/order/MapTracker'), {
 })
 import OrderCard from '@/components/order/OrderCard';
 import ViewDetailsSideBar from '@/components/ViewDetailsSideBar';
+import RateOrderModal from '@/components/order/RateOrderModal';
 import { Order } from '@/redux/reduxTypes'
 import axios from 'axios';
-import { ChevronDown, ChevronsRight, Map, PackageSearch } from 'lucide-react';
+import { ChevronDown, ChevronsRight, Map, PackageSearch, Star, X } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import { useEffect, useMemo, useState } from 'react'
 import { io, Socket } from 'socket.io-client';
@@ -14,6 +15,7 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { PageSpinner } from '@/components/ui/Spinner';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { useToast } from '@/components/ui/Toast';
 import { cn } from '@/lib/cn';
 
 const Page = () => {
@@ -23,6 +25,10 @@ const Page = () => {
   const [viewDetails, setViewDetails] = useState<Order | null>(null);
   const [courierLocation, setCourierLocation] = useState<[number, number] | null>(null);
   const [activeSidebar, setActiveSidebar] = useState<boolean>(false);
+  const [cancellingId, setCancellingId] = useState<string | null>(null);
+  const [ratedOrderIds, setRatedOrderIds] = useState<Set<string>>(new Set());
+  const [ratingOrder, setRatingOrder] = useState<Order | null>(null);
+  const toast = useToast();
 
   useEffect(() => {
     const sock = io(`${process.env.NEXT_PUBLIC_API_URL}`, { withCredentials: true });
@@ -87,13 +93,59 @@ const Page = () => {
     }
   }, [orders])
 
-  const currentOrders = useMemo(() => orders?.filter(order => order.status !== "Delivered"), [orders])
-  const pastOrders = useMemo(() => orders?.filter(order => order.status === "Delivered"), [orders])
+  const currentOrders = useMemo(() => orders?.filter(order => order.status !== "Delivered" && order.status !== "Cancelled"), [orders])
+  const pastOrders = useMemo(() => orders?.filter(order => order.status === "Delivered" || order.status === "Cancelled"), [orders])
+  const deliveredOrderIds = useMemo(() => orders?.filter(order => order.status === "Delivered").map(order => order._id).join(",") ?? "", [orders])
+
+  useEffect(() => {
+    if (!deliveredOrderIds) return;
+    const ids = deliveredOrderIds.split(",");
+    const checkRatings = async () => {
+      const results = await Promise.all(ids.map(async (id) => {
+        try {
+          const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/rating/orders/${id}/rating`, { withCredentials: true });
+          return res.data ? id : null;
+        } catch {
+          return null;
+        }
+      }));
+      setRatedOrderIds(new Set(results.filter((id): id is string => id !== null)));
+    };
+    checkRatings();
+  }, [deliveredOrderIds]);
+
+  const cancelOrder = async (order: Order) => {
+    try {
+      setCancellingId(order._id);
+      await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/api/order/orders/${order._id}/cancel`, {}, { withCredentials: true });
+      setOrders((prev) => prev?.map(o => o._id === order._id ? { ...o, status: "Cancelled" } : o));
+      toast.success("Order cancelled and refunded");
+    } catch (err) {
+      console.error(err);
+      toast.error("Couldn't cancel this order. Please try again.");
+    } finally {
+      setCancellingId(null);
+    }
+  };
 
   const orderActions = (order: Order) => (
     <>
+      {order.status === "Created" && (
+        <Button
+          variant="danger" size="sm" icon={<X size={16} />}
+          loading={cancellingId === order._id}
+          onClick={() => cancelOrder(order)}
+        >
+          Cancel order
+        </Button>
+      )}
       {order.status === "Delivering" && (
         <Button variant="outline" size="sm">Track order</Button>
+      )}
+      {order.status === "Delivered" && !ratedOrderIds.has(order._id) && (
+        <Button variant="outline" size="sm" icon={<Star size={16} />} onClick={() => setRatingOrder(order)}>
+          Rate order
+        </Button>
       )}
       <Button variant="secondary" size="sm" icon={<ChevronsRight size={16} />} onClick={() => setViewDetails(order)}>
         View Details
@@ -181,6 +233,15 @@ const Page = () => {
         </div>
       ) : (
         <EmptyState icon={<PackageSearch size={22} />} title="No orders yet" description="Browse restaurants to place your first order." />
+      )}
+
+      {ratingOrder && (
+        <RateOrderModal
+          order={ratingOrder}
+          open={!!ratingOrder}
+          onClose={() => setRatingOrder(null)}
+          onSubmitted={() => setRatedOrderIds((prev) => new Set(prev).add(ratingOrder._id))}
+        />
       )}
     </div>
   )
