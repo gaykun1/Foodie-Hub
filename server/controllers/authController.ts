@@ -7,11 +7,18 @@ import jwt from "jsonwebtoken";
 // Using middleware that returns userId
 import { AuthRequest } from "../middleware/authMiddleware";
 import dotenv from "dotenv";
+import { PASSWORD_POLICY, PASSWORD_POLICY_MESSAGE } from "../utils/password";
 dotenv.config();
 // Signing with bcrypt for hashing password
 export const signup = async (req: Request, res: Response): Promise<void> => {
     const { username, password } = req.body;
     try {
+        // The signup form already enforces this client-side, but nothing stopped
+        // a direct API call from setting an arbitrarily weak (or empty) password.
+        if (!PASSWORD_POLICY.test(password ?? "")) {
+            res.status(400).json({ message: PASSWORD_POLICY_MESSAGE });
+            return;
+        }
         const usedUsername = await User.findOne({ username: username });
         if (usedUsername) {
             res.status(403).json({ message: `Username is already taken!` });
@@ -143,6 +150,10 @@ export const updateProfile = async (req: Request, res: Response): Promise<void> 
                 isGood = (payload.newPassword === payload.newPasswordAgain);
                 if (!isGood) {
                     res.status(400).json("Wrong password!");
+                    return;
+                }
+                if (!PASSWORD_POLICY.test(payload.newPassword)) {
+                    res.status(400).json(PASSWORD_POLICY_MESSAGE);
                     return;
                 }
                 const hashedPassword = await bcrypt.hash(payload.newPassword, 10);

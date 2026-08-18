@@ -259,6 +259,15 @@ describe("cart api", () => {
             expect(res.body.restaurantId._id).toBe(restaurant._id.toString());
 
         })
+        it("201 creates the cart on the fly if the user doesn't have one yet", async () => {
+            await Cart.deleteMany({});
+
+            const res = await request(app).post("/api/cart/items")
+                .set("Cookie", `token=${validToken}`).send({ id: dish._id });
+
+            expect(res.status).toBe(201);
+            expect(res.body.items.length).toBe(1);
+        })
         it("500 cart findOne", async () => {
             jest.spyOn(Cart, "findOne").mockImplementationOnce(() => {
                 throw new Error("DB error");
