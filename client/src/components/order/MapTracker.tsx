@@ -16,79 +16,58 @@ const MapTracker = ({ isWorking, socket, courierLocation }: { isWorking: Order |
     const [receiverLocation, setReceiverLocation] = useState<[number, number] | null>(null);
     const [loadingLocation, setLoadingLocation] = useState<boolean>(true);
 
-    // connecting to socket room, geocoding receiver adress
+    // Resolve both endpoints whenever the selected live order changes.
     useEffect(() => {
-        if (socket && isWorking) {
-            const geoCode = async () => {
-                try {
-                    await getRestaurentLocation();
-                    await getReceiverLocation();
-                } catch (err) {
-                    console.error(err);
-                } finally {
-                    setLoadingLocation(false);
+        if (!socket || !isWorking) return;
+        let cancelled = false;
+        setLoadingLocation(true);
 
+        const geocode = async (address: string): Promise<[number, number]> => {
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/geocode`, { params: { q: address } });
+            const first = response.data?.[0];
+            if (!first) throw new Error(`No map result for ${address}`);
+            return [Number(first.lat), Number(first.lon)];
+        };
+
+        const resolveLocations = async () => {
+            try {
+                const restaurantResponse = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/restaurants/${isWorking.restaurantTitle}/address`);
+                const restaurantAddress = restaurantResponse.data.adress;
+                const [restaurant, receiver] = await Promise.all([
+                    geocode(`${restaurantAddress.street} ${restaurantAddress.houseNumber}, ${restaurantAddress.city}`),
+                    geocode(`${isWorking.adress.street} ${isWorking.adress.houseNumber}, ${isWorking.adress.city}`),
+                ]);
+                if (!cancelled) {
+                    setRestaurantLocation(restaurant);
+                    setReceiverLocation(receiver);
                 }
-
+            } catch (err) {
+                console.error(err);
+            } finally {
+                if (!cancelled) setLoadingLocation(false);
             }
+        };
 
-            geoCode();
-
-        }
+        void resolveLocations();
+        return () => { cancelled = true; };
     }, [socket, isWorking]);
 
-    const isReady =
-        !loadingLocation &&
-        courierLocation &&
-        receiverLocation &&
-        restaurantLocation;
-
-    // geocoding funcs -- latitude longitude for marker position on the map
-    const getRestaurentLocation = async () => {
-        try {
-            if (isWorking) {
-                const res1 = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/restaurants/${isWorking.restaurantTitle}/address`);
-                const adress = res1.data.adress;
-                const address = `${adress.street} ${adress.houseNumber}, ${adress.city}`;
-                const res2 = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/geocode?q=${address}`)
-
-                const lat = res2.data[0].lat;
-                const lng = res2.data[0].lon;
-                setRestaurantLocation([lat, lng]);
-            }
-
-        } catch (err) {
-            console.error(err);
-        }
-    }
-    const getReceiverLocation = async () => {
-        try {
-            if (isWorking) {
-                const address = `${isWorking.adress.street} ${isWorking.adress.houseNumber}, ${isWorking.adress.city}`;
-                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/geocode?q=${address}`)
-                const data = await res.json();
-                const lat = data[0].lat;
-                const lng = data[0].lon;
-                setReceiverLocation([lat, lng]);
-            }
-        } catch (err) {
-            console.error(err);
-        } finally {
-        }
-    }
-
+    // Preparing orders do not have a courier location yet. The route endpoints
+    // are still useful, so show the map as soon as those are available and add
+    // the courier marker later when the socket publishes it.
+    const isReady = !loadingLocation && receiverLocation && restaurantLocation;
 
     return (<>
 
         {
-            !isReady ? <PageSpinner /> : courierLocation != null && receiverLocation != null && restaurantLocation != null &&
+            !isReady ? <div className="flex h-full min-h-64 items-center justify-center bg-sand-100"><PageSpinner /></div> : receiverLocation != null && restaurantLocation != null &&
                 // container
                 <MapContainer className='h-full w-full rounded-lg' zoom={15} center={receiverLocation} >
                     <InvalidateMapSize /> {/* for prerendered map size  */}
                     <TileLayer attribution='copy& Copyright openStreetMap ' url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' />
                     <Marker position={receiverLocation} icon={receiverIcon} /> {/*Marker for receiver*/}
                     <Marker position={restaurantLocation} icon={restaurantIcon} /> {/*Marker for restaurant*/}
-                    <Marker position={courierLocation} icon={courierIcon} /> {/*Marker for courier*/}
+                    {courierLocation ? <Marker position={courierLocation} icon={courierIcon} /> : null} {/*Marker for courier*/}
                 </MapContainer >
 
 

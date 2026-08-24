@@ -3,7 +3,7 @@ import PaymentCard from "@/components/order/PaymentCard";
 import { useAppSelector } from "@/hooks/reduxHooks"
 import { useElements, useStripe } from "@stripe/react-stripe-js";
 import axios from "axios";
-import { Lock, Send, Bike, Zap, Clock3, MapPin } from "lucide-react";
+import { BadgeCheck, Lock, Send, Bike, Zap, Clock3, MapPin, Store } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Dispatch, SetStateAction, useCallback, useEffect, useState } from "react";
@@ -190,15 +190,30 @@ const CheckoutForm = ({ order, shipping, setShipping }: { order: Order, shipping
     const total = (shipping + order.totalPrice) * ((100 - discount) / 100);
 
     return (
-        <section className="flex flex-col md:flex-row gap-8 mt-10 md:items-start mb-12">
-            <div className="md:basis-[700px] lg:basis-[886px] grow-0 flex flex-col gap-8">
+        <section className="mt-8 mb-12">
+            <header className="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+                <div><p className="text-xs font-extrabold uppercase tracking-[.16em] text-brand">Secure checkout</p><h1 className="mt-1 font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">One last step to dinner</h1><p className="mt-2 text-sm leading-6 text-inkMuted">Review your order, delivery details, and payment before the kitchen starts cooking.</p></div>
+                <span className="flex items-center gap-2 rounded-[var(--radius-md)] bg-teal-100 px-4 py-3 text-sm font-bold text-teal-800"><BadgeCheck size={18} />Encrypted payment</span>
+            </header>
+
+            <div className="grid items-start gap-5 lg:grid-cols-[minmax(0,1fr)_24rem]">
+            <div className="flex min-w-0 flex-col gap-4">
                 <Card>
-                    <h2 className="text-2xl leading-8 font-bold text-ink">Your Details</h2>
-                    <p className="text-inkMuted mt-1">{user?.email ? user.email : user?.username}</p>
+                    <div className="flex items-center justify-between gap-4"><div className="flex items-center gap-3"><span className="flex size-11 items-center justify-center rounded-[var(--radius-md)] bg-ember-50 text-brand"><Store size={20} /></span><div><h2 className="font-display text-lg font-extrabold text-ink">{order.restaurantTitle}</h2><p className="mt-0.5 text-xs text-inkMuted">Estimated delivery · {order.approxTime || "20–40"} min</p></div></div><span className="text-sm font-bold text-brand">{order.items.length} items</span></div>
+                    <div className="mt-5 divide-y divide-border">
+                        {order.items.map((item, idx) => (
+                            <div key={`${item.title}-${idx}`} className="grid grid-cols-[4rem_minmax(0,1fr)_auto_auto] items-center gap-4 py-4">
+                                <div className="relative size-16 overflow-hidden rounded-[var(--radius-md)] bg-sand-100"><Image src={item.imageUrl} alt={item.title} fill sizes="64px" className="object-cover" /></div>
+                                <div className="min-w-0"><h3 className="truncate text-sm font-bold text-ink">{item.title}</h3><p className="mt-1 text-xs text-inkMuted">Quantity: {item.amount}</p></div>
+                                <span className="rounded-[var(--radius-sm)] border border-border px-3 py-1.5 text-sm font-bold text-ink">× {item.amount}</span>
+                                <p className="w-16 text-right text-sm font-extrabold text-ink">${item.price.toFixed(2)}</p>
+                            </div>
+                        ))}
+                    </div>
                 </Card>
 
                 <Card>
-                    <h2 className="text-2xl leading-8 font-bold text-ink mb-4">Delivery Information</h2>
+                    <div className="mb-5 flex items-center justify-between gap-4"><div><h2 className="text-xl font-bold text-ink">Delivery information</h2><p className="mt-1 text-sm text-inkMuted">Ordering as {user?.email || user?.username}</p></div><MapPin className="text-brand" size={20} /></div>
                     <div className="grid sm:grid-cols-2 gap-4 mb-4">
                         <Input
                             id="checkout-name" label="Name" autoComplete="given-name" aria-label="name"
@@ -261,17 +276,18 @@ const CheckoutForm = ({ order, shipping, setShipping }: { order: Order, shipping
                 </Card>
 
                 <Card>
-                    <h2 className="text-2xl leading-8 font-bold text-ink mb-3">Shipping Method</h2>
-                    <div className="flex flex-col gap-3">
+                    <h2 className="text-xl font-bold text-ink mb-1">Delivery speed</h2>
+                    <p className="mb-4 text-sm text-inkMuted">Choose the timing that works for you.</p>
+                    <div className="grid gap-3 sm:grid-cols-3">
                         {SHIPPING_OPTIONS.map(({ value, label, eta, icon: Icon, ariaLabel }) => (
                             <label
                                 key={value}
                                 className={cn(
-                                    "flex items-center justify-between gap-3 py-3 px-4 rounded-md border cursor-pointer transition-colors",
+                                    "flex cursor-pointer flex-col gap-3 rounded-[var(--radius-md)] border p-4 transition-colors",
                                     shipping === value ? "border-brand bg-ember-50" : "border-border hover:bg-surfaceRaised"
                                 )}
                             >
-                                <div className="flex items-center gap-3">
+                                <div className="flex items-center justify-between gap-3">
                                     <input
                                         aria-label={ariaLabel}
                                         checked={shipping === value}
@@ -280,12 +296,9 @@ const CheckoutForm = ({ order, shipping, setShipping }: { order: Order, shipping
                                         name="shipping"
                                         className="accent-brand cursor-pointer size-4"
                                     />
-                                    <Icon size={18} className="text-brand shrink-0" />
-                                    <div className="flex flex-col gap-0.5 text-sm font-medium">
-                                        <span className="text-ink">{label}</span>
-                                        <span className="text-inkMuted">{eta}</span>
-                                    </div>
+                                    <Icon size={19} className="text-brand shrink-0" />
                                 </div>
+                                <div className="flex flex-col gap-0.5 text-sm font-medium"><span className="text-ink">{label}</span><span className="text-xs text-inkMuted">{eta}</span></div>
                                 <span className="text-sm text-ink font-semibold">${value.toFixed(2)}</span>
                             </label>
                         ))}
@@ -295,24 +308,8 @@ const CheckoutForm = ({ order, shipping, setShipping }: { order: Order, shipping
                 {order && (<PaymentCard clientSecret={clientSecret} />)}
             </div>
 
-            <Card className="w-full md:w-auto py-10 px-6 lg:px-10">
-                <h2 className="text-2xl leading-8 font-bold text-ink mb-5">Order Summary</h2>
-                <div className="flex flex-col gap-6 pb-6 border-b border-border mb-6">
-                    {order?.items.map((item, idx) => (
-                        <div key={idx} className="flex items-center w-full justify-between gap-3">
-                            <div className="flex gap-4 items-center min-w-0">
-                                <div className="relative size-16 shrink-0 rounded-lg overflow-hidden border border-border bg-sand-100">
-                                    <Image src={item.imageUrl} alt={item.title} fill sizes="64px" className="object-cover" />
-                                </div>
-                                <div className="min-w-0">
-                                    <h3 className="font-medium text-ink truncate">{item.title}</h3>
-                                    <p className="text-sm leading-5 text-inkMuted">Quantity: {item.amount}</p>
-                                </div>
-                            </div>
-                            <p className="font-semibold text-ink shrink-0">${item.price.toFixed(2)}</p>
-                        </div>
-                    ))}
-                </div>
+            <Card className="sticky top-24 w-full shadow-elevation3">
+                <h2 className="font-display text-xl font-extrabold text-ink mb-5">Order summary</h2>
                 <div className="flex flex-col gap-2">
                     <div className="flex items-center justify-between text-sm">
                         <span className="text-inkMuted">Subtotal</span>
@@ -327,9 +324,10 @@ const CheckoutForm = ({ order, shipping, setShipping }: { order: Order, shipping
                         <span className={cn("text-ink", discount > 0 && "text-accent font-semibold")}>{discount}%</span>
                     </div>
                 </div>
-                <div className="mt-4 mb-6 text-lg leading-7 font-bold flex items-center justify-between text-ink">
+                <div className="my-5 border-t border-dashed border-border" />
+                <div className="mb-6 flex items-end justify-between text-ink">
                     <span>Total</span>
-                    <span>${total.toFixed(2)}</span>
+                    <span className="font-display text-3xl font-extrabold">${total.toFixed(2)}</span>
                 </div>
                 <div className="flex flex-col gap-1">
                     <label htmlFor="promocode-input" className="text-sm font-medium text-ink">Promocode</label>
@@ -353,7 +351,7 @@ const CheckoutForm = ({ order, shipping, setShipping }: { order: Order, shipping
                         loading={loading}
                         fullWidth
                         size="lg"
-                        className="max-w-[328px]"
+                        className="max-w-none"
                     >
                         {loading ? "Processing..." : "Place Order"}
                     </Button>
@@ -363,6 +361,7 @@ const CheckoutForm = ({ order, shipping, setShipping }: { order: Order, shipping
                     {error && <span className="text-sm font-medium text-danger">{error}</span>}
                 </div>
             </Card>
+            </div>
         </section>
     )
 }

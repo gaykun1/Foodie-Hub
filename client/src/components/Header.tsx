@@ -7,7 +7,7 @@ import axios from "axios"
 import { Menu, Minus, Plus, ShoppingCart, ShoppingBag, UserRound, LogOut } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
-import { redirect } from "next/navigation"
+import { redirect, usePathname } from "next/navigation"
 import React, { useRef } from "react"
 import { SearchCommand } from "./SearchCommand"
 import { ThemeToggle } from "./ui/ThemeToggle"
@@ -25,15 +25,16 @@ const getNavItems = (user: User | null): NavItem[] => {
   if (user?.role === "admin") return [{ href: "/dashboard/overview", label: "Dashboard" }];
   if (user?.role === "restaurant") return [{ href: "/dashboard/restaurant-overview", label: "Dashboard" }];
   return [
-    { href: "/", label: "Home" },
+    { href: "/", label: "Discover" },
     { href: "/restaurants/category/all-restaurants", label: "Restaurants" },
-    { href: "/orders", label: "Orders" },
+    { href: "/orders", label: "My orders" },
     user?.role === "courier" ? { href: "/courier", label: "Courier page" } : { href: "/job", label: "Get a job" },
   ];
 };
 
 const Header = () => {
   const dispatch = useAppDispatch();
+  const pathname = usePathname() ?? "/";
   const { user } = useAppSelector(state => state.auth);
   const { cart } = useAppSelector(state => state.cart);
   const toast = useToast();
@@ -82,11 +83,11 @@ const Header = () => {
   }
 
   return (
-    <header className="sticky top-0 z-40 bg-surface/90 backdrop-blur-sm border-b border-border shadow-elevation1">
-      <div className="_container flex items-center justify-between gap-4 h-16">
+    <header className="sticky top-0 z-40 bg-surface/95 backdrop-blur-sm border-b border-border">
+      <div className="_container flex items-center justify-between gap-4 h-[76px]">
         <Link href="/" className="flex gap-2 items-center group font-bold shrink-0">
-          <Image className="transition-transform group-hover:rotate-90" width={36} height={36} src="/logo.svg" alt="logo" />
-          <span className="text-lg font-display font-bold text-ink group-hover:text-brand transition-colors hidden sm:inline">Foodie Hub</span>
+          <Image className="transition-transform group-hover:rotate-90" width={40} height={40} src="/logo.svg" alt="FoodieHub" />
+          <span className="text-xl font-display font-extrabold text-ink group-hover:text-brand transition-colors hidden sm:inline">FoodieHub</span>
         </Link>
 
         <nav aria-label="Main navigation" className="hidden md:flex items-center gap-6">
@@ -94,7 +95,7 @@ const Header = () => {
             <Link
               key={item.href}
               href={item.href}
-              className="text-sm font-semibold text-inkMuted hover:text-ink transition-colors"
+              className={cn("rounded-[var(--radius-sm)] px-4 py-2 text-sm font-semibold transition-colors", pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href)) ? "bg-ember-50 text-brand" : "text-inkMuted hover:text-ink")}
             >
               {item.label}
             </Link>
@@ -133,7 +134,7 @@ const Header = () => {
                 avatarDisclosure.isOpen ? "text-brand border-brand" : "text-inkMuted hover:text-ink"
               )}
             >
-              <UserRound size={20} />
+              {user?.username ? <span className="text-xs font-extrabold">{user.username.slice(0, 2).toUpperCase()}</span> : <UserRound size={20} />}
             </button>
             <DropdownMenu open={avatarDisclosure.isOpen} onClose={avatarDisclosure.close} anchorRef={avatarWrapperRef} align="right" className="min-w-[220px]">
               {user ? (

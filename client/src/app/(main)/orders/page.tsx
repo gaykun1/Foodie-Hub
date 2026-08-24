@@ -1,18 +1,14 @@
 "use client"
-const MapTracker = dynamic(() => import('@/components/order/MapTracker'), {
-  ssr: false,
-})
 import OrderCard from '@/components/order/OrderCard';
+import { LiveTrackingExperience } from '@/components/order/LiveTrackingExperience';
 import ViewDetailsSideBar from '@/components/ViewDetailsSideBar';
 import RateOrderModal from '@/components/order/RateOrderModal';
 import { Order } from '@/redux/reduxTypes'
 import axios from 'axios';
-import { ChevronDown, ChevronsRight, Map, PackageSearch, Star, X } from 'lucide-react';
-import dynamic from 'next/dynamic';
+import { ChevronDown, ChevronsRight, PackageSearch, Star, X } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react'
 import { io, Socket } from 'socket.io-client';
 import { Button } from '@/components/ui/Button';
-import { Card } from '@/components/ui/Card';
 import { PageSpinner } from '@/components/ui/Spinner';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { useToast } from '@/components/ui/Toast';
@@ -83,7 +79,6 @@ const Page = () => {
         socket.off("updateOrderStatus");
       };
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socket, orders])
 
   useEffect(() => {
@@ -95,6 +90,7 @@ const Page = () => {
 
   const currentOrders = useMemo(() => orders?.filter(order => order.status !== "Delivered" && order.status !== "Cancelled"), [orders])
   const pastOrders = useMemo(() => orders?.filter(order => order.status === "Delivered" || order.status === "Cancelled"), [orders])
+  const activeTrackingOrder = useMemo(() => currentOrders?.find(order => order.status === "Delivering" || order.status === "Preparing") ?? null, [currentOrders])
   const deliveredOrderIds = useMemo(() => orders?.filter(order => order.status === "Delivered").map(order => order._id).join(",") ?? "", [orders])
 
   useEffect(() => {
@@ -153,26 +149,9 @@ const Page = () => {
     </>
   );
 
-  const trackingPanel = (viewDetails?.status !== "Delivered" && viewDetails?.courierId !== null) && (
-    <Card>
-      <div className="flex flex-col mb-6 gap-1.5">
-        <div className="flex items-center gap-2">
-          <Map className="text-brand" size={20} />
-          <h2 className="text-xl leading-7 font-bold text-ink">Live Tracking</h2>
-        </div>
-        <p className="text-sm leading-5 text-inkMuted">
-          Your order is on its way to {viewDetails?.adress.houseNumber} {viewDetails?.adress.street}
-        </p>
-      </div>
-      <div className="w-full overflow-hidden rounded-lg h-[250px]">
-        <MapTracker courierLocation={courierLocation} socket={socket} isWorking={viewDetails} />
-      </div>
-    </Card>
-  );
-
   return (
     <div className="py-8">
-      <div className={cn("flex sm:items-center gap-4 sm:justify-between sm:mb-9 flex-col sm:flex-row", activeSidebar && "mb-6")}>
+      {!activeTrackingOrder ? <div className={cn("flex sm:items-center gap-4 sm:justify-between sm:mb-9 flex-col sm:flex-row", activeSidebar && "mb-6")}>
         <h1 className="text-3xl sm:text-[36px] font-extrabold leading-10 text-ink">Your Orders</h1>
         <div className="lg:hidden">
           <button
@@ -184,15 +163,15 @@ const Page = () => {
             <ChevronDown className={cn("transition-transform", activeSidebar && "rotate-180")} />
           </button>
         </div>
-      </div>
+      </div> : null}
 
       {loading ? (
         <PageSpinner />
       ) : orders && orders.length > 0 ? (
         <div className="flex flex-col gap-6 lg:border-b-0 border-b-2 border-border">
+          {activeTrackingOrder ? <LiveTrackingExperience order={activeTrackingOrder} socket={socket} courierLocation={courierLocation} /> : null}
           {activeSidebar && (
             <div className="lg:hidden border-b-2 border-border pb-6 flex flex-col gap-6">
-              {trackingPanel}
               <ViewDetailsSideBar viewDetails={viewDetails} />
             </div>
           )}
@@ -226,7 +205,6 @@ const Page = () => {
             </div>
 
             <div className="grow lg:flex flex-col gap-6 hidden">
-              {trackingPanel}
               <ViewDetailsSideBar viewDetails={viewDetails} />
             </div>
           </div>

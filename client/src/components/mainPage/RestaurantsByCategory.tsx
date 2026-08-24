@@ -36,7 +36,7 @@ const RestaurantsByCategory = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isActive])
 
-    const gridClasses = "grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6";
+    const gridClasses = "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5";
     const sorted = useMemo(
         () => (isActive === Category.All ? [...(restaurants ?? [])].sort((a, b) => b.rating - a.rating) : restaurants ?? []),
         [restaurants, isActive]
@@ -44,8 +44,7 @@ const RestaurantsByCategory = () => {
 
     return (
         <section className="mb-16">
-            <h2 className="section-title mb-5">Browse by Category</h2>
-            <div className="flex gap-3 items-center mb-10 flex-wrap">
+            <div className="flex gap-3 items-center mb-8 flex-wrap">
                 {categories.map((categorie) => (
                     <button
                         key={categorie}
@@ -64,7 +63,7 @@ const RestaurantsByCategory = () => {
 
             {isActive === Category.All && (
                 <div className="flex justify-between items-center gap-5 mb-4">
-                    <h2 className="section-title">Top-Rated Restaurants</h2>
+                    <div><h2 className="section-title">Top picks near you</h2><p className="mt-1 text-sm text-inkMuted">Hand-picked from the best local kitchens</p></div>
                     <Link href="/restaurants/category/all-restaurants" className="flex items-center gap-1 font-medium text-brand group whitespace-nowrap">
                         <span className="group-hover:text-brandHover transition-colors">View All</span>
                         <ChevronRight size={18} className="group-hover:translate-x-0.5 transition-transform" />

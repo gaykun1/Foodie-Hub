@@ -10,6 +10,7 @@ import { act } from "react";
 jest.mock("axios");
 jest.mock("next/navigation", () => ({
     redirect: jest.fn(),
+    usePathname: jest.fn(() => "/"),
 }));
 
 
@@ -32,8 +33,8 @@ describe("Header component", () => {
             cart: { cart: { items: [] } },
         });
 
-        expect(screen.getByAltText("logo")).toBeInTheDocument();
-        expect(screen.getByText("Foodie Hub")).toBeInTheDocument();
+        expect(screen.getByAltText("FoodieHub")).toBeInTheDocument();
+        expect(screen.getByText("FoodieHub")).toBeInTheDocument();
     });
 
     it("showing username in the menu", () => {
