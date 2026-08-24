@@ -1,7 +1,7 @@
 "use client"
 
 import { Restaurant } from '@/redux/reduxTypes';
-import axios from 'axios';
+import { restaurantsApi } from '@/api';
 import { Pen, Search, Store } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -28,8 +28,7 @@ const Page = () => {
     const searchRestaurants = useCallback(async () => {
         try {
             setLoading(true);
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/restaurants/search?chars=${word}`);
-            setItems(res.data);
+            setItems(await restaurantsApi.searchRestaurants(word));
         } catch (err) {
             console.error(err);
         } finally {

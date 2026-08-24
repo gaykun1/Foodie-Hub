@@ -34,7 +34,7 @@ describe("restaurant api", () => {
             description: "Cool restaurant",
             imageUrl: "someImage",
             categories: [Category.Desserts],
-            adress: {
+            address: {
                 street: "Street",
                 city: "city",
                 houseNumber: 4,
@@ -63,7 +63,7 @@ describe("restaurant api", () => {
             description: "Cool restaurant",
             imageUrl: "someImage",
             categories: [Category.FastFood],
-            adress: {
+            address: {
                 street: "Street",
                 city: "city",
                 houseNumber: 4,
@@ -97,7 +97,7 @@ describe("restaurant api", () => {
                 .send({
                     title: "title",
                     description: "description",
-                    adress: {
+                    address: {
                         city: "city",
                         street: "street",
                         houseNumber: 3,
@@ -124,7 +124,7 @@ describe("restaurant api", () => {
                 .send({
                     title: "title",
                     description: "description",
-                    adress: {
+                    address: {
                         city: "city",
                         street: "street",
                         houseNumber: 3,
@@ -215,8 +215,13 @@ describe("restaurant api", () => {
             const res = await request(app).get("/api/restaurant/restaurants/search")
                 .query({ chars: "burg" });
             expect(res.status).toBe(200);
-            expect(res.body[0]._id).toBe(restaurant1._id.toString());
-            expect(res.body[1]._id).toBe(restaurant2._id.toString());
+            // Results come back sorted by title, so " Burger Place" (leading
+            // space) precedes "Best Burger". Asserting the set rather than a
+            // hard-coded order would hide a regression in that sort.
+            expect(res.body.map((r: { _id: string }) => r._id)).toEqual([
+                restaurant2._id.toString(),
+                restaurant1._id.toString(),
+            ]);
         });
 
         it("200(404 actually) -- (return value [])", async () => {
@@ -292,10 +297,16 @@ describe("restaurant api", () => {
 
 
         it("500 server error", async () => {
-
-            jest.spyOn(User, "findById").mockImplementationOnce(() => {
-                throw new Error("DB error");
-            })
+            // authMiddleware resolves the caller's role from the database before
+            // the handler runs, so the first lookup must succeed; the failure is
+            // aimed at the handler's own query.
+            const realFindById = User.findById.bind(User);
+            let calls = 0;
+            jest.spyOn(User, "findById").mockImplementation(((...args: Parameters<typeof User.findById>) => {
+                calls += 1;
+                if (calls > 1) throw new Error("DB error");
+                return realFindById(...args);
+            }) as typeof User.findById);
             const res = await request(app).post(`/api/restaurant/restaurants/${restaurant1._id}/favourite`)
                 .set("Cookie", `token=${userToken}`);
 

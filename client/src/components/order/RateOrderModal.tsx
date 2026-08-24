@@ -1,6 +1,7 @@
 "use client"
 import { useState } from "react";
-import axios from "axios";
+import { ratingsApi } from "@/api";
+import { errorMessage } from "@/lib/apiClient";
 import { Star } from "lucide-react";
 import { Modal } from "@/components/ui/Modal";
 import { Textarea } from "@/components/ui/Field";
@@ -50,21 +51,19 @@ const RateOrderModal = ({ order, open, onClose, onSubmitted }: RateOrderModalPro
         if (restaurantRating === 0) return;
         try {
             setSubmitting(true);
-            await axios.post(
-                `${process.env.NEXT_PUBLIC_API_URL}/api/rating/orders/${order._id}/rating`,
-                {
-                    restaurantRating,
-                    courierRating: hasCourier && courierRating > 0 ? courierRating : undefined,
-                    comment: comment.trim() || undefined,
-                },
-                { withCredentials: true }
-            );
+            await ratingsApi.createOrderRating(order._id, {
+                restaurantRating,
+                courierRating: hasCourier && courierRating > 0 ? courierRating : undefined,
+                comment: comment.trim() || undefined,
+            });
             toast.success("Thanks for your feedback!");
             onSubmitted();
             onClose();
         } catch (err) {
             console.error(err);
-            toast.error("Couldn't submit your rating. Please try again.");
+            // Surfaces "already rated" and similar server rules rather than a
+            // generic retry prompt the customer can't act on.
+            toast.error(errorMessage(err, "Couldn't submit your rating. Please try again."));
         } finally {
             setSubmitting(false);
         }

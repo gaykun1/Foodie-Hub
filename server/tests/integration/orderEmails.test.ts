@@ -35,7 +35,7 @@ describe("order email notifications", () => {
 
         restaurant = await Restaurant.create({
             title: "Best Burger", dishes: [], description: "Cool restaurant", imageUrl: "img.jpg",
-            categories: [Category.FastFood], adress: { street: "Street", city: "city", houseNumber: 4 },
+            categories: [Category.FastFood], address: { street: "Street", city: "city", houseNumber: 4 },
             startDay: "Monday", endDay: "Monday", endHour: "6:00", startHour: "6:00",
             websiteUrl: "site.com", phone: "+312421412",
         });
@@ -114,6 +114,15 @@ describe("order email notifications", () => {
     });
 
     describe("courier status-update emails", () => {
+        // Each target status is reached from its legal predecessor — the courier
+        // status endpoint now validates transitions, so an order cannot jump
+        // straight from "Created" to "Delivered".
+        const previousStatus: Record<string, "Created" | "Preparing" | "Delivering"> = {
+            Preparing: "Created",
+            Delivering: "Preparing",
+            Delivered: "Delivering",
+        };
+
         it.each(["Preparing", "Delivering", "Delivered"])("sends a status-update email when a courier sets status to %s", async (status) => {
             const courierUser = await User.create({ username: `courierEmail_${status}`, password: "x", role: "courier" });
             const courierToken = jwt.sign({ userId: courierUser._id, role: "courier" }, process.env.JWT_SECRET!, { expiresIn: "1h" });
@@ -125,7 +134,7 @@ describe("order email notifications", () => {
                 userId: user._id,
                 items: [{ title: dish.title, imageUrl: dish.imageUrl, price: dish.price, amount: 1 }],
                 restaurantTitle: restaurant.title, restaurantImage: restaurant.imageUrl,
-                approxTime: 15, totalPrice: 10, status: "Created", courierId: courierDoc._id,
+                approxTime: 15, totalPrice: 10, status: previousStatus[status], courierId: courierDoc._id,
             });
 
             const res = await request(app).patch(`/api/courier/orders/${order._id}/status`)

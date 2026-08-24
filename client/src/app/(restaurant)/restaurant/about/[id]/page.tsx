@@ -1,7 +1,8 @@
 "use client"
 import { useAppSelector } from '@/hooks/reduxHooks';
-import axios from 'axios';
-import { FileText, Pen, X } from 'lucide-react';
+import { restaurantsApi } from '@/api';
+import { errorMessage } from '@/lib/apiClient';
+import { FileText, Pen, X, TriangleAlert } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import React, { useCallback, useEffect, useState } from 'react'
 import { Textarea } from '@/components/ui/Field';
@@ -16,17 +17,19 @@ const Page = () => {
     const [draft, setDraft] = useState<string>("");
     const { user } = useAppSelector(state => state.auth);
     const [active, setActive] = useState<boolean>(false);
-    const [loading, setLoading] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<boolean>(false);
     const [saving, setSaving] = useState<boolean>(false);
     const toast = useToast();
 
     const getTextAbout = useCallback(async () => {
         try {
             setLoading(true);
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/restaurants/${id}/about`);
-            setInfo(res.data);
+            setError(false);
+            setInfo(await restaurantsApi.getAbout(id));
         } catch (err) {
             console.error(err);
+            setError(true);
         } finally {
             setLoading(false);
         }
@@ -35,13 +38,12 @@ const Page = () => {
     const handleTextAbout = async () => {
         try {
             setSaving(true);
-            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/restaurants/${id}/about`, { id, info: draft }, { withCredentials: true });
-            setInfo(res.data);
+            setInfo(await restaurantsApi.saveAbout(id, draft));
             setActive(false);
             toast.success("About info saved");
         } catch (err) {
             console.error(err);
-            toast.error("Couldn't save. Please try again.");
+            toast.error(errorMessage(err, "Couldn't save. Please try again."));
         } finally {
             setSaving(false);
         }
@@ -85,6 +87,13 @@ const Page = () => {
 
             {loading ? (
                 <PageSpinner />
+            ) : error ? (
+                <EmptyState
+                    icon={<TriangleAlert size={22} />}
+                    title="Couldn't load this section"
+                    description="The request didn't get through. Try again in a moment."
+                    action={<Button onClick={getTextAbout}>Try again</Button>}
+                />
             ) : info ? (
                 <p className="text-lg leading-7 text-ink mt-4 whitespace-pre-wrap">{info}</p>
             ) : !active ? (

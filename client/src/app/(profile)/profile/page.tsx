@@ -1,7 +1,9 @@
 "use client";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
 import { login } from "@/redux/authSlice";
-import axios from "axios";
+import { authApi } from "@/api";
+import { errorMessage } from "@/lib/apiClient";
+import { RequireAuth } from "@/components/auth/RequireAuth";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Input } from "@/components/ui/Field";
@@ -21,7 +23,7 @@ type formType = {
   houseNumber: number,
 }
 
-const Page = () => {
+const ProfileView = () => {
   const { user } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -60,13 +62,15 @@ const Page = () => {
 
     try {
       setSaving(true);
-      const res = await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/profile`, { payload }, { withCredentials: true });
-      if (res.data) dispatch(login(res.data));
+      const updated = await authApi.updateProfile({ payload });
+      if (updated) dispatch(login(updated));
       setIsEditing(false);
       toast.success("Profile updated");
     } catch (err) {
       console.error(err);
-      toast.error("Couldn't save changes. Please try again.");
+      // Surfaces the server's own reason (e.g. "Current password is wrong")
+      // instead of a generic message the user can't act on.
+      toast.error(errorMessage(err, "Couldn't save changes. Please try again."));
     } finally {
       setSaving(false);
     }
@@ -171,5 +175,14 @@ const Page = () => {
     </Card>
   );
 };
+
+const Page = () => (
+  <RequireAuth
+    title="Sign in to manage your account"
+    description="Account settings belong to a signed-in profile."
+  >
+    <ProfileView />
+  </RequireAuth>
+);
 
 export default Page;

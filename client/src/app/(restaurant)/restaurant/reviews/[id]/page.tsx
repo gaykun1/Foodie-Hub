@@ -1,8 +1,10 @@
 "use client"
 import { Review } from '@/redux/reduxTypes';
 import { Rating } from '@/components/ui/Rating';
-import axios from 'axios';
-import { MessageSquareText, Pen, Star, X } from 'lucide-react';
+import { restaurantsApi } from '@/api';
+import { errorMessage } from '@/lib/apiClient';
+import { useRequireAuth } from '@/hooks/useRequireAuth';
+import { MessageSquareText, Pen, Star, X, TriangleAlert } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import React, { useCallback, useEffect, useState } from 'react'
 import { Textarea } from '@/components/ui/Field';
@@ -23,7 +25,8 @@ const ReviewCardSkeleton = () => (
 
 const Page = () => {
     const { id } = useParams() as { id: string }
-    const [loading, setLoading] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<boolean>(false);
     const [reviews, setReviews] = useState<Review[]>([]);
     const [active, setActive] = useState<boolean>(false);
     const [text, setText] = useState<string>("");
@@ -32,15 +35,19 @@ const Page = () => {
     const [pagesAmount, setPagesAmount] = useState<number>(1);
     const [submitting, setSubmitting] = useState<boolean>(false);
     const toast = useToast();
+    const { ensureAuth, isAuthenticated } = useRequireAuth();
 
     const getReviews = useCallback(async () => {
         try {
             setLoading(true);
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/restaurants/${id}/reviews?page=${page}`);
-            if (res.data) setReviews(res.data.reviews);
-            setPagesAmount(res.data.length);
+            setError(false);
+            // Public: reading reviews never requires an account.
+            const data = await restaurantsApi.getReviews(id, page);
+            setReviews(data?.reviews ?? []);
+            setPagesAmount(data?.length ?? 1);
         } catch (err) {
             console.error(err);
+            setError(true);
         } finally {
             setLoading(false);
         }
@@ -49,16 +56,15 @@ const Page = () => {
     const createReview = async () => {
         try {
             setSubmitting(true);
-            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/reviews`, { id, text, rating }, { withCredentials: true });
-            if (res.data) {
-                await getReviews();
-                setText("");
-                setRating(0);
-                toast.success("Review posted");
-            }
+            await restaurantsApi.createReview({ id, text, rating });
+            await getReviews();
+            setText("");
+            setRating(0);
+            setActive(false);
+            toast.success("Review posted");
         } catch (err) {
             console.error(err);
-            toast.error("Couldn't post your review. Please try again.");
+            toast.error(errorMessage(err, "Couldn't post your review. Please try again."));
         } finally {
             setSubmitting(false);
         }
@@ -72,13 +78,20 @@ const Page = () => {
         <div className="flex flex-col gap-9 pb-8">
             <div className="flex items-center justify-between">
                 <h1 className="section-title">Reviews</h1>
+                {/* Reading reviews is public; writing one needs an account, so
+                    this is one of the few actions that prompts for sign-in. */}
                 <Button
                     size="sm"
                     variant="secondary"
                     aria-label={active ? "Cancel review" : "Write a review"}
                     icon={active ? <X size={16} /> : <Pen size={16} />}
-                    onClick={() => setActive(!active)}
-                />
+                    onClick={() => {
+                        if (active) { setActive(false); return; }
+                        ensureAuth(() => setActive(true));
+                    }}
+                >
+                    {active ? "Cancel" : isAuthenticated ? "Write a review" : "Sign in to review"}
+                </Button>
             </div>
 
             {active && (
@@ -121,6 +134,15 @@ const Page = () => {
             <div className="grid md:grid-cols-2 gap-5">
                 {loading ? (
                     <CardGridSkeleton count={4} item={ReviewCardSkeleton} />
+                ) : error ? (
+                    <div className="md:col-span-2">
+                        <EmptyState
+                            icon={<TriangleAlert size={22} />}
+                            title="Couldn't load reviews"
+                            description="The request didn't get through. Try again in a moment."
+                            action={<Button onClick={getReviews}>Try again</Button>}
+                        />
+                    </div>
                 ) : reviews.length > 0 ? reviews.map((review) => (
                     <Card key={review._id} padding="sm" className="flex flex-col gap-1.5">
                         <h2 className="text-lg font-medium text-ink border-b border-border pb-1.5">{review.sender.username}</h2>

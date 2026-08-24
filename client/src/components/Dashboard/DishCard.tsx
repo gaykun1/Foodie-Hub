@@ -1,18 +1,29 @@
 "use client"
-import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks'
-import { getCart } from '@/redux/cartSlice'
+import { restaurantsApi } from '@/api'
+import { useCart, type CartRestaurant } from '@/hooks/useCart'
 import { Dish } from '@/redux/reduxTypes'
-import axios from 'axios'
 import { ShoppingCart, X, Check } from 'lucide-react'
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { useToast } from '@/components/ui/Toast'
 
-const DishCard = ({ dish, toCart, onDeleted }: { dish: Dish, toCart: boolean, onDeleted?: () => void }) => {
-
-    const dispatch = useAppDispatch();
-    const { cart } = useAppSelector(state => state.cart);
+const DishCard = ({
+    dish,
+    toCart,
+    restaurant,
+    onDeleted,
+}: {
+    dish: Dish,
+    toCart: boolean,
+    /**
+     * Required to add to cart. A guest basket lives in localStorage and has no
+     * server document to resolve the restaurant from, so the caller supplies it.
+     */
+    restaurant?: CartRestaurant,
+    onDeleted?: () => void,
+}) => {
+    const { cart, addItem } = useCart();
     const [adding, setAdding] = useState(false);
     const [deleting, setDeleting] = useState(false);
     const toast = useToast();
@@ -20,7 +31,7 @@ const DishCard = ({ dish, toCart, onDeleted }: { dish: Dish, toCart: boolean, on
     const deleteDish = async () => {
         try {
             setDeleting(true);
-            await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/dishes/${dish._id}`, { withCredentials: true });
+            await restaurantsApi.deleteDish(dish._id);
             if (onDeleted) onDeleted();
         } catch (err) {
             console.error(err);
@@ -30,12 +41,14 @@ const DishCard = ({ dish, toCart, onDeleted }: { dish: Dish, toCart: boolean, on
         }
     }
 
-    const addToCart = async () => {
+    const handleAddToCart = async () => {
+        if (!restaurant) return;
         try {
             setAdding(true);
-            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/cart/items`, { id: dish._id }, { withCredentials: true });
-            if (res.data) {
-                dispatch(getCart(res.data));
+            const { replacedRestaurant } = await addItem(dish, restaurant);
+            if (replacedRestaurant) {
+                toast.info(`Your cart now holds ${restaurant.title} — one restaurant per order.`);
+            } else {
                 toast.success(`${dish.title} added to cart`);
             }
         } catch (err) {
@@ -46,12 +59,10 @@ const DishCard = ({ dish, toCart, onDeleted }: { dish: Dish, toCart: boolean, on
         }
     }
 
-    const handleClick = useCallback(() => {
-        addToCart();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-
-    const isInCart = useMemo(() => cart?.items.some(item => item.dishId.title === dish.title), [cart, dish.title]);
+    const isInCart = useMemo(
+        () => cart?.items.some(item => item.dishId._id === dish._id),
+        [cart, dish._id]
+    );
 
     return (
         <Card padding="none" className="flex flex-col h-full">
@@ -70,9 +81,10 @@ const DishCard = ({ dish, toCart, onDeleted }: { dish: Dish, toCart: boolean, on
                     </div>
                     {toCart ? (
                         <Button
-                            disabled={isInCart}
+                            data-testid="add-to-cart"
+                            disabled={isInCart || !restaurant}
                             loading={adding}
-                            onClick={handleClick}
+                            onClick={handleAddToCart}
                             fullWidth
                             icon={!isInCart ? <ShoppingCart size={16} /> : <Check size={16} />}
                         >

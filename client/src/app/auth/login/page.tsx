@@ -1,37 +1,45 @@
 "use client"
 import { LogIn } from '@/api/api';
-import axios from 'axios';
+import { apiClient } from '@/lib/apiClient';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation';
+import React, { Suspense, useEffect, useState } from 'react'
 import { Eye, EyeOff, UtensilsCrossed } from 'lucide-react';
 import { Input } from '@/components/ui/Field';
 import { Button } from '@/components/ui/Button';
+import { PageSpinner } from '@/components/ui/Spinner';
+import { DemoCredentials } from '@/components/auth/DemoCredentials';
 
-const Page = () => {
+/** Only same-origin paths are honoured, so `?next=` can't be used as an open redirect. */
+const safeNext = (value: string | null): string => {
+  if (!value) return "/";
+  if (!value.startsWith("/") || value.startsWith("//")) return "/";
+  return value;
+};
+
+const LoginForm = () => {
   const [password, setPassword] = useState<string>("");
   const [username, setUsername] = useState<string>("");
   const [error, setError] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const next = safeNext(searchParams.get("next"));
 
   useEffect(() => {
     const getUser = async () => {
       try {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/profile`, {
-          withCredentials: true,
-        });
-        if (res.data) {
-          router.push("/");
-        }
+        await apiClient.get(`/api/auth/profile`);
+        // Already signed in — go straight where they were headed.
+        router.push(next);
       } catch {
-        console.log("Not authorized!");
+        // Not signed in, which is the expected case on this screen.
       }
     }
     getUser();
-  }, [router]);
+  }, [router, next]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,7 +50,7 @@ const Page = () => {
       if (status === 200) {
         setError(false);
         setTimeout(() => {
-          router.push("/");
+          router.push(next);
         }, 300);
       } else if (status === 404) {
         setError(true);
@@ -81,6 +89,8 @@ const Page = () => {
             <h1 className="text-3xl font-display font-bold text-ink">Log in to your account</h1>
             <p className="text-inkMuted mt-1">Welcome back! Enter your details below.</p>
           </div>
+
+          <DemoCredentials onUse={(demoUser, demoPassword) => { setUsername(demoUser); setPassword(demoPassword); }} />
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <Input
@@ -122,11 +132,20 @@ const Page = () => {
 
           <p className="text-sm text-inkMuted text-center">
             Don&apos;t have an account?{" "}
-            <Link className="font-semibold text-brand hover:underline" href="register">Sign up</Link>
+            <Link className="font-semibold text-brand hover:underline" href={`/auth/register?next=${encodeURIComponent(next)}`}>Sign up</Link>
           </p>
         </div>
       </div>
     </div>
   )
 }
+
+// useSearchParams needs a suspense boundary to keep this route statically
+// renderable rather than forcing it dynamic.
+const Page = () => (
+  <Suspense fallback={<PageSpinner />}>
+    <LoginForm />
+  </Suspense>
+);
+
 export default Page;

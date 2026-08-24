@@ -1,86 +1,83 @@
 "use client"
 
-import axios from 'axios'
 import { io, Socket } from 'socket.io-client';
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Dish, Order, Review } from '@/redux/reduxTypes';
+import { ordersApi, restaurantsApi } from '@/api';
+import { isNotFound } from '@/lib/apiClient';
 import { DashboardOverviewView } from '@/components/Dashboard/DashboardOverviewView';
 
+type Metric = { number: number; percent: number } | null;
+
 const Page = () => {
-  const [numOfOrders, setNumOfOrders] = useState<{ number: number, percent: number } | null>(null);
-  const [totalRevenue, setTotalRevenue] = useState<{ number: number, percent: number } | null>(null);
-  const [averageOrderValue, setAverageOrderValue] = useState<{ number: number, percent: number } | null>(null);
-  const [socket, setSocket] = useState<Socket | null>(null);
+  const [numOfOrders, setNumOfOrders] = useState<Metric>(null);
+  const [totalRevenue, setTotalRevenue] = useState<Metric>(null);
+  const [averageOrderValue, setAverageOrderValue] = useState<Metric>(null);
   const [orders, setOrders] = useState<Order[] | null>(null);
   const [reviews, setReviews] = useState<Review[] | null>(null);
   const [topDishes, setTopDishes] = useState<Dish[] | null>(null);
   const [accordion, setAccordion] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<boolean>(false);
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    setError(false);
+    // Each panel resolves independently: a 404 here means "nothing yet", which
+    // is an empty state rather than a failure, and one empty panel must not
+    // blank out the others.
+    const results = await Promise.allSettled([
+      ordersApi.getStatistics(),
+      ordersApi.getRecentOrders(),
+      restaurantsApi.getRecentReviews(),
+      restaurantsApi.getTopDishes(),
+    ]);
+
+    const [stats, recentOrders, recentReviews, dishes] = results;
+
+    if (stats.status === "fulfilled") {
+      setNumOfOrders(stats.value.numOfOrders);
+      setTotalRevenue(stats.value.totalRevenue);
+      setAverageOrderValue(stats.value.averageOrderValue);
+    } else if (isNotFound(stats.reason)) {
+      setNumOfOrders({ number: 0, percent: 0 });
+      setTotalRevenue({ number: 0, percent: 0 });
+      setAverageOrderValue({ number: 0, percent: 0 });
+    }
+
+    setOrders(recentOrders.status === "fulfilled" ? recentOrders.value : []);
+    setReviews(recentReviews.status === "fulfilled" ? recentReviews.value : []);
+    setTopDishes(dishes.status === "fulfilled" ? dishes.value : []);
+
+    // Only a genuine failure (not a 404 empty state) counts as an error.
+    const hardFailure = results.some(
+      (result) => result.status === "rejected" && !isNotFound(result.reason)
+    );
+    setError(hardFailure);
+    setLoading(false);
+  }, []);
 
   useEffect(() => {
-    const getNumbers = async () => {
-      try {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/order/orders/statistics`, { withCredentials: true });
-        setNumOfOrders(res.data.numOfOrders);
-        setTotalRevenue(res.data.totalRevenue);
-        setAverageOrderValue(res.data.averageOrderValue);
-      } catch (err) {
-        console.error(err);
-      }
-    }
-    const sock = io(`${process.env.NEXT_PUBLIC_API_URL}`, { withCredentials: true });
-    setSocket(sock);
-    getNumbers();
-  }, [])
+    void load();
+  }, [load]);
 
   useEffect(() => {
-    const getLastSevenOrders = async () => {
-      try {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/order/orders/recent`, { withCredentials: true });
-        if (res) setOrders(res.data);
-      } catch (err) {
-        console.error(err);
-      }
-    }
-    const getLastSevenReviews = async () => {
-      try {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/restaurants/reviews/recent`, { withCredentials: true });
-        if (res) setReviews(res.data);
-      } catch (err) {
-        console.error(err);
-      }
-    }
-    const getTopSevenDishes = async () => {
-      try {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/restaurants/dishes/top`, { withCredentials: true });
-        if (res) setTopDishes(res.data);
-      } catch (err) {
-        console.error(err);
-      }
-    }
-    getTopSevenDishes();
-    getLastSevenReviews();
-    getLastSevenOrders();
-  }, [])
+    const socket: Socket = io(`${process.env.NEXT_PUBLIC_API_URL}`, { withCredentials: true });
+    // The server derives the admin's own id from their auth cookie — it does
+    // not trust a client-supplied adminId.
+    socket.emit("joinDashboard");
+    socket.on("updateOrders", setOrders);
+    socket.on("updateReviews", setReviews);
 
-  useEffect(() => {
-    if (socket) {
-      // Server derives the admin's own id from their auth cookie now — it no
-      // longer trusts a client-supplied adminId (and this call previously sent
-      // the wrong shape anyway: the handler expected a bare string, not an object).
-      socket.emit("joinDashboard");
-      socket.on("updateOrders", (orders) => {
-        setOrders(orders);
-      })
-      socket.on("updateReviews", (reviews) => {
-        setReviews(reviews);
-      })
-
-      return () => {
-        socket.off();
-      };
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [socket])
+    // The socket is created and torn down in the same effect, so there is
+    // nothing missing from the dependency list any more — this is what the
+    // stale eslint-disable in the previous version was suppressing.
+    return () => {
+      socket.off("updateOrders", setOrders);
+      socket.off("updateReviews", setReviews);
+      socket.disconnect();
+    };
+  }, []);
 
   return (
     <DashboardOverviewView
@@ -93,6 +90,9 @@ const Page = () => {
       topDishes={topDishes}
       accordion={accordion}
       setAccordion={setAccordion}
+      loading={loading}
+      error={error}
+      onRetry={load}
     />
   )
 }

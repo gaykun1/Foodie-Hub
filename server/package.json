@@ -6,7 +6,10 @@
     "dev": "ts-node-dev --respawn --transpile-only server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
-    "test": "jest --detectOpenHandles"
+    "test": "jest --detectOpenHandles",
+    "seed": "ts-node scripts/seed.ts",
+    "typecheck": "tsc --noEmit",
+    "migrate:address": "ts-node scripts/migrate-address-field.ts"
   },
   "keywords": [],
   "author": "",

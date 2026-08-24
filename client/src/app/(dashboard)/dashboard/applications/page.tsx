@@ -1,12 +1,14 @@
 "use client"
 
-import axios from "axios";
-import { Check, User, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { courierApi } from "@/api";
+import { errorMessage, isNotFound } from "@/lib/apiClient";
+import { Check, User, X, TriangleAlert } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
-import { PageSpinner } from "@/components/ui/Spinner";
+import { ListSkeleton } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
+import { useToast } from "@/components/ui/Toast";
 import { FileUser } from "lucide-react";
 
 interface ICourier {
@@ -22,32 +24,40 @@ interface ICourier {
 const Page = () => {
     const [applications, setApplications] = useState<ICourier[] | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<boolean>(false);
     const [actingId, setActingId] = useState<string | null>(null);
+    const toast = useToast();
 
-    const getApplications = async () => {
+    const getApplications = useCallback(async () => {
         try {
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/courier/applications`, { withCredentials: true });
-            if (!res.data) return;
-            setApplications(res.data);
+            setLoading(true);
+            setError(false);
+            setApplications((await courierApi.getApplications()) as unknown as ICourier[]);
         } catch (err) {
-            console.error(err);
+            if (isNotFound(err)) {
+                setApplications([]);
+            } else {
+                console.error(err);
+                setError(true);
+            }
         } finally {
             setLoading(false);
         }
-    }
-    useEffect(() => {
-        getApplications();
-    }, [])
+    }, []);
 
-    const toggleApplication = async (status: string, id: string) => {
+    useEffect(() => {
+        void getApplications();
+    }, [getApplications])
+
+    const toggleApplication = async (status: "accepted" | "declined", id: string) => {
         try {
             setActingId(id);
-            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/courier/applications/${id}`, { status }, { withCredentials: true });
-            if (res) {
-                setApplications((prev) => prev?.filter((item) => item._id !== id) || []);
-            }
+            await courierApi.decideApplication(id, { status });
+            setApplications((prev) => prev?.filter((item) => item._id !== id) ?? []);
+            toast.success(status === "accepted" ? "Courier approved" : "Application declined");
         } catch (err) {
             console.error(err);
+            toast.error(errorMessage(err, "Couldn't update this application."));
         } finally {
             setActingId(null);
         }
@@ -57,9 +67,16 @@ const Page = () => {
         <div>
             <h1 className="section-title mb-6">Job applications</h1>
             {loading ? (
-                <PageSpinner />
+                <ListSkeleton count={3} />
+            ) : error ? (
+                <EmptyState
+                    icon={<TriangleAlert size={22} />}
+                    title="Couldn't load applications"
+                    description="The request didn't get through. No application has been changed."
+                    action={<Button onClick={getApplications}>Try again</Button>}
+                />
             ) : !applications || applications.length === 0 ? (
-                <EmptyState icon={<FileUser size={22} />} title="No applications" description="Courier applications will appear here." />
+                <EmptyState icon={<FileUser size={22} />} title="No pending applications" description="New courier applications will appear here as they come in." />
             ) : (
                 <div className="grid xl:grid-cols-2 gap-6">
                     {applications.map((app) => (

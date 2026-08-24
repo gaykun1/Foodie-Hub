@@ -1,48 +1,84 @@
 "use client"
 import { Order } from '@/redux/reduxTypes';
 import { courierIcon, receiverIcon, restaurantIcon } from '@/utils/iconMapObjects';
-import axios from 'axios';
+import { geocodeApi, restaurantsApi } from '@/api';
 import { useEffect, useState } from 'react';
-import { MapContainer, Marker, TileLayer } from 'react-leaflet';
-import {  Socket } from 'socket.io-client';
+import { MapContainer, Marker, Polyline, TileLayer } from 'react-leaflet';
 import "leaflet/dist/leaflet.css";
-import { InvalidateMapSize } from '@/utils/InvalidateMapSize ';
+import { InvalidateMapSize } from '@/utils/InvalidateMapSize';
 import { PageSpinner } from '@/components/ui/Spinner';
+import { EmptyState } from '@/components/ui/EmptyState';
+import { MapPinOff } from 'lucide-react';
 
+type Point = [number, number];
 
-
-const MapTracker = ({ isWorking, socket, courierLocation }: { isWorking: Order | null, socket: Socket | null, courierLocation: [number, number] | null }) => {
-    const [restaurantLocation, setRestaurantLocation] = useState<[number, number] | null>(null);
-    const [receiverLocation, setReceiverLocation] = useState<[number, number] | null>(null);
+/**
+ * The socket connection is deliberately not a prop: the courier's position is
+ * owned by whichever screen holds the connection and arrives here as
+ * `courierLocation`. The route itself comes from the order.
+ */
+const MapTracker = ({
+    isWorking,
+    courierLocation,
+}: {
+    isWorking: Order | null,
+    courierLocation: Point | null,
+}) => {
+    const [restaurantLocation, setRestaurantLocation] = useState<Point | null>(null);
+    const [receiverLocation, setReceiverLocation] = useState<Point | null>(null);
     const [loadingLocation, setLoadingLocation] = useState<boolean>(true);
+    const [failed, setFailed] = useState<boolean>(false);
 
-    // Resolve both endpoints whenever the selected live order changes.
     useEffect(() => {
-        if (!socket || !isWorking) return;
+        if (!isWorking) return;
         let cancelled = false;
         setLoadingLocation(true);
-
-        const geocode = async (address: string): Promise<[number, number]> => {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/geocode`, { params: { q: address } });
-            const first = response.data?.[0];
-            if (!first) throw new Error(`No map result for ${address}`);
-            return [Number(first.lat), Number(first.lon)];
-        };
+        setFailed(false);
 
         const resolveLocations = async () => {
             try {
-                const restaurantResponse = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/restaurants/${isWorking.restaurantTitle}/address`);
-                const restaurantAddress = restaurantResponse.data.adress;
-                const [restaurant, receiver] = await Promise.all([
-                    geocode(`${restaurantAddress.street} ${restaurantAddress.houseNumber}, ${restaurantAddress.city}`),
-                    geocode(`${isWorking.adress.street} ${isWorking.adress.houseNumber}, ${isWorking.adress.city}`),
-                ]);
-                if (!cancelled) {
-                    setRestaurantLocation(restaurant);
-                    setReceiverLocation(receiver);
+                // Orders placed since coordinates were added to the schema already
+                // carry both endpoints, so the common path costs zero requests.
+                const stored = isWorking.route;
+                if (stored?.restaurant && stored?.customer) {
+                    if (!cancelled) {
+                        setRestaurantLocation([stored.restaurant.lat, stored.restaurant.lng]);
+                        setReceiverLocation([stored.customer.lat, stored.customer.lng]);
+                    }
+                    return;
                 }
+
+                // Fallback for orders saved before that: resolve what is missing,
+                // preferring the restaurant's own stored location over geocoding.
+                let restaurantPoint: Point | null = stored?.restaurant
+                    ? [stored.restaurant.lat, stored.restaurant.lng]
+                    : null;
+
+                if (!restaurantPoint) {
+                    const restaurant = await restaurantsApi.getRestaurantAddress(isWorking.restaurantTitle);
+                    restaurantPoint = restaurant?.location
+                        ? [restaurant.location.lat, restaurant.location.lng]
+                        : await geocodeApi.geocodeAddress(
+                            `${restaurant.address.street} ${restaurant.address.houseNumber}, ${restaurant.address.city}`
+                        );
+                }
+
+                const receiverPoint: Point | null = stored?.customer
+                    ? [stored.customer.lat, stored.customer.lng]
+                    : await geocodeApi.geocodeAddress(
+                        `${isWorking.address.street} ${isWorking.address.houseNumber}, ${isWorking.address.city}`
+                    );
+
+                if (cancelled) return;
+                if (!restaurantPoint || !receiverPoint) {
+                    setFailed(true);
+                    return;
+                }
+                setRestaurantLocation(restaurantPoint);
+                setReceiverLocation(receiverPoint);
             } catch (err) {
                 console.error(err);
+                if (!cancelled) setFailed(true);
             } finally {
                 if (!cancelled) setLoadingLocation(false);
             }
@@ -50,30 +86,35 @@ const MapTracker = ({ isWorking, socket, courierLocation }: { isWorking: Order |
 
         void resolveLocations();
         return () => { cancelled = true; };
-    }, [socket, isWorking]);
+    }, [isWorking]);
 
-    // Preparing orders do not have a courier location yet. The route endpoints
-    // are still useful, so show the map as soon as those are available and add
-    // the courier marker later when the socket publishes it.
-    const isReady = !loadingLocation && receiverLocation && restaurantLocation;
+    if (loadingLocation) {
+        return <div className="flex h-full min-h-64 items-center justify-center bg-sand-100"><PageSpinner /></div>;
+    }
 
-    return (<>
+    if (failed || !receiverLocation || !restaurantLocation) {
+        return (
+            <div className="flex h-full min-h-64 items-center justify-center bg-sand-100 p-6">
+                <EmptyState
+                    icon={<MapPinOff size={22} />}
+                    title="Map unavailable"
+                    description="We couldn't place this delivery on the map. Your order status above is still live."
+                    className="border-none"
+                />
+            </div>
+        );
+    }
 
-        {
-            !isReady ? <div className="flex h-full min-h-64 items-center justify-center bg-sand-100"><PageSpinner /></div> : receiverLocation != null && restaurantLocation != null &&
-                // container
-                <MapContainer className='h-full w-full rounded-lg' zoom={15} center={receiverLocation} >
-                    <InvalidateMapSize /> {/* for prerendered map size  */}
-                    <TileLayer attribution='copy& Copyright openStreetMap ' url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' />
-                    <Marker position={receiverLocation} icon={receiverIcon} /> {/*Marker for receiver*/}
-                    <Marker position={restaurantLocation} icon={restaurantIcon} /> {/*Marker for restaurant*/}
-                    {courierLocation ? <Marker position={courierLocation} icon={courierIcon} /> : null} {/*Marker for courier*/}
-                </MapContainer >
-
-
-        }
-
-    </>
+    return (
+        <MapContainer className='h-full w-full rounded-lg' zoom={14} center={receiverLocation}>
+            <InvalidateMapSize /> {/* recalculates size once the container has real dimensions */}
+            <TileLayer attribution='&copy; OpenStreetMap contributors' url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' />
+            {/* The delivery leg, so the map reads as a route rather than three loose pins. */}
+            <Polyline positions={[restaurantLocation, receiverLocation]} pathOptions={{ color: "#0d9488", weight: 3, opacity: 0.5, dashArray: "6 8" }} />
+            <Marker position={receiverLocation} icon={receiverIcon} />
+            <Marker position={restaurantLocation} icon={restaurantIcon} />
+            {courierLocation ? <Marker position={courierLocation} icon={courierIcon} /> : null}
+        </MapContainer>
     )
 }
 

@@ -3,10 +3,14 @@ import { Box, ChevronDown, DollarSign, Utensils, ReceiptText, MessageSquareText,
 import Image from 'next/image';
 import { Dish, Order, Review } from '@/redux/reduxTypes';
 import { Rating } from '@/components/ui/Rating';
-import { OrderStatusBadge, OrderStatus } from '@/components/ui/Badge';
+import { OrderStatusBadge } from '@/components/ui/Badge';
 import { Card } from '@/components/ui/Card';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { Badge } from '@/components/ui/Badge';
+import { Button } from '@/components/ui/Button';
+import { Skeleton } from '@/components/ui/Skeleton';
+import { isOrderStatus } from '@/lib/orderStatus';
+import { TriangleAlert } from 'lucide-react';
 import { cn } from '@/lib/cn';
 
 type Metric = { number: number; percent: number } | null;
@@ -43,14 +47,49 @@ interface DashboardOverviewViewProps {
     topDishes: Dish[] | null;
     accordion: string | null;
     setAccordion: (updater: (prev: string | null) => string | null) => void;
+    /** True while the first load is in flight, so panels show skeletons. */
+    loading?: boolean;
+    /** Set when the dashboard could not be loaded at all. */
+    error?: boolean;
+    onRetry?: () => void;
 }
-
-const isKnownStatus = (status: string): status is OrderStatus =>
-    ["Created", "Preparing", "Delivering", "Delivered", "Cancelled"].includes(status);
 
 export const DashboardOverviewView = ({
     title, numOfOrders, totalRevenue, averageOrderValue, orders, reviews, topDishes, accordion, setAccordion,
+    loading = false, error = false, onRetry,
 }: DashboardOverviewViewProps) => {
+    if (error) {
+        return (
+            <div>
+                <h1 className="section-title mb-8">{title}</h1>
+                <EmptyState
+                    icon={<TriangleAlert size={22} />}
+                    title="We couldn't load your dashboard"
+                    description="The request didn't get through. Nothing has changed — try again."
+                    action={onRetry ? <Button onClick={onRetry}>Try again</Button> : undefined}
+                />
+            </div>
+        );
+    }
+
+    if (loading) {
+        return (
+            <div>
+                <h1 className="section-title mb-8">{title}</h1>
+                <div className="grid md:grid-cols-3 gap-6 mb-8">
+                    {[0, 1, 2].map((i) => <Skeleton key={i} className="h-[104px] rounded-lg" />)}
+                </div>
+                <div className="flex flex-col gap-6">
+                    <Skeleton className="h-72 rounded-lg" />
+                    <div className="flex md:flex-row flex-col gap-6">
+                        <Skeleton className="h-64 rounded-lg md:basis-[550px] shrink-0" />
+                        <Skeleton className="h-64 rounded-lg grow" />
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div>
             <h1 className="section-title mb-8">{title}</h1>
@@ -88,7 +127,7 @@ export const DashboardOverviewView = ({
                                             </td>
                                             <td className="py-4 px-1 text-ink">${order.totalPrice.toFixed(2)}</td>
                                             <td className="py-4 px-1">
-                                                {isKnownStatus(order.status) ? <OrderStatusBadge status={order.status} /> : <Badge>{order.status}</Badge>}
+                                                {isOrderStatus(order.status) ? <OrderStatusBadge status={order.status} /> : <Badge>{order.status}</Badge>}
                                             </td>
                                             <td className="py-4 px-1">{timeAgo(order.createdAt)}</td>
                                         </tr>

@@ -3,7 +3,8 @@ import { ArrowRight, CheckCircle2, XCircle } from 'lucide-react'
 import Link from 'next/link'
 import { useParams, useSearchParams } from 'next/navigation'
 import { Suspense, useEffect, useState } from 'react'
-import axios from 'axios'
+import { ordersApi } from '@/api'
+import { errorMessage as apiErrorMessage } from '@/lib/apiClient'
 import { motion } from 'motion/react'
 import { Card } from '@/components/ui/Card'
 import { PageSpinner } from '@/components/ui/Spinner'
@@ -34,20 +35,20 @@ const FinalizeOrder = () => {
       }
 
       try {
-        await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/api/order/orders`, {
+        await ordersApi.finalizeOrder({
           formData: pending.formData,
           shipping: pending.shipping,
           percent: pending.percent,
-          cartId: pending.cartId,
+          cartId: pending.cartId ?? "",
           paymentIntentId,
-        }, { withCredentials: true });
+        });
         clearPendingCheckout(id);
         setState("success");
       } catch (err) {
         console.error(err);
         clearPendingCheckout(id);
         setState("error");
-        setErrorMessage("Payment didn't go through, so this order wasn't placed. Please try again.");
+        setErrorMessage(apiErrorMessage(err, "Payment didn't go through, so this order wasn't placed. Please try again."));
       }
     }
     finalize();

@@ -2,7 +2,7 @@
 import { useParams, useRouter } from "next/navigation";
 import { Order, Shipping } from "@/redux/reduxTypes";
 import { useCallback, useEffect, useState } from "react";
-import axios from "axios";
+import { ordersApi } from "@/api";
 import getStripe from "@/utils/stripe";
 import { convertToSubcurrency } from "@/utils/payment";
 import { Elements } from "@stripe/react-stripe-js";
@@ -17,17 +17,17 @@ const Page = () => {
     const router = useRouter();
     const getOrder = useCallback(async () => {
         try {
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/order/orders/${id}`, { withCredentials: true });
-            if (res.data) {
-                setOrder(res.data);
-
-            }
+            const data = await ordersApi.getOrder(id);
+            if (data) setOrder(data);
         } catch (err) {
-            router.push("/orders");
             console.error(err);
+            router.push("/orders");
         }
-    }
-        , [id])
+        // `router` belongs in the dependency list: it is read inside the
+        // callback, and omitting it was the reported exhaustive-deps warning.
+        // Next's router identity is stable, so including it does not re-run
+        // the effect below on every render.
+    }, [id, router])
     useEffect(() => {
         getOrder();
 

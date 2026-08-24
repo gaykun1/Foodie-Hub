@@ -2,7 +2,9 @@
 import PaymentCard from "@/components/order/PaymentCard";
 import { useAppSelector } from "@/hooks/reduxHooks"
 import { useElements, useStripe } from "@stripe/react-stripe-js";
-import axios from "axios";
+import { addressesApi, paymentsApi, promocodesApi } from "@/api";
+import { errorMessage } from "@/lib/apiClient";
+import { StripeTestCardHint } from "@/components/order/StripeTestCardHint";
 import { BadgeCheck, Lock, Send, Bike, Zap, Clock3, MapPin, Store } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -68,8 +70,7 @@ const CheckoutForm = ({ order, shipping, setShipping }: { order: Order, shipping
     useEffect(() => {
         const getAddresses = async () => {
             try {
-                const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/address/addresses`, { withCredentials: true });
-                const saved: Address[] = res.data ?? [];
+                const saved: Address[] = (await addressesApi.getAddresses()) ?? [];
                 setAddresses(saved);
                 if (saved.length > 0) {
                     const initial = saved.find(a => a.isDefault) ?? saved[0];
@@ -92,6 +93,9 @@ const CheckoutForm = ({ order, shipping, setShipping }: { order: Order, shipping
             }
         }
         getAddresses();
+        // Runs once on mount: the prefill is a starting point for this checkout,
+        // and re-applying it when `user` later resolves would clobber whatever
+        // the customer has already typed.
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -101,21 +105,19 @@ const CheckoutForm = ({ order, shipping, setShipping }: { order: Order, shipping
         if (address) applyAddress(address);
     };
 
-    const usePromocode = useCallback(async () => {
+    const applyPromocode = useCallback(async () => {
+        if (!promocode.trim()) return;
         try {
             setPromoError(null);
-            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/promocode/promocodes/${promocode}/use`, {}, { withCredentials: true });
-            if (res.data) {
-                setDiscount(res.data.discount + discount);
-                setPromocode("");
-            }
+            const granted = await promocodesApi.usePromocode(promocode.trim());
+            // Functional update: `discount` is intentionally not a dependency, so
+            // applying two codes in quick succession cannot drop the first one.
+            setDiscount((current) => current + granted);
+            setPromocode("");
         } catch (err) {
             console.error(err);
-            if (axios.isAxiosError(err) && err.response) {
-                setPromoError(typeof err.response.data === "string" ? err.response.data : "That promocode isn't valid.");
-            }
+            setPromoError(errorMessage(err, "That promocode isn't valid."));
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [promocode]);
 
     const getClientSecret = useCallback(async () => {
@@ -123,8 +125,8 @@ const CheckoutForm = ({ order, shipping, setShipping }: { order: Order, shipping
             if (order) {
                 // Server derives the charge amount from the pending order itself — it
                 // won't trust a client-computed total (see server/utils/pricing.ts).
-                const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/payment/payment-intent`, { shipping, percent: discount }, { withCredentials: true });
-                setClientSecret(res.data.clientSecret);
+                const { clientSecret: secret } = await paymentsApi.createPaymentIntent({ shipping, percent: discount });
+                setClientSecret(secret);
             }
         } catch (err) {
             console.error(err);
@@ -305,6 +307,7 @@ const CheckoutForm = ({ order, shipping, setShipping }: { order: Order, shipping
                     </div>
                 </Card>
 
+                <StripeTestCardHint />
                 {order && (<PaymentCard clientSecret={clientSecret} />)}
             </div>
 
@@ -340,7 +343,7 @@ const CheckoutForm = ({ order, shipping, setShipping }: { order: Order, shipping
                             type="text"
                             placeholder="FEAST20"
                         />
-                        <Button variant="secondary" size="sm" aria-label="Apply promocode" icon={<Send size={16} />} onClick={usePromocode} />
+                        <Button variant="secondary" size="sm" aria-label="Apply promocode" icon={<Send size={16} />} onClick={applyPromocode} />
                     </div>
                     {promoError && <span className="text-xs font-medium text-danger">{promoError}</span>}
                 </div>

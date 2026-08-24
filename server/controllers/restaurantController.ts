@@ -6,6 +6,7 @@ import Dish, { IDish } from "../models/Dish";
 import Review, { IReview } from "../models/Review";
 import { activeAdmins, io, restaurantsSocketsMap } from "../socket";
 import { escapeRegExp } from "../utils/regex";
+import { geocodeStructured } from "../utils/geocode";
 
 
 
@@ -43,16 +44,24 @@ const canManageRestaurant = async (userId: string, restaurantId: string): Promis
 export const createItem = async (req: Request, res: Response) => {
     const restaurantData = req.body;
     try {
-
+        // Resolved once, here, so live tracking can read a stored point instead
+        // of geocoding this restaurant's street address on every map open.
+        // A null result is fine — tracking falls back to on-demand lookup.
+        const location = await geocodeStructured({
+            street: restaurantData.street,
+            houseNumber: restaurantData.houseNumber,
+            city: restaurantData.city,
+        });
 
         const newRestaurant = await Restaurant.create({
             title: restaurantData.title,
             description: restaurantData.description,
-            adress: {
+            address: {
                 city: restaurantData.city,
                 street: restaurantData.street,
                 houseNumber: restaurantData.houseNumber,
             },
+            location,
             phone: restaurantData.phone,
             websiteUrl: restaurantData.websiteUrl,
             imageUrl: restaurantData.imageUrl,
@@ -115,7 +124,9 @@ export const getAbout = async (req: Request, res: Response) => {
 
         const restaurant = await Restaurant.findById(id);
         if (restaurant) {
-            res.status(201).json(restaurant?.about);
+            // 200, not 201: this is a read. The Created status was misleading
+            // for anything inspecting the API from the outside.
+            res.status(200).json(restaurant?.about);
             return
 
         }
@@ -203,23 +214,36 @@ export const getTopSevenDishes = async (req: Request, res: Response): Promise<vo
     }
 }
 export const getDishesNearYou = async (req: Request, res: Response): Promise<void> => {
-
-
     const city = req.query.city;
 
-
     try {
-        const restaurants = await Restaurant.find({ "adress.city": city }).populate<{ dishes: IDish[] }>("dishes");
+        // Without a city this used to match nothing and return an empty list, so
+        // logged-out visitors (who have no saved address) saw a permanently blank
+        // section on the home page. Falling back to the platform-wide best
+        // sellers gives every visitor something real to browse.
+        const filter = city ? { "address.city": city } : {};
+        const restaurants = await Restaurant.find(filter).populate<{ dishes: IDish[] }>("dishes");
 
-        let dishes: IDish[] = [];
-        restaurants.forEach((item) => {
-            dishes.push(...item.dishes);
-        })
+        // Each dish carries its restaurant's identity so the client can add it to
+        // a cart directly from this list — the dish document alone does not say
+        // which restaurant's basket it belongs in.
+        const dishes = restaurants.flatMap((restaurant) =>
+            restaurant.dishes.map((dish) => {
+                const plain = (dish as IDish & { toObject: () => IDish }).toObject();
+                return {
+                    ...plain,
+                    restaurant: {
+                        _id: restaurant._id,
+                        title: restaurant.title,
+                        imageUrl: restaurant.imageUrl,
+                    },
+                };
+            })
+        );
 
-        const newDishes = dishes.sort((a, b) => b.sold - a.sold).slice(0, 5);
+        const topDishes = dishes.sort((a, b) => b.sold - a.sold).slice(0, 8);
 
-
-        res.status(200).json(newDishes);
+        res.status(200).json(topDishes);
     } catch (err) {
         console.error("[getDishesNearYou] error:", err);
         res.status(500).json("Server error!");
@@ -298,7 +322,9 @@ export const getRestaurantById = async (req: Request, res: Response): Promise<vo
 export const getRestaurantAddress = async (req: Request, res: Response): Promise<void> => {
     const title = req.params.title;
     try {
-        const restaurant = await Restaurant.findOne({ title: title }).select("adress");
+        // `location` rides along so the tracking map can use the stored point
+        // for orders placed before coordinates were persisted on the order.
+        const restaurant = await Restaurant.findOne({ title: title }).select("address location");
         if (!restaurant) {
             res.status(404).json({
                 message: "Not found!",
@@ -348,7 +374,12 @@ export const searchRestaurants = async (req: Request, res: Response): Promise<vo
     try {
         // Unauthenticated endpoint taking raw regex from the query string was a
         // ReDoS vector (e.g. "(a+)+$") — escape it so it's matched literally.
-        const restaurants = await Restaurant.find({ title: { $regex: escapeRegExp(String(chars ?? "")), $options: 'i' } }).limit(5);
+        // Explicitly sorted: with no sort clause Mongo returns whatever order the
+        // chosen plan produces, so results silently reshuffled when an index was
+        // added. Search results need to be stable for the same query.
+        const restaurants = await Restaurant.find({ title: { $regex: escapeRegExp(String(chars ?? "")), $options: 'i' } })
+            .sort({ title: 1 })
+            .limit(5);
         res.status(200).json(restaurants);
         return;
     } catch (err) {
@@ -361,7 +392,10 @@ export const searchRestaurants = async (req: Request, res: Response): Promise<vo
 export const getDishes = async (req: Request, res: Response): Promise<void> => {
     const id = req.params.id;
     try {
-        const dishes = await Restaurant.findById(id).populate({ path: "dishes" }).select("dishes");
+        // title/imageUrl ride along with the menu: the client needs the
+        // restaurant's identity to put a dish in a cart, and a guest basket has
+        // no server-side document to look it up from.
+        const dishes = await Restaurant.findById(id).populate({ path: "dishes" }).select("dishes title imageUrl");
         res.status(200).json(dishes);
         return;
     } catch (err) {
@@ -461,7 +495,8 @@ export const getReviews = async (req: Request, res: Response) => {
             .skip((page - 1) * 10)
             .limit(10);
         if (reviews) {
-            res.status(201).json({ reviews: reviews, length: Math.ceil(total / 10) });
+            // 200, not 201: reading a page of reviews creates nothing.
+            res.status(200).json({ reviews: reviews, length: Math.ceil(total / 10) });
             return;
         }
         else {

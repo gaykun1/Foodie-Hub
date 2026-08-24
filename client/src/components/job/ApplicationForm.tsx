@@ -1,10 +1,12 @@
 "use client"
 
-import axios, { isAxiosError } from "axios";
+import { courierApi } from "@/api";
+import { errorMessage } from "@/lib/apiClient";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form"
 import { Input, Select } from "@/components/ui/Field"
 import { Button } from "@/components/ui/Button"
+import { useToast } from "@/components/ui/Toast"
 import { CheckCircle2 } from "lucide-react"
 
 type formFields = {
@@ -21,17 +23,19 @@ const ApplicationForm = () => {
     const { register, handleSubmit, reset, formState: { errors } } = useForm<formFields>();
     const [loading, setLoading] = useState<boolean>(false);
     const [alreadySent, setAlreadySent] = useState<boolean>(false);
+    const toast = useToast();
 
     const onSubmit: SubmitHandler<formFields> = async (data: formFields) => {
         try {
             setLoading(true);
-            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/courier/applications`, { data }, { withCredentials: true });
-            setAlreadySent(res.data.status);
+            const res = await courierApi.createApplication({ data });
+            setAlreadySent(res.status);
             reset();
         } catch (err) {
-            if (isAxiosError(err) && err.response) {
-                console.error(err.response.data);
-            }
+            console.error(err);
+            // Previously logged and swallowed, so a rejected application (e.g.
+            // one already on file) left the form looking like nothing happened.
+            toast.error(errorMessage(err, "Couldn't send your application. Please try again."));
         } finally {
             setLoading(false);
         }
@@ -40,8 +44,8 @@ const ApplicationForm = () => {
     useEffect(() => {
         const checkIfSent = async () => {
             try {
-                const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/courier/applications/status`, { withCredentials: true })
-                setAlreadySent(res.data.status);
+                const res = await courierApi.getApplicationStatus();
+                setAlreadySent(res.status);
             } catch (err) {
                 console.error(err);
             }

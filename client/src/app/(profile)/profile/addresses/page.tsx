@@ -1,7 +1,10 @@
 "use client"
 import { useCallback, useEffect, useState } from "react";
-import axios from "axios";
-import { MapPin, Pencil, Plus, Star, Trash2 } from "lucide-react";
+import { addressesApi } from "@/api";
+import { errorMessage, isNotFound } from "@/lib/apiClient";
+import { RequireAuth } from "@/components/auth/RequireAuth";
+import { ListSkeleton } from "@/components/ui/Skeleton";
+import { MapPin, Pencil, Plus, Star, Trash2, TriangleAlert } from "lucide-react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Address } from "@/redux/reduxTypes";
 import { Card } from "@/components/ui/Card";
@@ -22,8 +25,10 @@ type AddressFormFields = {
     isDefault: boolean,
 }
 
-const Page = () => {
-    const [addresses, setAddresses] = useState<Address[]>();
+const AddressesView = () => {
+    const [addresses, setAddresses] = useState<Address[] | null>(null);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<boolean>(false);
     const [modalOpen, setModalOpen] = useState<boolean>(false);
     const [editingAddress, setEditingAddress] = useState<Address | null>(null);
     const [saving, setSaving] = useState<boolean>(false);
@@ -33,10 +38,18 @@ const Page = () => {
 
     const getAddresses = useCallback(async () => {
         try {
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/address/addresses`, { withCredentials: true });
-            setAddresses(res.data ?? []);
+            setLoading(true);
+            setError(false);
+            setAddresses((await addressesApi.getAddresses()) ?? []);
         } catch (err) {
-            console.error(err);
+            if (isNotFound(err)) {
+                setAddresses([]);
+            } else {
+                console.error(err);
+                setError(true);
+            }
+        } finally {
+            setLoading(false);
         }
     }, []);
 
@@ -64,17 +77,17 @@ const Page = () => {
         try {
             setSaving(true);
             if (editingAddress) {
-                await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/api/address/addresses/${editingAddress._id}`, data, { withCredentials: true });
+                await addressesApi.updateAddress(editingAddress._id, data);
                 toast.success("Address updated");
             } else {
-                await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/address/addresses`, data, { withCredentials: true });
+                await addressesApi.createAddress(data);
                 toast.success("Address saved");
             }
             setModalOpen(false);
             await getAddresses();
         } catch (err) {
             console.error(err);
-            toast.error("Couldn't save this address. Please try again.");
+            toast.error(errorMessage(err, "Couldn't save this address. Please try again."));
         } finally {
             setSaving(false);
         }
@@ -83,8 +96,8 @@ const Page = () => {
     const deleteAddress = async (id: string) => {
         try {
             setDeletingId(id);
-            await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/api/address/addresses/${id}`, { withCredentials: true });
-            setAddresses((prev) => prev?.filter(a => a._id !== id));
+            await addressesApi.deleteAddress(id);
+            setAddresses((prev) => prev?.filter(a => a._id !== id) ?? null);
             toast.success("Address removed");
         } catch (err) {
             console.error(err);
@@ -101,7 +114,16 @@ const Page = () => {
                 <Button size="sm" icon={<Plus size={16} />} onClick={openCreate}>Add address</Button>
             </div>
 
-            {!addresses ? null : addresses.length > 0 ? (
+            {loading ? (
+                <ListSkeleton count={3} />
+            ) : error ? (
+                <EmptyState
+                    icon={<TriangleAlert size={22} />}
+                    title="Couldn't load your addresses"
+                    description="Nothing has been changed — the request just didn't get through."
+                    action={<Button onClick={getAddresses}>Try again</Button>}
+                />
+            ) : addresses && addresses.length > 0 ? (
                 <div className="grid md:grid-cols-2 gap-4">
                     {addresses.map((address) => (
                         <Card key={address._id} padding="sm" className="flex flex-col gap-2">
@@ -134,7 +156,12 @@ const Page = () => {
                     ))}
                 </div>
             ) : (
-                <EmptyState icon={<MapPin size={22} />} title="No saved addresses yet" description="Save an address to check out faster next time." />
+                <EmptyState
+                    icon={<MapPin size={22} />}
+                    title="No saved addresses yet"
+                    description="Save an address to check out faster next time."
+                    action={<Button icon={<Plus size={16} />} onClick={openCreate}>Add your first address</Button>}
+                />
             )}
 
             <Modal open={modalOpen} onClose={() => setModalOpen(false)} title={editingAddress ? "Edit address" : "Add address"}>
@@ -163,5 +190,14 @@ const Page = () => {
         </div>
     );
 };
+
+const Page = () => (
+    <RequireAuth
+        title="Sign in to manage your addresses"
+        description="Saved addresses belong to your account and speed up checkout."
+    >
+        <AddressesView />
+    </RequireAuth>
+);
 
 export default Page;

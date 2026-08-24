@@ -12,7 +12,9 @@ const cartSlice = createSlice({
     name: "cart",
     initialState,
     reducers: {
-        getCart: (state, action: PayloadAction<Cart>) => {
+        // Accepts null so an emptied guest cart can clear the badge without a
+        // separate action — `toCartShape` returns null for an empty basket.
+        getCart: (state, action: PayloadAction<Cart | null>) => {
             state.cart = action.payload;
         },
         updateAmount: (state, action: PayloadAction<{ dishId: string; amount: number }>) => {
@@ -22,21 +24,14 @@ const cartSlice = createSlice({
             if (item) {
                 item.amount = action.payload.amount;
             }
-
-
         },
         deleteItem: (state, action: PayloadAction<string>) => {
             if (!state.cart) return;
 
             state.cart.items = state.cart.items.filter(item => item.dishId.title !== action.payload);
-
-
-
         }
     }
 })
-
-
 
 export const { getCart, updateAmount, deleteItem } = cartSlice.actions;
 export default cartSlice.reducer;

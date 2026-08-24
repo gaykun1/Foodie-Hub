@@ -2,7 +2,8 @@
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
 import { updateFavourites } from "@/redux/authSlice";
 import { Restaurant } from "@/redux/reduxTypes";
-import axios from "axios";
+import { restaurantsApi } from "@/api";
+import { useRequireAuth } from "@/hooks/useRequireAuth";
 import { Clock, Globe, Heart, MapPin, Phone } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -15,20 +16,21 @@ import { useToast } from "@/components/ui/Toast";
 import { cn } from "@/lib/cn";
 
 export default function HeaderRestaurant() {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const { id } = useParams() as { id: string };
   const [currentRestaurant, setCurrentRestaurant] = useState<Restaurant | null>(null);
   const { user } = useAppSelector(state => state.auth);
   const dispatch = useAppDispatch();
   const toast = useToast();
   const path = usePathname();
+  const { ensureAuth } = useRequireAuth();
 
   useEffect(() => {
     const getRestaurantInfo = async () => {
       try {
         setIsLoading(true);
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/restaurants/${id}`);
-        setCurrentRestaurant(res.data);
+        // Public: a visitor can read any restaurant's header without an account.
+        setCurrentRestaurant(await restaurantsApi.getRestaurantById(id));
       } catch (err) {
         console.error(err);
       } finally {
@@ -38,14 +40,17 @@ export default function HeaderRestaurant() {
     getRestaurantInfo();
   }, [id])
 
-  const toggleFavourite = async () => {
-    try {
-      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/restaurants/${id}/favourite`, {}, { withCredentials: true });
-      dispatch(updateFavourites(res.data));
-    } catch (err) {
-      console.error(err);
-      toast.error("Couldn't update favorites. Please try again.");
-    }
+  // Saving a favourite is tied to an account, so this is one of the few actions
+  // that prompts for sign-in rather than proceeding.
+  const toggleFavourite = () => {
+    ensureAuth(async () => {
+      try {
+        dispatch(updateFavourites(await restaurantsApi.toggleFavourite(id)));
+      } catch (err) {
+        console.error(err);
+        toast.error("Couldn't update favorites. Please try again.");
+      }
+    });
   }
 
   const links: Record<string, string> = {
@@ -84,7 +89,7 @@ export default function HeaderRestaurant() {
           <div className="flex items-center gap-4 flex-wrap text-sm sm:text-base">
             <div className="flex items-center gap-2">
               <MapPin size={18} />
-              <span>{currentRestaurant.adress.street} {currentRestaurant.adress.houseNumber}, {currentRestaurant.adress.city}</span>
+              <span>{currentRestaurant.address.street} {currentRestaurant.address.houseNumber}, {currentRestaurant.address.city}</span>
             </div>
             <div className="flex items-center gap-2">
               <Clock size={18} />

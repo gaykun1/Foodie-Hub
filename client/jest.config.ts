@@ -8,9 +8,16 @@ const customJestConfig = {
     setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
     testEnvironment: 'jsdom',
     moduleNameMapper: {
-        "^@/(.*)$": "<rootDir>/$1",
+        // Mirrors the `@/*` -> `./src/*` mapping in tsconfig.json. This used to
+        // point at <rootDir>, which only went unnoticed because the suites
+        // imported types (erased at runtime) rather than real modules.
+        "^@/(.*)$": "<rootDir>/src/$1",
     },
-
+    collectCoverageFrom: [
+        "src/**/*.{ts,tsx}",
+        "!src/**/*.d.ts",
+        "!src/test-utils/**",
+    ],
 };
 
 export default createJestConfig(customJestConfig);

@@ -43,7 +43,7 @@ describe("order api", () => {
             description: "Cool restaurant",
             imageUrl: "someImage",
             categories: [Category.Desserts],
-            adress: {
+            address: {
                 street: "Street",
                 city: "city",
                 houseNumber: 4,
@@ -81,7 +81,7 @@ describe("order api", () => {
                 price: dish.price,
                 amount: 3,
             }],
-            adress: {
+            address: {
                 city: "city",
                 countryOrRegion: "region",
                 houseNumber: 3,
@@ -133,7 +133,7 @@ describe("order api", () => {
                     price: dish.price,
                     amount: 3,
                 }],
-                adress: {
+                address: {
                     city: "city",
                     countryOrRegion: "region",
                     houseNumber: 3,
@@ -502,7 +502,7 @@ describe("order api", () => {
                     price: dish.price,
                     amount: 3,
                 }],
-                adress: {
+                address: {
                     city: "city",
                     countryOrRegion: "region",
                     houseNumber: 3,

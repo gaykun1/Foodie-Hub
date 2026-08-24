@@ -6,13 +6,19 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev", "--prefix", "client"],
       "port": 3000,
-      "autoPort": true
+      "autoPort": true,
+      "env": {
+        "NEXT_PUBLIC_DEMO_MODE": "true"
+      }
     },
     {
       "name": "foodiehub-server",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev", "--prefix", "server"],
-      "port": 5000
+      "port": 5000,
+      "env": {
+        "DEMO_SIMULATION": "true"
+      }
     }
   ]
 }

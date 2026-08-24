@@ -60,8 +60,8 @@ const ViewDetailsSideBar = ({ viewDetails }: { viewDetails: Order | null }) => {
                         <span>Delivery To:</span>
                         {/* Orders created but not yet checked out have no address yet. */}
                         <span className='font-semibold text-ink'>
-                            {viewDetails.adress
-                                ? `№${viewDetails.adress.apartmentNumbr != null ? viewDetails.adress.apartmentNumbr : "..."}, ${viewDetails.adress.houseNumber} ${viewDetails.adress.street}, ${viewDetails.adress.city}, ${viewDetails.adress.countryOrRegion}`
+                            {viewDetails.address
+                                ? `№${viewDetails.address.apartmentNumbr != null ? viewDetails.address.apartmentNumbr : "..."}, ${viewDetails.address.houseNumber} ${viewDetails.address.street}, ${viewDetails.address.city}, ${viewDetails.address.countryOrRegion}`
                                 : "Not provided yet"}
                         </span>
                     </div>

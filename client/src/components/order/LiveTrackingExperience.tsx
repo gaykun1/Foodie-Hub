@@ -1,11 +1,11 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { Bike, Check, CheckCircle2, Home, MapPin, PackageCheck, Store } from "lucide-react";
-import type { Socket } from "socket.io-client";
-
+import { Bike, Check, CheckCircle2, Home, MapPin, PackageCheck, PlayCircle, Store } from "lucide-react";
 import type { Order } from "@/redux/reduxTypes";
 import { Card } from "@/components/ui/Card";
+import { Button } from "@/components/ui/Button";
+import { ORDER_STATUS_LABEL, ORDER_STATUS_STEP } from "@/lib/orderStatus";
 import { cn } from "@/lib/cn";
 
 const MapTracker = dynamic(() => import("@/components/order/MapTracker"), { ssr: false });
@@ -17,16 +17,22 @@ const milestones = [
   { status: "Delivered", label: "Delivered", icon: Home },
 ] as const;
 
-const statusIndex: Record<Order["status"], number> = {
-  Created: 0,
-  Preparing: 1,
-  Delivering: 2,
-  Delivered: 3,
-  Cancelled: -1,
-};
-
-export function LiveTrackingExperience({ order, socket, courierLocation }: { order: Order; socket: Socket | null; courierLocation: [number, number] | null }) {
-  const activeIndex = statusIndex[order.status];
+export function LiveTrackingExperience({
+  order,
+  courierLocation,
+  onSimulate,
+  simulating = false,
+}: {
+  order: Order;
+  /** Owned by the parent, which holds the socket connection. */
+  courierLocation: [number, number] | null;
+  /** Demo-only: starts the server-side delivery simulation for this order. */
+  onSimulate?: () => void;
+  simulating?: boolean;
+}) {
+  // Timeline position comes from the shared status table rather than a local
+  // copy, so adding a status can't leave this component silently out of step.
+  const activeIndex = ORDER_STATUS_STEP[order.status];
   const isMoving = order.status === "Delivering";
 
   return (
@@ -40,12 +46,12 @@ export function LiveTrackingExperience({ order, socket, courierLocation }: { ord
           <div className="absolute inset-x-5 top-5 z-[500] flex items-center rounded-[var(--radius-md)] border border-border bg-surface/95 p-4 shadow-elevation3 backdrop-blur">
             <span className="flex size-11 items-center justify-center rounded-[var(--radius-md)] bg-teal-100 text-teal-800">{isMoving ? <Bike size={21} /> : <Store size={21} />}</span>
             <div className="ml-3"><p className="text-sm font-extrabold text-ink">{isMoving ? `Courier is about ${order.approxTime || "a few"} minutes away` : `${order.restaurantTitle} is working on your order`}</p><p className="mt-0.5 text-xs text-inkMuted">Live status updates appear here automatically</p></div>
-            <span className="ml-auto rounded-full bg-teal-100 px-3 py-1.5 text-xs font-bold text-teal-800">{order.status}</span>
+            <span className="ml-auto rounded-full bg-teal-100 px-3 py-1.5 text-xs font-bold text-teal-800">{ORDER_STATUS_LABEL[order.status]}</span>
           </div>
-          <div className="absolute inset-0"><MapTracker courierLocation={courierLocation} socket={socket} isWorking={order} /></div>
+          <div className="absolute inset-0"><MapTracker courierLocation={courierLocation} isWorking={order} /></div>
           <div className="absolute inset-x-5 bottom-5 z-[500] flex items-center rounded-[var(--radius-md)] border border-border bg-surface/95 p-4 shadow-elevation3 backdrop-blur">
             <span className="flex size-11 items-center justify-center rounded-full bg-ember-50 text-brand"><MapPin size={20} /></span>
-            <div className="ml-3"><p className="text-sm font-extrabold text-ink">Delivery address</p><p className="mt-0.5 text-xs text-inkMuted">{order.adress.houseNumber} {order.adress.street}, {order.adress.city}</p></div>
+            <div className="ml-3"><p className="text-sm font-extrabold text-ink">Delivery address</p><p className="mt-0.5 text-xs text-inkMuted">{order.address.houseNumber} {order.address.street}, {order.address.city}</p></div>
             <span className="ml-auto flex items-center gap-2 text-xs font-bold text-teal-800"><span className="size-2 rounded-full bg-teal-600" />Live</span>
           </div>
         </Card>
@@ -69,6 +75,18 @@ export function LiveTrackingExperience({ order, socket, courierLocation }: { ord
             <div className="mt-4 space-y-3 text-sm text-inkMuted">{order.items.slice(0, 4).map((item) => <div key={item.title} className="flex justify-between gap-3"><span className="truncate">{item.amount}× {item.title}</span><span className="shrink-0">${item.price.toFixed(2)}</span></div>)}</div>
             <div className="mt-4 flex justify-between border-t border-border pt-4 font-extrabold text-ink"><span>Total paid</span><span>${order.totalPrice.toFixed(2)}</span></div>
           </Card>
+          {onSimulate ? (
+            <Card className="border-dashed">
+              <p className="text-sm font-extrabold text-ink">Nobody is staffing the kitchen right now</p>
+              <p className="mt-1 text-xs leading-5 text-inkMuted">
+                This is a portfolio demo, so run the delivery yourself: the order moves through
+                its real states and the courier pin animates along the route.
+              </p>
+              <Button className="mt-3" fullWidth icon={<PlayCircle size={16} />} loading={simulating} onClick={onSimulate}>
+                Simulate this delivery
+              </Button>
+            </Card>
+          ) : null}
           <div className="flex items-start gap-3 rounded-[var(--radius-md)] border border-teal-200 bg-teal-50 p-4 text-teal-800"><Check size={18} className="mt-0.5 shrink-0" /><p className="text-xs font-semibold leading-5">We’ll keep this page updated as the restaurant and courier move your order forward.</p></div>
         </aside>
       </div>
