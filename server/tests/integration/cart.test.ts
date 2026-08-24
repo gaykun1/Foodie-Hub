@@ -82,7 +82,7 @@ describe("cart api", () => {
                 description: "Cool restaurant",
                 imageUrl: "someImage",
                 categories: ["Fast Food"],
-                adress: {
+                address: {
                     street: "Street",
                     city: "city",
                     houseNumber: 4,
@@ -187,7 +187,7 @@ describe("cart api", () => {
                 description: "Cool restaurant",
                 imageUrl: "someImage",
                 categories: ["Fast Food"],
-                adress: {
+                address: {
                     street: "Street",
                     city: "city",
                     houseNumber: 4,

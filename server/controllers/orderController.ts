@@ -10,6 +10,13 @@ import User from "../models/User";
 import { computeOrderPricing } from "../utils/pricing";
 import { stripe } from "../utils/stripeClient";
 import { sendOrderStatusEmail } from "../utils/sendOrderEmail";
+import { geocodeStructured } from "../utils/geocode";
+import { stopSimulation } from "../services/deliverySimulator";
+import {
+    NON_REVENUE_STATUSES,
+    canCancel,
+    type CancelActor,
+} from "../utils/orderStatus";
 
 interface CartItem {
     dishId: {
@@ -193,14 +200,14 @@ export const getNumbers = async (req: Request, res: Response): Promise<void> => 
         // state, not revenue-worthy yet; "Cancelled" is excluded because it was
         // refunded — counting it would inflate revenue by money that went back out.
         if (id == null) {
-            orders = await Order.find({ status: { $nin: ["Created", "Cancelled"] } });
+            orders = await Order.find({ status: { $nin: [...NON_REVENUE_STATUSES] } });
             if (!orders.length) {
                 res.status(404).json({ message: "No orders found!" });
                 return;
             }
         } else {
             const restaurant = await Restaurant.findById(id);
-            orders = await Order.find({ restaurantTitle: restaurant?.title, status: { $nin: ["Created", "Cancelled"] } });
+            orders = await Order.find({ restaurantTitle: restaurant?.title, status: { $nin: [...NON_REVENUE_STATUSES] } });
             if (!orders.length) {
                 res.status(404).json({ message: "No orders found!" });
                 return;
@@ -227,8 +234,8 @@ export const getNumbers = async (req: Request, res: Response): Promise<void> => 
         // cancelled/refunded order (or an abandoned checkout draft, status null)
         // would still count toward this week's revenue comparison.
         const [ordersThisWeek, ordersLastWeek] = await Promise.all([
-            Order.find({ createdAt: { $gte: startOfThisWeek, $lte: endOfThisWeek }, status: { $nin: ["Created", "Cancelled", null] } }),
-            Order.find({ createdAt: { $gte: startOfLastWeek, $lte: endOfLastWeek }, status: { $nin: ["Created", "Cancelled", null] } })
+            Order.find({ createdAt: { $gte: startOfThisWeek, $lte: endOfThisWeek }, status: { $nin: [...NON_REVENUE_STATUSES, null] } }),
+            Order.find({ createdAt: { $gte: startOfLastWeek, $lte: endOfLastWeek }, status: { $nin: [...NON_REVENUE_STATUSES, null] } })
         ]);
         const totalOrdersThisWeek = ordersThisWeek.length;
         const totalOrdersLastWeek = ordersLastWeek.length;
@@ -345,6 +352,25 @@ export const updateOrder = async (req: Request, res: Response): Promise<void> =>
                 return;
             }
 
+            // Resolve both ends of the delivery route once, here, and store them
+            // on the order. Tracking previously geocoded the restaurant and the
+            // customer address through Nominatim on every single map open.
+            // Failures are tolerated: a null point degrades the map, and must
+            // never fail an already-paid checkout.
+            const draft = await Order.findOne({ status: null, userId: (req as AuthRequest).userId });
+            const restaurantDoc = await Restaurant.findOne({ title: draft?.restaurantTitle });
+            const [restaurantPoint, customerPoint] = await Promise.all([
+                restaurantDoc?.location?.lat != null
+                    ? Promise.resolve(restaurantDoc.location)
+                    : geocodeStructured(restaurantDoc?.address ?? {}),
+                geocodeStructured({
+                    street: formData.street,
+                    houseNumber: formData.houseNumber,
+                    city: formData.city,
+                    countryOrRegion: formData.countryOrRegion,
+                }),
+            ]);
+
             const order = await Order.findOneAndUpdate({ status: null, userId: (req as AuthRequest).userId }, {
                 $set: {
                     status: "Created",
@@ -352,11 +378,13 @@ export const updateOrder = async (req: Request, res: Response): Promise<void> =>
                     shippingPrice: pricing.shippingPrice,
                     discountPercent: pricing.discountPercent,
                     fullName: (formData.name + " " + formData.surname),
-                    "adress.city": formData.city,
-                    "adress.countryOrRegion": formData.countryOrRegion,
-                    "adress.houseNumber": formData.houseNumber,
-                    "adress.apartmentNumbr": formData.apartmentNumbr,
-                    "adress.street": formData.street,
+                    "address.city": formData.city,
+                    "address.countryOrRegion": formData.countryOrRegion,
+                    "address.houseNumber": formData.houseNumber,
+                    "address.apartmentNumbr": formData.apartmentNumbr,
+                    "address.street": formData.street,
+                    "route.restaurant": restaurantPoint ?? null,
+                    "route.customer": customerPoint ?? null,
                     totalPrice: pricing.totalPrice,
                     paymentIntentId,
                 }
@@ -409,7 +437,7 @@ export const updateOrder = async (req: Request, res: Response): Promise<void> =>
 export const getFreeOrders = async (req: Request, res: Response): Promise<void> => {
     const city = req.params.city.trim();
     try {
-        const orders = await Order.find({ status: { $in: ["Preparing"] }, "adress.city": city, courierId: null });
+        const orders = await Order.find({ status: { $in: ["Preparing"] }, "address.city": city, courierId: null });
         if (orders.length === 0) {
             res.status(404).json("Not found!");
             return;
@@ -441,7 +469,7 @@ export const toggleToPreparing = async (req: Request, res: Response): Promise<vo
 // "cancelled but not refunded" state.
 const performCancellation = async (
     order: IOrderDocument,
-    { cancelledBy, reason }: { cancelledBy: "customer" | "restaurant" | "admin"; reason?: string }
+    { cancelledBy, reason }: { cancelledBy: CancelActor; reason?: string }
 ): Promise<{ ok: true } | { ok: false }> => {
     if (!order.paymentIntentId) {
         return { ok: false };
@@ -452,6 +480,11 @@ const performCancellation = async (
     } catch (err) {
         return { ok: false };
     }
+
+    // If a demo simulation is walking this order through its lifecycle, stop it
+    // before writing the terminal state — otherwise a queued tick would move a
+    // cancelled order back to Delivering.
+    stopSimulation(order._id.toString());
 
     order.status = "Cancelled";
     order.cancelledAt = new Date();
@@ -506,7 +539,7 @@ export const cancelOrderCustomer = async (req: Request, res: Response): Promise<
             res.status(404).json("Not found!");
             return;
         }
-        if (order.status !== "Created") {
+        if (!canCancel(order.status, "customer")) {
             res.status(409).json("This order can no longer be cancelled");
             return;
         }
@@ -544,7 +577,7 @@ export const cancelOrderRestaurant = async (req: Request, res: Response): Promis
             res.status(404).json("Not found!");
             return;
         }
-        if (!["Created", "Preparing"].includes(order.status)) {
+        if (!canCancel(order.status, "restaurant")) {
             res.status(409).json("This order can no longer be cancelled");
             return;
         }
@@ -571,7 +604,7 @@ export const cancelOrderAdmin = async (req: Request, res: Response): Promise<voi
             res.status(404).json("Not found!");
             return;
         }
-        if (!["Created", "Preparing", "Delivering"].includes(order.status)) {
+        if (!canCancel(order.status, "admin")) {
             res.status(409).json("This order can no longer be cancelled");
             return;
         }

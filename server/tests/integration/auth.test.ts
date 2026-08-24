@@ -97,7 +97,7 @@ describe("auth api", () => {
             expect(res.body.user.username).toBe("testuser1");
         })
 
-        it("Not found user!", async () => {
+        it("rejects a correctly-signed token whose account no longer exists", async () => {
             const fakeUserId = '507f1f77bcf86cd799439011';
             const invalidToken = jwt.sign(
                 { userId: fakeUserId, role: 'user' },
@@ -107,14 +107,25 @@ describe("auth api", () => {
             const res = await request(app).get("/api/auth/profile")
                 .set("Cookie", `token=${invalidToken}`);
 
-            expect(res.status).toBe(404);
-            expect(res.body.message).toBe('User not found!');
+            // 401, not the handler's 404: authMiddleware now loads the account
+            // to resolve its role, so a token naming a deleted user is an
+            // invalid credential and never reaches the handler. That also tells
+            // the client to sign in again rather than reporting a missing page.
+            expect(res.status).toBe(401);
+            expect(res.body.message).toBe('Invalid token');
         })
 
         it("Server error!", async () => {
-            jest.spyOn(User, 'findOne').mockImplementationOnce(() => {
-                throw new Error("DB error");
-            });
+            // authMiddleware resolves the caller's role from the database before
+            // the handler runs, so the first lookup has to succeed; the failure
+            // is aimed at the handler's own query.
+            const realFindOne = User.findOne.bind(User);
+            let calls = 0;
+            jest.spyOn(User, 'findOne').mockImplementation(((...args: Parameters<typeof User.findOne>) => {
+                calls += 1;
+                if (calls > 1) throw new Error("DB error");
+                return realFindOne(...args);
+            }) as typeof User.findOne);
             const res = await request(app).get("/api/auth/profile")
                 .send({ username: "testuser1", password: "12345678Dd" }).set("Cookie", `token=${validToken}`);
             expect(res.status).toBe(500);

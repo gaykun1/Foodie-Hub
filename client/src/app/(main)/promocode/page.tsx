@@ -1,12 +1,14 @@
 "use client"
-import axios, { isAxiosError } from 'axios'
+import { promocodesApi } from '@/api'
+import { errorMessage } from '@/lib/apiClient'
+import { RequireAuth } from '@/components/auth/RequireAuth'
 import { useState } from 'react'
 import { Ticket, CheckCircle2 } from 'lucide-react'
 import { Card } from '@/components/ui/Card'
 import { Input } from '@/components/ui/Field'
 import { Button } from '@/components/ui/Button'
 
-const Page = () => {
+const PromocodeView = () => {
     const [promocode, setPromocode] = useState<string>("");
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState<boolean>(false);
@@ -21,18 +23,12 @@ const Page = () => {
         try {
             setLoading(true);
             setError(null);
-            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/promocode/promocodes/${promocode}`, {}, { withCredentials: true });
-            if (res.data) {
-                setSuccess(true);
-                setPromocode("");
-            }
+            await promocodesApi.claimPromocode(promocode.trim());
+            setSuccess(true);
+            setPromocode("");
         } catch (err) {
             setSuccess(false);
-            if (isAxiosError(err) && err.response) {
-                setError(typeof err.response.data === "string" ? err.response.data : "That promocode isn't valid.");
-            } else {
-                setError("Something went wrong. Please try again.");
-            }
+            setError(errorMessage(err, "That promocode isn't valid."));
         } finally {
             setLoading(false);
         }
@@ -74,5 +70,14 @@ const Page = () => {
         </div>
     )
 }
+
+const Page = () => (
+    <RequireAuth
+        title="Sign in to claim a promocode"
+        description="Promocodes are saved to your account and applied at checkout."
+    >
+        <PromocodeView />
+    </RequireAuth>
+);
 
 export default Page

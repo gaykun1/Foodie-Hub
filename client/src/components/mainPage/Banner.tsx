@@ -14,7 +14,7 @@ const Banner = () => {
 
   return (
     <section className="relative mt-6 mb-8 min-h-[360px] rounded-xl overflow-hidden bg-sand-900">
-      <Image src="/images/foodiehub-hero-v2.png" alt="Artisan pizza and Mediterranean dishes" fill priority sizes="1400px" className="object-cover" />
+      <Image src="/images/foodiehub-hero-v2.webp" alt="Artisan pizza and Mediterranean dishes" fill priority sizes="1400px" className="object-cover" />
       <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-r from-sand-950/95 via-sand-950/65 to-transparent" />
       <motion.div
         variants={fadeRise}

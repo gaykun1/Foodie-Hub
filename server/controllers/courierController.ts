@@ -6,6 +6,7 @@ import { activeAdmins, io, restaurantsSocketsMap, socketsMap } from "../socket";
 import Restaurant from "../models/Restaurant";
 import { AuthRequest } from "../middleware/authMiddleware";
 import { sendOrderStatusEmail } from "../utils/sendOrderEmail";
+import { ACTIVE_STATUSES, canTransition, isOrderStatus } from "../utils/orderStatus";
 
 // Order.courierId stores the courier's Courier-application document id (not
 // their User id) — that's the established convention this whole feature (and
@@ -112,6 +113,18 @@ export const changeOrderStatus = async (req: Request, res: Response): Promise<vo
             res.status(403).json("Access denied");
             return;
         }
+        // The requested status used to be written straight through, unvalidated:
+        // a courier could set an arbitrary string, jump an order from Created
+        // to Delivered, or "un-deliver" a finished one. Both the value and the
+        // transition are now checked against the shared state machine.
+        if (!isOrderStatus(status)) {
+            res.status(400).json("Unknown order status");
+            return;
+        }
+        if (!canTransition(order.status, status)) {
+            res.status(409).json(`Cannot move an order from ${order.status ?? "draft"} to ${status}`);
+            return;
+        }
         order.status = status;
         await order.save();
         // taking last 7 updated and emitting it through socket for admin panel
@@ -215,8 +228,11 @@ export const takeOrder = async (req: Request, res: Response): Promise<void> => {
             res.status(404).json("Not found!");
             return;
         }
+        // Restricted to "Preparing" to match getFreeOrders, which is the only
+        // list couriers pick from — without it a courier could claim an order
+        // the restaurant had not accepted, or one already delivered/cancelled.
         const order = await Order.findOneAndUpdate(
-            { _id: id, courierId: null },
+            { _id: id, courierId: null, status: "Preparing" },
             { $set: { courierId: ownCourierId } }
         );
         if (!order) {
@@ -241,7 +257,7 @@ export const checkIfHasOrder = async (req: Request, res: Response): Promise<void
             res.status(200).json(null);
             return;
         }
-        const order = await Order.findOne({ courierId: ownCourierId, status: { $in: ["Delivering", "Preparing", "Created"] } });
+        const order = await Order.findOne({ courierId: ownCourierId, status: { $in: [...ACTIVE_STATUSES] } });
         res.status(200).json(order);
         return;
     } catch {

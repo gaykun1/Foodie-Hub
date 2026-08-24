@@ -1,12 +1,19 @@
-
 # backend
 /server/node_modules
 /server/.env
+/server/dist
 
 # frontend
 /client/node_modules
 /client/.env.local
 /client/.next
+
+# test artifacts
+/client/playwright-report
+/client/test-results
+/client/blob-report
+/client/coverage
+/server/coverage
 
 # general
 .DS_Store

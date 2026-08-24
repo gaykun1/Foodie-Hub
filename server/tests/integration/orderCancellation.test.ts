@@ -38,7 +38,7 @@ describe("order cancellation + refund", () => {
 
         restaurant = await Restaurant.create({
             title: "Best Burger", dishes: [], description: "Cool restaurant", imageUrl: "img.jpg",
-            categories: [Category.FastFood], adress: { street: "Street", city: "city", houseNumber: 4 },
+            categories: [Category.FastFood], address: { street: "Street", city: "city", houseNumber: 4 },
             startDay: "Monday", endDay: "Monday", endHour: "6:00", startHour: "6:00",
             websiteUrl: "site.com", phone: "+312421412",
         });
@@ -157,7 +157,7 @@ describe("order cancellation + refund", () => {
         it("404s an order belonging to a different restaurant", async () => {
             const otherRestaurant = await Restaurant.create({
                 title: "Other Place", dishes: [], description: "Other", imageUrl: "img.jpg",
-                categories: [Category.FastFood], adress: { street: "St", city: "city", houseNumber: 1 },
+                categories: [Category.FastFood], address: { street: "St", city: "city", houseNumber: 1 },
                 startDay: "Monday", endDay: "Monday", endHour: "6:00", startHour: "6:00",
                 websiteUrl: "site.com", phone: "+312421413",
             });

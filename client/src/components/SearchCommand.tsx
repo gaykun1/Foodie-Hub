@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import axios from "axios";
+import { restaurantsApi } from "@/api";
 import Link from "next/link";
 import { Search, X, Loader2 } from "lucide-react";
 import { Restaurant } from "@/redux/reduxTypes";
@@ -51,10 +51,7 @@ export const SearchCommand = ({
     const timeout = setTimeout(async () => {
       try {
         setLoading(true);
-        const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/restaurants/search?chars=${trimmed}`
-        );
-        setResults(res.data ?? []);
+        setResults((await restaurantsApi.searchRestaurants(trimmed)) ?? []);
         open();
       } catch (err) {
         console.error(err);

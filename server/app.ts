@@ -15,6 +15,7 @@ import courierRoute from "./routes/courierRoutes";
 import promocodeRoute from "./routes/promocodeRoutes";
 import ratingRoute from "./routes/ratingRoutes";
 import addressRoute from "./routes/addressRoutes";
+import demoRoute from "./routes/demoRoutes";
 
 import { authMiddleware } from "./middleware/authMiddleware";
 
@@ -51,6 +52,20 @@ app.use("/api/courier", courierRoute);
 app.use("/api/promocode", promocodeRoute);
 app.use("/api/rating", ratingRoute);
 app.use("/api/address", authMiddleware, addressRoute);
+// Demo-only; every handler behind it 404s unless DEMO_SIMULATION is enabled.
+app.use("/api/demo", demoRoute);
+
+/**
+ * Liveness probe. The client pings this on load to wake the free-tier instance
+ * before the user's first real request — it was previously hitting a route that
+ * did not exist, so every page load logged a 404 and the wake-up only worked by
+ * accident.
+ */
+const health = (_req: Request, res: Response) => {
+    res.status(200).json({ status: "ok", uptime: process.uptime() });
+};
+app.get("/ping", health);
+app.get("/health", health);
 
 //route for testing auth middleware
 app.get("/api/protected",authMiddleware, async (req: Request, res: Response) => {

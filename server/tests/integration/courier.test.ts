@@ -62,7 +62,7 @@ describe("courier order handling", () => {
         totalPrice: 10,
         status: "Preparing",
         courierId: null,
-        adress: { city: "Kyiv", countryOrRegion: "Ukraine", houseNumber: 1, street: "Street" },
+        address: { city: "Kyiv", countryOrRegion: "Ukraine", houseNumber: 1, street: "Street" },
     });
 
     describe("take order", () => {

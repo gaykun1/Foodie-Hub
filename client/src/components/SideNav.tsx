@@ -54,6 +54,7 @@ const NavLink = ({ item, active, onClick }: { item: SideNavItem; active: boolean
 export const SideNav = ({ items, className }: { items: SideNavItem[]; className?: string }) => {
     const path = usePathname();
     const { isOpen, toggle, close } = useDisclosure();
+    const active = items.find((item) => item.href === path);
 
     return (
         <>
@@ -62,18 +63,24 @@ export const SideNav = ({ items, className }: { items: SideNavItem[]; className?
                     <NavLink key={item.href} item={item} active={path === item.href} />
                 ))}
             </nav>
-            <div className="lg:hidden mb-4">
+            <div className="lg:hidden mb-4 w-full">
+                {/* Names the section you are in. Previously a bare chevron with
+                    no visible label, which gave no clue that it was navigation
+                    at all. */}
                 <button
                     onClick={toggle}
                     aria-expanded={isOpen}
                     aria-controls="sidenav-mobile-panel"
-                    aria-label={isOpen ? "Close section menu" : "Open section menu"}
-                    className="btn-transparent size-10 p-0"
+                    className="flex w-full items-center justify-between gap-2 rounded-[var(--radius-sm)] border border-border bg-surface px-4 py-3 text-sm font-semibold text-ink transition-colors hover:bg-surfaceRaised cursor-pointer"
                 >
-                    <ChevronDown className={cn("transition-transform", isOpen && "rotate-180")} />
+                    <span className="flex items-center gap-2 min-w-0">
+                        {active?.icon}
+                        <span className="truncate">{active?.label ?? "Menu"}</span>
+                    </span>
+                    <ChevronDown size={18} className={cn("shrink-0 text-inkMuted transition-transform", isOpen && "rotate-180")} />
                 </button>
                 {isOpen && (
-                    <nav id="sidenav-mobile-panel" aria-label="Section navigation" className="flex flex-col gap-1 mt-2 rounded-lg border border-border p-2 w-fit min-w-[220px]">
+                    <nav id="sidenav-mobile-panel" aria-label="Section navigation" className="flex flex-col gap-1 mt-2 rounded-lg border border-border bg-surface p-2">
                         {items.map((item) => (
                             <NavLink key={item.href} item={item} active={path === item.href} onClick={close} />
                         ))}

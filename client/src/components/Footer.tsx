@@ -1,24 +1,38 @@
+"use client";
 import Link from "next/link";
 import Image from "next/image";
 import { Instagram, Facebook, Twitter } from "lucide-react";
+import { useAppSelector } from "@/hooks/reduxHooks";
 
-const columns = [
-    {
-        heading: "Explore",
-        links: [
-            { href: "/", label: "Home" },
-            { href: "/restaurants/category/all-restaurants", label: "Restaurants" },
-            { href: "/orders", label: "Orders" },
-        ],
-    },
-    {
-        heading: "Company",
-        links: [
+interface FooterLink { href: string; label: string }
+
+/**
+ * Guests see only what they can actually reach. Advertising "Orders" or "My
+ * profile" to a signed-out visitor just leads them to a wall, which is the
+ * behaviour the guest-browsing work exists to remove.
+ */
+const getColumns = (isAuthenticated: boolean): { heading: string; links: FooterLink[] }[] => {
+    const explore: FooterLink[] = [
+        { href: "/", label: "Home" },
+        { href: "/restaurants/category/all-restaurants", label: "Restaurants" },
+    ];
+    if (isAuthenticated) explore.push({ href: "/orders", label: "Orders" });
+
+    const company: FooterLink[] = isAuthenticated
+        ? [
             { href: "/job", label: "Become a courier" },
             { href: "/profile", label: "My profile" },
-        ],
-    },
-];
+        ]
+        : [
+            { href: "/auth/login", label: "Log in" },
+            { href: "/auth/register", label: "Create account" },
+        ];
+
+    return [
+        { heading: "Explore", links: explore },
+        { heading: "Company", links: company },
+    ];
+};
 
 const socials = [
     { href: "https://instagram.com", label: "Instagram", icon: Instagram },
@@ -27,6 +41,9 @@ const socials = [
 ];
 
 const Footer = () => {
+    const { isAuthenticated } = useAppSelector((state) => state.auth);
+    const columns = getColumns(isAuthenticated);
+
     return (
         <footer className="mt-auto border-t border-border bg-surface">
             <div className="_container py-10 grid grid-cols-2 sm:grid-cols-4 gap-8">

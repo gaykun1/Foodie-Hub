@@ -1,7 +1,8 @@
 "use client";
 import { Category } from "@/redux/reduxTypes";
 import { uploadImageToCloudinary } from "@/utils/uploadImageToCloudinary";
-import axios from "axios";
+import { restaurantsApi } from "@/api";
+import { errorMessage } from "@/lib/apiClient";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Input, Textarea, Select } from "@/components/ui/Field";
@@ -54,19 +55,15 @@ const Page = () => {
         endHour: data.endHour,
       };
 
-      await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/restaurants`,
-        restaurantData,
-        { withCredentials: true }
-      );
+      await restaurantsApi.createRestaurant(restaurantData);
 
       setServerError(null);
       reset();
     } catch (err) {
-      if (axios.isAxiosError(err)) {
-        const msg = err.response?.data?.message || err.message || "Something went wrong";
-        setServerError(msg);
-      }
+      console.error(err);
+      // Was silently swallowing any non-axios failure (a Cloudinary upload
+      // reject, for instance), leaving the form looking like it had succeeded.
+      setServerError(errorMessage(err, "Something went wrong creating this restaurant."));
     } finally {
       setLoading(false);
     }

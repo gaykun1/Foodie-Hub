@@ -1,5 +1,5 @@
 "use client"
-import axios from 'axios';
+import { promocodesApi } from '@/api';
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Input, Select } from '@/components/ui/Field';
 import { Button } from '@/components/ui/Button';
@@ -23,7 +23,7 @@ const Page = () => {
     const onSubmit: SubmitHandler<formFields> = async (data) => {
         try {
             setLoading(true);
-            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/promocode/promocodes`, { data }, { withCredentials: true });
+            const res = await promocodesApi.createPromocode({ data });
             if (res) {
                 reset();
                 toast.success("Promocode created");

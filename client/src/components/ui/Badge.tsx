@@ -1,5 +1,6 @@
 import React from "react";
 import { cn } from "@/lib/cn";
+import { ORDER_STATUS_LABEL, ORDER_STATUS_TONE, type OrderStatus } from "@/lib/orderStatus";
 
 export type BadgeTone = "neutral" | "success" | "warning" | "info" | "danger" | "brand";
 
@@ -29,19 +30,10 @@ export const Badge = ({ tone = "neutral", className, children, ...rest }: BadgeP
   </span>
 );
 
-// Must match the server's Order.status enum (server/models/Order.ts) — "Created"
-// is the real just-placed state; "Processing" was never a value the backend
-// actually sets for orders (that's a Courier application status).
-export type OrderStatus = "Delivering" | "Delivered" | "Created" | "Preparing" | "Cancelled";
-
-const orderStatusTone: Record<OrderStatus, BadgeTone> = {
-  Created: "neutral",
-  Preparing: "warning",
-  Delivering: "info",
-  Delivered: "success",
-  Cancelled: "danger",
-};
+// The status vocabulary itself lives in @/lib/orderStatus, which mirrors
+// server/utils/orderStatus.ts — this file only owns how a status *looks*.
+export type { OrderStatus };
 
 export const OrderStatusBadge = ({ status }: { status: OrderStatus }) => (
-  <Badge tone={orderStatusTone[status]}>{status}</Badge>
+  <Badge tone={ORDER_STATUS_TONE[status]}>{ORDER_STATUS_LABEL[status]}</Badge>
 );

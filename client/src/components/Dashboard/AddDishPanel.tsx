@@ -3,7 +3,7 @@
 import DishCard from "@/components/Dashboard/DishCard";
 import { Dish } from "@/redux/reduxTypes";
 import { uploadImageToCloudinary } from "@/utils/uploadImageToCloudinary";
-import axios from "axios";
+import { restaurantsApi } from "@/api";
 import { useCallback, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Input, Select } from "@/components/ui/Field";
@@ -42,9 +42,9 @@ export const AddDishPanel = ({ restaurantId }: { restaurantId: string | undefine
                 typeOfFood: data.typeOfFood,
             }
 
-            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/dishes`, { dish, id: restaurantId }, { withCredentials: true });
+            const created = await restaurantsApi.createDish({ dish, id: restaurantId });
             reset();
-            setMenu([...menu, res.data]);
+            setMenu([...menu, created]);
         } catch (err) {
             console.error(err);
         } finally {
@@ -53,10 +53,11 @@ export const AddDishPanel = ({ restaurantId }: { restaurantId: string | undefine
     }
 
     const getDishes = useCallback(async () => {
+        if (!restaurantId) return;
         try {
             setDishesLoading(true);
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/dishes/${restaurantId}`);
-            if (res.data) setMenu(res.data.dishes);
+            const menuData = await restaurantsApi.getDishes(restaurantId);
+            setMenu(menuData?.dishes ?? []);
         } catch (err) {
             console.error(err);
         } finally {

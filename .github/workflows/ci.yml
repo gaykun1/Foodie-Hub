@@ -1,0 +1,157 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+# A newer push to the same branch supersedes an in-flight run.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  NODE_VERSION: "20"
+  NPM_VERSION: "11"
+
+jobs:
+  secrets:
+    name: Secret scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Gitleaks diffs the pushed range, so it needs history, not a shallow
+          # clone — otherwise a secret added in an earlier commit of the same
+          # branch goes unnoticed.
+          fetch-depth: 0
+
+      - name: Scan for committed secrets
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  server:
+    name: Server (lint, typecheck, test, build)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: server/package-lock.json
+
+      # The committed lockfiles are maintained with npm 11. Node 20 ships npm
+      # 10, which reads them as out of sync and refuses `npm ci`, so pin the
+      # major rather than letting the runner's default decide.
+      - name: Pin npm
+        run: npm install -g npm@${{ env.NPM_VERSION }}
+
+      - name: Install
+        working-directory: server
+        run: npm ci
+
+      - name: Typecheck
+        working-directory: server
+        run: npm run typecheck
+
+      # The suite is self-contained: it runs against mongodb-memory-server and a
+      # mocked Stripe/Resend, and supplies its own env defaults from
+      # tests/setupEnv.ts, so it needs nothing configured here.
+      - name: Test
+        working-directory: server
+        run: npm test -- --ci --runInBand
+
+      - name: Build
+        working-directory: server
+        run: npm run build
+
+  client:
+    name: Client (lint, typecheck, test, build)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: client/package-lock.json
+
+      # The committed lockfiles are maintained with npm 11. Node 20 ships npm
+      # 10, which reads them as out of sync and refuses `npm ci`, so pin the
+      # major rather than letting the runner's default decide.
+      - name: Pin npm
+        run: npm install -g npm@${{ env.NPM_VERSION }}
+
+      - name: Install
+        working-directory: client
+        run: npm ci
+
+      - name: Lint
+        working-directory: client
+        run: npm run lint
+
+      - name: Typecheck
+        working-directory: client
+        run: npm run typecheck
+
+      - name: Unit and component tests
+        working-directory: client
+        run: npm test -- --ci
+
+      - name: Build
+        working-directory: client
+        run: npm run build
+        env:
+          NEXT_PUBLIC_API_URL: http://localhost:5000
+          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: pk_test_ci_placeholder
+
+  e2e:
+    name: End-to-end journey
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: client/package-lock.json
+
+      # The committed lockfiles are maintained with npm 11. Node 20 ships npm
+      # 10, which reads them as out of sync and refuses `npm ci`, so pin the
+      # major rather than letting the runner's default decide.
+      - name: Pin npm
+        run: npm install -g npm@${{ env.NPM_VERSION }}
+
+      - name: Install
+        working-directory: client
+        run: npm ci
+
+      - name: Install Playwright browsers
+        working-directory: client
+        run: npx playwright install --with-deps chromium
+
+      - name: Run journey
+        working-directory: client
+        # The journey stubs the API at the network layer, so no database, Stripe
+        # key or seeded data is needed — see client/tests/e2e/fixtures/api.ts.
+        run: npm run test:e2e
+        env:
+          NEXT_PUBLIC_API_URL: http://localhost:5000
+          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: pk_test_ci_placeholder
+
+      - name: Upload report on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: client/playwright-report
+          retention-days: 7

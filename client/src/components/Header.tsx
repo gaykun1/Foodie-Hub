@@ -3,11 +3,13 @@ import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks"
 import { logout } from "@/redux/authSlice"
 import { deleteItem, updateAmount } from "@/redux/cartSlice"
 import { User } from "@/redux/reduxTypes"
-import axios from "axios"
+import { ordersApi, authApi } from "@/api"
+import { useRequireAuth } from "@/hooks/useRequireAuth"
+import { useCart } from "@/hooks/useCart"
 import { Menu, Minus, Plus, ShoppingCart, ShoppingBag, UserRound, LogOut } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
-import { redirect, usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import React, { useRef } from "react"
 import { SearchCommand } from "./SearchCommand"
 import { ThemeToggle } from "./ui/ThemeToggle"
@@ -24,20 +26,30 @@ interface NavItem { href: string; label: string }
 const getNavItems = (user: User | null): NavItem[] => {
   if (user?.role === "admin") return [{ href: "/dashboard/overview", label: "Dashboard" }];
   if (user?.role === "restaurant") return [{ href: "/dashboard/restaurant-overview", label: "Dashboard" }];
+  // Guests get the browse-only nav: "My orders" and the courier links both
+  // require an account, so advertising them to a visitor only leads to a wall.
+  if (!user) {
+    return [
+      { href: "/", label: "Discover" },
+      { href: "/restaurants/category/all-restaurants", label: "Restaurants" },
+    ];
+  }
   return [
     { href: "/", label: "Discover" },
     { href: "/restaurants/category/all-restaurants", label: "Restaurants" },
     { href: "/orders", label: "My orders" },
-    user?.role === "courier" ? { href: "/courier", label: "Courier page" } : { href: "/job", label: "Get a job" },
+    user.role === "courier" ? { href: "/courier", label: "Courier page" } : { href: "/job", label: "Get a job" },
   ];
 };
 
 const Header = () => {
   const dispatch = useAppDispatch();
+  const router = useRouter();
   const pathname = usePathname() ?? "/";
   const { user } = useAppSelector(state => state.auth);
-  const { cart } = useAppSelector(state => state.cart);
   const toast = useToast();
+  const { ensureAuth } = useRequireAuth();
+  const { cart, setAmount } = useCart();
 
   const cartDisclosure = useDisclosure();
   const avatarDisclosure = useDisclosure();
@@ -49,33 +61,45 @@ const Header = () => {
 
   const updateCount = async (amount: number, id: string, title: string) => {
     try {
+      // Optimistic locally, then persisted — for guests `setAmount` writes to
+      // localStorage instead of the server, but callers don't need to care.
       if (amount === 0) {
         dispatch(deleteItem(title));
       }
       dispatch(updateAmount({ amount, dishId: id }));
-      await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/api/cart/items/${id}`, { amount, title }, { withCredentials: true });
+      await setAmount({ _id: id, title }, amount);
     } catch (err) {
       console.error(err);
       toast.error("Couldn't update the cart. Please try again.");
     }
   }
 
-  const createOrder = async () => {
-    try {
-      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/order/orders`, { cart }, { withCredentials: true });
-      if (res.data) return res.data;
-    } catch (err) {
-      console.error(err);
-      toast.error("Couldn't place the order. Please try again.");
-    }
+  // Browsing and filling a cart are public; turning that cart into an order is
+  // the first point that genuinely needs an account, so the gate lives here.
+  const handleCheckout = () => {
+    ensureAuth(async () => {
+      if (!cart) return;
+      try {
+        const id = await ordersApi.createOrder(cart);
+        if (id) {
+          cartDisclosure.close();
+          router.push(`/orders/order/${id}`);
+        }
+      } catch (err) {
+        console.error(err);
+        toast.error("Couldn't start checkout. Please try again.");
+      }
+    });
   }
 
   const handleLogOut = async () => {
     try {
-      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/logout`, {}, { withCredentials: true });
+      await authApi.logOut();
       dispatch(logout());
       avatarDisclosure.close();
-      redirect("/auth/login");
+      // Home, not the login screen — signing out should leave the visitor
+      // somewhere they can still browse.
+      router.push("/");
     } catch (err) {
       console.error(err);
       toast.error("Couldn't log out. Please try again.");
@@ -142,7 +166,7 @@ const Header = () => {
                   <div className="px-3 py-2 border-b border-border mb-1">
                     <span className="text-sm font-bold text-ink">Welcome back {user.username}!</span>
                   </div>
-                  <DropdownItem onClick={() => { avatarDisclosure.close(); redirect("/profile"); }}>
+                  <DropdownItem onClick={() => { avatarDisclosure.close(); router.push("/profile"); }}>
                     Profile
                   </DropdownItem>
                   <DropdownItem aria-label="log out" onClick={handleLogOut} className="text-danger">
@@ -152,10 +176,10 @@ const Header = () => {
                 </>
               ) : (
                 <>
-                  <DropdownItem onClick={() => { avatarDisclosure.close(); redirect("/auth/login"); }}>
+                  <DropdownItem onClick={() => { avatarDisclosure.close(); router.push("/auth/login"); }}>
                     Log in
                   </DropdownItem>
-                  <DropdownItem onClick={() => { avatarDisclosure.close(); redirect("/auth/register"); }}>
+                  <DropdownItem onClick={() => { avatarDisclosure.close(); router.push("/auth/register"); }}>
                     Sign up
                   </DropdownItem>
                 </>
@@ -196,18 +220,8 @@ const Header = () => {
         title="Cart"
         footer={
           cart?.items.length ? (
-            <Button
-              fullWidth
-              size="lg"
-              onClick={async () => {
-                const id = await createOrder();
-                if (id) {
-                  cartDisclosure.close();
-                  redirect(`/orders/order/${id}`);
-                }
-              }}
-            >
-              Place order
+            <Button fullWidth size="lg" onClick={handleCheckout}>
+              {user ? "Place order" : "Sign in to order"}
             </Button>
           ) : undefined
         }

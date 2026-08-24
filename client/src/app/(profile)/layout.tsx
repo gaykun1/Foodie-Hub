@@ -14,7 +14,7 @@ export default async function RootLayout({
       <div className="min-h-screen flex flex-col">
         <Header />
         <div className="_container flex-1">
-          <div className="flex gap-8 py-8">
+          <div className="flex flex-col lg:flex-row gap-4 lg:gap-8 py-8">
             <SideNav items={profileNavItems} />
             <div className="grow min-w-0">
               {children}

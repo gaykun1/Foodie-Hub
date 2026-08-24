@@ -1,1 +1,16 @@
-{}
+{
+  "name": "foodiehub",
+  "private": true,
+  "description": "Repo-level convenience scripts. The client and server are independent npm packages with their own lockfiles; this root has no dependencies and deliberately no lockfile of its own, so Next.js infers the correct workspace root.",
+  "scripts": {
+    "install:all": "npm --prefix client install && npm --prefix server install",
+    "dev:client": "npm --prefix client run dev",
+    "dev:server": "npm --prefix server run dev",
+    "seed": "npm --prefix server run seed",
+    "lint": "npm --prefix client run lint",
+    "typecheck": "npm --prefix client run typecheck && npm --prefix server run typecheck",
+    "test": "npm --prefix client test && npm --prefix server test",
+    "test:e2e": "npm --prefix client run test:e2e",
+    "build": "npm --prefix client run build && npm --prefix server run build"
+  }
+}

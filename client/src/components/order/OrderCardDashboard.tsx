@@ -1,7 +1,8 @@
 "use client"
 
 import { Order } from "@/redux/reduxTypes"
-import axios from "axios";
+import { ordersApi } from "@/api";
+import { errorMessage } from "@/lib/apiClient";
 import { Dispatch, SetStateAction, useState } from "react";
 import OrderCard from "./OrderCard";
 import { Button } from "@/components/ui/Button";
@@ -13,14 +14,17 @@ const OrderCardDashboard = ({ order, setOrders }: { order: Order, setOrders: Dis
     const [loading, setLoading] = useState(false);
     const toast = useToast();
 
-    const toggleToPreparing = async () => {
+    const acceptOrder = async () => {
         try {
             setLoading(true);
-            await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/api/order/orders/${order._id}/status`, {}, { withCredentials: true });
+            await ordersApi.acceptOrder(order._id);
+            // Leaves the incoming queue once accepted; couriers pick it up from
+            // there.
             setOrders((prev) => prev.filter(item => item._id !== order._id));
+            toast.success("Order accepted - it is now visible to couriers");
         } catch (err) {
             console.error(err);
-            toast.error("Couldn't update the order. Please try again.");
+            toast.error(errorMessage(err, "Couldn't accept this order. Please try again."));
         } finally {
             setLoading(false);
         }
@@ -30,8 +34,8 @@ const OrderCardDashboard = ({ order, setOrders }: { order: Order, setOrders: Dis
         <OrderCard
             order={order}
             actions={
-                <Button size="sm" loading={loading} onClick={toggleToPreparing}>
-                    Toggle to Preparing
+                <Button size="sm" loading={loading} onClick={acceptOrder}>
+                    Accept &amp; start preparing
                 </Button>
             }
         />

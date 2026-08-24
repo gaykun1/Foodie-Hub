@@ -1,4 +1,12 @@
+import type { OrderStatus } from "@/lib/orderStatus";
 
+export type { OrderStatus };
+
+/** A resolved map coordinate, mirroring the server's IGeoPoint. */
+export type GeoPoint = {
+    lat: number,
+    lng: number,
+}
 
 export interface User {
     username: string,
@@ -87,20 +95,30 @@ export type Order = {
     totalPrice: number,
     createdAt: Date,
     courierId: string,
-    status: "Delivering" | "Delivered" | "Created" | "Preparing" | "Cancelled",
+    status: OrderStatus,
     approxTime: number,
     fullName: string,
-    adress: {
+    address: {
         city: string,
         countryOrRegion: string,
         houseNumber: number,
         street: string,
         apartmentNumbr?: number;
     },
+    /**
+     * Restaurant and delivery coordinates resolved once at checkout, so the
+     * tracking map does not geocode both endpoints every time it opens.
+     * Optional because orders placed before this field existed lack it.
+     */
+    route?: {
+        restaurant?: GeoPoint | null,
+        customer?: GeoPoint | null,
+    } | null,
     cancelledAt?: string | null,
     cancelledBy?: "customer" | "restaurant" | "admin" | null,
     cancelReason?: string | null,
     refundedAt?: string | null,
+    isSimulated?: boolean,
 }
 
 export type Address = {
@@ -134,11 +152,12 @@ export interface Restaurant {
     imageUrl: string,
     websiteUrl: string,
     phone: string,
-    adress: {
+    address: {
         city: string,
         street: string,
         houseNumber: string,
     },
+    location?: GeoPoint | null,
     description: string,
     _id: string,
     startDay: string,

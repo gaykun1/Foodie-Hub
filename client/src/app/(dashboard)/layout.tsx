@@ -7,7 +7,7 @@ import { PageSpinner } from "@/components/ui/Spinner";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { ButtonLink } from "@/components/ui/Button";
 import { ShieldAlert } from "lucide-react";
-import axios from "axios";
+import { authApi } from "@/api";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
@@ -31,8 +31,7 @@ export default function RootLayout({
     const checkRole = async () => {
       try {
         setLoading(true);
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/profile/roles`, { withCredentials: true });
-        setRole(res.data.role);
+        setRole(await authApi.getRole());
       } catch (err) {
         console.error(err);
         setRole(null);
@@ -73,7 +72,7 @@ export default function RootLayout({
       <div className="min-h-screen flex flex-col">
         <Header />
         <div className="_container flex-1">
-          <div className="flex gap-6 py-6">
+          <div className="flex flex-col lg:flex-row gap-4 lg:gap-6 py-6">
             {isManagedRole && <SideNav items={role === "admin" ? adminNavItems : restaurantNavItems} />}
             <div className="grow min-w-0">
               <div className="border border-border rounded-lg p-6 flex flex-col bg-surface">

@@ -1,31 +1,10 @@
-import { NextFunction, Request, Response } from "express";
-import jwt from "jsonwebtoken";
-import { AuthRequest } from "./authMiddleware";
+import { requireRole } from "./authMiddleware";
 
-
-
-export const courierMiddleware = (req: Request, res: Response, next: NextFunction): void => {
-    const token = req.cookies?.token ;
-    // checking auth token in cookies 
-
-    if (!token) {
-        res.status(401).json({ message: 'Unauthorized (no token)' });
-        return;
-    }
-
-    try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { userId: string, role: string };
-        if (decoded.role !== "courier") {
-            res.status(403).json({ message: "Access denied" });
-            return;
-        }
-        (req as AuthRequest).userId = decoded.userId;
-        next();
-        //returning userId if its courier role
-
-
-    } catch (err) {
-        res.status(401).json({ message: 'Invalid token' });
-        return;
-    }
-}
+/**
+ * Courier-only surfaces. Proves the caller is *a* courier; handlers still
+ * resolve which courier from the authenticated user.
+ *
+ * Delegates to `requireRole`, which resolves the role from the stored User
+ * document rather than the token's claim — see authMiddleware for why.
+ */
+export const courierMiddleware = requireRole("courier");

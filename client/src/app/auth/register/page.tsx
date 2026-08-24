@@ -1,10 +1,11 @@
 "use client"
 import { SignUp } from '@/api/api';
-import axios from 'axios';
+import { apiClient } from '@/lib/apiClient';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { Suspense, useEffect, useState } from 'react';
+import { PageSpinner } from '@/components/ui/Spinner';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Eye, EyeOff, UtensilsCrossed } from 'lucide-react';
 import { Input } from '@/components/ui/Field';
@@ -23,9 +24,18 @@ const strengthChecks = [
   { test: (v: string) => /\d/.test(v), label: "One number" },
 ];
 
-const Page = () => {
+/** Only same-origin paths are honoured, so `?next=` can't be used as an open redirect. */
+const safeNext = (value: string | null): string => {
+  if (!value) return "/";
+  if (!value.startsWith("/") || value.startsWith("//")) return "/";
+  return value;
+};
+
+const RegisterForm = () => {
   const { register, handleSubmit, watch, formState: { errors } } = useForm<FormFiedsType>();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const next = safeNext(searchParams.get("next"));
   const [error, setError] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -38,7 +48,7 @@ const Page = () => {
       const status = await SignUp(data.password, data.username);
       if (status === 200) {
         setTimeout(() => {
-          router.push("/");
+          router.push(next);
         }, 300);
       } else if (status === 403) {
         setError(true);
@@ -55,18 +65,15 @@ const Page = () => {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/profile`, {
-          withCredentials: true,
-        });
-        if (res.data) {
-          router.push("/");
-        }
+        await apiClient.get(`/api/auth/profile`);
+        // Already signed in — go straight where they were headed.
+        router.push(next);
       } catch {
-        console.log("Not authorized!");
+        // Not signed in, which is the expected case on this screen.
       }
     }
     getUser();
-  }, [router]);
+  }, [router, next]);
 
   return (
     <div className="min-h-screen grid lg:grid-cols-2">
@@ -160,11 +167,20 @@ const Page = () => {
 
           <p className="text-sm text-inkMuted text-center">
             Already have an account?{" "}
-            <Link className="font-semibold text-brand hover:underline" href="login">Log in</Link>
+            <Link className="font-semibold text-brand hover:underline" href={`/auth/login?next=${encodeURIComponent(next)}`}>Log in</Link>
           </p>
         </div>
       </div>
     </div>
   )
 }
+
+// useSearchParams needs a suspense boundary to keep this route statically
+// renderable rather than forcing it dynamic.
+const Page = () => (
+  <Suspense fallback={<PageSpinner />}>
+    <RegisterForm />
+  </Suspense>
+);
+
 export default Page;
