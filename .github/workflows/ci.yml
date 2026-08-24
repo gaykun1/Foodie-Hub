@@ -16,6 +16,7 @@ permissions:
 
 env:
   NODE_VERSION: "20"
+  NPM_VERSION: "11"
 
 jobs:
   secrets:
@@ -46,6 +47,12 @@ jobs:
           cache: npm
           cache-dependency-path: server/package-lock.json
 
+      # The committed lockfiles are maintained with npm 11. Node 20 ships npm
+      # 10, which reads them as out of sync and refuses `npm ci`, so pin the
+      # major rather than letting the runner's default decide.
+      - name: Pin npm
+        run: npm install -g npm@${{ env.NPM_VERSION }}
+
       - name: Install
         working-directory: server
         run: npm ci
@@ -54,15 +61,12 @@ jobs:
         working-directory: server
         run: npm run typecheck
 
+      # The suite is self-contained: it runs against mongodb-memory-server and a
+      # mocked Stripe/Resend, and supplies its own env defaults from
+      # tests/setupEnv.ts, so it needs nothing configured here.
       - name: Test
         working-directory: server
         run: npm test -- --ci --runInBand
-        env:
-          # The suite runs against mongodb-memory-server and a stubbed Stripe,
-          # so these only need to be present, not real.
-          JWT_SECRET: ci-test-secret
-          STRIPE_SECRET_KEY: sk_test_ci_placeholder
-          CORS_ORIGIN: http://localhost:3000
 
       - name: Build
         working-directory: server
@@ -79,6 +83,12 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
           cache-dependency-path: client/package-lock.json
+
+      # The committed lockfiles are maintained with npm 11. Node 20 ships npm
+      # 10, which reads them as out of sync and refuses `npm ci`, so pin the
+      # major rather than letting the runner's default decide.
+      - name: Pin npm
+        run: npm install -g npm@${{ env.NPM_VERSION }}
 
       - name: Install
         working-directory: client
@@ -114,6 +124,12 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
           cache-dependency-path: client/package-lock.json
+
+      # The committed lockfiles are maintained with npm 11. Node 20 ships npm
+      # 10, which reads them as out of sync and refuses `npm ci`, so pin the
+      # major rather than letting the runner's default decide.
+      - name: Pin npm
+        run: npm install -g npm@${{ env.NPM_VERSION }}
 
       - name: Install
         working-directory: client
