@@ -89,7 +89,11 @@ export default function HeaderRestaurant() {
           <div className="flex items-center gap-4 flex-wrap text-sm sm:text-base">
             <div className="flex items-center gap-2">
               <MapPin size={18} />
-              <span>{currentRestaurant.address.street} {currentRestaurant.address.houseNumber}, {currentRestaurant.address.city}</span>
+              <span>
+                {currentRestaurant.address
+                  ? `${currentRestaurant.address.street} ${currentRestaurant.address.houseNumber}, ${currentRestaurant.address.city}`
+                  : "Address unavailable"}
+              </span>
             </div>
             <div className="flex items-center gap-2">
               <Clock size={18} />

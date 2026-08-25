@@ -19,7 +19,10 @@ export const getRestaurantById = async (id: string): Promise<Restaurant> => {
 
 export interface RestaurantAddress {
   _id: string;
-  address: { street: string; houseNumber: number; city: string };
+  // Optional: the server backfills this from the pre-rename `adress` field
+  // where it can (see legacyAddressFallback.ts), but a document lacking both
+  // is still a possibility this type should admit rather than lie about.
+  address?: { street: string; houseNumber: number; city: string } | null;
   /** Present once the restaurant's coordinates have been resolved and stored. */
   location?: { lat: number; lng: number } | null;
 }

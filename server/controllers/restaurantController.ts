@@ -324,7 +324,12 @@ export const getRestaurantAddress = async (req: Request, res: Response): Promise
     try {
         // `location` rides along so the tracking map can use the stored point
         // for orders placed before coordinates were persisted on the order.
-        const restaurant = await Restaurant.findOne({ title: title }).select("address location");
+        // `adress` (the pre-rename spelling) is selected too, purely so the
+        // legacy-address fallback below has something to fall back to for a
+        // document a deployment's migration hasn't reached yet — a `.select()`
+        // projection fetches only what it names, so without this the fallback
+        // would have nothing to work with and still return no address.
+        const restaurant = await Restaurant.findOne({ title: title }).select("address adress location");
         if (!restaurant) {
             res.status(404).json({
                 message: "Not found!",
