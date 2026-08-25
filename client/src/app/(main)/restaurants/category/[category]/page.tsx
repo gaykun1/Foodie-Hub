@@ -1,17 +1,17 @@
 "use client"
-import { getRestaurantsFiltered } from "@/api/api";
+import { restaurantsApi } from "@/api";
+import { isNotFound } from "@/lib/apiClient";
 import RestaurantCard from "@/components/mainPage/RestaurantCard";
-import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
-import { Category } from "@/redux/reduxTypes";
-import { getRestaurants } from "@/redux/restaurantSlice";
-import { SlidersHorizontal, Store } from "lucide-react";
+import { Category, Restaurant } from "@/redux/reduxTypes";
+import { SlidersHorizontal, Store, TriangleAlert } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useDisclosure } from "@/hooks/useDisclosure";
 import { DropdownMenu } from "@/components/ui/DropdownMenu";
 import { CardGridSkeleton } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
+import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/cn";
 
 const links: Record<Category, string> = {
@@ -23,28 +23,44 @@ const links: Record<Category, string> = {
 };
 
 export default function Page() {
-  const dispatch = useAppDispatch();
-  const { restaurants } = useAppSelector(state => state.restaurants);
+  // Local state rather than the shared redux `restaurants` slice: that slice
+  // is also written by the home page's category widget, and reading it here
+  // meant switching to a category with zero matches (a 404, not an error —
+  // see restaurantsApi.getRestaurantsFiltered) left whatever the *previous*
+  // category had fetched on screen, with the heading changed but the grid
+  // silently stale. It also initialized to `null`, which the old
+  // `restaurants === undefined` loading check could never match, so the page
+  // flashed "No restaurants found" before the first fetch had even resolved.
+  const [restaurants, setRestaurants] = useState<Restaurant[] | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<boolean>(false);
   const { category } = useParams() as { category: string };
   const filterMenu = useDisclosure();
   const filterWrapperRef = useRef<HTMLDivElement>(null);
   const entry = Object.entries(links).find(([, val]) => val === category);
-  const currentTitle = entry ? entry[0] : Category.All;
+  const currentTitle = entry ? entry[0] as Category : Category.All;
 
-  const fetchRestaurants = useCallback(async (category: string) => {
+  const fetchRestaurants = useCallback(async (categoryTitle: Category) => {
     try {
-      const info = await getRestaurantsFiltered(category);
-      if (info) dispatch(getRestaurants(info));
+      setLoading(true);
+      setError(false);
+      setRestaurants(await restaurantsApi.getRestaurantsFiltered(categoryTitle));
     } catch (err) {
-      console.error(err);
+      // No restaurant in this category is a normal empty state, not a failure.
+      if (isNotFound(err)) {
+        setRestaurants([]);
+      } else {
+        console.error(err);
+        setError(true);
+      }
+    } finally {
+      setLoading(false);
     }
-  }, [dispatch])
+  }, [])
 
   useEffect(() => {
-    fetchRestaurants(currentTitle);
+    void fetchRestaurants(currentTitle);
   }, [currentTitle, fetchRestaurants])
-
-  const isLoading = restaurants === undefined;
 
   return (
     <section className="mx-5 my-10 border border-border rounded-lg sm:p-8 p-6">
@@ -67,10 +83,14 @@ export default function Page() {
             {Object.entries(links).map(([key, value]) => (
               <Link
                 key={value}
-                href={value}
+                href={`/restaurants/category/${value}`}
                 onClick={filterMenu.close}
                 role="menuitem"
-                className="w-full flex items-center gap-2 text-left px-3 py-2 rounded-md text-sm font-medium text-ink hover:bg-surfaceRaised transition-colors"
+                aria-current={key === currentTitle ? "true" : undefined}
+                className={cn(
+                  "w-full flex items-center gap-2 text-left px-3 py-2 rounded-md text-sm font-medium transition-colors",
+                  key === currentTitle ? "bg-ember-50 text-brand" : "text-ink hover:bg-surfaceRaised"
+                )}
               >
                 {key}
               </Link>
@@ -79,8 +99,15 @@ export default function Page() {
         </div>
       </div>
 
-      {isLoading ? (
+      {loading ? (
         <CardGridSkeleton count={8} />
+      ) : error ? (
+        <EmptyState
+          icon={<TriangleAlert size={22} />}
+          title="Couldn't load restaurants"
+          description="The request didn't get through. Try again in a moment."
+          action={<Button onClick={() => fetchRestaurants(currentTitle)}>Try again</Button>}
+        />
       ) : restaurants && restaurants.length > 0 ? (
         <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {restaurants.map((restaurant) => (
