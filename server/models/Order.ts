@@ -1,5 +1,6 @@
 import mongoose, { Document, Schema } from "mongoose";
 import { ORDER_STATUSES, type OrderStatusOrDraft } from "../utils/orderStatus";
+import { applyLegacyAddressFallback } from "../utils/legacyAddressFallback";
 
 /** A resolved point on the map, stored so tracking never re-geocodes. */
 export interface IGeoPoint {
@@ -114,5 +115,9 @@ OrderSchema.index({ restaurantTitle: 1, status: 1 });
 OrderSchema.index({ courierId: 1, status: 1 });
 // Couriers browse unclaimed work by city.
 OrderSchema.index({ "address.city": 1, status: 1, courierId: 1 });
+
+// See legacyAddressFallback.ts — covers documents written before the
+// adress -> address rename that a deployment's migration hasn't reached yet.
+applyLegacyAddressFallback(OrderSchema);
 
 export default mongoose.model('Order', OrderSchema);

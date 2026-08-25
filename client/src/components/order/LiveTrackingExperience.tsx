@@ -51,7 +51,7 @@ export function LiveTrackingExperience({
           <div className="absolute inset-0"><MapTracker courierLocation={courierLocation} isWorking={order} /></div>
           <div className="absolute inset-x-5 bottom-5 z-[500] flex items-center rounded-[var(--radius-md)] border border-border bg-surface/95 p-4 shadow-elevation3 backdrop-blur">
             <span className="flex size-11 items-center justify-center rounded-full bg-ember-50 text-brand"><MapPin size={20} /></span>
-            <div className="ml-3"><p className="text-sm font-extrabold text-ink">Delivery address</p><p className="mt-0.5 text-xs text-inkMuted">{order.address.houseNumber} {order.address.street}, {order.address.city}</p></div>
+            <div className="ml-3"><p className="text-sm font-extrabold text-ink">Delivery address</p><p className="mt-0.5 text-xs text-inkMuted">{order.address ? `${order.address.houseNumber} ${order.address.street}, ${order.address.city}` : "Address unavailable"}</p></div>
             <span className="ml-auto flex items-center gap-2 text-xs font-bold text-teal-800"><span className="size-2 rounded-full bg-teal-600" />Live</span>
           </div>
         </Card>

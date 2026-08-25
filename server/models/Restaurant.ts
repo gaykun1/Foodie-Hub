@@ -1,4 +1,5 @@
 import mongoose, { Document, Schema } from "mongoose";
+import { applyLegacyAddressFallback } from "../utils/legacyAddressFallback";
 
 
 export enum Category {
@@ -69,5 +70,9 @@ const RestaurantSchema = new Schema<IRestaurant>({
 // main discovery query.
 RestaurantSchema.index({ title: 1 });
 RestaurantSchema.index({ categories: 1 });
+
+// See legacyAddressFallback.ts — covers documents written before the
+// adress -> address rename that a deployment's migration hasn't reached yet.
+applyLegacyAddressFallback(RestaurantSchema);
 
 export default mongoose.model('Restaurant', RestaurantSchema);

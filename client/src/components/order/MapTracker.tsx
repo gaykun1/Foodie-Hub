@@ -58,16 +58,20 @@ const MapTracker = ({
                     const restaurant = await restaurantsApi.getRestaurantAddress(isWorking.restaurantTitle);
                     restaurantPoint = restaurant?.location
                         ? [restaurant.location.lat, restaurant.location.lng]
-                        : await geocodeApi.geocodeAddress(
-                            `${restaurant.address.street} ${restaurant.address.houseNumber}, ${restaurant.address.city}`
-                        );
+                        : restaurant?.address
+                            ? await geocodeApi.geocodeAddress(
+                                `${restaurant.address.street} ${restaurant.address.houseNumber}, ${restaurant.address.city}`
+                            )
+                            : null;
                 }
 
                 const receiverPoint: Point | null = stored?.customer
                     ? [stored.customer.lat, stored.customer.lng]
-                    : await geocodeApi.geocodeAddress(
-                        `${isWorking.address.street} ${isWorking.address.houseNumber}, ${isWorking.address.city}`
-                    );
+                    : isWorking.address
+                        ? await geocodeApi.geocodeAddress(
+                            `${isWorking.address.street} ${isWorking.address.houseNumber}, ${isWorking.address.city}`
+                        )
+                        : null;
 
                 if (cancelled) return;
                 if (!restaurantPoint || !receiverPoint) {
