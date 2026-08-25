@@ -24,7 +24,12 @@ export const createPaymentIntent = async (req: Request, res: Response): Promise<
         })
         return;
     } catch (err) {
-        res.status(400).json({ message: `Failed: ${err}` });
+        // Was interpolating the raw error (a Stripe API error, or the
+        // "Invalid shipping option" thrown by computeOrderPricing) straight
+        // into the response — neither the client UI displays it nor should a
+        // caller be handed that much detail about the server's internals.
+        console.error("[createPaymentIntent] error:", err);
+        res.status(400).json({ message: "Could not start payment" });
         return;
     }
 }

@@ -78,13 +78,31 @@ describe("payment intent (checkout charge amount)", () => {
         );
     });
 
-    it("rejects a shipping price outside the whitelisted options", async () => {
+    it("rejects a shipping price outside the whitelisted options, without leaking the raw internal error", async () => {
         const res = await request(app)
             .post("/api/payment/payment-intent")
             .set("Cookie", `token=${token}`)
             .send({ shipping: 0.01, percent: 0 });
 
         expect(res.status).toBe(400);
+        // Used to interpolate the caught error straight into the response
+        // ("Failed: Error: Invalid shipping option") — internal exception
+        // detail a client has no business seeing.
+        expect(res.body.message).not.toMatch(/error:/i);
+    });
+
+    it("doesn't leak Stripe's internal error details into the response", async () => {
+        stripeInstance.paymentIntents.create.mockImplementationOnce(() => {
+            throw new Error("Invalid API Key provided: sk_test_***");
+        });
+
+        const res = await request(app)
+            .post("/api/payment/payment-intent")
+            .set("Cookie", `token=${token}`)
+            .send({ shipping: 2.2, percent: 0 });
+
+        expect(res.status).toBe(400);
+        expect(res.body.message).not.toMatch(/API Key|sk_test/i);
     });
 
     it("404s when the user has no pending order to charge for", async () => {

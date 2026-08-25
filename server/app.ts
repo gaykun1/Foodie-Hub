@@ -4,6 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
+import { resolveCorsOrigin } from "./utils/corsOrigin";
 
 // route import
 import authRoute from "./routes/authRoutes";
@@ -26,7 +27,7 @@ app.use(helmet());
 app.use(cookieParser());
 app.use(express.json());
 app.use(cors({
-    origin: process.env.CORS_ORIGIN,
+    origin: resolveCorsOrigin(),
     credentials: true
 }));
 

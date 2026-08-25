@@ -33,6 +33,19 @@ describe("auth api", () => {
                 .send({ username: "", password: "short" });
             expect(res.status).toBe(400);
         });
+
+        it("doesn't leak internal error details (Mongo error text, stack info) into the response", async () => {
+            jest.spyOn(User, "create").mockImplementationOnce(() => {
+                throw new Error("E11000 duplicate key error collection: foodiehub.users index: phoneNumber_1 dup key: { phoneNumber: null }");
+            });
+
+            const res = await request(app).post("/api/auth/signup")
+                .send({ username: "LeakCheckUser", password: "12345678Aa" });
+
+            expect(res.status).toBe(400);
+            expect(res.body.message).not.toMatch(/E11000|collection|index|dup key/i);
+            jest.restoreAllMocks();
+        });
     })
 
     describe("login", () => {

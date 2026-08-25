@@ -3,7 +3,7 @@ import { MongoMemoryServer } from "mongodb-memory-server";
 import User, { IUserDocument } from "../../models/User";
 import Order from "../../models/Order";
 import Promocode from "../../models/Promocode";
-import { VALID_SHIPPING_PRICES, computeOrderPricing, getMaxDiscountPercent } from "../../utils/pricing";
+import { VALID_SHIPPING_PRICES, computeOrderPricing, consumeSpecialPromocodes, getMaxDiscountPercent } from "../../utils/pricing";
 
 let mongo: MongoMemoryServer;
 
@@ -185,6 +185,83 @@ describe("checkout pricing", () => {
             const pricing = await computeOrderPricing(user._id, 2.2, 100);
 
             expect(pricing?.totalPrice).toBe(0);
+        });
+    });
+
+    /**
+     * Regression coverage for a real reuse bug: usePromocode pushed a redeemed
+     * Special (one-time) code onto user.promocodes and nothing ever removed it,
+     * so getMaxDiscountPercent kept counting it toward every future order's
+     * discount ceiling forever — a code redeemed once could be applied to every
+     * order the user placed from then on. consumeSpecialPromocodes is what
+     * closes that hole, called once a checkout actually pays with the discount.
+     */
+    describe("consuming Special promocodes after a paid order", () => {
+        it("removes a fully-used Special code so it can't fund a future order", async () => {
+            const promo = await Promocode.create({ code: "FEAST20", discountPercent: 20, type: "Special" });
+            user.promocodes = [promo._id];
+            await user.save();
+
+            await consumeSpecialPromocodes(user._id, 20);
+
+            const saved = await User.findById(user._id);
+            expect(saved?.promocodes).toHaveLength(0);
+            expect(await getMaxDiscountPercent(user._id)).toBe(0);
+        });
+
+        it("leaves the standing Usual promocode alone — only Special codes are one-time", async () => {
+            const usual = await Promocode.create({ code: "WEEKEND", discountPercent: 15, type: "Usual" });
+            const special = await Promocode.create({ code: "EXTRA", discountPercent: 5, type: "Special" });
+            user.usualPromocode = usual._id;
+            user.promocodes = [special._id];
+            await user.save();
+
+            await consumeSpecialPromocodes(user._id, 20);
+
+            const saved = await User.findById(user._id);
+            expect(saved?.usualPromocode).not.toBeNull();
+            expect(saved?.promocodes).toHaveLength(0);
+            // Usual's 15% still stands for the next order.
+            expect(await getMaxDiscountPercent(user._id)).toBe(15);
+        });
+
+        it("leaves an unused Special code untouched when the order's discount came entirely from Usual", async () => {
+            const usual = await Promocode.create({ code: "WEEKEND", discountPercent: 15, type: "Usual" });
+            const special = await Promocode.create({ code: "SAVEDFORLATER", discountPercent: 10, type: "Special" });
+            user.usualPromocode = usual._id;
+            user.promocodes = [special._id];
+            await user.save();
+
+            // Only 15% was actually applied — exactly what Usual alone funds.
+            await consumeSpecialPromocodes(user._id, 15);
+
+            const saved = await User.findById(user._id);
+            expect(saved?.promocodes?.map(String)).toEqual([special._id.toString()]);
+            expect(await getMaxDiscountPercent(user._id)).toBe(25);
+        });
+
+        it("does nothing when the order carried no discount at all", async () => {
+            const promo = await Promocode.create({ code: "UNUSED", discountPercent: 20, type: "Special" });
+            user.promocodes = [promo._id];
+            await user.save();
+
+            await consumeSpecialPromocodes(user._id, 0);
+
+            const saved = await User.findById(user._id);
+            expect(saved?.promocodes).toHaveLength(1);
+        });
+
+        it("consumes only as many Special codes as the discount actually funded, oldest first", async () => {
+            const first = await Promocode.create({ code: "FIRST", discountPercent: 5, type: "Special" });
+            const second = await Promocode.create({ code: "SECOND", discountPercent: 10, type: "Special" });
+            user.promocodes = [first._id, second._id];
+            await user.save();
+
+            // Only enough for the first code's worth.
+            await consumeSpecialPromocodes(user._id, 5);
+
+            const saved = await User.findById(user._id);
+            expect(saved?.promocodes?.map(String)).toEqual([second._id.toString()]);
         });
     });
 });

@@ -2,6 +2,7 @@ import { Server, Socket } from "socket.io";
 import jwt from "jsonwebtoken";
 import Order from "./models/Order";
 import User from "./models/User";
+import { resolveCorsOrigin } from "./utils/corsOrigin";
 
 export let io: Server;
 // Maps for sockets
@@ -33,7 +34,7 @@ const parseCookies = (header?: string): Record<string, string> => {
 export const initSocket = (server: any) => {
     io = new Server(server, {
         cors: {
-            origin: process.env.CORS_ORIGIN,
+            origin: resolveCorsOrigin(),
             credentials: true,
         },
     });

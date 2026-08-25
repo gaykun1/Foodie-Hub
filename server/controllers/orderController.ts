@@ -15,8 +15,25 @@ import { stopSimulation } from "../services/deliverySimulator";
 import {
     NON_REVENUE_STATUSES,
     canCancel,
+    canTransition,
     type CancelActor,
 } from "../utils/orderStatus";
+import { consumeSpecialPromocodes } from "../utils/pricing";
+
+/**
+ * True if the acting restaurant-role user owns the given restaurant id.
+ *
+ * Several restaurant-scoped endpoints below (`:id` in the URL, or `?id=` on
+ * the statistics route) previously trusted that id outright once
+ * `restaurantMiddleware`/`dashboardMiddleware` had proven "some restaurant
+ * account" — never that it was *this* id's restaurant. That let any
+ * restaurant account read (or, on `toggleToPreparing`, mutate) another
+ * restaurant's orders and revenue by simply passing a different id.
+ */
+const ownsRestaurant = async (userId: string, restaurantId: string): Promise<boolean> => {
+    const actingUser = await User.findById(userId).select("restaurantId");
+    return actingUser?.restaurantId?.toString() === restaurantId;
+};
 
 interface CartItem {
     dishId: {
@@ -124,6 +141,12 @@ export const getOrders = async (req: Request, res: Response): Promise<void> => {
 export const getOrdersCreated = async (req: Request, res: Response): Promise<void> => {
     const id = req.params.id;
     try {
+        // Restaurant-only route — without this a restaurant account could pass
+        // any other restaurant's id and read its freshly placed orders.
+        if (!(await ownsRestaurant((req as AuthRequest).userId, id))) {
+            res.status(403).json("Access denied");
+            return;
+        }
         const restaurant = await Restaurant.findById(id);
         const orders = await Order.find({ restaurantTitle: restaurant?.title, status: "Created" });
         if (orders.length === 0) {
@@ -157,6 +180,12 @@ export const getLastSevenOrders = async (req: Request, res: Response): Promise<v
             res.status(200).json(orders);
             return
         } else {
+            // Reached only via the restaurant-scoped route — without this a
+            // restaurant account could pass any other restaurant's id here.
+            if (!(await ownsRestaurant((req as AuthRequest).userId, id))) {
+                res.status(403).json("Access denied");
+                return;
+            }
             const restaurant = await Restaurant.findById(id);
             const orders = await Order.find({ status: { $nin: [null, "Created"] }, restaurantTitle: restaurant?.title }).sort({ updatedAt: -1 }).limit(7);
             if (orders.length === 0) {
@@ -200,12 +229,25 @@ export const getNumbers = async (req: Request, res: Response): Promise<void> => 
         // state, not revenue-worthy yet; "Cancelled" is excluded because it was
         // refunded — counting it would inflate revenue by money that went back out.
         if (id == null) {
+            // dashboardMiddleware also admits "restaurant" accounts, but
+            // platform-wide figures are admin-only — a restaurant account
+            // calling without an id must not see every restaurant's revenue.
+            if ((req as AuthRequest).role !== "admin") {
+                res.status(403).json("Access denied");
+                return;
+            }
             orders = await Order.find({ status: { $nin: [...NON_REVENUE_STATUSES] } });
             if (!orders.length) {
                 res.status(404).json({ message: "No orders found!" });
                 return;
             }
         } else {
+            // A restaurant account may only see its own figures — the id came
+            // from the query string, so without this it could read any rival's.
+            if ((req as AuthRequest).role === "restaurant" && !(await ownsRestaurant((req as AuthRequest).userId, String(id)))) {
+                res.status(403).json("Access denied");
+                return;
+            }
             const restaurant = await Restaurant.findById(id);
             orders = await Order.find({ restaurantTitle: restaurant?.title, status: { $nin: [...NON_REVENUE_STATUSES] } });
             if (!orders.length) {
@@ -391,6 +433,11 @@ export const updateOrder = async (req: Request, res: Response): Promise<void> =>
             }, { new: true });
             const cart = await Cart.findOneAndUpdate({ userId: (req as AuthRequest).userId, _id: cartId }, { $set: { restaurantId: null, items: [] } });
             if (order) {
+                // Burns the Special (one-time) codes that funded this order's
+                // discount — see consumeSpecialPromocodes for why this has to
+                // happen here, once payment is actually confirmed, and not at
+                // redemption time.
+                await consumeSpecialPromocodes((req as AuthRequest).userId, pricing.discountPercent);
                 // incrementing sold with $inc
                 for (const item of order.items) {
                     const dish = await Dish.findOneAndUpdate({ title: item.title }, {
@@ -453,7 +500,34 @@ export const getFreeOrders = async (req: Request, res: Response): Promise<void> 
 export const toggleToPreparing = async (req: Request, res: Response): Promise<void> => {
     const id = req.params.id;
     try {
-        await Order.findByIdAndUpdate(id, { $set: { status: "Preparing" } });
+        // This previously wrote the literal status straight through via
+        // findByIdAndUpdate with no ownership check and no runValidators —
+        // any restaurant account could move *any* order (belonging to any
+        // restaurant, in any current status, including an already-delivered
+        // or cancelled one) to "Preparing" just by knowing its id. Now scoped
+        // to the caller's own restaurant, via .save() (which always runs
+        // schema validators), and only a legal Created -> Preparing move.
+        const actingUser = await User.findById((req as AuthRequest).userId).select("restaurantId");
+        if (!actingUser?.restaurantId) {
+            res.status(404).json("Not found!");
+            return;
+        }
+        const restaurant = await Restaurant.findById(actingUser.restaurantId);
+        if (!restaurant) {
+            res.status(404).json("Not found!");
+            return;
+        }
+        const order = await Order.findOne({ _id: id, restaurantTitle: restaurant.title });
+        if (!order) {
+            res.status(404).json("Not found!");
+            return;
+        }
+        if (!canTransition(order.status, "Preparing")) {
+            res.status(409).json(`Cannot move an order from ${order.status ?? "draft"} to Preparing`);
+            return;
+        }
+        order.status = "Preparing";
+        await order.save();
         res.status(200).json("Toggled status to Preparing");
         return;
     } catch (err) {

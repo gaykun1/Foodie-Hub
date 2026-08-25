@@ -9,6 +9,7 @@ import Order, { IOrder, IOrderDocument } from '../../models/Order';
 import Restaurant, { Category, IRestaurantDocument } from '../../models/Restaurant';
 import Dish, { IDishDocument } from '../../models/Dish';
 import Courier, { ICourierDocument } from '../../models/Courier';
+import Promocode from '../../models/Promocode';
 import { stripe } from '../../utils/stripeClient';
 let mongo: MongoMemoryServer;
 
@@ -34,9 +35,7 @@ describe("order api", () => {
     let dish: IDishDocument;
     beforeAll(async () => {
         user = await User.create({ username: "testuser4", password: "12345678Aa" });
-        restaurantUser = await User.create({ username: "restaurantUser", password: "12345678Aa", role: "restaurant" });
         userToken = await jwt.sign({ userId: user._id, role: "user" }, process.env.JWT_SECRET!, { expiresIn: '1h' });
-        restaurantUserToken = await jwt.sign({ userId: restaurantUser._id, role: "restaurant" }, process.env.JWT_SECRET!, { expiresIn: '1h' });
         restaurant1 = await Restaurant.create({
             title: "Best Burger",
             dishes: [],
@@ -56,6 +55,11 @@ describe("order api", () => {
             phone: "+312421412",
 
         })
+        // Owns restaurant1 — the restaurant-scoped routes below (toggle to
+        // preparing, incoming orders, recent orders, statistics) now check
+        // this ownership, not just "is a restaurant account".
+        restaurantUser = await User.create({ username: "restaurantUser", password: "12345678Aa", role: "restaurant", restaurantId: restaurant1._id });
+        restaurantUserToken = await jwt.sign({ userId: restaurantUser._id, role: "restaurant" }, process.env.JWT_SECRET!, { expiresIn: '1h' });
         dish = await Dish.create({
             title: "newBurger",
             description: "Tasty burger",
@@ -279,6 +283,35 @@ describe("order api", () => {
             expect(saved?.discountPercent).toBe(0);
         });
 
+        it("consumes a redeemed Special promocode once it actually funds a paid order's discount", async () => {
+            // Regression coverage: usePromocode used to leave a redeemed Special
+            // (one-time) code sitting in user.promocodes forever, so it kept
+            // discounting every future order too. It must be gone after this
+            // checkout actually spends it.
+            const promo = await Promocode.create({ code: "FEAST20", discountPercent: 20, type: "Special" });
+            user.promocodes = [promo._id];
+            await user.save();
+
+            // subtotal 96 + shipping 2.2 = 98.2; 20% off -> 78.56 -> 7856 cents.
+            jest.spyOn(stripe.paymentIntents, "retrieve").mockResolvedValueOnce({ status: "succeeded", amount: 7856 } as any);
+
+            const res = await request(app).patch("/api/order/orders")
+                .set("Cookie", `token=${userToken}`)
+                .send({ formData: validFormData, shipping: 2.2, cartId: cart._id, percent: 20, paymentIntentId: "pi_test_promo" });
+
+            expect(res.status).toBe(200);
+            const saved = await Order.findOne({ userId: user._id, status: "Created" });
+            expect(saved?.discountPercent).toBe(20);
+            expect(saved?.totalPrice).toBeCloseTo(78.56, 2);
+
+            const savedUser = await User.findById(user._id);
+            expect(savedUser?.promocodes).toHaveLength(0);
+
+            await Promocode.deleteOne({ _id: promo._id });
+            user.promocodes = [];
+            await user.save();
+        });
+
         it("won't finalize the order without a paymentIntentId at all", async () => {
             const res = await request(app).patch("/api/order/orders")
                 .set("Cookie", `token=${userToken}`)
@@ -357,6 +390,14 @@ describe("order api", () => {
     })
     describe("toggle to preparing(cooking)", () => {
 
+        // The outer beforeEach creates `order` already in "Preparing" — fine
+        // for the other describe blocks, but toggleToPreparing only allows a
+        // legal Created -> Preparing move, so this block needs a fresh draft.
+        beforeEach(async () => {
+            order.status = "Created";
+            await order.save();
+        });
+
         it("200 toggled", async () => {
             const res = await request(app).patch(`/api/order/orders/${order._id}/status`)
                 .set("Cookie", `token=${restaurantUserToken}`);
@@ -364,9 +405,39 @@ describe("order api", () => {
             expect(res.body).toBe("Toggled status to Preparing");
         })
 
+        it("hides another restaurant's order entirely rather than toggling it", async () => {
+            const rivalRestaurant = await Restaurant.create({
+                title: "Rival Diner", dishes: [], description: "d", imageUrl: "img.jpg",
+                categories: [Category.Desserts], address: { street: "S", city: "city", houseNumber: 9 },
+                startDay: "Monday", endDay: "Monday", startHour: "6:00", endHour: "6:00",
+                websiteUrl: "rival.com", phone: "+312421499",
+            });
+            const rivalUser = await User.create({ username: "rivalOwner", password: "12345678Aa", role: "restaurant", restaurantId: rivalRestaurant._id });
+            const rivalToken = jwt.sign({ userId: rivalUser._id, role: "restaurant" }, process.env.JWT_SECRET!, { expiresIn: "1h" });
+
+            const res = await request(app).patch(`/api/order/orders/${order._id}/status`)
+                .set("Cookie", `token=${rivalToken}`);
+
+            // Resolved from the caller's own restaurant (like cancelOrderRestaurant
+            // elsewhere), so a rival simply doesn't see this order at all — not a
+            // 403 that would confirm the order exists.
+            expect(res.status).toBe(404);
+            expect((await Order.findById(order._id))?.status).toBe("Created");
+        })
+
+        it("409s an order that isn't in Created (can't skip straight to Preparing from Delivering, etc.)", async () => {
+            order.status = "Delivering";
+            await order.save();
+
+            const res = await request(app).patch(`/api/order/orders/${order._id}/status`)
+                .set("Cookie", `token=${restaurantUserToken}`);
+
+            expect(res.status).toBe(409);
+            expect((await Order.findById(order._id))?.status).toBe("Delivering");
+        })
 
         it("500 server error order findOne", async () => {
-            jest.spyOn(Order, "findByIdAndUpdate").mockImplementationOnce(() => {
+            jest.spyOn(Order, "findOne").mockImplementationOnce(() => {
                 throw new Error("DB error");
             });
             const res = await request(app).patch(`/api/order/orders/${order._id}/status`)
@@ -410,7 +481,7 @@ describe("order api", () => {
             jest.spyOn(Order, "find").mockImplementationOnce(() => {
                 throw new Error("DB error");
             });
-            const res = await request(app).get(`/api/order/orders/${order._id}/created`)
+            const res = await request(app).get(`/api/order/orders/${restaurant1._id}/created`)
                 .set("Cookie", `token=${restaurantUserToken}`);
 
             expect(res.status).toBe(500);
@@ -422,12 +493,28 @@ describe("order api", () => {
             jest.spyOn(Restaurant, "findById").mockImplementationOnce(() => {
                 throw new Error("DB error");
             });
-            const res = await request(app).get(`/api/order/orders/${order._id}/created`)
+            const res = await request(app).get(`/api/order/orders/${restaurant1._id}/created`)
                 .set("Cookie", `token=${restaurantUserToken}`);
 
             expect(res.status).toBe(500);
             expect(res.body).toBe("Server error!");
             jest.restoreAllMocks();
+        })
+
+        it("403s a restaurant that doesn't own this restaurant's incoming orders", async () => {
+            const rivalRestaurant = await Restaurant.create({
+                title: "Rival Diner", dishes: [], description: "d", imageUrl: "img.jpg",
+                categories: [Category.Desserts], address: { street: "S", city: "city", houseNumber: 9 },
+                startDay: "Monday", endDay: "Monday", startHour: "6:00", endHour: "6:00",
+                websiteUrl: "rival.com", phone: "+312421488",
+            });
+            const rivalUser = await User.create({ username: "rivalOwnerCreated", password: "12345678Aa", role: "restaurant", restaurantId: rivalRestaurant._id });
+            const rivalToken = jwt.sign({ userId: rivalUser._id, role: "restaurant" }, process.env.JWT_SECRET!, { expiresIn: "1h" });
+
+            const res = await request(app).get(`/api/order/orders/${restaurant1._id}/created`)
+                .set("Cookie", `token=${rivalToken}`);
+
+            expect(res.status).toBe(403);
         })
 
     })

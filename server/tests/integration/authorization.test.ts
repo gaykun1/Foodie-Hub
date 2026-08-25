@@ -254,6 +254,80 @@ describe("authorization by role", () => {
             expect(res.status).toBe(403);
             expect(await Dish.findById(dish._id)).not.toBeNull();
         });
+
+        // toggleToPreparing, getOrdersCreated, getLastSevenOrders and getNumbers
+        // previously trusted whatever restaurant id was in the URL/query once
+        // *some* restaurant middleware had passed — never that it was the
+        // caller's own restaurant. A rival could read another restaurant's
+        // incoming orders, recent orders and revenue, or (on toggleToPreparing)
+        // mutate its orders outright.
+        it("refuses one restaurant the incoming-orders queue of another", async () => {
+            const res = await request(app)
+                .get(`/api/order/orders/${restaurant._id}/created`)
+                .set("Cookie", `token=${otherOwnerToken}`);
+            expect(res.status).toBe(403);
+        });
+
+        it("lets the owning restaurant query its own incoming-orders queue", async () => {
+            const res = await request(app)
+                .get(`/api/order/orders/${restaurant._id}/created`)
+                .set("Cookie", `token=${ownerToken}`);
+            expect(res.status).not.toBe(403);
+        });
+
+        it("refuses one restaurant another's recent-orders list", async () => {
+            const res = await request(app)
+                .get(`/api/order/restaurants/${restaurant._id}/orders/recent`)
+                .set("Cookie", `token=${otherOwnerToken}`);
+            expect(res.status).toBe(403);
+        });
+
+        it("lets the owning restaurant read its own recent orders", async () => {
+            const res = await request(app)
+                .get(`/api/order/restaurants/${restaurant._id}/orders/recent`)
+                .set("Cookie", `token=${ownerToken}`);
+            expect(res.status).toBe(200);
+            expect(res.body).toHaveLength(1);
+        });
+
+        it("refuses one restaurant another's revenue statistics", async () => {
+            const res = await request(app)
+                .get(`/api/order/orders/statistics?id=${restaurant._id}`)
+                .set("Cookie", `token=${otherOwnerToken}`);
+            expect(res.status).toBe(403);
+        });
+
+        it("lets the owning restaurant read its own revenue statistics", async () => {
+            const res = await request(app)
+                .get(`/api/order/orders/statistics?id=${restaurant._id}`)
+                .set("Cookie", `token=${ownerToken}`);
+            expect(res.status).toBe(200);
+        });
+
+        it("refuses a restaurant account platform-wide statistics (no id) — admin only", async () => {
+            const res = await request(app)
+                .get(`/api/order/orders/statistics`)
+                .set("Cookie", `token=${ownerToken}`);
+            expect(res.status).toBe(403);
+        });
+
+        it("refuses one restaurant the right to toggle another's order to Preparing", async () => {
+            await Order.updateOne({ _id: order._id }, { $set: { status: "Created" } });
+            const res = await request(app)
+                .patch(`/api/order/orders/${order._id}/status`)
+                .set("Cookie", `token=${otherOwnerToken}`);
+            expect(res.status).toBe(404);
+            expect((await Order.findById(order._id))?.status).toBe("Created");
+        });
+
+        it("lets the owning restaurant toggle its own order to Preparing", async () => {
+            await Order.updateOne({ _id: order._id }, { $set: { status: "Created" } });
+            const res = await request(app)
+                .patch(`/api/order/orders/${order._id}/status`)
+                .set("Cookie", `token=${ownerToken}`);
+            expect(res.status).toBe(200);
+            expect((await Order.findById(order._id))?.status).toBe("Preparing");
+        });
     });
 
     describe("customer surfaces", () => {
