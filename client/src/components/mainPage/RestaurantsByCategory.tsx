@@ -1,44 +1,54 @@
 "use client"
-import { getRestaurantsFiltered } from '@/api/api';
-import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
-import { Category } from '@/redux/reduxTypes';
-import { getRestaurants } from '@/redux/restaurantSlice';
-import { ChevronRight, Store } from 'lucide-react';
+import { restaurantsApi } from '@/api';
+import { isNotFound } from '@/lib/apiClient';
+import { Category, Restaurant } from '@/redux/reduxTypes';
+import { ChevronRight, Store, TriangleAlert } from 'lucide-react';
 import Link from 'next/link';
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import RestaurantCard from './RestaurantCard'
 import { CardGridSkeleton, RestaurantCardSkeleton } from '@/components/ui/Skeleton';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/cn';
 
 const RestaurantsByCategory = () => {
-    const [isActive, setIsActive] = useState<string>(Category.All);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const dispatch = useAppDispatch();
-    const { restaurants } = useAppSelector(state => state.restaurants);
+    const [isActive, setIsActive] = useState<Category>(Category.All);
+    const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [error, setError] = useState<boolean>(false);
     const categories = useMemo(() => Object.values(Category), []);
 
-    const fetchRestaurants = useCallback(async (category: string) => {
+    const fetchRestaurants = useCallback(async (category: Category) => {
+        // Set immediately, not after the request resolves — otherwise a 404
+        // (a category with no restaurants, which is a normal empty result, not
+        // a failure) or any network error left this never called, so the
+        // previously active button stayed highlighted while the category the
+        // user actually clicked silently did nothing.
+        setIsActive(category);
         try {
             setIsLoading(true);
-            const info = await getRestaurantsFiltered(category);
-            if (info) dispatch(getRestaurants(info));
-            setIsActive(category);
+            setError(false);
+            setRestaurants(await restaurantsApi.getRestaurantsFiltered(category));
         } catch (err) {
-            console.error(err);
+            if (isNotFound(err)) {
+                setRestaurants([]);
+            } else {
+                console.error(err);
+                setError(true);
+            }
         } finally {
             setIsLoading(false);
         }
-    }, [dispatch])
+    }, [])
 
     useEffect(() => {
-        fetchRestaurants(isActive);
+        void fetchRestaurants(isActive);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isActive])
+    }, [])
 
     const gridClasses = "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5";
     const sorted = useMemo(
-        () => (isActive === Category.All ? [...(restaurants ?? [])].sort((a, b) => b.rating - a.rating) : restaurants ?? []),
+        () => (isActive === Category.All ? [...restaurants].sort((a, b) => b.rating - a.rating) : restaurants),
         [restaurants, isActive]
     );
 
@@ -49,6 +59,7 @@ const RestaurantsByCategory = () => {
                     <button
                         key={categorie}
                         onClick={() => fetchRestaurants(categorie)}
+                        aria-pressed={isActive === categorie}
                         className={cn(
                             "h-10 cursor-pointer transition-colors flex items-center justify-center px-4 font-medium text-sm rounded-full border",
                             isActive === categorie
@@ -73,6 +84,13 @@ const RestaurantsByCategory = () => {
 
             {isLoading ? (
                 <CardGridSkeleton count={4} item={RestaurantCardSkeleton} />
+            ) : error ? (
+                <EmptyState
+                    icon={<TriangleAlert size={22} />}
+                    title="Couldn't load restaurants"
+                    description="The request didn't get through. Try again in a moment."
+                    action={<Button size="sm" onClick={() => fetchRestaurants(isActive)}>Try again</Button>}
+                />
             ) : sorted.length > 0 ? (
                 <div className={gridClasses}>
                     {sorted.map((restaurant) => (
