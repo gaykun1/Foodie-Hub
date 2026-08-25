@@ -45,7 +45,11 @@ export const signup = async (req: Request, res: Response): Promise<void> => {
         });
         return;
     } catch (err) {
-        res.status(400).json({ message: `Failed: ${err}` });
+        // Was interpolating the raw error into the response — a duplicate-key
+        // or cast error from Mongo includes internal details (collection/index
+        // names, field values) that have no business reaching the client.
+        console.error("[signup] error:", err);
+        res.status(400).json({ message: "Could not create account" });
         return;
     }
 }

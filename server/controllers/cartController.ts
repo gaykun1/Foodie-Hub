@@ -28,6 +28,15 @@ export const updateCartAmount = async (req: Request, res: Response): Promise<voi
     const { amount, title } = req.body;
     const id = req.params.id;
     try {
+        // The client only ever sends 0 (remove) or a small positive integer, but
+        // nothing previously stopped a direct call from sending a negative or
+        // fractional amount — it was written straight through to both the cart
+        // item and the pending order's line, corrupting order.totalPrice (and,
+        // downstream, the checkout total computed from it).
+        if (amount !== 0 && (!Number.isInteger(amount) || amount < 1 || amount > 999)) {
+            res.status(400).json("Amount must be a whole number between 1 and 999, or 0 to remove the item");
+            return;
+        }
         const order = await Order.findOne({ userId: (req as AuthRequest).userId, status: null });
         if (amount === 0) {
             const cart = await Cart.findOneAndUpdate({ userId: (req as AuthRequest).userId }, { $pull: { items: { dishId: id } } }, { new: true });

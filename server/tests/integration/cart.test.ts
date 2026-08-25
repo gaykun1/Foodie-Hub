@@ -142,6 +142,57 @@ describe("cart api", () => {
 
         });
 
+        // Isolated from the tests above: "amount==0 200" pulls its item out of
+        // the shared `cart` entirely, so anything relying on that cart still
+        // holding a matching item needs its own fixture rather than reusing it.
+        describe("amount validation", () => {
+            let ownCart: ICartDocument;
+            let ownDishId: string;
+
+            beforeEach(async () => {
+                ownCart = await Cart.create({
+                    userId: user._id,
+                    restaurantId: restaurant._id,
+                    items: [{ dishId: dish._id, amount: 2, title: dish.title }],
+                });
+                ownDishId = dish._id.toString();
+            });
+
+            afterEach(async () => {
+                await Cart.deleteOne({ _id: ownCart._id });
+            });
+
+            it.each([-1, -1000, 0.5, NaN, 1000])(
+                "rejects a negative/fractional/oversized amount (%s) instead of writing it through",
+                async (amount) => {
+                    const res = await request(app).patch(`/api/cart/items/${ownDishId}`)
+                        .send({ amount, title: "burger" })
+                        .set("Cookie", `token=${validToken}`);
+
+                    expect(res.status).toBe(400);
+                    const saved = await Cart.findById(ownCart._id);
+                    expect(saved?.items[0]?.amount).toBe(2);
+                }
+            );
+
+            it("a negative amount can't corrupt the pending order's totalPrice", async () => {
+                const order = await Order.create({
+                    userId: user._id,
+                    items: [{ title: dish.title, imageUrl: dish.imageUrl, price: dish.price, amount: 2 }],
+                    restaurantTitle: restaurant.title, restaurantImage: restaurant.imageUrl,
+                    approxTime: 0, totalPrice: 64, status: null,
+                });
+
+                const res = await request(app).patch(`/api/cart/items/${ownDishId}`)
+                    .send({ amount: -50, title: dish.title })
+                    .set("Cookie", `token=${validToken}`);
+
+                expect(res.status).toBe(400);
+                expect((await Order.findById(order._id))?.totalPrice).toBe(64);
+                await Order.deleteOne({ _id: order._id });
+            });
+        });
+
         it("500 server error order findOne", async () => {
             jest.spyOn(Order, "findOne").mockImplementationOnce(() => {
                 throw new Error("DB error");
