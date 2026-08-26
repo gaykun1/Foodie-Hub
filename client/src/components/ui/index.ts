@@ -11,3 +11,4 @@ export * from "./DropdownMenu";
 export * from "./Tabs";
 export * from "./Rating";
 export * from "./Toast";
+export * from "./ColdStartNotice";
