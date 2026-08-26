@@ -14,6 +14,70 @@ export const apiClient = axios.create({
   withCredentials: true,
 });
 
+/*
+ * In-flight request tracking, used to tell the user when the backend is cold.
+ *
+ * The API is hosted on a free tier that suspends the service after a stretch of
+ * inactivity, so the first request after a lull waits ~50s for the container to
+ * boot while every subsequent one answers in ~200ms. Without this the app just
+ * shows skeleton placeholders for a minute and reads as broken.
+ *
+ * `pendingSince` is the moment the app started waiting *continuously* — it is
+ * set when the in-flight count goes 0 -> 1 and cleared when it returns to 0, so
+ * a burst of parallel requests counts as one wait rather than restarting the
+ * clock. Deliberately a module-level store rather than redux state: this is
+ * transport-layer bookkeeping, it changes on every request, and nothing outside
+ * the notice below needs to render from it.
+ */
+let pendingCount = 0;
+let pendingSince: number | null = null;
+const pendingListeners = new Set<() => void>();
+
+const notifyPendingListeners = (): void => {
+  for (const listener of pendingListeners) listener();
+};
+
+/** Subscribe to changes in whether the app is waiting on the backend. */
+export const subscribeToPendingRequests = (listener: () => void): (() => void) => {
+  pendingListeners.add(listener);
+  return () => {
+    pendingListeners.delete(listener);
+  };
+};
+
+/** Timestamp the app began continuously waiting on the backend, or null if idle. */
+export const getPendingSince = (): number | null => pendingSince;
+
+apiClient.interceptors.request.use((config) => {
+  pendingCount += 1;
+  if (pendingCount === 1) {
+    pendingSince = Date.now();
+    notifyPendingListeners();
+  }
+  return config;
+});
+
+const settleRequest = (): void => {
+  // Guarded against going negative: a request rejected *before* the request
+  // interceptor ran would otherwise settle without ever having been counted.
+  pendingCount = Math.max(0, pendingCount - 1);
+  if (pendingCount === 0 && pendingSince !== null) {
+    pendingSince = null;
+    notifyPendingListeners();
+  }
+};
+
+apiClient.interceptors.response.use(
+  (response) => {
+    settleRequest();
+    return response;
+  },
+  (error) => {
+    settleRequest();
+    return Promise.reject(error);
+  }
+);
+
 /** True when a rejected request failed because the caller is not signed in. */
 export const isUnauthorized = (err: unknown): boolean =>
   isAxiosError(err) && err.response?.status === 401;
